@@ -1,0 +1,2 @@
+(March 31, 2021)
+	- Created the HTML, CSS, and JavaScript skeletons.

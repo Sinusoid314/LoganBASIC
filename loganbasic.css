@@ -1,0 +1,35 @@
+body
+{
+}
+
+#editor_label
+{
+    margin-right: 20px;
+}
+
+#runBtn
+{
+    margin-right: 5px;
+}
+
+#stopBtn
+{
+}
+
+#editor
+{
+    display: block;
+    margin-top: 5px;
+    margin-bottom: 30px;
+}
+
+#consol_label
+{
+    display: block;
+}
+
+#consol
+{
+    display: block;
+    margin-top: 5px;
+}
