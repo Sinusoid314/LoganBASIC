@@ -1,2 +1,6 @@
+(April 1, 2021)
+	- Implemented Token class.
+	- Defined language grammar.
+
 (March 31, 2021)
 	- Created the HTML, CSS, and JavaScript skeletons.

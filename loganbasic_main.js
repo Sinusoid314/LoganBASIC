@@ -10,12 +10,12 @@ stopBtn.addEventListener("click", stopBtn_OnClick);
 
 function runBtn_OnClick(eventObj)
 {
-    runBtn.disabled = true;
-    stopBtn.disabled = false;
+  runBtn.disabled = true;
+  stopBtn.disabled = false;
 }
 
 function stopBtn_OnClick(eventObj)
 {
-    runBtn.disabled = false;
-    stopBtn.disabled = true;
+  runBtn.disabled = false;
+  stopBtn.disabled = true;
 }

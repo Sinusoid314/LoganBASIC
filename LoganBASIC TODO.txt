@@ -1,4 +1,3 @@
-- Implement Token class.
 - Implement Lexer class.
 - Implement Interpreter class.
 - Implement runBtn_OnClick() and stopBtn_OnClick.

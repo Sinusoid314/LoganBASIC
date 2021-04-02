@@ -1,0 +1,22 @@
+program  ->  statement* EOF ;
+
+statement  ->  printStmt
+             | assignment ;
+
+printStmt   ->  "print" expression terminator ;
+assignment  ->  IDENTIFIER "=" expression terminator ;
+
+expression  ->  term ;
+term        ->  factor ( ( "-" | "+" ) factor )* ;
+factor      ->  unary ( ( "/" | "*" ) unary )* ;
+unary       ->  "-" unary | primary ;
+primary     ->  IDENTIFIER | NUMBER_LIT | STRING_LIT
+               | "(" expression ")" ;
+               
+terminator  ->  ( "\n" | EOF ) ;
+
+NUMBER_LIT  ->  DIGIT+ ( "." DIGIT+ )? ;
+STRING_LIT  ->  "\"" <any char except "\"">* "\"" ;
+IDENTIFIER  ->  ALPHA ( ALPHA | DIGIT )* ;
+ALPHA       ->  "a" ... "z" | "A" ... "Z" | "_" ;
+DIGIT       ->  "0" ... "9" ;
