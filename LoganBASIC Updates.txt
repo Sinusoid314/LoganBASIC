@@ -1,3 +1,8 @@
+(April 3, 2021)
+	- Implemented constructor(), addToken(), consumeChar(), endOfSource(),
+	  isAlpha(), isDigit(), and isAlphaNumeric() in Lexer class.
+	- Added keywordList object map to lexer module.
+
 (April 1, 2021)
 	- Implemented Token class.
 	- Defined language grammar.

@@ -1,7 +1,5 @@
-var sourceStr = "";
-var tokenList = [];
-var lexer = new Lexer();
-var interpreter = new Interpreter();
+var lexer;
+var interpreter;
 var runBtn = document.getElementById("runBtn");
 var stopBtn = document.getElementById("stopBtn");
 

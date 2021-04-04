@@ -14,11 +14,11 @@ const TOKEN_EOF = 12;
 
 class Token
 {
-  constructor(type, lexeme, litVal, lineNum)
+  constructor(type, lexemeStr, literalVal, lineNum)
   {
     this.type = type;
-    this.lexeme = lexeme;
-    this.literal = literal;
+    this.lexemeStr = lexemeStr;
+    this.literalVal = literalVal;
     this.lineNum = lineNum;
   }
 }
