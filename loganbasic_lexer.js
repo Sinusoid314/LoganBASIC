@@ -11,10 +11,19 @@ class Lexer
     this.startIndex = 0;
     this.currIndex = 0;
     this.currLineNum = 1;
+    this.errorMsg = "";
   }
 
   scan()
   {
+    while(!this.endOfSource())
+    {
+      this.startIndex = this.currIndex;
+      this.scanToken();
+    }
+
+    this.tokenList.push(new Token(TOKEN_EOF, "", undefined, this.currLineNum));
+    return this.tokenList;
   }
 
   scanToken()
@@ -23,30 +32,44 @@ class Lexer
 
   addToken(type, literalVal)
   {
-    var lexemeStr = this.sourceStr.substring(startIndex, currIndex);
-    this.tokenList.push(new Token(type, lexemeStr, literalVal, currLineNum));
+    var lexemeStr = this.sourceStr.substring(this.startIndex, this.currIndex);
+    this.tokenList.push(new Token(type, lexemeStr, literalVal, this.currLineNum));
   }
 
   consumeChar()
   {
-    return sourceStr.charAt(currIndex++);
+    return this.sourceStr.charAt(this.currIndex++);
   }
 
   matchChar(expectedChar)
   {
+    if(this.endOfSource())
+	  return false;
+
+    if(this.sourceStr.charAt(this.currIndex) != expectedChar)
+	  return false;
+
+    this.currIndex++;
+    return true;
   }
 
   peekChar()
   {
+    if(this.endOfSource())
+      return '\0';
+    return this.sourceStr.charAt(this.currIndex);
   }
 
   peekNextChar()
   {
+    if((this.currIndex + 1) >= this.sourceStr.length)
+      return '\0';
+    return this.sourceStr.charAt(this.currIndex + 1);
   }
 
   endOfSource()
   {
-    return (currIndex >= sourceStr.length);
+    return (this.currIndex >= this.sourceStr.length);
   }
 
   consumeStringLiteral()
@@ -54,6 +77,10 @@ class Lexer
   }
 
   consumeNumberLiteral()
+  {
+  }
+
+  consumeIdentifier()
   {
   }
 
@@ -69,6 +96,6 @@ class Lexer
 
   isAlphaNumeric(testChar)
   {
-    return (isAlpha(testChar) || isDigit(testChar));
+    return (this.isAlpha(testChar) || this.isDigit(testChar));
   }
 }
