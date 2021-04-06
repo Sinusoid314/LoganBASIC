@@ -7,20 +7,34 @@ body
     margin-right: 20px;
 }
 
-#runBtn
-{
-    margin-right: 5px;
-}
-
-#stopBtn
-{
-}
-
 #editor
 {
     display: block;
     margin-top: 5px;
-    margin-bottom: 30px;
+}
+
+#commandBar
+{
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+#runBtn
+{
+    margin-right: 2px;
+    margin-left: 2px;
+}
+
+#stopBtn
+{
+    margin-right: 2px;
+    margin-left: 2px;
+}
+
+#statusBar
+{
+    display: inline;
+    margin-left: 15px;
 }
 
 #consol_label

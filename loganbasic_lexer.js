@@ -22,12 +22,15 @@ class Lexer
       this.scanToken();
     }
 
-    this.tokenList.push(new Token(TOKEN_EOF, "", undefined, this.currLineNum));
+    this.tokenList.push(new Token(TOKEN_EOF, "EOF", undefined, this.currLineNum));
     return this.tokenList;
   }
 
   scanToken()
   {
+    var currChar = consumeChar();
+
+
   }
 
   addToken(type, literalVal)

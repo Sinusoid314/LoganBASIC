@@ -21,4 +21,9 @@ class Token
     this.literalVal = literalVal;
     this.lineNum = lineNum;
   }
+
+  toString()
+  {
+    return this.type + " " + this.lexemeStr + " " + this.literalVal + " " + this.lineNum;
+  }
 }

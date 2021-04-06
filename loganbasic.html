@@ -13,9 +13,13 @@
 <body>
 
 <label id="editor_label" for="editor">Code Editor</label>
-<button id="runBtn">Run</button>
-<button id="stopBtn" disabled>Stop</button>
 <textarea id="editor" cols="80" rows="15" wrap="off"></textarea>
+
+<div id="commandBar">
+  <button id="runBtn">Run</button>
+  <button id="stopBtn" disabled>Stop</button>
+  <div id="statusBar">Ready.</div>
+</div>
 
 <label id="consol_label" for="consol">Consol</label>
 <textarea id="consol" cols="80" rows="15" wrap="off" readonly></textarea>
