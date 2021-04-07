@@ -1,16 +1,16 @@
 //Token types
-const TOKEN_MINUS = 1;
-const TOKEN_PLUS = 2;
-const TOKEN_SLASH = 3;
-const TOKEN_STAR = 4;
-const TOKEN_EQUAL = 5;
-const TOKEN_SINGLE_QUOTE = 6
-const TOKEN_IDENTIFIER = 7;
-const TOKEN_STRING_LIT = 8;
-const TOKEN_NUMBER_LIT = 9;
-const TOKEN_PRINT = 10;
-const TOKEN_NEWLINE = 11;
-const TOKEN_EOF = 12;
+const TOKEN_NEWLINE = 1;
+const TOKEN_MINUS = 2;
+const TOKEN_PLUS = 3;
+const TOKEN_SLASH = 4;
+const TOKEN_STAR = 5;
+const TOKEN_EQUAL = 6;
+const TOKEN_SINGLE_QUOTE = 7;
+const TOKEN_STRING_LIT = 30;
+const TOKEN_NUMBER_LIT = 31;
+const TOKEN_IDENTIFIER = 32;
+const TOKEN_PRINT = 40;
+const TOKEN_EOS = 100;
 
 class Token
 {
@@ -24,6 +24,6 @@ class Token
 
   toString()
   {
-    return this.type + " " + this.lexemeStr + " " + this.literalVal + " " + this.lineNum;
+    return this.lineNum + " " + this.lexemeStr + " " + this.type + " " + this.literalVal;
   }
 }

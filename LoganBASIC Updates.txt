@@ -1,9 +1,13 @@
+(April 7, 2021)
+	- Implemented scanToken(), consumeStringLiteral(), consumeNumberLiteral(),
+	  and consumeIdentifier() in Lexer class.
+	- Added error handling to Lexer class.
+
 (April 5, 2021)
-	- Added toString() to token class.
+	- Added toString() to Token class.
 	- Added a status variable and constants to loganbasic_main module.
 	- Added a status bar and command bar.
 	- Implemented runBtn_OnClick().
-	- 
 
 (April 4, 2021)
 	- Implemented matchChar(), peekChar(), peekNextChar(), and scan()

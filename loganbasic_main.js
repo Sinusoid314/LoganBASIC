@@ -31,11 +31,12 @@ function runBtn_OnClick(eventObj)
 
   if(lexer.errorMsg != "")
   {
-    statusBar.innerHTML = "Scan error: " + lexer.errorMsg;
+    statusBar.innerHTML = lexer.errorMsg;
   }
   else
   {
     statusBar.innerHTML = "Scan successful.";
+    consol.value = "";
     tokenList.forEach(token => consol.value += token.toString() + "\n");
   }
 
