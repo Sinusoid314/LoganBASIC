@@ -1,3 +1,8 @@
+(April 8, 2021)
+	- Implemented constructor(), consumeToken(), matchTokenTypes(),
+	  checkTokenType(), endOfTokens(), peekToken(), and prevToken()
+	  in Interpreter class.
+
 (April 7, 2021)
 	- Implemented scanToken(), consumeStringLiteral(), consumeNumberLiteral(),
 	  and consumeIdentifier() in Lexer class.

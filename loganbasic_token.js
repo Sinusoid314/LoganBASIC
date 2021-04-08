@@ -10,7 +10,7 @@ const TOKEN_STRING_LIT = 30;
 const TOKEN_NUMBER_LIT = 31;
 const TOKEN_IDENTIFIER = 32;
 const TOKEN_PRINT = 40;
-const TOKEN_EOS = 100;
+const TOKEN_EOF = 100;
 
 class Token
 {

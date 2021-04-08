@@ -8,8 +8,8 @@ class Lexer
   {
     this.sourceStr = sourceStr;
     this.tokenList = [];
-    this.startIndex = 0;
-    this.currIndex = 0;
+    this.startCharIndex = 0;
+    this.currCharIndex = 0;
     this.currLineNum = 1;
     this.errorMsg = "";
   }
@@ -21,7 +21,7 @@ class Lexer
 	{
       while(!this.endOfSource())
       {
-        this.startIndex = this.currIndex;
+        this.startCharIndex = this.currCharIndex;
         this.scanToken();
       }
     }
@@ -30,7 +30,7 @@ class Lexer
       this.errorMsg = "Scan error on line " + this.currLineNum + ": " + errorObj.message;
     }
 
-    this.tokenList.push(new Token(TOKEN_EOS, "EOS", undefined, this.currLineNum));
+    this.tokenList.push(new Token(TOKEN_EOF, "EOF", undefined, this.currLineNum));
     return this.tokenList;
   }
 
@@ -102,14 +102,14 @@ class Lexer
   addToken(type, literalVal)
   //
   {
-    var lexemeStr = this.sourceStr.substring(this.startIndex, this.currIndex);
+    var lexemeStr = this.sourceStr.substring(this.startCharIndex, this.currCharIndex);
     this.tokenList.push(new Token(type, lexemeStr, literalVal, this.currLineNum));
   }
 
   consumeChar()
   //
   {
-    return this.sourceStr.charAt(this.currIndex++);
+    return this.sourceStr.charAt(this.currCharIndex++);
   }
 
   matchChar(expectedChar)
@@ -120,12 +120,12 @@ class Lexer
 	  return false;
     }
 
-    if(this.sourceStr.charAt(this.currIndex) != expectedChar)
+    if(this.sourceStr.charAt(this.currCharIndex) != expectedChar)
     {
 	  return false;
     }
 
-    this.currIndex++;
+    this.currCharIndex++;
     return true;
   }
 
@@ -136,23 +136,23 @@ class Lexer
     {
       return '\0';
     }
-    return this.sourceStr.charAt(this.currIndex);
+    return this.sourceStr.charAt(this.currCharIndex);
   }
 
   peekNextChar()
   //
   {
-    if((this.currIndex + 1) >= this.sourceStr.length)
+    if((this.currCharIndex + 1) >= this.sourceStr.length)
     {
       return '\0';
     }
-    return this.sourceStr.charAt(this.currIndex + 1);
+    return this.sourceStr.charAt(this.currCharIndex + 1);
   }
 
   endOfSource()
   //
   {
-    return (this.currIndex >= this.sourceStr.length);
+    return (this.currCharIndex >= this.sourceStr.length);
   }
 
   consumeStringLiteral()
@@ -172,7 +172,7 @@ class Lexer
 
     this.consumeChar();
 
-    literalVal = this.sourceStr.substring(this.startIndex + 1, this.currIndex - 1);
+    literalVal = this.sourceStr.substring(this.startCharIndex + 1, this.currCharIndex - 1);
     this.addToken(TOKEN_STRING_LIT, literalVal);
   }
 
@@ -195,7 +195,7 @@ class Lexer
       }
     }
 
-    literalVal = Number(this.sourceStr.substring(this.startIndex, this.currIndex));
+    literalVal = Number(this.sourceStr.substring(this.startCharIndex, this.currCharIndex));
     this.addToken(TOKEN_NUMBER_LIT, literalVal);
   }
 
@@ -210,7 +210,7 @@ class Lexer
       this.consumeChar();
     }
 
-    lexemeStr = this.sourceStr.substring(this.startIndex, this.currIndex);
+    lexemeStr = this.sourceStr.substring(this.startCharIndex, this.currCharIndex);
     if(keywordList.hasOwnProperty(lexemeStr))
     {
       tokenType = keywordList[lexemeStr];
