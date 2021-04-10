@@ -1,3 +1,7 @@
+(April 9, 2021)
+	- Implemented evalExpression(), termExpr(), factorExpr(), unaryExpr(),
+	  primaryExpr(), and evalOperation() in Interpreter class.
+
 (April 8, 2021)
 	- Implemented constructor(), consumeToken(), matchTokenTypes(),
 	  checkTokenType(), endOfTokens(), peekToken(), and prevToken()
