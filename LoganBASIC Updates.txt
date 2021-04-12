@@ -1,3 +1,9 @@
+(April 11, 2021)
+	- Added progConsole variable to Lexer class.
+	- Implemented runBtn_OnClick().
+	- Implemented run(), runStatement(), and printStmt() in Interpreter class.
+	- Removed EOF check in checkTokenType() in Interpreter class.
+
 (April 9, 2021)
 	- Implemented evalExpression(), termExpr(), factorExpr(), unaryExpr(),
 	  primaryExpr(), and evalOperation() in Interpreter class.

@@ -7,37 +7,53 @@ var editor = document.getElementById("editor");
 var runBtn = document.getElementById("runBtn");
 var stopBtn = document.getElementById("stopBtn");
 var statusBar = document.getElementById("statusBar");
-var consol = document.getElementById("consol");
+var progConsole = document.getElementById("progConsole");
 
 runBtn.addEventListener("click", runBtn_OnClick);
 stopBtn.addEventListener("click", stopBtn_OnClick);
 
+editor.value = "print 2 + 2";
+
 function runBtn_OnClick(eventObj)
 {
-  var editorStr;
   var lexer;
+  var interpreter;
+  var editorStr;
   var tokenList;
 
   if(status != STATUS_EDITING)
+  {
     return;
+  }
 
   runBtn.disabled = true;
-  status = STATUS_SCANNING;
-  statusBar.innerHTML = "Scanning...";
 
+  statusBar.innerHTML = "Scanning...";
+  status = STATUS_SCANNING;
   editorStr = editor.value;
   lexer = new Lexer(editorStr);
   tokenList = lexer.scan();
 
-  if(lexer.errorMsg != "")
+  if(lexer.errorMsg == "")
   {
-    statusBar.innerHTML = lexer.errorMsg;
+    statusBar.innerHTML = "Running...";
+    status = STATUS_RUNNING;
+    interpreter = new Interpreter(tokenList, progConsole);
+    progConsole.value = "";
+    interpreter.run();
+
+    if(interpreter.errorMsg == "")
+    {
+      statusBar.innerHTML = "Program run successfully.";
+    }
+    else
+    {
+      statusBar.innerHTML = interpreter.errorMsg;
+    }
   }
   else
   {
-    statusBar.innerHTML = "Scan successful.";
-    consol.value = "";
-    tokenList.forEach(token => consol.value += token.toString() + "\n");
+    statusBar.innerHTML = lexer.errorMsg;
   }
 
   status = STATUS_EDITING;

@@ -37,12 +37,12 @@ body
     margin-left: 15px;
 }
 
-#consol_label
+#progConsole_label
 {
     display: block;
 }
 
-#consol
+#progConsole
 {
     display: block;
     margin-top: 5px;

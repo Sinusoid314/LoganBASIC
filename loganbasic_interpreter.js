@@ -1,9 +1,10 @@
 class Interpreter
 {
-  constructor(tokenList)
+  constructor(tokenList, progConsole)
   {
     this.tokenList = tokenList;
     this.currTokenIndex = 0;
+    this.progConsole = progConsole;
     this.errorMsg = "";
   }
 
@@ -12,7 +13,10 @@ class Interpreter
   {
 	try
 	{
-
+      while(!this.endOfTokens())
+      {
+        this.runStatement();
+      }
     }
     catch(errorObj)
     {
@@ -23,13 +27,23 @@ class Interpreter
   runStatement()
   //
   {
+    if(this.matchTokenTypes([TOKEN_PRINT]))
+    {
+      this.printStmt();
+    }
 
+    this.assignmentStmt();
   }
 
-  printStmt
+  printStmt()
   //
   {
-
+    var val = this.evalExpression();
+    if(!this.matchTokenTypes([TOKEN_NEWLINE, TOKEN_EOF]))
+    {
+      throw {message: "Expected end-of-statement after value."};
+    }
+    this.progConsole.value += val + '\n';
   }
 
   assignmentStmt()
@@ -41,7 +55,7 @@ class Interpreter
   evalExpression()
   //
   {
-    return termExpr();
+    return this.termExpr();
   }
 
   termExpr()
@@ -108,14 +122,13 @@ class Interpreter
     if(this.matchTokenTypes([TOKEN_LEFT_PAREN]))
     {
       val = this.evalExpression();
-      if(this.checkTokenType(TOKEN_RIGHT_PAREN))
+      if(!matchTokenTypes([TOKEN_RIGHT_PAREN]))
       {
-		this.consumeToken();
-        return val;
+        throw {message: "Expected ')' after expression."};
       }
       else
       {
-        throw {message: "Expected ')' after expression."};
+        return val;
       }
     }
   }
@@ -160,7 +173,8 @@ class Interpreter
   matchTokenTypes(tokenTypeList)
   //
   {
-    for(index = 0; index <= tokenTypeList.length; index++)
+    //console.log(tokenTypeList);
+    for(var index = 0; index < tokenTypeList.length; index++)
     {
       if(this.checkTokenType(tokenTypeList[index]))
       {
@@ -175,12 +189,7 @@ class Interpreter
   checkTokenType(tokenType)
   //
   {
-    if(this.endOfTokens())
-    {
-      return false;
-    }
-
-    return (this.peekToken().type == tokenType))
+    return (this.peekToken().type == tokenType);
   }
 
   endOfTokens()
