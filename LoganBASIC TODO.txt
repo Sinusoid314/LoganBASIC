@@ -1,5 +1,3 @@
-- Fix bug that is returning undefined when printing 2 + 2.
-- Add variable support.
 - Seperate lexer and interpreter modules into their own worker threads.
 - Add input statement.
 - Comment Lexer methods.

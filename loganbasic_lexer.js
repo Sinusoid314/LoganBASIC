@@ -54,8 +54,19 @@ class Lexer
         break;
 
       case '\n':
-        this.addToken(TOKEN_NEWLINE);
+        if(this.tokenList[this.tokenList.length - 1].type != TOKEN_NEWLINE)
+        {
+          this.addToken(TOKEN_NEWLINE);
+        }
         this.currLineNum++;
+        break;
+
+      case '(':
+        this.addToken(TOKEN_LEFT_PAREN);
+        break;
+
+      case ')':
+        this.addToken(TOKEN_RIGHT_PAREN);
         break;
 
       case '-':

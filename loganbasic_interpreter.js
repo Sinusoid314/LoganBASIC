@@ -4,8 +4,9 @@ class Interpreter
   {
     this.tokenList = tokenList;
     this.currTokenIndex = 0;
-    this.progConsole = progConsole;
+    this.variableMap = new Map();
     this.errorMsg = "";
+    this.progConsole = progConsole;
   }
 
   run()
@@ -31,25 +32,60 @@ class Interpreter
     {
       this.printStmt();
     }
+    else
+    {
+      this.assignmentStmt();
+    }
+  }
 
-    this.assignmentStmt();
+  checkTerminator()
+  {
+    return this.matchTokenTypes([TOKEN_NEWLINE, TOKEN_EOF]);
   }
 
   printStmt()
   //
   {
     var val = this.evalExpression();
-    if(!this.matchTokenTypes([TOKEN_NEWLINE, TOKEN_EOF]))
+
+    if(!this.checkTerminator())
     {
-      throw {message: "Expected end-of-statement after value."};
+      throw {message: "Expected end-of-statement after expression."};
     }
+
     this.progConsole.value += val + '\n';
   }
 
   assignmentStmt()
   //
   {
+    var ident, val;
 
+    if(!this.matchTokenTypes([TOKEN_IDENTIFIER]))
+    {
+      throw {message: "Expected identifier."};
+    }
+
+    ident = this.prevToken().lexemeStr;
+
+    if(!this.matchTokenTypes([TOKEN_EQUAL]))
+    {
+      throw {message: "Expected '=' after identifier."};
+    }
+
+    if(this.checkTerminator())
+    {
+      throw {message: "Expected expression after '='."};
+    }
+
+    val = this.evalExpression();
+
+    if(!this.checkTerminator())
+    {
+      throw {message: "Expected end-of-statement after value."};
+    }
+
+    this.variableMap.set(ident, val);
   }
 
   evalExpression()
@@ -110,7 +146,21 @@ class Interpreter
   primaryExpr()
   //
   {
-    var val;
+    var ident, val;
+
+    //Variable
+    if(this.matchTokenTypes([TOKEN_IDENTIFIER]))
+    {
+      ident = this.prevToken().lexemeStr;
+
+      //Default to number with value of 0 if variable doesn't exist yet
+      if(!this.variableMap.has(ident))
+      {
+        this.variableMap.set(ident, 0);
+      }
+
+      return this.variableMap.get(ident);
+    }
 
     //Literals
     if(this.matchTokenTypes([TOKEN_STRING_LIT, TOKEN_NUMBER_LIT]))
@@ -122,7 +172,8 @@ class Interpreter
     if(this.matchTokenTypes([TOKEN_LEFT_PAREN]))
     {
       val = this.evalExpression();
-      if(!matchTokenTypes([TOKEN_RIGHT_PAREN]))
+
+      if(!this.matchTokenTypes([TOKEN_RIGHT_PAREN]))
       {
         throw {message: "Expected ')' after expression."};
       }
@@ -136,7 +187,7 @@ class Interpreter
   evalOperation(operatorToken, firstVal, secondVal)
   //
   {
-    switch(operatorToken)
+    switch(operatorToken.type)
     {
       case TOKEN_MINUS:
         if(secondVal == undefined)

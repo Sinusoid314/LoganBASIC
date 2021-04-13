@@ -1,3 +1,10 @@
+(April 12, 2021)
+	- Fixed bug that is returning undefined from evalOperation() in Interpreter class.
+	- Added support for parenthesis tokens in Lexer class.
+	- Modified scanToken() in Lexer class to avoid adding multiple newline tokens in a row.
+	- Added variable support.
+	- Added checkTerminator() to Interpreter class.
+
 (April 11, 2021)
 	- Added progConsole variable to Lexer class.
 	- Implemented runBtn_OnClick().
