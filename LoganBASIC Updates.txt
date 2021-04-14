@@ -1,3 +1,7 @@
+(April 14, 2021)
+	- Added error handling for invalid expressions.
+	- Renamed checkTerminator() to matchTerminator().
+
 (April 12, 2021)
 	- Fixed bug that is returning undefined from evalOperation() in Interpreter class.
 	- Added support for parenthesis tokens in Lexer class.

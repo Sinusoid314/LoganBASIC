@@ -38,7 +38,7 @@ class Interpreter
     }
   }
 
-  checkTerminator()
+  matchTerminator()
   {
     return this.matchTokenTypes([TOKEN_NEWLINE, TOKEN_EOF]);
   }
@@ -48,10 +48,8 @@ class Interpreter
   {
     var val = this.evalExpression();
 
-    if(!this.checkTerminator())
-    {
+    if(!this.matchTerminator())
       throw {message: "Expected end-of-statement after expression."};
-    }
 
     this.progConsole.value += val + '\n';
   }
@@ -62,28 +60,17 @@ class Interpreter
     var ident, val;
 
     if(!this.matchTokenTypes([TOKEN_IDENTIFIER]))
-    {
       throw {message: "Expected identifier."};
-    }
 
     ident = this.prevToken().lexemeStr;
 
     if(!this.matchTokenTypes([TOKEN_EQUAL]))
-    {
       throw {message: "Expected '=' after identifier."};
-    }
-
-    if(this.checkTerminator())
-    {
-      throw {message: "Expected expression after '='."};
-    }
 
     val = this.evalExpression();
 
-    if(!this.checkTerminator())
-    {
+    if(!this.matchTerminator())
       throw {message: "Expected end-of-statement after value."};
-    }
 
     this.variableMap.set(ident, val);
   }
@@ -155,18 +142,14 @@ class Interpreter
 
       //Default to number with value of 0 if variable doesn't exist yet
       if(!this.variableMap.has(ident))
-      {
         this.variableMap.set(ident, 0);
-      }
 
       return this.variableMap.get(ident);
     }
 
     //Literals
     if(this.matchTokenTypes([TOKEN_STRING_LIT, TOKEN_NUMBER_LIT]))
-    {
       return this.prevToken().literalVal;
-    }
 
     //Nested expression
     if(this.matchTokenTypes([TOKEN_LEFT_PAREN]))
@@ -182,6 +165,9 @@ class Interpreter
         return val;
       }
     }
+
+    //Invalid expression
+    throw {message: "Expected expression."};
   }
 
   evalOperation(operatorToken, firstVal, secondVal)
@@ -214,9 +200,7 @@ class Interpreter
   //
   {
     if(!this.endOfTokens())
-    {
       this.currTokenIndex++;
-    }
 
     return this.prevToken();
   }
