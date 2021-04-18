@@ -1,12 +1,11 @@
 class Interpreter
 {
-  constructor(tokenList, progConsole)
+  constructor(tokenList)
   {
     this.tokenList = tokenList;
     this.currTokenIndex = 0;
     this.variableMap = new Map();
     this.errorMsg = "";
-    this.progConsole = progConsole;
   }
 
   run()
@@ -51,7 +50,8 @@ class Interpreter
     if(!this.matchTerminator())
       throw {message: "Expected end-of-statement after expression."};
 
-    this.progConsole.value += val + '\n';
+    val += '\n';
+    postMessage({msgId: MSGID_PRINT, msgData: val});
   }
 
   assignmentStmt()

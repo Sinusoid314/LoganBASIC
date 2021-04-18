@@ -1,5 +1,4 @@
-- Seperate lexer and interpreter modules into their own worker threads.
 - Add input statement.
-- Comment Lexer methods.
-- Comment Interpreter methods.
+- Refactor project into a Scanner -> Parser -> Bytecode-Runtime pipeline.
+- Comment functions and methods.
 
