@@ -1,4 +1,4 @@
 - Add input statement.
-- Refactor project into a Scanner -> Parser -> Bytecode-Runtime pipeline.
+- Refactor project into a [Scanner -> Parser -> Bytecode-Runtime] pipeline.
 - Comment functions and methods.
 

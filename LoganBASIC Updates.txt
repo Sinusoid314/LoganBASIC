@@ -1,3 +1,6 @@
+(April 18, 2021)
+	- Began transition to [Scanner -> Parser -> Bytecode-Runtime] pipeline.
+
 (April 17, 2021)
 	- Renamed loganbasic_main to loganbasic_ui.
 	- Created loganbasic_workermsg module to share message IDs between the UI and worker threads.
