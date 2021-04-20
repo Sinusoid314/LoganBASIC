@@ -1,4 +1,5 @@
+- Implement Parser class.
+- Modify loganbasic_main module to use a (Scanner -> Parser -> Runtime) pipeline.
 - Add input statement.
-- Refactor project into a [Scanner -> Parser -> Bytecode-Runtime] pipeline.
 - Comment functions and methods.
 

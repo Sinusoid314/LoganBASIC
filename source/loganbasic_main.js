@@ -1,7 +1,9 @@
 importScripts('loganbasic_worker_msg.js',
               'loganbasic_token.js',
+              'loganbasic_bytecode.js',
               'loganbasic_scanner.js',
-              'loganbasic_parser.js');
+              'loganbasic_parser.js',
+              'loganbasic_runtime.js');
 
 onmessage = function(message)
 //

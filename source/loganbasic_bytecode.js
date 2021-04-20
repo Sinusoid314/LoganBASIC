@@ -1,7 +1,7 @@
-//OpCodes
-const OPCODE_PUSH_FROM_VAR = 1;
-const OPCODE_PUSH_FROM_LIT = 2;
-const OPCODE_POP_TO_VAR = 3;
+//Opcodes
+const OPCODE_LOAD_VAR = 1;
+const OPCODE_LOAD_LIT = 2;
+const OPCODE_STORE_VAR = 3;
 const OPCODE_POP = 4;
 const OPCODE_SUB = 5;
 const OPCODE_ADD = 6;

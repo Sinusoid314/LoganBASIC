@@ -1,5 +1,12 @@
+(April 19, 2021)
+	- Added Opcode documentation.
+	- Implemented Runtime class.
+
 (April 18, 2021)
-	- Began transition to [Scanner -> Parser -> Bytecode-Runtime] pipeline.
+	- Renamed loganbasic_interpreter module to loganbasic_parser.
+	- Renamed Interpreter class to Parser.
+	- Added loganbasic_bytecode and loganbasic_runtime modules.
+	- Implemented Bytecode class.
 
 (April 17, 2021)
 	- Renamed loganbasic_main to loganbasic_ui.

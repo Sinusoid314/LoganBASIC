@@ -1,0 +1,49 @@
+LOAD_VAR
+  operands: variableIndex
+  stack: [] -> [value]
+  Push the value of the given variable onto the stack.
+
+LOAD_LIT
+  operands: literalIndex
+  stack: [] -> [value]
+  Push the value of the given literal onto the stack.
+
+STORE_VAR
+  operands: variableIndex
+  stack: [value] -> []
+  Pop value from the stack and store it in the given variable.
+
+POP
+  operands:
+  stack: [value] -> []
+  Pop value from the stack and discard it.
+
+SUB
+  operands:
+  stack: [value1, value2] -> [result]
+  Subract two numbers.
+
+ADD
+  operands:
+  stack: [value1, value2] -> [result]
+  Add two numbers.
+
+DIV
+  operands:
+  stack: [value1, value2] -> [result]
+  Divide two numbers.
+
+MUL
+  operands:
+  stack: [value1, value2] -> [result]
+  Multiply two numbers.
+
+NEGATE
+  operands:
+  stack: [value] -> [result]
+  Switch the sign of a number.
+
+PRINT
+  operands:
+  stack: [value] -> []
+  Print a value to the console.
