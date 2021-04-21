@@ -1,5 +1,3 @@
-- Implement Parser class.
-- Modify loganbasic_main module to use a (Scanner -> Parser -> Runtime) pipeline.
 - Add input statement.
 - Comment functions and methods.
 

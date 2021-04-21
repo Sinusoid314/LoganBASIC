@@ -27,7 +27,7 @@ class Scanner
     }
     catch(errorObj)
     {
-      this.errorMsg = "Scan error on line " + this.currLineNum + ": " + errorObj.message;
+      this.errorMsg = "Compile error on line " + this.currLineNum + ": " + errorObj.message;
     }
 
     this.tokenList.push(new Token(TOKEN_EOF, "EOF", undefined, this.currLineNum));

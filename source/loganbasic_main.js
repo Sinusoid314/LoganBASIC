@@ -5,6 +5,8 @@ importScripts('loganbasic_worker_msg.js',
               'loganbasic_parser.js',
               'loganbasic_runtime.js');
 
+var runtime;
+
 onmessage = function(message)
 //
 {
@@ -19,32 +21,43 @@ onmessage = function(message)
 function onStart(sourceStr)
 //
 {
-  var lexer;
-  var interpreter;
+  var scanner;
+  var parser;
   var tokenList;
+  var bytecode;
 
-  postMessage({msgId: MSGID_STATUS, msgData: "Scanning..."});
-  lexer = new Lexer(sourceStr);
-  tokenList = lexer.scan();
+  postMessage({msgId: MSGID_STATUS, msgData: "Compiling..."});
+  scanner = new Scanner(sourceStr);
+  tokenList = scanner.scan();
 
-  if(lexer.errorMsg == "")
+  if(scanner.errorMsg == "")
   {
-    postMessage({msgId: MSGID_STATUS, msgData: "Running..."});
-    interpreter = new Interpreter(tokenList);
-    interpreter.run();
+    parser = new Parser(tokenList);
+    bytecode = parser.parse();
 
-    if(interpreter.errorMsg == "")
+    if(parser.errorMsg == "")
     {
-      postMessage({msgId: MSGID_DONE, msgData: "Program run successfully."});
+      postMessage({msgId: MSGID_STATUS, msgData: "Running..."});
+      runtime = new Runtime(bytecode);
+      runtime.run();
+
+      if(runtime.errorMsg == "")
+      {
+        postMessage({msgId: MSGID_DONE, msgData: "Program run successfully."});
+      }
+      else
+      {
+        postMessage({msgId: MSGID_DONE, msgData: runtime.errorMsg});
+      }
     }
     else
     {
-      postMessage({msgId: MSGID_DONE, msgData: interpreter.errorMsg});
+      postMessage({msgId: MSGID_DONE, msgData: parser.errorMsg});
     }
   }
   else
   {
-    postMessage({msgId: MSGID_DONE, msgData: lexer.errorMsg});
+    postMessage({msgId: MSGID_DONE, msgData: scanner.errorMsg});
   }
 }
 

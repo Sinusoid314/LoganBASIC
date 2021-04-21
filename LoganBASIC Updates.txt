@@ -1,3 +1,7 @@
+(April 21, 2021)
+	- Implemented Parser class.
+	- Modified loganbasic_main module to use a (Scanner -> Parser -> Runtime) pipeline.
+
 (April 19, 2021)
 	- Added Opcode documentation.
 	- Implemented Runtime class.

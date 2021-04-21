@@ -3,28 +3,30 @@ class Parser
   constructor(tokenList)
   {
     this.tokenList = tokenList;
+    this.bytecode = new Bytecode();
     this.currTokenIndex = 0;
-    this.variableMap = new Map();
     this.errorMsg = "";
   }
 
-  run()
+  parse()
   //
   {
 	try
 	{
       while(!this.endOfTokens())
       {
-        this.runStatement();
+        this.parseStatement();
       }
     }
     catch(errorObj)
     {
-      this.errorMsg = "Runtime error on line " + this.peekToken().lineNum + ": " + errorObj.message;
+      this.errorMsg = "Compile error on line " + this.peekToken().lineNum + ": " + errorObj.message;
     }
+
+    return this.bytecode;
   }
 
-  runStatement()
+  parseStatement()
   //
   {
     if(this.matchTokenTypes([TOKEN_PRINT]))
@@ -37,163 +39,177 @@ class Parser
     }
   }
 
-  matchTerminator()
-  {
-    return this.matchTokenTypes([TOKEN_NEWLINE, TOKEN_EOF]);
-  }
-
   printStmt()
   //
   {
-    var val = this.evalExpression();
+    this.parseExpression();
 
     if(!this.matchTerminator())
       throw {message: "Expected end-of-statement after expression."};
 
-    val += '\n';
-    postMessage({msgId: MSGID_PRINT, msgData: val});
+    this.addOp([OPCODE_PRINT]);
   }
 
   assignmentStmt()
   //
   {
-    var ident, val;
+    var varIdent, varIndex;
 
     if(!this.matchTokenTypes([TOKEN_IDENTIFIER]))
       throw {message: "Expected identifier."};
 
-    ident = this.prevToken().lexemeStr;
+    varIdent = this.prevToken().lexemeStr;
+    varIndex = this.getVariableIndex(varIdent);
 
     if(!this.matchTokenTypes([TOKEN_EQUAL]))
       throw {message: "Expected '=' after identifier."};
 
-    val = this.evalExpression();
+    this.parseExpression();
 
     if(!this.matchTerminator())
       throw {message: "Expected end-of-statement after value."};
 
-    this.variableMap.set(ident, val);
+    this.addOp([OPCODE_STORE_VAR, varIndex]);
   }
 
-  evalExpression()
+  parseExpression()
   //
   {
-    return this.termExpr();
+    this.termExpr();
   }
 
   termExpr()
   //
   {
-    var firstVal, secondVal, operatorToken;
+    var operatorType;
 
-    firstVal = this.factorExpr();
+    this.factorExpr();
 
     while(this.matchTokenTypes([TOKEN_MINUS, TOKEN_PLUS]))
     {
-      operatorToken = this.prevToken();
-      secondVal = this.factorExpr();
-      firstVal = this.evalOperation(operatorToken, firstVal, secondVal);
+      operatorType = this.prevToken().type;
+      this.factorExpr();
+      switch(operatorType)
+      {
+        case TOKEN_MINUS: this.addOp([OPCODE_SUB]); break;
+        case TOKEN_PLUS: this.addOp([OPCODE_ADD]); break;
+      }
     }
-
-    return firstVal;
   }
 
   factorExpr()
   //
   {
-    var firstVal, secondVal, operatorToken;
+    var operatorType;
 
-    firstVal = this.unaryExpr();
+    this.unaryExpr();
 
     while(this.matchTokenTypes([TOKEN_SLASH, TOKEN_STAR]))
     {
-      operatorToken = this.prevToken();
-      secondVal = this.unaryExpr();
-      firstVal = this.evalOperation(operatorToken, firstVal, secondVal);
+      operatorType = this.prevToken().type;
+      this.unaryExpr();
+      switch(operatorType)
+      {
+        case TOKEN_SLASH: this.addOp([OPCODE_DIV]); break;
+        case TOKEN_STAR: this.addOp([OPCODE_MUL]); break;
+      }
     }
-
-    return firstVal;
   }
 
   unaryExpr()
   //
   {
-    var val, operatorToken;
+    var operatorType;
 
     if(this.matchTokenTypes([TOKEN_MINUS]))
     {
-      operatorToken = this.prevToken();
-      val = this.unaryExpr();
-      return this.evalOperation(operatorToken, val);
+      operatorType = this.prevToken().type;
+      this.unaryExpr();
+      switch(operatorType)
+      {
+        case TOKEN_MINUS: this.addOp([OPCODE_NEGATE]); break;
+      }
     }
 
-    return this.primaryExpr();
+    this.primaryExpr();
   }
 
   primaryExpr()
   //
   {
-    var ident, val;
+    var varIdent, varIndex;
+    var litVal, litIndex;
 
     //Variable
     if(this.matchTokenTypes([TOKEN_IDENTIFIER]))
     {
-      ident = this.prevToken().lexemeStr;
-
-      //Default to number with value of 0 if variable doesn't exist yet
-      if(!this.variableMap.has(ident))
-        this.variableMap.set(ident, 0);
-
-      return this.variableMap.get(ident);
+      varIdent = this.prevToken().lexemeStr;
+      varIndex = this.getVariableIndex(varIdent);
+      this.addOp([OPCODE_LOAD_VAR, varIndex]);
+      return;
     }
 
     //Literals
     if(this.matchTokenTypes([TOKEN_STRING_LIT, TOKEN_NUMBER_LIT]))
-      return this.prevToken().literalVal;
+    {
+      litVal = this.prevToken().literalVal;
+      litIndex = this.getLiteralIndex(litVal);
+      this.addOp([OPCODE_LOAD_LIT, litIndex]);
+      return;
+    }
 
     //Nested expression
     if(this.matchTokenTypes([TOKEN_LEFT_PAREN]))
     {
-      val = this.evalExpression();
-
+      this.parseExpression();
       if(!this.matchTokenTypes([TOKEN_RIGHT_PAREN]))
       {
         throw {message: "Expected ')' after expression."};
       }
-      else
-      {
-        return val;
-      }
+      return;
     }
 
     //Invalid expression
     throw {message: "Expected expression."};
   }
 
-  evalOperation(operatorToken, firstVal, secondVal)
+  getVariableIndex(varIdent)
   //
   {
-    switch(operatorToken.type)
+    var varIndex = this.bytecode.varIdentList.indexOf(varIdent);
+
+    if(varIndex == -1)
     {
-      case TOKEN_MINUS:
-        if(secondVal == undefined)
-        {
-          return -firstVal;
-        }
-        else
-        {
-          return firstVal - secondVal;
-        }
-
-      case TOKEN_PLUS:
-        return firstVal + secondVal;
-
-      case TOKEN_SLASH:
-        return firstVal / secondVal;
-
-      case TOKEN_STAR:
-        return firstVal * secondVal;
+      this.bytecode.varIdentList.push(varIdent);
+      varIndex = this.bytecode.varIdentList.length - 1;
     }
+
+    return varIndex;
+  }
+
+  getLiteralIndex(litVal)
+  //
+  {
+    var litIndex = this.bytecode.literalList.indexOf(litVal);
+
+    if(litIndex == -1)
+    {
+      this.bytecode.literalList.push(litVal);
+      litIndex = this.bytecode.literalList.length - 1;
+    }
+
+    return litIndex;
+  }
+
+  addOp(opArray)
+  //
+  {
+    this.bytecode.opList.push(opArray);
+  }
+
+  matchTerminator()
+  {
+    return this.matchTokenTypes([TOKEN_NEWLINE, TOKEN_EOF]);
   }
 
   consumeToken()

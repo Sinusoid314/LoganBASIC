@@ -6,6 +6,7 @@ class Runtime
     this.currOpIndex = 0;
     this.stack = [];
     this.opFuncList = [null];
+    this.errorMsg = "";
 
     //Allow the op methods to be called by indexing into a function array using the opcode constants
     this.opFuncList[OPCODE_LOAD_VAR] = this.opLoadVar.bind(this);
