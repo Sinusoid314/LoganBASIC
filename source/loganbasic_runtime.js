@@ -120,6 +120,7 @@ class Runtime
   //Print a value to the console
   {
 	var val = this.stack.pop();
+	val += '\n';
     postMessage({msgId: MSGID_PRINT, msgData: val});
   }
 

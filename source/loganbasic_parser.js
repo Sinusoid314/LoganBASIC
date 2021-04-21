@@ -129,6 +129,7 @@ class Parser
       {
         case TOKEN_MINUS: this.addOp([OPCODE_NEGATE]); break;
       }
+      return;
     }
 
     this.primaryExpr();

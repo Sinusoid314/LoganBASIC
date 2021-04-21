@@ -1,4 +1,6 @@
 (April 21, 2021)
+	- Fixed bug with the negation operator.
+	- Modified the PRINT statement to append a newline to its output.
 	- Implemented Parser class.
 	- Modified loganbasic_main module to use a (Scanner -> Parser -> Runtime) pipeline.
 
