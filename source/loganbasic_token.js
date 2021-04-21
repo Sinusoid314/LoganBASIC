@@ -3,6 +3,7 @@ const TOKEN_EOF = 1;
 const TOKEN_NEWLINE = 2;
 const TOKEN_LEFT_PAREN = 3;
 const TOKEN_RIGHT_PAREN = 4;
+const TOKEN_COMMA = 5;
 const TOKEN_MINUS = 10;
 const TOKEN_PLUS = 11;
 const TOKEN_SLASH = 12;

@@ -1,5 +1,6 @@
 (April 21, 2021)
-	- Modified ui, worker_msg, scanner, bytecode, and token modules to support the INPUT statement.
+	- Implemented INPUT statement.
+	- Added TOKEN_COMMA.
 	- Fixed bug with the negation operator.
 	- Modified the PRINT statement to append a newline to its output.
 	- Implemented Parser class.

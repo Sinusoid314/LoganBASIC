@@ -57,7 +57,24 @@ class Parser
   inputStmt()
   //
   {
+    var varIdent, varIndex;
 
+    this.parseExpression();
+
+    if(!this.matchTokenTypes([TOKEN_COMMA]))
+      throw {message: "Expected ',' after prompt expression."};
+
+    if(!this.matchTokenTypes([TOKEN_IDENTIFIER]))
+	  throw {message: "Expected identifier."};
+
+	varIdent = this.prevToken().lexemeStr;
+    varIndex = this.getVariableIndex(varIdent);
+
+    if(!this.matchTerminator())
+      throw {message: "Expected end-of-statement after identifier."};
+
+    this.addOp([OPCODE_INPUT]);
+    this.addOp([OPCODE_STORE_VAR, varIndex]);
   }
 
   assignmentStmt()

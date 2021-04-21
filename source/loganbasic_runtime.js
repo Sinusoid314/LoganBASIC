@@ -19,6 +19,7 @@ class Runtime
     this.opFuncList[OPCODE_MUL] = this.opMul.bind(this);
     this.opFuncList[OPCODE_NEGATE] = this.opNegate.bind(this);
     this.opFuncList[OPCODE_PRINT] = this.opPrint.bind(this);
+    this.opFuncList[OPCODE_INPUT] = this.opInput.bind(this);
 
     //Variable values are kept at the bottom of the stack and initialized to 0
     for(var n = 0; n < this.bytecode.varIdentList.length; n++)
@@ -30,7 +31,7 @@ class Runtime
   {
 	try
 	{
-      while(!this.endOfOps())
+      while(!this.endOfOps() && !this.inputting)
       {
 		this.opFuncList[this.bytecode.opList[this.currOpIndex][0]]();
         this.currOpIndex++;
@@ -122,6 +123,15 @@ class Runtime
 	var val = this.stack.pop();
 	val += '\n';
     postMessage({msgId: MSGID_PRINT, msgData: val});
+  }
+
+  opInput()
+  //
+  {
+    var val = this.stack.pop();
+    postMessage({msgId: MSGID_PRINT, msgData: val});
+    postMessage({msgId: MSGID_INPUT_REQUEST});
+    this.inputting = true;
   }
 
   endOfOps()

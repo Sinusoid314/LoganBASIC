@@ -77,7 +77,7 @@ function progConsole_onKeydown(event)
       break;
 
     case 13:
-      progConsole.val += '\n';
+      progConsole.value += '\n';
       progWorker.postMessage({msgId: MSGID_INPUT_RESULT, msgData: progConsole.inputStr});
       progConsole.inputting = false;
       progConsole.inputStr = "";

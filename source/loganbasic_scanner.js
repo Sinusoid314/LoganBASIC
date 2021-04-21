@@ -70,6 +70,10 @@ class Scanner
         this.addToken(TOKEN_RIGHT_PAREN);
         break;
 
+      case ',':
+        this.addToken(TOKEN_COMMA);
+        break;
+
       case '-':
         this.addToken(TOKEN_MINUS);
         break;

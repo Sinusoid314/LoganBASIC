@@ -15,6 +15,10 @@ onmessage = function(message)
     case MSGID_START:
       onStart(message.data.msgData);
       break;
+
+    case MSGID_INPUT_RESULT:
+      onInputResult(message.data.msgData);
+      break;
   }
 }
 
@@ -43,7 +47,10 @@ function onStart(sourceStr)
 
       if(runtime.errorMsg == "")
       {
-        postMessage({msgId: MSGID_DONE, msgData: "Program run successfully."});
+        if(!runtime.inputting)
+        {
+          postMessage({msgId: MSGID_DONE, msgData: "Program run successfully."});
+        }
       }
       else
       {
@@ -61,3 +68,22 @@ function onStart(sourceStr)
   }
 }
 
+function onInputResult(inputStr)
+//
+{
+  runtime.stack.push(inputStr);
+  runtime.inputting = false;
+  runtime.run();
+
+  if(runtime.errorMsg == "")
+  {
+	if(!runtime.inputting)
+	{
+	  postMessage({msgId: MSGID_DONE, msgData: "Program run successfully."});
+	}
+  }
+  else
+  {
+	postMessage({msgId: MSGID_DONE, msgData: runtime.errorMsg});
+  }
+}

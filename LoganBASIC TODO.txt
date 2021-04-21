@@ -1,3 +1,7 @@
-- Modify main, runtime, and parser modules to support the INPUT statement.
+- Add boolean operators.
+- Add IF/THEN/ELSE statements.
+- Add WHILE/WEND statements.
+- Add FOR/NEXT statements.
+- Add native functions.
 - Comment functions and methods.
 
