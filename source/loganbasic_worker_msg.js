@@ -5,3 +5,5 @@ const MSGID_START = 1;
 const MSGID_DONE = 1;
 const MSGID_STATUS = 2;
 const MSGID_PRINT = 3;
+const MSGID_INPUT_REQUEST = 4;
+const MSGID_INPUT_RESULT = 5;

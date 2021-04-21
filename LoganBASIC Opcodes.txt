@@ -47,3 +47,9 @@ PRINT
   operands:
   stack: [value] -> []
   Print a value to the console.
+
+INPUT
+  operands: variableIndex
+  stack: [value] -> [result]
+  Prints a prompt value, waits for user input, then pushes the input result onto the stack.
+

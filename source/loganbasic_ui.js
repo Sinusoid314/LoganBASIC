@@ -8,8 +8,11 @@ var progConsole = document.getElementById("progConsole");
 
 runBtn.addEventListener("click", runBtn_onClick);
 stopBtn.addEventListener("click", stopBtn_onClick);
+progConsole.addEventListener("keydown", progConsole_onKeydown);
+progConsole.addEventListener("keypress", progConsole_onKeypress);
 
-progEditor.value = "print 2 + 2";
+progConsole.inputting = false;
+progConsole.inputStr = "";
 
 function switchMode()
 //
@@ -25,6 +28,12 @@ function stopProg(exitStatusStr)
   if(!isRunning)
     return;
 
+  if(progConsole.inputting)
+  {
+    progConsole.inputting = false;
+    progConsole.inputStr = "";
+  }
+
   progWorker.terminate();
   progWorker = null;
   statusBar.innerHTML = exitStatusStr;
@@ -32,7 +41,7 @@ function stopProg(exitStatusStr)
   switchMode();
 }
 
-function runBtn_onClick(eventObj)
+function runBtn_onClick(event)
 //
 {
   var editorStr;
@@ -49,10 +58,40 @@ function runBtn_onClick(eventObj)
   switchMode();
 }
 
-function stopBtn_onClick(eventObj)
+function stopBtn_onClick(event)
 //
 {
   stopProg("Program stopped.");
+}
+
+function progConsole_onKeydown(event)
+//
+{
+  if(!progConsole.inputting) return;
+
+  switch(event.keyCode)
+  {
+    case 8:
+      progConsole.value = progConsole.value.slice(0, progConsole.value.length - 1);
+      progConsole.inputStr = progConsole.inputStr.slice(0, progConsole.inputStr.length - 1);
+      break;
+
+    case 13:
+      progConsole.val += '\n';
+      progWorker.postMessage({msgId: MSGID_INPUT_RESULT, msgData: progConsole.inputStr});
+      progConsole.inputting = false;
+      progConsole.inputStr = "";
+      break;
+  }
+}
+
+function progConsole_onKeypress(event)
+//
+{
+  if(!progConsole.inputting) return;
+
+  progConsole.value += event.key;
+  progConsole.inputStr += event.key;
 }
 
 function progWorker_onMessage(message)
@@ -70,6 +109,10 @@ function progWorker_onMessage(message)
 
     case MSGID_PRINT:
       progWorker_onPrint(message.data.msgData);
+      break;
+
+    case MSGID_INPUT_REQUEST:
+      progWorker_onInputRequest();
       break;
   }
 }
@@ -91,3 +134,11 @@ function progWorker_onPrint(val)
 {
   progConsole.value += val;
 }
+
+function progWorker_onInputRequest()
+//
+{
+  progConsole.inputting = true;
+  progConsole.focus();
+}
+

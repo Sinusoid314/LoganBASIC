@@ -5,6 +5,7 @@ statement  ->  printStmt
 
 printStmt   ->  "print" expression terminator ;
 assignment  ->  IDENTIFIER "=" expression terminator ;
+inputStmt   ->  expression "," IDENTIFIER terminator;
 
 expression  ->  term ;
 term        ->  factor ( ( "-" | "+" ) factor )* ;

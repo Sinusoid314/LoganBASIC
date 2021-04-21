@@ -12,6 +12,7 @@ const TOKEN_STRING_LIT = 30;
 const TOKEN_NUMBER_LIT = 31;
 const TOKEN_IDENTIFIER = 32;
 const TOKEN_PRINT = 40;
+const TOKEN_INPUT = 41;
 
 class Token
 {

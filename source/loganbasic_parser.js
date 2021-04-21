@@ -33,6 +33,10 @@ class Parser
     {
       this.printStmt();
     }
+    else if(this.matchTokenTypes([TOKEN_INPUT]))
+    {
+      this.inputStmt();
+    }
     else
     {
       this.assignmentStmt();
@@ -48,6 +52,12 @@ class Parser
       throw {message: "Expected end-of-statement after expression."};
 
     this.addOp([OPCODE_PRINT]);
+  }
+
+  inputStmt()
+  //
+  {
+
   }
 
   assignmentStmt()

@@ -1,5 +1,6 @@
 var keywordList = {
-                   'print': TOKEN_PRINT
+                   "print": TOKEN_PRINT,
+                   "input": TOKEN_INPUT
                   }
 
 class Scanner
