@@ -5,14 +5,16 @@ statement  ->  printStmt
 
 printStmt   ->  "print" expression terminator ;
 assignment  ->  IDENTIFIER "=" expression terminator ;
-inputStmt   ->  expression "," IDENTIFIER terminator;
+inputStmt   ->  expression "," IDENTIFIER terminator ;
 
-expression  ->  term ;
+expression  ->  equality ;
+equality    ->  comparison ( ( "=" | "<>" ) comparison )* ;
+comparison  ->  term ( ( ">" | ">=" | "<" | "<=" ) term )* ;
 term        ->  factor ( ( "-" | "+" ) factor )* ;
 factor      ->  unary ( ( "/" | "*" ) unary )* ;
-unary       ->  "-" unary | primary ;
-primary     ->  IDENTIFIER | NUMBER_LIT | STRING_LIT
-               | "(" expression ")" ;
+unary       ->  ( "-" | "not" ) unary | primary ;
+primary     ->  "true" | "false" | NUMBER_LIT | STRING_LIT | IDENTIFIER
+              | "(" expression ")" ;
                
 terminator  ->  ( "\n" | EOF ) ;
 

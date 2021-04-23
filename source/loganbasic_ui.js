@@ -72,8 +72,11 @@ function progConsole_onKeydown(event)
   switch(event.keyCode)
   {
     case 8:
-      progConsole.value = progConsole.value.slice(0, progConsole.value.length - 1);
-      progConsole.inputStr = progConsole.inputStr.slice(0, progConsole.inputStr.length - 1);
+      if(progConsole.inputStr.length > 0)
+      {
+        progConsole.value = progConsole.value.slice(0, progConsole.value.length - 1);
+        progConsole.inputStr = progConsole.inputStr.slice(0, progConsole.inputStr.length - 1);
+      }
       break;
 
     case 13:

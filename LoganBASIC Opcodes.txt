@@ -1,12 +1,20 @@
-LOAD_VAR
-  operands: variableIndex
-  stack: [] -> [value]
-  Push the value of the given variable onto the stack.
+LOAD_TRUE
+  stack: [] -> [true]
+  Push 'true' onto the stack.
+
+LOAD_FALSE
+  stack: [] -> [false]
+  Push 'false' onto the stack.
 
 LOAD_LIT
   operands: literalIndex
   stack: [] -> [value]
   Push the value of the given literal onto the stack.
+
+LOAD_VAR
+  operands: variableIndex
+  stack: [] -> [value]
+  Push the value of the given variable onto the stack.
 
 STORE_VAR
   operands: variableIndex
@@ -36,6 +44,22 @@ MUL
 NEGATE
   stack: [value] -> [result]
   Switch the sign of a number.
+  
+NOT
+  stack: [value] -> [result]
+  Return the logical opposite of a boolean value.
+
+EQUAL
+  stack: [value1, value2] -> [result] 
+  Return true if the two values are equal, false otherwise.
+
+GREATER
+  stack: [value1, value2] -> [result]
+  Return true if value1 is greater than value2, false otherwise.
+
+LESS
+  stack: [value1, value2] -> [result]
+  Return true if value1 is less than value2, false otherwise.
 
 PRINT
   stack: [value] -> []

@@ -9,8 +9,10 @@ class Runtime
     this.errorMsg = "";
 
     //Allow the op methods to be called by indexing into a function array using the opcode constants
-    this.opFuncList[OPCODE_LOAD_VAR] = this.opLoadVar.bind(this);
+    this.opFuncList[OPCODE_LOAD_TRUE] = this.opLoadTrue.bind(this);
+    this.opFuncList[OPCODE_LOAD_FALSE] = this.opLoadFalse.bind(this);
     this.opFuncList[OPCODE_LOAD_LIT] = this.opLoadLit.bind(this);
+    this.opFuncList[OPCODE_LOAD_VAR] = this.opLoadVar.bind(this);
     this.opFuncList[OPCODE_STORE_VAR] = this.opStoreVar.bind(this);
     this.opFuncList[OPCODE_POP] = this.opPop.bind(this);
     this.opFuncList[OPCODE_SUB] = this.opSub.bind(this);
@@ -18,6 +20,10 @@ class Runtime
     this.opFuncList[OPCODE_DIV] = this.opDiv.bind(this);
     this.opFuncList[OPCODE_MUL] = this.opMul.bind(this);
     this.opFuncList[OPCODE_NEGATE] = this.opNegate.bind(this);
+    this.opFuncList[OPCODE_NOT] = this.opNot.bind(this);
+    this.opFuncList[OPCODE_EQUAL] = this.opEqual.bind(this);
+    this.opFuncList[OPCODE_GREATER] = this.opGreater.bind(this);
+    this.opFuncList[OPCODE_LESS] = this.opLess.bind(this);
     this.opFuncList[OPCODE_PRINT] = this.opPrint.bind(this);
     this.opFuncList[OPCODE_INPUT] = this.opInput.bind(this);
 
@@ -43,12 +49,16 @@ class Runtime
     }
   }
 
-  opLoadVar()
-  //Push the value of the given variable onto the stack
+  opLoadTrue()
+  //Push 'true' onto the stack.
   {
-    var varIndex = this.bytecode.opList[this.currOpIndex][1];
-    var val = this.stack[varIndex];
-    this.stack.push(val);
+    this.stack.push(true);
+  }
+
+  opLoadFalse()
+  //Push 'false' onto the stack.
+  {
+    this.stack.push(false);
   }
 
   opLoadLit()
@@ -56,6 +66,14 @@ class Runtime
   {
     var litIndex = this.bytecode.opList[this.currOpIndex][1];
     var val = this.bytecode.literalList[litIndex];
+    this.stack.push(val);
+  }
+
+  opLoadVar()
+  //Push the value of the given variable onto the stack
+  {
+    var varIndex = this.bytecode.opList[this.currOpIndex][1];
+    var val = this.stack[varIndex];
     this.stack.push(val);
   }
 
@@ -78,7 +96,7 @@ class Runtime
   {
     var val2 = this.stack.pop();
     var val1 = this.stack.pop();
-    var res = val1 - val2;
+    var res = (val1 - val2);
     this.stack.push(res);
   }
 
@@ -87,7 +105,7 @@ class Runtime
   {
     var val2 = this.stack.pop();
     var val1 = this.stack.pop();
-    var res = val1 + val2;
+    var res = (val1 + val2);
     this.stack.push(res);
   }
 
@@ -96,7 +114,7 @@ class Runtime
   {
     var val2 = this.stack.pop();
     var val1 = this.stack.pop();
-    var res = val1 / val2;
+    var res = (val1 / val2);
     this.stack.push(res);
   }
 
@@ -105,7 +123,7 @@ class Runtime
   {
     var val2 = this.stack.pop();
     var val1 = this.stack.pop();
-    var res = val1 * val2;
+    var res = (val1 * val2);
     this.stack.push(res);
   }
 
@@ -114,6 +132,41 @@ class Runtime
   {
     var val = this.stack.pop();
     var res = -val;
+    this.stack.push(res);
+  }
+
+  opNot()
+  //Return the logical opposite of a boolean value.
+  {
+    var val = this.stack.pop();
+    var res = !val;
+    this.stack.push(res);
+  }
+
+  opEqual()
+  //Return true if the two values are equal, false otherwise.
+  {
+    var val2 = this.stack.pop();
+    var val1 = this.stack.pop();
+    var res = (val1 == val2);
+    this.stack.push(res);
+  }
+
+  opGreater()
+  //Return true if value1 is greater than value2, false otherwise.
+  {
+    var val2 = this.stack.pop();
+    var val1 = this.stack.pop();
+    var res = (val1 > val2);
+    this.stack.push(res);
+  }
+
+  opLess()
+  //Return true if value1 is less than value2, false otherwise.
+  {
+    var val2 = this.stack.pop();
+    var val1 = this.stack.pop();
+    var res = (val1 < val2);
     this.stack.push(res);
   }
 

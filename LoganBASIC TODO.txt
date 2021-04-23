@@ -1,4 +1,4 @@
-- Add boolean operators.
+- Add OR and AND operators.
 - Add IF/THEN/ELSE statements.
 - Add WHILE/WEND statements.
 - Add FOR/NEXT statements.

@@ -102,7 +102,68 @@ class Parser
   parseExpression()
   //
   {
+    this.equalityExpr();
+  }
+
+  equalityExpr()
+  //
+  {
+    var operatorType;
+
+    this.comparisonExpr();
+
+    while(this.matchTokenTypes([TOKEN_EQUAL, TOKEN_NOT_EQUAL]))
+    {
+      operatorType = this.prevToken().type;
+      this.comparisonExpr();
+
+      switch(operatorType)
+      {
+        case TOKEN_EQUAL:
+          this.addOp([OPCODE_EQUAL]);
+          break;
+
+        case TOKEN_NOT_EQUAL:
+          this.addOp([OPCODE_EQUAL]);
+          this.addOp([OPCODE_NOT]);
+          break;
+      }
+    }
+  }
+
+  comparisonExpr()
+  //
+  {
+    var operatorType;
+
     this.termExpr();
+
+    while(this.matchTokenTypes([TOKEN_GREATER, TOKEN_GREATER_EQUAL, TOKEN_LESS, TOKEN_LESS_EQUAL]))
+    {
+      operatorType = this.prevToken().type;
+      this.termExpr();
+
+      switch(operatorType)
+      {
+        case TOKEN_GREATER:
+          this.addOp([OPCODE_GREATER]);
+          break;
+
+        case TOKEN_GREATER_EQUAL:
+          this.addOp([OPCODE_LESS]);
+          this.addOp([OPCODE_NOT]);
+          break;
+
+        case TOKEN_LESS:
+          this.addOp([OPCODE_LESS]);
+          break;
+
+        case TOKEN_LESS_EQUAL:
+          this.addOp([OPCODE_GREATER]);
+          this.addOp([OPCODE_NOT]);
+          break;
+      }
+    }
   }
 
   termExpr()
@@ -116,6 +177,7 @@ class Parser
     {
       operatorType = this.prevToken().type;
       this.factorExpr();
+
       switch(operatorType)
       {
         case TOKEN_MINUS: this.addOp([OPCODE_SUB]); break;
@@ -135,6 +197,7 @@ class Parser
     {
       operatorType = this.prevToken().type;
       this.unaryExpr();
+
       switch(operatorType)
       {
         case TOKEN_SLASH: this.addOp([OPCODE_DIV]); break;
@@ -148,14 +211,17 @@ class Parser
   {
     var operatorType;
 
-    if(this.matchTokenTypes([TOKEN_MINUS]))
+    if(this.matchTokenTypes([TOKEN_MINUS, TOKEN_NOT]))
     {
       operatorType = this.prevToken().type;
       this.unaryExpr();
+
       switch(operatorType)
       {
         case TOKEN_MINUS: this.addOp([OPCODE_NEGATE]); break;
+        case TOKEN_NOT: this.addOp([OPCODE_NOT]); break;
       }
+
       return;
     }
 
@@ -178,6 +244,18 @@ class Parser
     }
 
     //Literals
+    if(this.matchTokenTypes([TOKEN_TRUE]))
+    {
+      this.addOp([OPCODE_LOAD_TRUE]);
+      return;
+    }
+
+    if(this.matchTokenTypes([TOKEN_FALSE]))
+    {
+      this.addOp([OPCODE_LOAD_FALSE]);
+      return;
+    }
+
     if(this.matchTokenTypes([TOKEN_STRING_LIT, TOKEN_NUMBER_LIT]))
     {
       litVal = this.prevToken().literalVal;
@@ -190,10 +268,10 @@ class Parser
     if(this.matchTokenTypes([TOKEN_LEFT_PAREN]))
     {
       this.parseExpression();
+
       if(!this.matchTokenTypes([TOKEN_RIGHT_PAREN]))
-      {
         throw {message: "Expected ')' after expression."};
-      }
+
       return;
     }
 

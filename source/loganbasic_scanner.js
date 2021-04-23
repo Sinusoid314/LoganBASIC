@@ -1,4 +1,7 @@
 var keywordList = {
+                   "true": TOKEN_TRUE,
+                   "false": TOKEN_FALSE,
+                   "not": TOKEN_NOT,
                    "print": TOKEN_PRINT,
                    "input": TOKEN_INPUT
                   }
@@ -48,7 +51,7 @@ class Scanner
         break;
 
       case "'":
-        while((peekChar() != '\n') && (!endOfSource()))
+        while((this.peekChar() != '\n') && (!this.endOfSource()))
         {
           this.consumeChar();
         }
@@ -94,6 +97,15 @@ class Scanner
         this.addToken(TOKEN_EQUAL);
         break;
 
+      case '>':
+        this.addToken(this.matchChar('=') ? TOKEN_GREATER_EQUAL : TOKEN_GREATER);
+        break;
+
+      case '<':
+        this.addToken(this.matchChar('=') ? TOKEN_LESS_EQUAL
+                                          : (this.matchChar('>') ? TOKEN_NOT_EQUAL : TOKEN_LESS));
+        break;
+
       case '"':
         this.consumeStringLiteral();
         break;
@@ -109,7 +121,7 @@ class Scanner
         }
         else
         {
-          throw {message: "Unrecognized character: " + firstChar};
+          throw {message: "Unrecognized character: '" + firstChar + "'"};
         }
         break;
     }
@@ -132,14 +144,10 @@ class Scanner
   //
   {
     if(this.endOfSource())
-    {
 	  return false;
-    }
 
     if(this.sourceStr.charAt(this.currCharIndex) != expectedChar)
-    {
 	  return false;
-    }
 
     this.currCharIndex++;
     return true;
@@ -149,9 +157,8 @@ class Scanner
   //
   {
     if(this.endOfSource())
-    {
       return '\0';
-    }
+
     return this.sourceStr.charAt(this.currCharIndex);
   }
 
@@ -159,9 +166,8 @@ class Scanner
   //
   {
     if((this.currCharIndex + 1) >= this.sourceStr.length)
-    {
       return '\0';
-    }
+
     return this.sourceStr.charAt(this.currCharIndex + 1);
   }
 
@@ -182,9 +188,7 @@ class Scanner
     }
 
     if((this.peekChar() == '\n') || this.endOfSource())
-    {
       throw {message: "Unterminated string."};
-    }
 
     this.consumeChar();
 
