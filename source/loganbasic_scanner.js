@@ -2,6 +2,8 @@ var keywordList = {
                    "true": TOKEN_TRUE,
                    "false": TOKEN_FALSE,
                    "not": TOKEN_NOT,
+                   "or": TOKEN_OR,
+                   "and": TOKEN_AND,
                    "print": TOKEN_PRINT,
                    "input": TOKEN_INPUT
                   }
@@ -91,6 +93,10 @@ class Scanner
 
       case '*':
         this.addToken(TOKEN_STAR);
+        break;
+
+      case '%':
+        this.addToken(TOKEN_PERCENT);
         break;
 
       case '=':
@@ -230,7 +236,7 @@ class Scanner
       this.consumeChar();
     }
 
-    lexemeStr = this.sourceStr.substring(this.startCharIndex, this.currCharIndex);
+    lexemeStr = this.sourceStr.substring(this.startCharIndex, this.currCharIndex).toLowerCase();
     if(keywordList.hasOwnProperty(lexemeStr))
     {
       tokenType = keywordList[lexemeStr];

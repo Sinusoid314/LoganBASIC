@@ -9,14 +9,17 @@ const TOKEN_MINUS = 10;
 const TOKEN_PLUS = 11;
 const TOKEN_SLASH = 12;
 const TOKEN_STAR = 13;
+const TOKEN_PERCENT = 14;
 
-const TOKEN_EQUAL = 14;
-const TOKEN_NOT_EQUAL = 15;
-const TOKEN_GREATER = 16;
-const TOKEN_GREATER_EQUAL = 17;
-const TOKEN_LESS = 18;
-const TOKEN_LESS_EQUAL = 19;
-const TOKEN_NOT = 20;
+const TOKEN_EQUAL = 15;
+const TOKEN_NOT_EQUAL = 16;
+const TOKEN_GREATER = 17;
+const TOKEN_GREATER_EQUAL = 18;
+const TOKEN_LESS = 19;
+const TOKEN_LESS_EQUAL = 20;
+const TOKEN_NOT = 21;
+const TOKEN_OR = 22;
+const TOKEN_AND = 23;
 
 const TOKEN_TRUE = 30;
 const TOKEN_FALSE = 31;

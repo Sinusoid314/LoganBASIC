@@ -27,27 +27,31 @@ POP
 
 SUB
   stack: [value1, value2] -> [result]
-  Subract two numbers.
+  Subract value2 from value1.
 
 ADD
   stack: [value1, value2] -> [result]
-  Add two numbers.
+  Add value1 and value2.
 
 DIV
   stack: [value1, value2] -> [result]
-  Divide two numbers.
+  Divide value1 by value2.
 
 MUL
   stack: [value1, value2] -> [result]
-  Multiply two numbers.
+  Multiply value1 and value2.
+
+MOD
+  stack: [value1, value2] -> [result]
+  Return the remainder of dividing value1 by value2.
 
 NEGATE
   stack: [value] -> [result]
-  Switch the sign of a number.
+  Switch the sign of value.
   
 NOT
   stack: [value] -> [result]
-  Return the logical opposite of a boolean value.
+  Return the logical opposite of boolean value.
 
 EQUAL
   stack: [value1, value2] -> [result] 
@@ -68,4 +72,18 @@ PRINT
 INPUT
   stack: [value] -> [result]
   Prints a prompt value, waits for user input, then pushes the input result onto the stack.
+
+JUMP
+  operands: opIndex
+  Jump to the instruction at opIndex.
+
+JUMP_IF_FALSE
+  operands: opIndex
+  stack: [value] -> []
+  Jump to the instruction at opIndex if value is false.
+
+JUMP_IF_FALSE_PERSIST
+  operands: opIndex
+  stack: [value] -> [value]
+  Jump to the instruction at opIndex if value is false, keeping value on the stack.
 

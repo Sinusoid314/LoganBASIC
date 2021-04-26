@@ -10,15 +10,19 @@ const OPCODE_SUB = 7;
 const OPCODE_ADD = 8;
 const OPCODE_DIV = 9;
 const OPCODE_MUL = 10;
+const OPCODE_MOD = 11;
 
-const OPCODE_NEGATE = 11;
-const OPCODE_NOT = 12;
-const OPCODE_EQUAL = 13;
-const OPCODE_GREATER = 14;
-const OPCODE_LESS = 15;
+const OPCODE_NEGATE = 12;
+const OPCODE_NOT = 13;
+const OPCODE_EQUAL = 14;
+const OPCODE_GREATER = 15;
+const OPCODE_LESS = 16;
 
-const OPCODE_PRINT = 16;
-const OPCODE_INPUT = 17;
+const OPCODE_PRINT = 17;
+const OPCODE_INPUT = 18;
+const OPCODE_JUMP = 19;
+const OPCODE_JUMP_IF_FALSE = 20;
+const OPCODE_JUMP_IF_FALSE_PERSIST = 21;
 
 class Bytecode
 {

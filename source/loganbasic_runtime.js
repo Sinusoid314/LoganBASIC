@@ -19,6 +19,7 @@ class Runtime
     this.opFuncList[OPCODE_ADD] = this.opAdd.bind(this);
     this.opFuncList[OPCODE_DIV] = this.opDiv.bind(this);
     this.opFuncList[OPCODE_MUL] = this.opMul.bind(this);
+    this.opFuncList[OPCODE_MOD] = this.opMod.bind(this);
     this.opFuncList[OPCODE_NEGATE] = this.opNegate.bind(this);
     this.opFuncList[OPCODE_NOT] = this.opNot.bind(this);
     this.opFuncList[OPCODE_EQUAL] = this.opEqual.bind(this);
@@ -26,6 +27,9 @@ class Runtime
     this.opFuncList[OPCODE_LESS] = this.opLess.bind(this);
     this.opFuncList[OPCODE_PRINT] = this.opPrint.bind(this);
     this.opFuncList[OPCODE_INPUT] = this.opInput.bind(this);
+    this.opFuncList[OPCODE_JUMP] = this.opJump.bind(this);
+    this.opFuncList[OPCODE_JUMP_IF_FALSE] = this.opJumpIfFalse.bind(this);
+    this.opFuncList[OPCODE_JUMP_IF_FALSE_PERSIST] = this.opJumpIfFalsePersist.bind(this);
 
     //Variable values are kept at the bottom of the stack and initialized to 0
     for(var n = 0; n < this.bytecode.varIdentList.length; n++)
@@ -127,6 +131,15 @@ class Runtime
     this.stack.push(res);
   }
 
+  opMod()
+  //Return the remainder of dividing two numbers
+  {
+    var val2 = this.stack.pop();
+    var val1 = this.stack.pop();
+    var res = (val1 % val2);
+    this.stack.push(res);
+  }
+
   opNegate()
   //Switch the sign of a number
   {
@@ -185,6 +198,33 @@ class Runtime
     postMessage({msgId: MSGID_PRINT, msgData: val});
     postMessage({msgId: MSGID_INPUT_REQUEST});
     this.inputting = true;
+  }
+
+  opJump()
+  //Jump to the instruction at opIndex
+  {
+    var opIndex = this.bytecode.opList[this.currOpIndex][1];
+    currOpIndex = opIndex - 1;
+  }
+
+  opJumpIfFalse()
+  //Jump to the instruction at opIndex if value is false
+  {
+    var opIndex = this.bytecode.opList[this.currOpIndex][1];
+    var val = this.stack.pop();
+
+    if(!val)
+      currOpIndex = opIndex - 1;
+  }
+
+  opJumpIfFalsePersist()
+  //Jump to the instruction at opIndex if value is false, keeping value on the stack
+  {
+    var opIndex = this.bytecode.opList[this.currOpIndex][1];
+    var val = this.stack[this.stack.length - 1];
+
+    if(!val)
+      currOpIndex = opIndex - 1;
   }
 
   endOfOps()

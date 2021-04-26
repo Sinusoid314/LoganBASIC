@@ -102,7 +102,25 @@ class Parser
   parseExpression()
   //
   {
+    this.logicOrExpr();
+  }
+
+  logicOrExpr()
+  //
+  {
+    this.logicAndExpr();
+  }
+
+  logicAndExpr()
+  //
+  {
+    //var jumpOpIndex;
+
     this.equalityExpr();
+
+    //jumpOpIndex = this.addOp([OPCODE_JUMP_IF_FALSE_PERSIST, 0]);
+    //this.addOp([OPCODE_POP]);
+
   }
 
   equalityExpr()
@@ -193,7 +211,7 @@ class Parser
 
     this.unaryExpr();
 
-    while(this.matchTokenTypes([TOKEN_SLASH, TOKEN_STAR]))
+    while(this.matchTokenTypes([TOKEN_SLASH, TOKEN_STAR, TOKEN_PERCENT]))
     {
       operatorType = this.prevToken().type;
       this.unaryExpr();
@@ -202,6 +220,7 @@ class Parser
       {
         case TOKEN_SLASH: this.addOp([OPCODE_DIV]); break;
         case TOKEN_STAR: this.addOp([OPCODE_MUL]); break;
+        case TOKEN_PERCENT: this.addOp([OPCODE_MOD]); break;
       }
     }
   }
@@ -307,10 +326,11 @@ class Parser
     return litIndex;
   }
 
-  addOp(opArray)
+  addOp(operandList)
   //
   {
-    this.bytecode.opList.push(opArray);
+    this.bytecode.opList.push(operandList);
+    return this.bytecode.opList.length - 1;
   }
 
   matchTerminator()
