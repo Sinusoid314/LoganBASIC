@@ -206,7 +206,7 @@ class Runtime
   //Jump to the instruction at opIndex
   {
     var opIndex = this.bytecode.opList[this.currOpIndex][1];
-    currOpIndex = opIndex - 1;
+    this.currOpIndex = opIndex - 1;
   }
 
   opJumpIfFalse()
@@ -216,7 +216,7 @@ class Runtime
     var val = this.stack.pop();
 
     if(!val)
-      currOpIndex = opIndex - 1;
+      this.currOpIndex = opIndex - 1;
   }
 
   opJumpIfFalsePersist()
@@ -226,7 +226,7 @@ class Runtime
     var val = this.stack[this.stack.length - 1];
 
     if(!val)
-      currOpIndex = opIndex - 1;
+      this.currOpIndex = opIndex - 1;
   }
 
   opJumpIfTrue()
@@ -236,7 +236,7 @@ class Runtime
     var val = this.stack.pop();
 
     if(val)
-      currOpIndex = opIndex - 1;
+      this.currOpIndex = opIndex - 1;
   }
 
   opJumpIfTruePersist()
@@ -246,7 +246,7 @@ class Runtime
     var val = this.stack[this.stack.length - 1];
 
     if(val)
-      currOpIndex = opIndex - 1;
+      this.currOpIndex = opIndex - 1;
   }
 
   endOfOps()

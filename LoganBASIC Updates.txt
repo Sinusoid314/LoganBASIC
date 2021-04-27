@@ -1,4 +1,6 @@
 (April 27, 2021)
+	- Added matchTokenPair() to Parser.
+	- Fixed bug with OR operator giving wrong result.
 	- Added peekNextToken() and checkNextTokenType() to Parser.
 	- Added IF...THEN...END IF statement.
 

@@ -113,17 +113,14 @@ class Parser
     }
     else
     {
-      while(!(this.checkTokenType(TOKEN_END) && this.checkNextTokenType(TOKEN_IF))
+      while(!this.matchTokenPair(TOKEN_END, TOKEN_IF)
             && !this.endOfTokens())
       {
         this.parseStatement();
       }
 
-      if(this.endOfTokens())
-        throw {message: "Expected 'end if' after 'if' block."};
-
-      this.consumeToken(); //TOKEN_END
-      this.consumeToken(); //TOKEN_IF
+      if(this.prevToken().type != TOKEN_IF)
+        throw {message: "Expected 'end if' at the end of 'if' block."};
 
       if(!this.matchTerminator())
         throw {message: "Expected end-of-statement after 'end if'."};
@@ -145,9 +142,9 @@ class Parser
 
     this.logicAndExpr();
 
-    while(this.matchTokenTypes([TOKEN_AND]))
+    while(this.matchTokenTypes([TOKEN_OR]))
     {
-      jumpOpIndex = this.addOp([OPCODE_JUMP_IF_FALSE_PERSIST, 0]);
+      jumpOpIndex = this.addOp([OPCODE_JUMP_IF_TRUE_PERSIST, 0]);
       this.addOp([OPCODE_POP]);
 
       this.logicAndExpr();
@@ -407,7 +404,6 @@ class Parser
   matchTokenTypes(tokenTypeList)
   //
   {
-    //console.log(tokenTypeList);
     for(var index = 0; index < tokenTypeList.length; index++)
     {
       if(this.checkTokenType(tokenTypeList[index]))
@@ -415,6 +411,19 @@ class Parser
         this.consumeToken();
         return true;
       }
+    }
+
+    return false;
+  }
+
+  matchTokenPair(tokenType1, tokenType2)
+  //
+  {
+    if(this.checkTokenType(tokenType1) && this.checkNextTokenType(tokenType2))
+    {
+	  this.consumeToken();
+	  this.consumeToken();
+	  return true;
     }
 
     return false;
