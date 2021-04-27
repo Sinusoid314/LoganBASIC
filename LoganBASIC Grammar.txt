@@ -3,13 +3,15 @@ program  ->  statement* EOF ;
 statement  ->  assignment
                | printStmt
                | inputStmt
-               | ifStmt ;
+               | ifStmt 
+               | whileStmt;
 
 assignment  ->  IDENTIFIER "=" expression terminator ;
 printStmt   ->  "print" expression terminator ;
 inputStmt   ->  expression "," IDENTIFIER terminator ;
 ifStmt      ->  "if" expression "then" 
                 ( statement | ( terminator statement* "end" "if" terminator ) ) ;
+whileStmt   ->  "while" expression terminator statement* "wend" terminator ;
 
 expression  ->  logic_or ;
 logic_or    ->  logic_and ( "or" logic_and )* ;

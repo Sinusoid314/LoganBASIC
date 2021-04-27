@@ -33,6 +33,8 @@ const TOKEN_IF = 42;
 const TOKEN_THEN = 43;
 const TOKEN_ELSE = 44;
 const TOKEN_END = 45;
+const TOKEN_WHILE = 46;
+const TOKEN_WEND = 47;
 
 class Token
 {

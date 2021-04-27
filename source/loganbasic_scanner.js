@@ -9,7 +9,9 @@ var keywordList = {
                    "if": TOKEN_IF,
                    "then": TOKEN_THEN,
                    "else": TOKEN_ELSE,
-                   "end": TOKEN_END
+                   "end": TOKEN_END,
+                   "while": TOKEN_WHILE,
+                   "wend": TOKEN_WEND
                   }
 
 class Scanner

@@ -35,6 +35,8 @@ class Parser
       this.inputStmt();
     else if(this.matchTokenTypes([TOKEN_IF]))
       this.ifStmt();
+    else if(this.matchTokenTypes([TOKEN_WHILE]))
+      this.whileStmt();
     else
       this.assignmentStmt();
   }
@@ -126,6 +128,34 @@ class Parser
         throw {message: "Expected end-of-statement after 'end if'."};
     }
 
+    this.patchJumpOp(jumpOpIndex);
+  }
+
+  whileStmt()
+  //
+  {
+    var jumpOpIndex;
+	var startOpIndex = this.bytecode.opList.length;
+
+    this.parseExpression();
+
+    if(!this.matchTerminator())
+      throw {message: "Expected end-of-statement after expression."};
+
+    jumpOpIndex = this.addOp([OPCODE_JUMP_IF_FALSE, 0]);
+
+    while(!this.matchTokenTypes([TOKEN_WEND]) && !this.endOfTokens())
+    {
+      this.parseStatement();
+    }
+
+    if(this.prevToken().type != TOKEN_WEND)
+      throw {message: "Expected 'wend' at the end of 'while' block."};
+
+    if(!this.matchTerminator())
+      throw {message: "Expected end-of-statement after 'wend'."};
+
+    this.addOp([OPCODE_JUMP, startOpIndex]);
     this.patchJumpOp(jumpOpIndex);
   }
 

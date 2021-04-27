@@ -136,6 +136,7 @@ function progWorker_onPrint(val)
 //
 {
   progConsole.value += val;
+  progConsole.scrollTop = progConsole.scrollHeight;
 }
 
 function progWorker_onInputRequest()

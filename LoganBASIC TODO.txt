@@ -1,6 +1,7 @@
-- Add IF/THEN/ELSE statements.
-- Add WHILE/WEND statements.
-- Add FOR/NEXT statements.
+- Add END statement.
+- Add ELSE clause to IF..THEN statement.
+- Add FOR/NEXT loop.
+- Add statement terminator ':'.
 - Add native functions.
 - Comment functions and methods.
 
