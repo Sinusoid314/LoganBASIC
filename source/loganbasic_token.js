@@ -29,6 +29,10 @@ const TOKEN_IDENTIFIER = 34;
 
 const TOKEN_PRINT = 40;
 const TOKEN_INPUT = 41;
+const TOKEN_IF = 42;
+const TOKEN_THEN = 43;
+const TOKEN_ELSE = 44;
+const TOKEN_END = 45;
 
 class Token
 {

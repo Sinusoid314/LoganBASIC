@@ -30,17 +30,35 @@ class Parser
   //
   {
     if(this.matchTokenTypes([TOKEN_PRINT]))
-    {
       this.printStmt();
-    }
     else if(this.matchTokenTypes([TOKEN_INPUT]))
-    {
       this.inputStmt();
-    }
+    else if(this.matchTokenTypes([TOKEN_IF]))
+      this.ifStmt();
     else
-    {
       this.assignmentStmt();
-    }
+  }
+
+  assignmentStmt()
+  //
+  {
+    var varIdent, varIndex;
+
+    if(!this.matchTokenTypes([TOKEN_IDENTIFIER]))
+      throw {message: "Expected identifier."};
+
+    varIdent = this.prevToken().lexemeStr;
+    varIndex = this.getVariableIndex(varIdent);
+
+    if(!this.matchTokenTypes([TOKEN_EQUAL]))
+      throw {message: "Expected '=' after identifier."};
+
+    this.parseExpression();
+
+    if(!this.matchTerminator())
+      throw {message: "Expected end-of-statement after value."};
+
+    this.addOp([OPCODE_STORE_VAR, varIndex]);
   }
 
   printStmt()
@@ -77,26 +95,41 @@ class Parser
     this.addOp([OPCODE_STORE_VAR, varIndex]);
   }
 
-  assignmentStmt()
+  ifStmt()
   //
   {
-    var varIdent, varIndex;
-
-    if(!this.matchTokenTypes([TOKEN_IDENTIFIER]))
-      throw {message: "Expected identifier."};
-
-    varIdent = this.prevToken().lexemeStr;
-    varIndex = this.getVariableIndex(varIdent);
-
-    if(!this.matchTokenTypes([TOKEN_EQUAL]))
-      throw {message: "Expected '=' after identifier."};
+    var jumpOpIndex;
 
     this.parseExpression();
 
-    if(!this.matchTerminator())
-      throw {message: "Expected end-of-statement after value."};
+    if(!this.matchTokenTypes([TOKEN_THEN]))
+      throw {message: "Expected 'then' after expression."};
 
-    this.addOp([OPCODE_STORE_VAR, varIndex]);
+    jumpOpIndex = this.addOp([OPCODE_JUMP_IF_FALSE, 0]);
+
+    if(!this.matchTerminator())
+    {
+      this.parseStatement();
+    }
+    else
+    {
+      while(!(this.checkTokenType(TOKEN_END) && this.checkNextTokenType(TOKEN_IF))
+            && !this.endOfTokens())
+      {
+        this.parseStatement();
+      }
+
+      if(this.endOfTokens())
+        throw {message: "Expected 'end if' after 'if' block."};
+
+      this.consumeToken(); //TOKEN_END
+      this.consumeToken(); //TOKEN_IF
+
+      if(!this.matchTerminator())
+        throw {message: "Expected end-of-statement after 'end if'."};
+    }
+
+    this.patchJumpOp(jumpOpIndex);
   }
 
   parseExpression()
@@ -119,7 +152,7 @@ class Parser
 
       this.logicAndExpr();
 
-      this.bytecode.opList[jumpOpIndex][1] = this.bytecode.opList.length;
+      this.patchJumpOp(jumpOpIndex);
     }
   }
 
@@ -137,7 +170,7 @@ class Parser
 
       this.equalityExpr();
 
-      this.bytecode.opList[jumpOpIndex][1] = this.bytecode.opList.length;
+      this.patchJumpOp(jumpOpIndex);
     }
   }
 
@@ -351,6 +384,12 @@ class Parser
     return this.bytecode.opList.length - 1;
   }
 
+  patchJumpOp(opIndex)
+  //
+  {
+    this.bytecode.opList[opIndex][1] = this.bytecode.opList.length;
+  }
+
   matchTerminator()
   {
     return this.matchTokenTypes([TOKEN_NEWLINE, TOKEN_EOF]);
@@ -387,6 +426,12 @@ class Parser
     return (this.peekToken().type == tokenType);
   }
 
+  checkNextTokenType(tokenType)
+  //
+  {
+    return (this.peekNextToken().type == tokenType);
+  }
+
   endOfTokens()
   //
   {
@@ -397,6 +442,15 @@ class Parser
   //
   {
     return this.tokenList[this.currTokenIndex];
+  }
+
+  peekNextToken()
+  //
+  {
+	if(!this.endOfTokens())
+      return this.tokenList[this.currTokenIndex + 1];
+    else
+      return this.peekToken();
   }
 
   prevToken()

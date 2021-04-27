@@ -1,11 +1,15 @@
 program  ->  statement* EOF ;
 
-statement  ->  printStmt
-             | assignment ;
+statement  ->  assignment
+               | printStmt
+               | inputStmt
+               | ifStmt ;
 
-printStmt   ->  "print" expression terminator ;
 assignment  ->  IDENTIFIER "=" expression terminator ;
+printStmt   ->  "print" expression terminator ;
 inputStmt   ->  expression "," IDENTIFIER terminator ;
+ifStmt      ->  "if" expression "then" 
+                ( statement | ( terminator statement* "end" "if" terminator ) ) ;
 
 expression  ->  logic_or ;
 logic_or    ->  logic_and ( "or" logic_and )* ;
@@ -16,7 +20,7 @@ term        ->  factor ( ( "-" | "+" ) factor )* ;
 factor      ->  unary ( ( "/" | "*" | "%" ) unary )* ;
 unary       ->  ( "-" | "not" ) unary | primary ;
 primary     ->  "true" | "false" | NUMBER_LIT | STRING_LIT | IDENTIFIER
-              | "(" expression ")" ;
+                | ( "(" expression ")" ) ;
                
 terminator  ->  ( "\n" | EOF ) ;
 
