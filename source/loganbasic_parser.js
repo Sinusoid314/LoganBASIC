@@ -108,19 +108,37 @@ class Parser
   logicOrExpr()
   //
   {
+    var jumpOpIndex;
+
     this.logicAndExpr();
+
+    while(this.matchTokenTypes([TOKEN_AND]))
+    {
+      jumpOpIndex = this.addOp([OPCODE_JUMP_IF_FALSE_PERSIST, 0]);
+      this.addOp([OPCODE_POP]);
+
+      this.logicAndExpr();
+
+      this.bytecode.opList[jumpOpIndex][1] = this.bytecode.opList.length;
+    }
   }
 
   logicAndExpr()
   //
   {
-    //var jumpOpIndex;
+    var jumpOpIndex;
 
     this.equalityExpr();
 
-    //jumpOpIndex = this.addOp([OPCODE_JUMP_IF_FALSE_PERSIST, 0]);
-    //this.addOp([OPCODE_POP]);
+    while(this.matchTokenTypes([TOKEN_AND]))
+    {
+      jumpOpIndex = this.addOp([OPCODE_JUMP_IF_FALSE_PERSIST, 0]);
+      this.addOp([OPCODE_POP]);
 
+      this.equalityExpr();
+
+      this.bytecode.opList[jumpOpIndex][1] = this.bytecode.opList.length;
+    }
   }
 
   equalityExpr()

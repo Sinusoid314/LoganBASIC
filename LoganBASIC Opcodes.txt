@@ -87,3 +87,12 @@ JUMP_IF_FALSE_PERSIST
   stack: [value] -> [value]
   Jump to the instruction at opIndex if value is false, keeping value on the stack.
 
+JUMP_IF_TRUE
+  operands: opIndex
+  stack: [value] -> []
+  Jump to the instruction at opIndex if value is true.
+
+JUMP_IF_TRUE_PERSIST
+  operands: opIndex
+  stack: [value] -> [value]
+  Jump to the instruction at opIndex if value is true, keeping value on the stack.
