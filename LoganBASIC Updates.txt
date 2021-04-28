@@ -1,11 +1,16 @@
 (April 27, 2021)
+	- Renamed matchTokenTypes() to matchTokenList().
+	- Renamed checkTokenType() to checkToken().
+	- Renamed checkNextTokenType() to checkNextToken().
+	- Added checkTokenPair() to Parser.
+	- Modified ifStmt() in Parser to use checkTokenPair().
 	- Added statement terminator ':'.
 	- Add END statement.
 	- Added WHILE...WEND loop.
 	- Made console auto scroll to bottom.
 	- Added matchTokenPair() to Parser.
 	- Fixed bug with OR operator giving wrong result.
-	- Added peekNextToken() and checkNextTokenType() to Parser.
+	- Added peekNextToken() and checkNextToken() to Parser.
 	- Added IF...THEN...END IF statement.
 
 (April 26, 2021)
@@ -61,7 +66,7 @@
 	- Added progConsole variable to Lexer class.
 	- Implemented runBtn_OnClick().
 	- Implemented run(), runStatement(), and printStmt() in Interpreter class.
-	- Removed EOF check in checkTokenType() in Interpreter class.
+	- Removed EOF check in checkToken() in Interpreter class.
 
 (April 9, 2021)
 	- Implemented evalExpression(), termExpr(), factorExpr(), unaryExpr(),
@@ -69,7 +74,7 @@
 
 (April 8, 2021)
 	- Implemented constructor(), consumeToken(), matchTokenTypes(),
-	  checkTokenType(), endOfTokens(), peekToken(), and prevToken()
+	  checkToken(), endOfTokens(), peekToken(), and prevToken()
 	  in Interpreter class.
 
 (April 7, 2021)

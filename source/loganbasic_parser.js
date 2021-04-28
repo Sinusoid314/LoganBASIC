@@ -29,19 +29,19 @@ class Parser
   parseStatement()
   //
   {
-    if(this.matchTokenTypes([TOKEN_PRINT]))
+    if(this.matchTokenList([TOKEN_PRINT]))
       this.printStmt();
 
-    else if(this.matchTokenTypes([TOKEN_INPUT]))
+    else if(this.matchTokenList([TOKEN_INPUT]))
       this.inputStmt();
 
-    else if(this.matchTokenTypes([TOKEN_IF]))
+    else if(this.matchTokenList([TOKEN_IF]))
       this.ifStmt();
 
-    else if(this.matchTokenTypes([TOKEN_WHILE]))
+    else if(this.matchTokenList([TOKEN_WHILE]))
       this.whileStmt();
 
-    else if(this.matchTokenTypes([TOKEN_END]))
+    else if(this.matchTokenList([TOKEN_END]))
       this.endStmt();
 
     else
@@ -53,13 +53,13 @@ class Parser
   {
     var varIdent, varIndex;
 
-    if(!this.matchTokenTypes([TOKEN_IDENTIFIER]))
+    if(!this.matchTokenList([TOKEN_IDENTIFIER]))
       throw {message: "Expected identifier."};
 
     varIdent = this.prevToken().lexemeStr;
     varIndex = this.getVariableIndex(varIdent);
 
-    if(!this.matchTokenTypes([TOKEN_EQUAL]))
+    if(!this.matchTokenList([TOKEN_EQUAL]))
       throw {message: "Expected '=' after identifier."};
 
     this.parseExpression();
@@ -88,10 +88,10 @@ class Parser
 
     this.parseExpression();
 
-    if(!this.matchTokenTypes([TOKEN_COMMA]))
+    if(!this.matchTokenList([TOKEN_COMMA]))
       throw {message: "Expected ',' after prompt expression."};
 
-    if(!this.matchTokenTypes([TOKEN_IDENTIFIER]))
+    if(!this.matchTokenList([TOKEN_IDENTIFIER]))
 	  throw {message: "Expected identifier."};
 
 	varIdent = this.prevToken().lexemeStr;
@@ -111,7 +111,7 @@ class Parser
 
     this.parseExpression();
 
-    if(!this.matchTokenTypes([TOKEN_THEN]))
+    if(!this.matchTokenList([TOKEN_THEN]))
       throw {message: "Expected 'then' after expression."};
 
     jumpOpIndex = this.addOp([OPCODE_JUMP_IF_FALSE, 0]);
@@ -122,13 +122,13 @@ class Parser
     }
     else
     {
-      while(!this.matchTokenPair(TOKEN_END, TOKEN_IF)
+      while(!this.checkTokenPair(TOKEN_END, TOKEN_IF)
             && !this.endOfTokens())
       {
         this.parseStatement();
       }
 
-      if(this.prevToken().type != TOKEN_IF)
+      if(!this.matchTokenPair(TOKEN_END, TOKEN_IF)
         throw {message: "Expected 'end if' at the end of 'if' block."};
 
       if(!this.matchTerminator())
@@ -151,7 +151,7 @@ class Parser
 
     jumpOpIndex = this.addOp([OPCODE_JUMP_IF_FALSE, 0]);
 
-    while(!this.matchTokenTypes([TOKEN_WEND]) && !this.endOfTokens())
+    while(!this.matchTokenList([TOKEN_WEND]) && !this.endOfTokens())
     {
       this.parseStatement();
     }
@@ -185,7 +185,7 @@ class Parser
 
     this.logicAndExpr();
 
-    while(this.matchTokenTypes([TOKEN_OR]))
+    while(this.matchTokenList([TOKEN_OR]))
     {
       jumpOpIndex = this.addOp([OPCODE_JUMP_IF_TRUE_PERSIST, 0]);
       this.addOp([OPCODE_POP]);
@@ -203,7 +203,7 @@ class Parser
 
     this.equalityExpr();
 
-    while(this.matchTokenTypes([TOKEN_AND]))
+    while(this.matchTokenList([TOKEN_AND]))
     {
       jumpOpIndex = this.addOp([OPCODE_JUMP_IF_FALSE_PERSIST, 0]);
       this.addOp([OPCODE_POP]);
@@ -221,7 +221,7 @@ class Parser
 
     this.comparisonExpr();
 
-    while(this.matchTokenTypes([TOKEN_EQUAL, TOKEN_NOT_EQUAL]))
+    while(this.matchTokenList([TOKEN_EQUAL, TOKEN_NOT_EQUAL]))
     {
       operatorType = this.prevToken().type;
       this.comparisonExpr();
@@ -247,7 +247,7 @@ class Parser
 
     this.termExpr();
 
-    while(this.matchTokenTypes([TOKEN_GREATER, TOKEN_GREATER_EQUAL, TOKEN_LESS, TOKEN_LESS_EQUAL]))
+    while(this.matchTokenList([TOKEN_GREATER, TOKEN_GREATER_EQUAL, TOKEN_LESS, TOKEN_LESS_EQUAL]))
     {
       operatorType = this.prevToken().type;
       this.termExpr();
@@ -282,7 +282,7 @@ class Parser
 
     this.factorExpr();
 
-    while(this.matchTokenTypes([TOKEN_MINUS, TOKEN_PLUS]))
+    while(this.matchTokenList([TOKEN_MINUS, TOKEN_PLUS]))
     {
       operatorType = this.prevToken().type;
       this.factorExpr();
@@ -302,7 +302,7 @@ class Parser
 
     this.unaryExpr();
 
-    while(this.matchTokenTypes([TOKEN_SLASH, TOKEN_STAR, TOKEN_PERCENT]))
+    while(this.matchTokenList([TOKEN_SLASH, TOKEN_STAR, TOKEN_PERCENT]))
     {
       operatorType = this.prevToken().type;
       this.unaryExpr();
@@ -321,7 +321,7 @@ class Parser
   {
     var operatorType;
 
-    if(this.matchTokenTypes([TOKEN_MINUS, TOKEN_NOT]))
+    if(this.matchTokenList([TOKEN_MINUS, TOKEN_NOT]))
     {
       operatorType = this.prevToken().type;
       this.unaryExpr();
@@ -345,7 +345,7 @@ class Parser
     var litVal, litIndex;
 
     //Variable
-    if(this.matchTokenTypes([TOKEN_IDENTIFIER]))
+    if(this.matchTokenList([TOKEN_IDENTIFIER]))
     {
       varIdent = this.prevToken().lexemeStr;
       varIndex = this.getVariableIndex(varIdent);
@@ -354,19 +354,19 @@ class Parser
     }
 
     //Literals
-    if(this.matchTokenTypes([TOKEN_TRUE]))
+    if(this.matchTokenList([TOKEN_TRUE]))
     {
       this.addOp([OPCODE_LOAD_TRUE]);
       return;
     }
 
-    if(this.matchTokenTypes([TOKEN_FALSE]))
+    if(this.matchTokenList([TOKEN_FALSE]))
     {
       this.addOp([OPCODE_LOAD_FALSE]);
       return;
     }
 
-    if(this.matchTokenTypes([TOKEN_STRING_LIT, TOKEN_NUMBER_LIT]))
+    if(this.matchTokenList([TOKEN_STRING_LIT, TOKEN_NUMBER_LIT]))
     {
       litVal = this.prevToken().literalVal;
       litIndex = this.getLiteralIndex(litVal);
@@ -375,11 +375,11 @@ class Parser
     }
 
     //Nested expression
-    if(this.matchTokenTypes([TOKEN_LEFT_PAREN]))
+    if(this.matchTokenList([TOKEN_LEFT_PAREN]))
     {
       this.parseExpression();
 
-      if(!this.matchTokenTypes([TOKEN_RIGHT_PAREN]))
+      if(!this.matchTokenList([TOKEN_RIGHT_PAREN]))
         throw {message: "Expected ')' after expression."};
 
       return;
@@ -432,7 +432,7 @@ class Parser
 
   matchTerminator()
   {
-    return this.matchTokenTypes([TOKEN_NEWLINE, TOKEN_EOF]);
+    return this.matchTokenList([TOKEN_NEWLINE, TOKEN_EOF]);
   }
 
   consumeToken()
@@ -444,12 +444,12 @@ class Parser
     return this.prevToken();
   }
 
-  matchTokenTypes(tokenTypeList)
+  matchTokenList(tokenTypeList)
   //
   {
     for(var index = 0; index < tokenTypeList.length; index++)
     {
-      if(this.checkTokenType(tokenTypeList[index]))
+      if(this.checkToken(tokenTypeList[index]))
       {
         this.consumeToken();
         return true;
@@ -462,7 +462,7 @@ class Parser
   matchTokenPair(tokenType1, tokenType2)
   //
   {
-    if(this.checkTokenType(tokenType1) && this.checkNextTokenType(tokenType2))
+    if(this.checkTokenPair(tokenType1, tokenType2))
     {
 	  this.consumeToken();
 	  this.consumeToken();
@@ -472,22 +472,25 @@ class Parser
     return false;
   }
 
-  checkTokenType(tokenType)
+  checkTokenPair(tokenType1, tokenType2)
+  //
+  {
+    if(this.checkToken(tokenType1) && this.checkNextToken(tokenType2))
+	  return true;
+
+    return false;
+  }
+
+  checkToken(tokenType)
   //
   {
     return (this.peekToken().type == tokenType);
   }
 
-  checkNextTokenType(tokenType)
+  checkNextToken(tokenType)
   //
   {
     return (this.peekNextToken().type == tokenType);
-  }
-
-  endOfTokens()
-  //
-  {
-    return (this.peekToken().type == TOKEN_EOF)
   }
 
   peekToken()
@@ -509,5 +512,11 @@ class Parser
   //
   {
     return this.tokenList[this.currTokenIndex - 1];
+  }
+
+  endOfTokens()
+  //
+  {
+    return (this.peekToken().type == TOKEN_EOF)
   }
 }
