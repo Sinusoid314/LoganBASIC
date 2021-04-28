@@ -73,6 +73,14 @@ class Scanner
         this.currLineNum++;
         break;
 
+      case ':':
+        if(this.tokenList[this.tokenList.length - 1].type != TOKEN_COLON)
+        {
+          this.addToken(TOKEN_COLON);
+        }
+        this.currLineNum++;
+        break;
+
       case '(':
         this.addToken(TOKEN_LEFT_PAREN);
         break;

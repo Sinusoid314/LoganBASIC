@@ -1,4 +1,6 @@
 (April 27, 2021)
+	- Added statement terminator ':'.
+	- Add END statement.
 	- Added WHILE...WEND loop.
 	- Made console auto scroll to bottom.
 	- Added matchTokenPair() to Parser.

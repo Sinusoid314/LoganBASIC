@@ -1,7 +1,6 @@
-- Add END statement.
 - Add ELSE clause to IF..THEN statement.
 - Add FOR/NEXT loop.
-- Add statement terminator ':'.
 - Add native functions.
+- Add file new/open/save to editor.
 - Comment functions and methods.
 

@@ -31,12 +31,19 @@ class Parser
   {
     if(this.matchTokenTypes([TOKEN_PRINT]))
       this.printStmt();
+
     else if(this.matchTokenTypes([TOKEN_INPUT]))
       this.inputStmt();
+
     else if(this.matchTokenTypes([TOKEN_IF]))
       this.ifStmt();
+
     else if(this.matchTokenTypes([TOKEN_WHILE]))
       this.whileStmt();
+
+    else if(this.matchTokenTypes([TOKEN_END]))
+      this.endStmt();
+
     else
       this.assignmentStmt();
   }
@@ -157,6 +164,12 @@ class Parser
 
     this.addOp([OPCODE_JUMP, startOpIndex]);
     this.patchJumpOp(jumpOpIndex);
+  }
+
+  endStmt()
+  //
+  {
+    this.addOp([OPCODE_END]);
   }
 
   parseExpression()

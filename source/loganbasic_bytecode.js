@@ -25,6 +25,7 @@ const OPCODE_JUMP_IF_FALSE = 20;
 const OPCODE_JUMP_IF_FALSE_PERSIST = 21;
 const OPCODE_JUMP_IF_TRUE = 22;
 const OPCODE_JUMP_IF_TRUE_PERSIST = 23;
+const OPCODE_END = 24;
 
 class Bytecode
 {

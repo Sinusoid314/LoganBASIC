@@ -32,6 +32,7 @@ class Runtime
     this.opFuncList[OPCODE_JUMP_IF_FALSE_PERSIST] = this.opJumpIfFalsePersist.bind(this);
     this.opFuncList[OPCODE_JUMP_IF_TRUE] = this.opJumpIfTrue.bind(this);
     this.opFuncList[OPCODE_JUMP_IF_TRUE_PERSIST] = this.opJumpIfTruePersist.bind(this);
+    this.opFuncList[OPCODE_END] = this.opEnd.bind(this);
 
     //Variable values are kept at the bottom of the stack and initialized to 0
     for(var n = 0; n < this.bytecode.varIdentList.length; n++)
@@ -247,6 +248,12 @@ class Runtime
 
     if(val)
       this.currOpIndex = opIndex - 1;
+  }
+
+  opEnd()
+  //Trigger the program to end
+  {
+    this.currOpIndex = this.bytecode.opList.length;
   }
 
   endOfOps()
