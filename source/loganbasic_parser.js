@@ -151,12 +151,12 @@ class Parser
 
     jumpOpIndex = this.addOp([OPCODE_JUMP_IF_FALSE, 0]);
 
-    while(!this.matchTokenList([TOKEN_WEND]) && !this.endOfTokens())
+    while(!this.checkToken(TOKEN_WEND) && !this.endOfTokens())
     {
       this.parseStatement();
     }
 
-    if(this.prevToken().type != TOKEN_WEND)
+    if(!this.matchTokenList([TOKEN_WEND]))
       throw {message: "Expected 'wend' at the end of 'while' block."};
 
     if(!this.matchTerminator())

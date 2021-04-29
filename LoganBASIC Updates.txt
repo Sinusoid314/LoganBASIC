@@ -1,3 +1,6 @@
+(April 29, 2021)
+	- Modified whileStmt() in Parser to use checkToken() for detecting WEND keyword.
+
 (April 27, 2021)
 	- Renamed matchTokenTypes() to matchTokenList().
 	- Renamed checkTokenType() to checkToken().
