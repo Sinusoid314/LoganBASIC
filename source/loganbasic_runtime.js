@@ -1,8 +1,9 @@
 class Runtime
 {
-  constructor(bytecode)
+  constructor(bytecode, nativeFuncList)
   {
     this.bytecode = bytecode;
+    this.nativeFuncList = nativeFuncList;
     this.currOpIndex = 0;
     this.stack = [];
     this.opFuncList = [null];
@@ -33,6 +34,7 @@ class Runtime
     this.opFuncList[OPCODE_JUMP_IF_TRUE] = this.opJumpIfTrue.bind(this);
     this.opFuncList[OPCODE_JUMP_IF_TRUE_PERSIST] = this.opJumpIfTruePersist.bind(this);
     this.opFuncList[OPCODE_END] = this.opEnd.bind(this);
+    this.opFuncList[OPCODE_CALL_NATIVE_FUNC] = this.opCallNativeFunc.bind(this);
 
     //Variable values are kept at the bottom of the stack and initialized to 0
     for(var n = 0; n < this.bytecode.varIdentList.length; n++)
@@ -254,6 +256,13 @@ class Runtime
   //Trigger the program to end
   {
     this.currOpIndex = this.bytecode.opList.length;
+  }
+
+  opCallNativeFunc
+  //Call the native function at funcIndex
+  {
+    var funcIndex = this.bytecode.opList[this.currOpIndex][1];
+    this.nativeFuncList[funcIndex].funObj();
   }
 
   endOfOps()

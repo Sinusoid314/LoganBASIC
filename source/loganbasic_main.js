@@ -1,4 +1,5 @@
 importScripts('loganbasic_worker_msg.js',
+              'loganbasic_native_func.js',
               'loganbasic_token.js',
               'loganbasic_bytecode.js',
               'loganbasic_scanner.js',

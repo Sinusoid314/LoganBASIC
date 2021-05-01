@@ -66,9 +66,16 @@ class Scanner
         break;
 
       case '\n':
-        if(this.tokenList[this.tokenList.length - 1].type != TOKEN_NEWLINE)
+        if(this.tokenList[this.tokenList.length - 1].type == TOKEN_UNDERSCORE)
         {
-          this.addToken(TOKEN_NEWLINE);
+          this.tokenList.pop();
+        }
+        else
+        {
+          if(this.tokenList[this.tokenList.length - 1].type != TOKEN_NEWLINE)
+          {
+            this.addToken(TOKEN_NEWLINE);
+          }
         }
         this.currLineNum++;
         break;
@@ -79,6 +86,10 @@ class Scanner
           this.addToken(TOKEN_COLON);
         }
         this.currLineNum++;
+        break;
+
+      case '_':
+        this.addToken(TOKEN_UNDERSCORE);
         break;
 
       case '(':

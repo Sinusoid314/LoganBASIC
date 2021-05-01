@@ -96,3 +96,11 @@ JUMP_IF_TRUE_PERSIST
   operands: opIndex
   stack: [value] -> [value]
   Jump to the instruction at opIndex if value is true, keeping value on the stack.
+  
+END
+  Trigger the program to end
+
+CALL_NATIVE_FUNC
+  operands: funcIndex
+  stack: [arg1, arg2, ...] -> []
+  Call the native function at funcIndex.

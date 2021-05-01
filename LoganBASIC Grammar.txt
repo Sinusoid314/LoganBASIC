@@ -20,11 +20,13 @@ equality    ->  comparison ( ( "=" | "<>" ) comparison )* ;
 comparison  ->  term ( ( ">" | ">=" | "<" | "<=" ) term )* ;
 term        ->  factor ( ( "-" | "+" ) factor )* ;
 factor      ->  unary ( ( "/" | "*" | "%" ) unary )* ;
-unary       ->  ( "-" | "not" ) unary | primary ;
+unary       ->  ( "-" | "not" ) unary | call ;
+call        ->  ( IDENTIFIER "(" arguments? ")" ) | primary ;
 primary     ->  "true" | "false" | NUMBER_LIT | STRING_LIT | IDENTIFIER
                 | ( "(" expression ")" ) ;
                
-terminator  ->  ( "\n" | EOF ) ;
+terminator  ->  ( "\n" | ":" | EOF ) ;
+arguments   ->  expression ( "," expression )* ;
 
 NUMBER_LIT  ->  DIGIT+ ( "." DIGIT+ )? ;
 STRING_LIT  ->  "\"" <any char except "\"">* "\"" ;
