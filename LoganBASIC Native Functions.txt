@@ -1,0 +1,6 @@
+Rnd()
+  Return a pseudo-random number between 0 and 1.
+
+Time()
+  Return the number of milliseconds elapsed since January 1, 1970.
+

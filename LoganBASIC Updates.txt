@@ -1,3 +1,6 @@
+(May 2, 2021)
+	- Modified callExpr() in Parser to make function identifier matching case-insensitive.
+
 (May 1, 2021)
 	- Added native functions RND() and TIME().
 

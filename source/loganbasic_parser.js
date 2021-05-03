@@ -354,7 +354,7 @@ class Parser
       if(!this.matchTokenList([TOKEN_RIGHT_PAREN]))
         throw {message: "Expected ')' after function arguments."};
 
-      funcIndex = this.nativeFuncList.indexOf(funcIdent);
+      funcIndex = this.nativeFuncList.indexOf(funcIdent.toLowerCase());
       if(funcIndex == -1)
         throw {message: "Function " + funcIdent + "() does not exist."};
 

@@ -20,7 +20,7 @@ function funcRnd(runtime)
 }
 
 function funcTime(runtime)
-//
+//Return the number of milliseconds elapsed since January 1, 1970
 {
   runtime.stack.push(Date.now());
 }
