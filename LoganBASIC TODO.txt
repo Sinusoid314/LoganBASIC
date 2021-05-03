@@ -1,5 +1,0 @@
-- Add ELSE clause to IF..THEN statement.
-- Add FOR/NEXT loop.
-- Add file new/open/save to editor.
-- Comment functions and methods.
-
