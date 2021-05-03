@@ -1,0 +1,118 @@
+(May 2, 2021)
+	- Modified callExpr() in Parser to make function identifier matching case-insensitive.
+
+(May 1, 2021)
+	- Added native functions RND() and TIME().
+
+(April 30, 2021)
+	- Added logical-line-extender '_'.
+
+(April 29, 2021)
+	- Modified whileStmt() in Parser to use checkToken() for detecting WEND keyword.
+
+(April 27, 2021)
+	- Renamed matchTokenTypes() to matchTokenList().
+	- Renamed checkTokenType() to checkToken().
+	- Renamed checkNextTokenType() to checkNextToken().
+	- Added checkTokenPair() to Parser.
+	- Modified ifStmt() in Parser to use checkTokenPair().
+	- Added statement terminator ':'.
+	- Add END statement.
+	- Added WHILE...WEND loop.
+	- Made console auto scroll to bottom.
+	- Added matchTokenPair() to Parser.
+	- Fixed bug with OR operator giving wrong result.
+	- Added peekNextToken() and checkNextToken() to Parser.
+	- Added IF...THEN...END IF statement.
+
+(April 26, 2021)
+	- Added JUMP_IF_TRUE and JUMP_IF_TRUE_PERSIST opcodes.
+	- Added OR and AND operators.
+
+(April 25, 2021)
+	- Added remainder operator %.
+	- Added JUMP, JUMP_IF_FALSE, and JUMP_IF_FALSE_PERSIST opcodes.
+	- Changed keyword matching to be case-insensitive.
+
+(April 23, 2021)
+	- Added TRUE and FALSE literals.
+	- Added NOT operator.
+	- Added equality operators.
+	- Added comparison operators.
+
+(April 21, 2021)
+	- Implemented INPUT statement.
+	- Added TOKEN_COMMA.
+	- Fixed bug with the negation operator.
+	- Modified the PRINT statement to append a newline to its output.
+	- Implemented Parser class.
+	- Modified main module to use a (Scanner -> Parser -> Runtime) pipeline.
+
+(April 19, 2021)
+	- Added Opcode documentation.
+	- Implemented Runtime class.
+
+(April 18, 2021)
+	- Renamed loganbasic_interpreter module to loganbasic_parser.
+	- Renamed Interpreter class to Parser.
+	- Added loganbasic_bytecode and loganbasic_runtime modules.
+	- Implemented Bytecode class.
+
+(April 17, 2021)
+	- Renamed loganbasic_main to loganbasic_ui.
+	- Created loganbasic_workermsg module to share message IDs between the UI and worker threads.
+	- Moved the Lexer and Interpreter into a worker thread in loganbasic_main.
+	
+(April 14, 2021)
+	- Added error handling for invalid expressions.
+	- Renamed checkTerminator() to matchTerminator().
+
+(April 12, 2021)
+	- Fixed bug that is returning undefined from evalOperation() in Interpreter class.
+	- Added support for parenthesis tokens in Lexer class.
+	- Modified scanToken() in Lexer class to avoid adding multiple newline tokens in a row.
+	- Added variable support.
+	- Added checkTerminator() to Interpreter class.
+
+(April 11, 2021)
+	- Added progConsole variable to Lexer class.
+	- Implemented runBtn_OnClick().
+	- Implemented run(), runStatement(), and printStmt() in Interpreter class.
+	- Removed EOF check in checkToken() in Interpreter class.
+
+(April 9, 2021)
+	- Implemented evalExpression(), termExpr(), factorExpr(), unaryExpr(),
+	  primaryExpr(), and evalOperation() in Interpreter class.
+
+(April 8, 2021)
+	- Implemented constructor(), consumeToken(), matchTokenTypes(),
+	  checkToken(), endOfTokens(), peekToken(), and prevToken()
+	  in Interpreter class.
+
+(April 7, 2021)
+	- Implemented scanToken(), consumeStringLiteral(), consumeNumberLiteral(),
+	  and consumeIdentifier() in Lexer class.
+	- Added error handling to Lexer class.
+
+(April 5, 2021)
+	- Added toString() to Token class.
+	- Added a status variable and constants to loganbasic_main module.
+	- Added a status bar and command bar.
+	- Implemented runBtn_OnClick().
+
+(April 4, 2021)
+	- Implemented matchChar(), peekChar(), peekNextChar(), and scan()
+	  in Lexer class.
+	- Added errorMsg to Lexer class.
+
+(April 3, 2021)
+	- Implemented constructor(), addToken(), consumeChar(), endOfSource(),
+	  isAlpha(), isDigit(), and isAlphaNumeric() in Lexer class.
+	- Added keywordList object map to lexer module.
+
+(April 1, 2021)
+	- Implemented Token class.
+	- Defined language grammar.
+
+(March 31, 2021)
+	- Created the HTML, CSS, and JavaScript skeletons.

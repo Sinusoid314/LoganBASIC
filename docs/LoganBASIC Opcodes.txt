@@ -1,0 +1,106 @@
+LOAD_TRUE
+  stack: [] -> [true]
+  Push 'true' onto the stack.
+
+LOAD_FALSE
+  stack: [] -> [false]
+  Push 'false' onto the stack.
+
+LOAD_LIT
+  operands: literalIndex
+  stack: [] -> [value]
+  Push the value of the given literal onto the stack.
+
+LOAD_VAR
+  operands: variableIndex
+  stack: [] -> [value]
+  Push the value of the given variable onto the stack.
+
+STORE_VAR
+  operands: variableIndex
+  stack: [value] -> []
+  Pop value from the stack and store it in the given variable.
+
+POP
+  stack: [value] -> []
+  Pop value from the stack and discard it.
+
+SUB
+  stack: [value1, value2] -> [result]
+  Subract value2 from value1.
+
+ADD
+  stack: [value1, value2] -> [result]
+  Add value1 and value2.
+
+DIV
+  stack: [value1, value2] -> [result]
+  Divide value1 by value2.
+
+MUL
+  stack: [value1, value2] -> [result]
+  Multiply value1 and value2.
+
+MOD
+  stack: [value1, value2] -> [result]
+  Return the remainder of dividing value1 by value2.
+
+NEGATE
+  stack: [value] -> [result]
+  Switch the sign of value.
+  
+NOT
+  stack: [value] -> [result]
+  Return the logical opposite of boolean value.
+
+EQUAL
+  stack: [value1, value2] -> [result] 
+  Return true if the two values are equal, false otherwise.
+
+GREATER
+  stack: [value1, value2] -> [result]
+  Return true if value1 is greater than value2, false otherwise.
+
+LESS
+  stack: [value1, value2] -> [result]
+  Return true if value1 is less than value2, false otherwise.
+
+PRINT
+  stack: [value] -> []
+  Print a value to the console.
+
+INPUT
+  stack: [value] -> [result]
+  Prints a prompt value, waits for user input, then pushes the input result onto the stack.
+
+JUMP
+  operands: opIndex
+  Jump to the instruction at opIndex.
+
+JUMP_IF_FALSE
+  operands: opIndex
+  stack: [value] -> []
+  Jump to the instruction at opIndex if value is false.
+
+JUMP_IF_FALSE_PERSIST
+  operands: opIndex
+  stack: [value] -> [value]
+  Jump to the instruction at opIndex if value is false, keeping value on the stack.
+
+JUMP_IF_TRUE
+  operands: opIndex
+  stack: [value] -> []
+  Jump to the instruction at opIndex if value is true.
+
+JUMP_IF_TRUE_PERSIST
+  operands: opIndex
+  stack: [value] -> [value]
+  Jump to the instruction at opIndex if value is true, keeping value on the stack.
+  
+END
+  Trigger the program to end
+
+CALL_NATIVE_FUNC
+  operands: funcIndex
+  stack: [arg1, arg2, ...] -> []
+  Call the native function at funcIndex.

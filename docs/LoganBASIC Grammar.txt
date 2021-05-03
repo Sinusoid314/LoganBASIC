@@ -1,0 +1,35 @@
+program  ->  statement* EOF ;
+
+statement  ->  assignment
+               | printStmt
+               | inputStmt
+               | ifStmt 
+               | whileStmt;
+
+assignment  ->  IDENTIFIER "=" expression terminator ;
+printStmt   ->  "print" expression terminator ;
+inputStmt   ->  expression "," IDENTIFIER terminator ;
+ifStmt      ->  "if" expression "then" 
+                ( statement | ( terminator statement* "end" "if" terminator ) ) ;
+whileStmt   ->  "while" expression terminator statement* "wend" terminator ;
+
+expression  ->  logic_or ;
+logic_or    ->  logic_and ( "or" logic_and )* ;
+logic_and   ->  equality ( "and" equality )* ;
+equality    ->  comparison ( ( "=" | "<>" ) comparison )* ;
+comparison  ->  term ( ( ">" | ">=" | "<" | "<=" ) term )* ;
+term        ->  factor ( ( "-" | "+" ) factor )* ;
+factor      ->  unary ( ( "/" | "*" | "%" ) unary )* ;
+unary       ->  ( "-" | "not" ) unary | call ;
+call        ->  ( IDENTIFIER "(" arguments? ")" ) | primary ;
+primary     ->  "true" | "false" | NUMBER_LIT | STRING_LIT | IDENTIFIER
+                | ( "(" expression ")" ) ;
+               
+terminator  ->  ( "\n" | ":" | EOF ) ;
+arguments   ->  expression ( "," expression )* ;
+
+NUMBER_LIT  ->  DIGIT+ ( "." DIGIT+ )? ;
+STRING_LIT  ->  "\"" <any char except "\"">* "\"" ;
+IDENTIFIER  ->  ALPHA ( ALPHA | DIGIT )* ;
+ALPHA       ->  "a" ... "z" | "A" ... "Z" | "_" ;
+DIGIT       ->  "0" ... "9" ;
