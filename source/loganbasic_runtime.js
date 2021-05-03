@@ -258,11 +258,11 @@ class Runtime
     this.currOpIndex = this.bytecode.opList.length;
   }
 
-  opCallNativeFunc
+  opCallNativeFunc()
   //Call the native function at funcIndex
   {
     var funcIndex = this.bytecode.opList[this.currOpIndex][1];
-    this.nativeFuncList[funcIndex].funObj();
+    this.nativeFuncList[funcIndex].funcObj(this);
   }
 
   endOfOps()

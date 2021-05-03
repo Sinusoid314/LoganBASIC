@@ -129,7 +129,7 @@ class Parser
         this.parseStatement();
       }
 
-      if(!this.matchTokenPair(TOKEN_END, TOKEN_IF)
+      if(!this.matchTokenPair(TOKEN_END, TOKEN_IF))
         throw {message: "Expected 'end if' at the end of 'if' block."};
 
       if(!this.matchTerminator())
@@ -354,7 +354,7 @@ class Parser
       if(!this.matchTokenList([TOKEN_RIGHT_PAREN]))
         throw {message: "Expected ')' after function arguments."};
 
-      funcIndex = this.nativeFuncList.indexOf(funcIdent.toLowerCase());
+      funcIndex = this.getNativeFuncIndex(funcIdent);
       if(funcIndex == -1)
         throw {message: "Function " + funcIdent + "() does not exist."};
 
@@ -438,6 +438,18 @@ class Parser
     return argCount;
   }
 
+  getNativeFuncIndex(funcIdent)
+  //
+  {
+    for(var funcIndex = 0; funcIndex < this.nativeFuncList.length; funcIndex++)
+    {
+      if(this.nativeFuncList[funcIndex].ident == funcIdent.toLowerCase())
+        return funcIndex;
+    }
+
+    return -1;
+  }
+
   getVariableIndex(varIdent)
   //
   {
@@ -481,7 +493,7 @@ class Parser
 
   matchTerminator()
   {
-    return this.matchTokenList([TOKEN_NEWLINE, TOKEN_EOF]);
+    return this.matchTokenList([TOKEN_NEWLINE, TOKEN_COLON, TOKEN_EOF]);
   }
 
   consumeToken()

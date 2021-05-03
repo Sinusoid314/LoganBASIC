@@ -10,7 +10,8 @@ class NativeFunc
 
 nativeFuncList = [
                   new NativeFunc("rnd", 0, funcRnd),
-                  new NativeFunc("time", 0, funcTime)
+                  new NativeFunc("time", 0, funcTime),
+                  new NativeFunc("int", 1, funcInt)
                  ];
 
 function funcRnd(runtime)
@@ -25,3 +26,9 @@ function funcTime(runtime)
   runtime.stack.push(Date.now());
 }
 
+function funcInt(runtime)
+//Return the integer portion of a number
+{
+  var val = runtime.stack.pop();
+  runtime.stack.push(parseInt(val));
+}

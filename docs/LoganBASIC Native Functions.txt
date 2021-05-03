@@ -4,3 +4,6 @@ Rnd()
 Time()
   Return the number of milliseconds elapsed since January 1, 1970.
 
+Int(number)
+  Return the integer portion of a number.
+
