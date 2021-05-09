@@ -1,49 +1,55 @@
-body
+button
 {
+  margin-right: 3px;
+  margin-left: 3px;
 }
 
-#editor_label
+#editorDiv
 {
-    margin-right: 20px;
+  display: block;
+}
+
+#menuBar
+{
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+
+#editorLabel
+{
+  display: block;
 }
 
 #progEditor
 {
-    display: block;
-    margin-top: 5px;
+  display: block;
+  margin-top: 5px;
+}
+
+#uiDiv
+{
+  display: block;
 }
 
 #commandBar
 {
-    margin-top: 10px;
-    margin-bottom: 20px;
-}
-
-#runBtn
-{
-    margin-right: 2px;
-    margin-left: 2px;
-}
-
-#stopBtn
-{
-    margin-right: 2px;
-    margin-left: 2px;
+  margin-top: 10px;
+  margin-bottom: 20px;
 }
 
 #statusBar
 {
-    display: inline;
-    margin-left: 15px;
+  display: inline;
+  margin-left: 15px;
 }
 
-#progConsole_label
+#consoleLabel
 {
-    display: block;
+  display: block;
 }
 
 #progConsole
 {
-    display: block;
-    margin-top: 5px;
+  display: block;
+  margin-top: 5px;
 }

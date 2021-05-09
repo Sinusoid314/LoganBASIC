@@ -1,6 +1,5 @@
 var isRunning = false;
 var progWorker = null;
-var progEditor = document.getElementById("progEditor");
 var runBtn = document.getElementById("runBtn");
 var stopBtn = document.getElementById("stopBtn");
 var statusBar = document.getElementById("statusBar");

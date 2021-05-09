@@ -4,23 +4,37 @@
 	<title>Logan BASIC</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>
 	<link rel="stylesheet" type="text/css" href="loganbasic.css"></link>
+	<script defer="defer" type="text/javascript" src="loganbasic_editor.js"></script>
 	<script defer="defer" type="text/javascript" src="loganbasic_worker_msg.js"></script>
 	<script defer="defer" type="text/javascript" src="loganbasic_ui.js"></script>
 </head>
 
 <body>
 
-<label id="editor_label" for="editor">Code Editor</label>
-<textarea id="progEditor" cols="80" rows="15" wrap="off"></textarea>
+<div id="editorDiv">
+  <div id="menuBar">
+    <button id="newBtn">New</button>
+    <button id="openFileBtn">Open File</button>
+    <button id="openURLBtn">Open URL</button>
+    <button id="saveBtn">Save</button>
+    <button id="examplesBtn">Examples</button>
+    <button id="helpBtn">Help</button>
+  </div>
 
-<div id="commandBar">
-  <button id="runBtn">Run</button>
-  <button id="stopBtn" disabled>Stop</button>
-  <div id="statusBar">Ready.</div>
+  <label id="editorLabel" for="editor">Code Editor</label>
+  <textarea id="progEditor" cols="80" rows="15" wrap="off"></textarea>
 </div>
 
-<label id="progConsole_label" for="progConsole">Consol</label>
-<textarea id="progConsole" cols="80" rows="15" wrap="off" readonly></textarea>
+<div id="uiDiv">
+  <div id="commandBar">
+    <button id="runBtn">Run</button>
+    <button id="stopBtn" disabled>Stop</button>
+    <div id="statusBar">Ready.</div>
+  </div>
+
+  <label id="consoleLabel" for="progConsole">Consol</label>
+  <textarea id="progConsole" cols="80" rows="15" wrap="off" readonly></textarea>
+</div>
 
 </body>
 

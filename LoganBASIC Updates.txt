@@ -1,3 +1,8 @@
+(May 8, 2021)
+	- Separated the code editor into loganbasic_editor module.
+	- Added a menu bar to the editor.
+	- Implemented "New" and "Open URL" buttons in editor.
+
 (May 2, 2021)
 	- Added native function Int().
 	- Added getNativeFuncIndex() to Parser.
