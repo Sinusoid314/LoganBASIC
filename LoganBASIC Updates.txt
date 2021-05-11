@@ -1,3 +1,7 @@
+(May 11, 2021)
+	- Implemented "Save" button in editor.
+	- Implemented window_onLoad().
+
 (May 8, 2021)
 	- Separated the code editor into loganbasic_editor module.
 	- Added a menu bar to the editor.

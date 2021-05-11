@@ -20,14 +20,29 @@ function window_onLoad(event)
   var urlParams = new URLSearchParams(window.location.search);
   var fileURL;
   var httpReq;
+  var fileInput;
 
   if(!urlParams.has("open"))
     return;
 
   fileURL = urlParams.get("open");
+  statusBar.innerHTML = "Loading file...";
 
   if(fileURL == "local")
   {
+    fileInput = document.createElement("input");
+    fileInput.type = "file";
+    fileInput.accept = "*.bas";
+
+    fileInput.onchange = function()
+    {
+      this.files[0].text().then(fileText => progEditor.value = fileText);
+      statusBar.innerHTML = "Ready.";
+    };
+
+    document.body.appendChild(fileInput);
+    //fileInput.click();
+    //document.body.removeChild(fileInput);
   }
   else
   {
@@ -41,7 +56,6 @@ function window_onLoad(event)
 
     httpReq.open("GET", fileURL);
     httpReq.send();
-    statusBar.innerHTML = "Loading file...";
   }
 }
 
@@ -71,6 +85,14 @@ function openURLBtn_onClick(event)
 function saveBtn_onClick(event)
 //
 {
+  var blob = new Blob([progEditor.value], {type: 'text/plain'});
+  var url = URL.createObjectURL(blob);
+  var fileLink = document.createElement("a");
+
+  fileLink.href = url;
+  fileLink.download = "untitled.bas";
+  fileLink.click();
+  setTimeout(() => URL.revokeObjectURL(url), 0);
 }
 
 function examplesBtn_onClick(event)
