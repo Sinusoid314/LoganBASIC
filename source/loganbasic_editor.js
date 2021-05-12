@@ -20,7 +20,7 @@ function window_onLoad(event)
   var urlParams = new URLSearchParams(window.location.search);
   var fileURL;
   var httpReq;
-  var fileInput;
+  var fileText;
 
   if(!urlParams.has("open"))
     return;
@@ -30,19 +30,13 @@ function window_onLoad(event)
 
   if(fileURL == "local")
   {
-    fileInput = document.createElement("input");
-    fileInput.type = "file";
-    fileInput.accept = "*.bas";
+    progEditor.value = window.localStorage.getItem("fileText");
 
-    fileInput.onchange = function()
+    if(fileText != null)
     {
-      this.files[0].text().then(fileText => progEditor.value = fileText);
+      progEditor.value = fileText;
       statusBar.innerHTML = "Ready.";
-    };
-
-    document.body.appendChild(fileInput);
-    //fileInput.click();
-    //document.body.removeChild(fileInput);
+    }
   }
   else
   {
@@ -68,7 +62,17 @@ function newBtn_onClick(event)
 function openFileBtn_onClick(event)
 //
 {
-  window.open("loganbasic.html?open=local", "_blank");
+    fileInput = document.createElement("input");
+    fileInput.type = "file";
+    fileInput.accept = "*.bas";
+
+    fileInput.onchange = function()
+    {
+      this.files[0].text().then(fileText => window.localStorage.setItem("fileText", fileText));
+      window.open("loganbasic.html?open=local", "_blank");
+    };
+
+    fileInput.click();
 }
 
 function openURLBtn_onClick(event)

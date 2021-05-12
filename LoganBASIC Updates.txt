@@ -1,4 +1,5 @@
 (May 11, 2021)
+	- Implemented "Open File" button in editor.
 	- Implemented "Save" button in editor.
 	- Implemented window_onLoad().
 
