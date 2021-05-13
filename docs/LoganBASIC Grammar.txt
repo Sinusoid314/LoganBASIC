@@ -1,17 +1,19 @@
 program  ->  statement* EOF ;
 
-statement  ->  assignment
+statement  ->  ( assignment
                | printStmt
                | inputStmt
                | ifStmt 
-               | whileStmt;
+               | whileStmt )
+               terminator? ;
 
-assignment  ->  IDENTIFIER "=" expression terminator ;
-printStmt   ->  "print" expression terminator ;
-inputStmt   ->  expression "," IDENTIFIER terminator ;
+assignment  ->  IDENTIFIER "=" expression ;
+printStmt   ->  "print" expression ;
+inputStmt   ->  expression "," IDENTIFIER ;
 ifStmt      ->  "if" expression "then" 
-                ( statement | ( terminator statement* "end" "if" terminator ) ) ;
-whileStmt   ->  "while" expression terminator statement* "wend" terminator ;
+                ( statement | ( terminator statement* "end" "if" ) ) ;
+whileStmt   ->  "while" expression terminator statement* "wend" ;
+endStmt     ->  "end" ;
 
 expression  ->  logic_or ;
 logic_or    ->  logic_and ( "or" logic_and )* ;

@@ -27,7 +27,7 @@ class Parser
     return this.bytecode;
   }
 
-  parseStatement()
+  parseStatement(requireTerminator = true)
   //
   {
     if(this.matchTokenList([TOKEN_PRINT]))
@@ -47,6 +47,12 @@ class Parser
 
     else
       this.assignmentStmt();
+
+    if(requireTerminator)
+    {
+      if(!this.matchTerminator())
+        throw {message: "Expected end-of-statement."};
+    }
   }
 
   assignmentStmt()
@@ -65,9 +71,6 @@ class Parser
 
     this.parseExpression();
 
-    if(!this.matchTerminator())
-      throw {message: "Expected end-of-statement after value."};
-
     this.addOp([OPCODE_STORE_VAR, varIndex]);
   }
 
@@ -75,10 +78,6 @@ class Parser
   //
   {
     this.parseExpression();
-
-    if(!this.matchTerminator())
-      throw {message: "Expected end-of-statement after expression."};
-
     this.addOp([OPCODE_PRINT]);
   }
 
@@ -98,9 +97,6 @@ class Parser
 	varIdent = this.prevToken().lexemeStr;
     varIndex = this.getVariableIndex(varIdent);
 
-    if(!this.matchTerminator())
-      throw {message: "Expected end-of-statement after identifier."};
-
     this.addOp([OPCODE_INPUT]);
     this.addOp([OPCODE_STORE_VAR, varIndex]);
   }
@@ -119,7 +115,7 @@ class Parser
 
     if(!this.matchTerminator())
     {
-      this.parseStatement();
+      this.parseStatement(false);
     }
     else
     {
@@ -159,9 +155,6 @@ class Parser
 
     if(!this.matchTokenList([TOKEN_WEND]))
       throw {message: "Expected 'wend' at the end of 'while' block."};
-
-    if(!this.matchTerminator())
-      throw {message: "Expected end-of-statement after 'wend'."};
 
     this.addOp([OPCODE_JUMP, startOpIndex]);
     this.patchJumpOp(jumpOpIndex);

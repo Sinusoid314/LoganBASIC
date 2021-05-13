@@ -1,3 +1,6 @@
+(May 12, 2021)
+	- Made the statement-terminator optional and moved its consumption to parseStatement().
+
 (May 11, 2021)
 	- Implemented "Open File" button in editor.
 	- Implemented "Save" button in editor.
