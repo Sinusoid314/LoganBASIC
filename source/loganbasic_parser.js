@@ -104,35 +104,57 @@ class Parser
   ifStmt()
   //
   {
-    var jumpOpIndex;
+    var thenJumpOpIndex;
+    var elseJumpOpIndex;
 
     this.parseExpression();
 
     if(!this.matchTokenList([TOKEN_THEN]))
       throw {message: "Expected 'then' after expression."};
 
-    jumpOpIndex = this.addOp([OPCODE_JUMP_IF_FALSE, 0]);
+    thenJumpOpIndex = this.addOp([OPCODE_JUMP_IF_FALSE, 0]);
 
     if(!this.matchTerminator())
     {
       this.parseStatement(false);
+      this.patchJumpOp(thenJumpOpIndex);
+      return;
     }
-    else
+
+    while(!this.checkTokenPair(TOKEN_END, TOKEN_IF)
+          && !this.checkToken(TOKEN_ELSE)
+          && !this.endOfTokens())
     {
-      while(!this.checkTokenPair(TOKEN_END, TOKEN_IF)
-            && !this.endOfTokens())
-      {
-        this.parseStatement();
-      }
-
-      if(!this.matchTokenPair(TOKEN_END, TOKEN_IF))
-        throw {message: "Expected 'end if' at the end of 'if' block."};
-
-      if(!this.matchTerminator())
-        throw {message: "Expected end-of-statement after 'end if'."};
+      this.parseStatement();
     }
 
-    this.patchJumpOp(jumpOpIndex);
+    if(this.endOfTokens())
+      throw {message: "Expected either 'else' or 'end if' at the end of 'if' block."};
+
+    if(this.matchTokenPair(TOKEN_END, TOKEN_IF))
+    {
+	  console.log("END IF");
+      this.patchJumpOp(thenJumpOpIndex);
+    }
+    else if(this.matchTokenList([TOKEN_ELSE]))
+    {
+		if(!this.matchTerminator())
+          throw {message: "Expected end-of-statement after 'else'."};
+
+        elseJumpOpIndex = this.addOp([OPCODE_JUMP, 0]);
+		this.patchJumpOp(thenJumpOpIndex);
+
+        while(!this.checkTokenPair(TOKEN_END, TOKEN_IF)
+	          && !this.endOfTokens())
+	    {
+	      this.parseStatement();
+        }
+
+        if(!this.matchTokenPair(TOKEN_END, TOKEN_IF))
+          throw {message: "Expected 'end if' at the end of 'else' block."};
+
+        this.patchJumpOp(elseJumpOpIndex);
+    }
   }
 
   whileStmt()

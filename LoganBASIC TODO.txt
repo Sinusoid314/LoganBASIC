@@ -1,5 +1,7 @@
-- Add ELSE clause to IF..THEN statement.
 - Add FOR/NEXT loop.
-- Add GOTO and branch-label statements.
+- Add DO/LOOP loop.
+- Add function-call statement.
+- Add user function/sub support.
+- Add arrays.
 - Comment functions and methods.
 

@@ -30,12 +30,16 @@ function window_onLoad(event)
 
   if(fileURL == "local")
   {
-    progEditor.value = window.localStorage.getItem("fileText");
+    fileText = window.localStorage.getItem("fileText");
 
     if(fileText != null)
     {
       progEditor.value = fileText;
       statusBar.innerHTML = "Ready.";
+    }
+    else
+    {
+	  statusBar.innerHTML = "Failed to open file.";
     }
   }
   else

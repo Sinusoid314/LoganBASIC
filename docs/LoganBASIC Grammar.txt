@@ -11,7 +11,7 @@ assignment  ->  IDENTIFIER "=" expression ;
 printStmt   ->  "print" expression ;
 inputStmt   ->  expression "," IDENTIFIER ;
 ifStmt      ->  "if" expression "then" 
-                ( statement | ( terminator statement* "end" "if" ) ) ;
+                ( statement | ( terminator statement* ( "else" terminator statement* )? "end" "if" ) ) ;
 whileStmt   ->  "while" expression terminator statement* "wend" ;
 endStmt     ->  "end" ;
 
