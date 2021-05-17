@@ -12,28 +12,30 @@
 <body>
 
 <div id="editorDiv">
-  <div id="menuBar">
+  <div id="menuBar" class="bar">
     <button id="newBtn">New</button>
     <button id="openFileBtn">Open File</button>
     <button id="openURLBtn">Open URL</button>
     <button id="saveBtn">Save</button>
+    <div class="bar-seperator"></div>
     <button id="examplesBtn">Examples</button>
     <button id="helpBtn">Help</button>
   </div>
 
-  <label id="editorLabel" for="editor">Code Editor</label>
-  <textarea id="progEditor" cols="80" rows="15" wrap="off"></textarea>
+  <label for="editor">Code Editor</label>
+  <textarea id="progEditor" cols="80" rows="15" wrap="off" spellcheck="false"></textarea>
 </div>
 
 <div id="uiDiv">
-  <div id="commandBar">
+  <div id="commandBar" class="bar">
     <button id="runBtn">Run</button>
     <button id="stopBtn" disabled>Stop</button>
+    <div class="bar-seperator"></div>
     <div id="statusBar">Ready.</div>
   </div>
 
-  <label id="consoleLabel" for="progConsole">Consol</label>
-  <textarea id="progConsole" cols="80" rows="15" wrap="off" readonly></textarea>
+  <label for="progConsole">Consol</label>
+  <textarea id="progConsole" cols="80" rows="15" wrap="off" spellcheck="false" readonly></textarea>
 </div>
 
 </body>

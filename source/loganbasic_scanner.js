@@ -11,7 +11,11 @@ var keywordList = {
                    "else": TOKEN_ELSE,
                    "end": TOKEN_END,
                    "while": TOKEN_WHILE,
-                   "wend": TOKEN_WEND
+                   "wend": TOKEN_WEND,
+                   "for": TOKEN_FOR,
+                   "to": TOKEN_TO,
+                   "step": TOKEN_STEP,
+                   "next": TOKEN_NEXT
                   }
 
 class Scanner
@@ -66,26 +70,31 @@ class Scanner
         break;
 
       case '\n':
-        if(this.tokenList[this.tokenList.length - 1].type == TOKEN_UNDERSCORE)
+        if(this.tokenList.length > 0)
         {
-          this.tokenList.pop();
-        }
-        else
-        {
-          if(this.tokenList[this.tokenList.length - 1].type != TOKEN_NEWLINE)
+          if(this.tokenList[this.tokenList.length - 1].type == TOKEN_UNDERSCORE)
           {
-            this.addToken(TOKEN_NEWLINE);
+            this.tokenList.pop();
+          }
+          else
+          {
+            if(this.tokenList[this.tokenList.length - 1].type != TOKEN_NEWLINE)
+            {
+              this.addToken(TOKEN_NEWLINE);
+            }
           }
         }
         this.currLineNum++;
         break;
 
       case ':':
-        if(this.tokenList[this.tokenList.length - 1].type != TOKEN_COLON)
+        if(this.tokenList.length > 0)
         {
-          this.addToken(TOKEN_COLON);
+          if(this.tokenList[this.tokenList.length - 1].type != TOKEN_COLON)
+          {
+            this.addToken(TOKEN_COLON);
+          }
         }
-        this.currLineNum++;
         break;
 
       case '_':

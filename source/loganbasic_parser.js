@@ -42,11 +42,20 @@ class Parser
     else if(this.matchTokenList([TOKEN_WHILE]))
       this.whileStmt();
 
+    else if(this.matchTokenList([TOKEN_FOR]))
+      this.forStmt();
+
     else if(this.matchTokenList([TOKEN_END]))
       this.endStmt();
 
-    else
+    else if(this.checkTokenPair(TOKEN_IDENTIFIER, TOKEN_LEFT_PAREN))
+      this.callStmt();
+
+    else if(this.checkToken(TOKEN_IDENTIFIER))
       this.assignmentStmt();
+
+    else
+      throw {message: "Expected statement."};
 
     if(requireTerminator)
     {
@@ -60,10 +69,7 @@ class Parser
   {
     var varIdent, varIndex;
 
-    if(!this.matchTokenList([TOKEN_IDENTIFIER]))
-      throw {message: "Expected identifier."};
-
-    varIdent = this.prevToken().lexemeStr;
+    varIdent = this.consumeToken().lexemeStr;
     varIndex = this.getVariableIndex(varIdent);
 
     if(!this.matchTokenList([TOKEN_EQUAL]))
@@ -72,6 +78,13 @@ class Parser
     this.parseExpression();
 
     this.addOp([OPCODE_STORE_VAR, varIndex]);
+  }
+
+  callStmt()
+  //
+  {
+    this.parseFuncCall();
+    this.addOp([OPCODE_POP]);
   }
 
   printStmt()
@@ -180,6 +193,12 @@ class Parser
 
     this.addOp([OPCODE_JUMP, startOpIndex]);
     this.patchJumpOp(jumpOpIndex);
+  }
+
+  forStmt()
+  //
+  {
+
   }
 
   endStmt()
@@ -357,31 +376,10 @@ class Parser
   callExpr()
   //
   {
-    var funcIdent, funcIndex, argCount;
-
 	if(this.checkTokenPair(TOKEN_IDENTIFIER, TOKEN_LEFT_PAREN))
-	{
-      funcIdent = this.consumeToken().lexemeStr;
-      this.consumeToken();
-
-      argCount = this.parseArguments();
-
-      if(!this.matchTokenList([TOKEN_RIGHT_PAREN]))
-        throw {message: "Expected ')' after function arguments."};
-
-      funcIndex = this.getNativeFuncIndex(funcIdent);
-      if(funcIndex == -1)
-        throw {message: "Function " + funcIdent + "() does not exist."};
-
-      if(argCount != this.nativeFuncList[funcIndex].paramCount)
-        throw {message: "Wrong number of arguments for function " + funcIdent + "()."};
-
-      this.addOp([OPCODE_CALL_NATIVE_FUNC, funcIndex]);
-    }
+      this.parseFuncCall();
     else
-    {
       this.primaryExpr();
-    }
   }
 
   primaryExpr()
@@ -433,6 +431,29 @@ class Parser
 
     //Invalid expression
     throw {message: "Expected expression."};
+  }
+
+  parseFuncCall()
+  //
+  {
+	var funcIdent, funcIndex, argCount;
+
+    funcIdent = this.consumeToken().lexemeStr;
+    this.consumeToken();
+
+    argCount = this.parseArguments();
+
+    if(!this.matchTokenList([TOKEN_RIGHT_PAREN]))
+      throw {message: "Expected ')' after function arguments."};
+
+    funcIndex = this.getNativeFuncIndex(funcIdent);
+    if(funcIndex == -1)
+      throw {message: "Function " + funcIdent + "() does not exist."};
+
+    if(argCount != this.nativeFuncList[funcIndex].paramCount)
+      throw {message: "Wrong number of arguments for function " + funcIdent + "()."};
+
+    this.addOp([OPCODE_CALL_NATIVE_FUNC, funcIndex]);
   }
 
   parseArguments()

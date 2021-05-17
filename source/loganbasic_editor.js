@@ -106,6 +106,7 @@ function saveBtn_onClick(event)
 function examplesBtn_onClick(event)
 //
 {
+  window.open("../examples/examples.html", "_blank");
 }
 
 function helpBtn_onClick(event)

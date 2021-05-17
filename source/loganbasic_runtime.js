@@ -6,6 +6,7 @@ class Runtime
     this.nativeFuncList = nativeFuncList;
     this.currOpIndex = 0;
     this.stack = [];
+    this.forLoopStack = [];
     this.opFuncList = [null];
     this.errorMsg = "";
 

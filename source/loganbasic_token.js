@@ -37,6 +37,10 @@ const TOKEN_ELSE = 44;
 const TOKEN_END = 45;
 const TOKEN_WHILE = 46;
 const TOKEN_WEND = 47;
+const TOKEN_FOR = 48;
+const TOKEN_TO = 49;
+const TOKEN_STEP = 50;
+const TOKEN_NEXT = 51;
 
 class Token
 {

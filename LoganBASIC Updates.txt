@@ -1,3 +1,10 @@
+(May 16, 2021)
+	- Added function-call statement.
+	- Added more CSS styling to the UI elements.
+	- Added an examples programs page.
+	- Fixed a bug when compiling code that has comments or newlines at its beginning.
+	- Disabled spellcheck underlines in the editor.
+
 (May 14, 2021)
 	- Added ELSE clause to IF..THEN statement.
 

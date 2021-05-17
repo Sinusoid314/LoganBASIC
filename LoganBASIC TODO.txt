@@ -1,6 +1,5 @@
 - Add FOR/NEXT loop.
 - Add DO/LOOP loop.
-- Add function-call statement.
 - Add user function/sub support.
 - Add arrays.
 - Comment functions and methods.

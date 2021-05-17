@@ -1,18 +1,24 @@
 program  ->  statement* EOF ;
 
 statement  ->  ( assignment
+               | callStmt
                | printStmt
                | inputStmt
                | ifStmt 
-               | whileStmt )
+               | whileStmt
+               | forStmt
+               | endStmt )
                terminator? ;
 
 assignment  ->  IDENTIFIER "=" expression ;
+callStmt    ->  funcCall ;
 printStmt   ->  "print" expression ;
 inputStmt   ->  expression "," IDENTIFIER ;
 ifStmt      ->  "if" expression "then" 
                 ( statement | ( terminator statement* ( "else" terminator statement* )? "end" "if" ) ) ;
 whileStmt   ->  "while" expression terminator statement* "wend" ;
+forStmt     ->  "for" IDENTIFIER "=" expression "to" expression ( "step" expression )? terminator
+                statement* "next" IDENTIFIER?
 endStmt     ->  "end" ;
 
 expression  ->  logic_or ;
@@ -22,12 +28,13 @@ equality    ->  comparison ( ( "=" | "<>" ) comparison )* ;
 comparison  ->  term ( ( ">" | ">=" | "<" | "<=" ) term )* ;
 term        ->  factor ( ( "-" | "+" ) factor )* ;
 factor      ->  unary ( ( "/" | "*" | "%" ) unary )* ;
-unary       ->  ( "-" | "not" ) unary | call ;
-call        ->  ( IDENTIFIER "(" arguments? ")" ) | primary ;
+unary       ->  ( "-" | "not" ) unary | callExpr ;
+callExpr    ->  funcCall | primary ;
 primary     ->  "true" | "false" | NUMBER_LIT | STRING_LIT | IDENTIFIER
                 | ( "(" expression ")" ) ;
                
 terminator  ->  ( "\n" | ":" | EOF ) ;
+funcCall    ->  IDENTIFIER "(" arguments? ")"
 arguments   ->  expression ( "," expression )* ;
 
 NUMBER_LIT  ->  DIGIT+ ( "." DIGIT+ )? ;
