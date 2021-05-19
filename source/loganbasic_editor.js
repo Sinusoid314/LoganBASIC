@@ -112,4 +112,5 @@ function examplesBtn_onClick(event)
 function helpBtn_onClick(event)
 //
 {
+  window.open("../docs/help/help.html", "_blank");
 }

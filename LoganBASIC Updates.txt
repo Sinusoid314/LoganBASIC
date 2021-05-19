@@ -1,3 +1,8 @@
+(May 18, 2021)
+	- Added HiLo.bas to the examples page.
+	- Added version number to the bottom of loganbasic.html.
+	- Added the shell for the help page.
+
 (May 16, 2021)
 	- Added function-call statement.
 	- Added more CSS styling to the UI elements.

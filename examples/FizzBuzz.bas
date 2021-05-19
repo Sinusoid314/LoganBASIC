@@ -1,4 +1,4 @@
-'**** FiZZBuZZ ****
+'FiZZBuZZ
 '
 'Prints the numbers from 1 to 100. But for multiples 
 'of three prints "Fizz" instead of the number and for
