@@ -1,3 +1,6 @@
+(May 22, 2021)
+	- Started adding support for arrays.
+
 (May 18, 2021)
 	- Added HiLo.bas to the examples page.
 	- Added version number to the bottom of loganbasic.html.

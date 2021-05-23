@@ -48,6 +48,9 @@ class Parser
     else if(this.matchTokenList([TOKEN_END]))
       this.endStmt();
 
+    else if(this.matchTokenList([TOKEN_DIM]))
+      this.dimStmt();
+
     else if(this.checkTokenPair(TOKEN_IDENTIFIER, TOKEN_LEFT_PAREN))
       this.callStmt();
 
@@ -205,6 +208,12 @@ class Parser
   //
   {
     this.addOp([OPCODE_END]);
+  }
+
+  dimStmt()
+  //
+  {
+
   }
 
   parseExpression()

@@ -5,7 +5,9 @@ const TOKEN_COLON = 3;
 const TOKEN_UNDERSCORE = 4;
 const TOKEN_LEFT_PAREN = 5;
 const TOKEN_RIGHT_PAREN = 6;
-const TOKEN_COMMA = 7;
+const TOKEN_LEFT_BRACKET = 7;
+const TOKEN_RIGHT_BRACKET = 8;
+const TOKEN_COMMA = 9;
 
 const TOKEN_MINUS = 10;
 const TOKEN_PLUS = 11;
@@ -41,6 +43,7 @@ const TOKEN_FOR = 48;
 const TOKEN_TO = 49;
 const TOKEN_STEP = 50;
 const TOKEN_NEXT = 51;
+const TOKEN_DIM = 52;
 
 class Token
 {

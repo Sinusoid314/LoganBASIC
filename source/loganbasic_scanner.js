@@ -15,7 +15,8 @@ var keywordList = {
                    "for": TOKEN_FOR,
                    "to": TOKEN_TO,
                    "step": TOKEN_STEP,
-                   "next": TOKEN_NEXT
+                   "next": TOKEN_NEXT,
+                   "dim": TOKEN_DIM
                   }
 
 class Scanner
@@ -107,6 +108,14 @@ class Scanner
 
       case ')':
         this.addToken(TOKEN_RIGHT_PAREN);
+        break;
+
+      case '[':
+        this.addToken(TOKEN_LEFT_BRACKET);
+        break;
+
+      case ']':
+        this.addToken(TOKEN_RIGHT_BRACKET);
         break;
 
       case ',':

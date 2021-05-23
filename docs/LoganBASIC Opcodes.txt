@@ -104,3 +104,18 @@ CALL_NATIVE_FUNC
   operands: funcIndex
   stack: [arg1, arg2, ...] -> []
   Call the native function at funcIndex.
+
+DIM_ARRAY
+  operands: dimCount
+  stack: [arrayRef, dimVal1, dimVal2, ...] -> []
+  Set the dimensions of the given array.
+
+LOAD_ARRAY_ITEM
+  operands: indexCount
+  stack: [arrayRef, indexVal1, indexVal2, ...] -> [itemVal]
+  Push the value of the given array item onto the stack.
+
+STORE_ARRAY_ITEM
+  operands: indexCount
+  stack: [arrayRef, indexVal1, indexVal2, ..., itemVal] -> []
+  Set the given array item to the given value.

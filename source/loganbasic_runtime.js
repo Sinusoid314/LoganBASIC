@@ -6,7 +6,6 @@ class Runtime
     this.nativeFuncList = nativeFuncList;
     this.currOpIndex = 0;
     this.stack = [];
-    this.forLoopStack = [];
     this.opFuncList = [null];
     this.errorMsg = "";
 
@@ -36,6 +35,9 @@ class Runtime
     this.opFuncList[OPCODE_JUMP_IF_TRUE_PERSIST] = this.opJumpIfTruePersist.bind(this);
     this.opFuncList[OPCODE_END] = this.opEnd.bind(this);
     this.opFuncList[OPCODE_CALL_NATIVE_FUNC] = this.opCallNativeFunc.bind(this);
+    this.opFuncList[OPCODE_DIM_ARRAY] = this.opDimArray.bind(this);
+    this.opFuncList[OPCODE_LOAD_ARRAY_ITEM] = this.opLoadArrayItem.bind(this);
+    this.opFuncList[OPCODE_STORE_ARRAY_ITEM] = this.opStoreArrayItem.bind(this);
 
     //Variable values are kept at the bottom of the stack and initialized to 0
     for(var n = 0; n < this.bytecode.varIdentList.length; n++)
@@ -266,9 +268,48 @@ class Runtime
     this.nativeFuncList[funcIndex].funcObj(this);
   }
 
+  opDimArray()
+  //
+  {
+
+  }
+
+  opLoadArrayItem()
+  //
+  {
+
+  }
+
+  opStoreArrayItem()
+  //
+  {
+
+  }
+
   endOfOps()
   //Return true if the op index is past the end of the op list
   {
     return (this.currOpIndex >= this.bytecode.opList.length);
+  }
+}
+
+class ObjArray
+{
+  constructor()
+  {
+    this.itemList = [];
+    this.dimSizeList = [];
+  }
+
+  reDim(newDimSizeList)
+  //
+  {
+
+  }
+
+  getLinearIndex(indexList)
+  //
+  {
+
   }
 }

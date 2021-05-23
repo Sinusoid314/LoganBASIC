@@ -7,10 +7,11 @@ statement  ->  ( assignment
                | ifStmt 
                | whileStmt
                | forStmt
-               | endStmt )
+               | endStmt
+               | dimStmt )
                terminator? ;
 
-assignment  ->  IDENTIFIER "=" expression ;
+assignment  ->  ( IDENTIFIER | arrayItem ) "=" expression ;
 callStmt    ->  funcCall ;
 printStmt   ->  "print" expression ;
 inputStmt   ->  expression "," IDENTIFIER ;
@@ -20,6 +21,7 @@ whileStmt   ->  "while" expression terminator statement* "wend" ;
 forStmt     ->  "for" IDENTIFIER "=" expression "to" expression ( "step" expression )? terminator
                 statement* "next" IDENTIFIER?
 endStmt     ->  "end" ;
+dimStmt     ->  "dim" arrayItem ;
 
 expression  ->  logic_or ;
 logic_or    ->  logic_and ( "or" logic_and )* ;
@@ -29,12 +31,14 @@ comparison  ->  term ( ( ">" | ">=" | "<" | "<=" ) term )* ;
 term        ->  factor ( ( "-" | "+" ) factor )* ;
 factor      ->  unary ( ( "/" | "*" | "%" ) unary )* ;
 unary       ->  ( "-" | "not" ) unary | callExpr ;
-callExpr    ->  funcCall | primary ;
+callExpr    ->  funcCall | arrayExpr ;
+arrayExpr   ->  arrayItem | primary ;
 primary     ->  "true" | "false" | NUMBER_LIT | STRING_LIT | IDENTIFIER
                 | ( "(" expression ")" ) ;
                
 terminator  ->  ( "\n" | ":" | EOF ) ;
-funcCall    ->  IDENTIFIER "(" arguments? ")"
+funcCall    ->  IDENTIFIER "(" arguments? ")" ;
+arrayItem   ->  IDENTIFIER "[" arguments "]" ;
 arguments   ->  expression ( "," expression )* ;
 
 NUMBER_LIT  ->  DIGIT+ ( "." DIGIT+ )? ;
