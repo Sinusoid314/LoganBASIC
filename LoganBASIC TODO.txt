@@ -1,7 +1,7 @@
+- Add arrays support in Parser.
 - Make Input statement a native function.
 - Add FOR/NEXT loop.
 - Add DO/LOOP loop.
 - Add user function/sub support.
-- Add arrays.
 - Comment functions and methods.
 

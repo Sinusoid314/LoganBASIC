@@ -51,7 +51,7 @@ class Runtime
 	{
       while(!this.endOfOps() && !this.inputting)
       {
-		this.opFuncList[this.bytecode.opList[this.currOpIndex][0]]();
+		this.opFuncList[this.getOperand(0)]();
         this.currOpIndex++;
       }
     }
@@ -76,7 +76,7 @@ class Runtime
   opLoadLit()
   //Push the value of the given literal onto the stack
   {
-    var litIndex = this.bytecode.opList[this.currOpIndex][1];
+    var litIndex = this.getOperand(1);
     var val = this.bytecode.literalList[litIndex];
     this.stack.push(val);
   }
@@ -84,7 +84,7 @@ class Runtime
   opLoadVar()
   //Push the value of the given variable onto the stack
   {
-    var varIndex = this.bytecode.opList[this.currOpIndex][1];
+    var varIndex = this.getOperand(1);
     var val = this.stack[varIndex];
     this.stack.push(val);
   }
@@ -92,7 +92,7 @@ class Runtime
   opStoreVar()
   //Pop value from the stack and store it in the given variable
   {
-    var varIndex = this.bytecode.opList[this.currOpIndex][1];
+    var varIndex = this.getOperand(1);
     var val = this.stack.pop();
     this.stack[varIndex] = val;
   }
@@ -211,14 +211,14 @@ class Runtime
   opJump()
   //Jump to the instruction at opIndex
   {
-    var opIndex = this.bytecode.opList[this.currOpIndex][1];
+    var opIndex = this.getOperand(1);
     this.currOpIndex = opIndex - 1;
   }
 
   opJumpIfFalse()
   //Jump to the instruction at opIndex if value is false
   {
-    var opIndex = this.bytecode.opList[this.currOpIndex][1];
+    var opIndex = this.getOperand(1);
     var val = this.stack.pop();
 
     if(!val)
@@ -228,7 +228,7 @@ class Runtime
   opJumpIfFalsePersist()
   //Jump to the instruction at opIndex if value is false, keeping value on the stack
   {
-    var opIndex = this.bytecode.opList[this.currOpIndex][1];
+    var opIndex = this.getOperand(1);
     var val = this.stack[this.stack.length - 1];
 
     if(!val)
@@ -238,7 +238,7 @@ class Runtime
   opJumpIfTrue()
   //Jump to the instruction at opIndex if value is true
   {
-    var opIndex = this.bytecode.opList[this.currOpIndex][1];
+    var opIndex = this.getOperand(1);
     var val = this.stack.pop();
 
     if(val)
@@ -248,7 +248,7 @@ class Runtime
   opJumpIfTruePersist()
   //Jump to the instruction at opIndex if value is true, keeping value on the stack
   {
-    var opIndex = this.bytecode.opList[this.currOpIndex][1];
+    var opIndex = this.getOperand(1);
     var val = this.stack[this.stack.length - 1];
 
     if(val)
@@ -264,26 +264,79 @@ class Runtime
   opCallNativeFunc()
   //Call the native function at funcIndex
   {
-    var funcIndex = this.bytecode.opList[this.currOpIndex][1];
+    var funcIndex = this.getOperand(1);
     this.nativeFuncList[funcIndex].funcObj(this);
   }
 
   opDimArray()
   //
   {
+    var dimCount = this.getOperand(1);
+    var dimSizeList = new Array(dimCount).fill(0);
+    var arrayRef;
 
+    for(var n = dimCount - 1; n >= 0; n--)
+      dimSizeList[n] = this.stack.pop();
+
+    arrayRef = this.stack.pop();
+
+    if(!(arrayRef instanceof ObjArray))
+      arrayRef = new ObjArray();
+
+    arrayRef.reDim(dimSizeList);
   }
 
   opLoadArrayItem()
   //
   {
+    var indexCount = this.getOperand(1);
+    var indexList = new Array(indexCount).fill(0);
+    var arrayRef, linearIndex;
 
+    for(var n = indexCount - 1; n >= 0; n--)
+      indexList[n] = this.stack.pop();
+
+    arrayRef = this.stack.pop();
+
+    if(!(arrayRef instanceof ObjArray))
+      throw {message: "Expected array."};
+
+    linearIndex = arrayRef.getLinearIndex(indexList);
+
+    if(linearIndex < 0)
+      throw {message: "Array index out of bounds."};
+
+    this.stack.push(arrayRef.itemList[linearIndex]);
   }
 
   opStoreArrayItem()
   //
   {
+    var indexCount = this.getOperand(1);
+    var indexList = new Array(indexCount).fill(0);
+    var arrayRef, linearIndex;
+    var itemVal = this.stack.pop();
 
+    for(var n = indexCount - 1; n >= 0; n--)
+      indexList[n] = this.stack.pop();
+
+    arrayRef = this.stack.pop();
+
+    if(!(arrayRef instanceof ObjArray))
+      throw {message: "Expected array."};
+
+    linearIndex = arrayRef.getLinearIndex(indexList);
+
+    if(linearIndex < 0)
+      throw {message: "Array index out of bounds."};
+
+    arrayRef.itemList[linearIndex] = itemVal;
+  }
+
+  getOperand(operandIndex)
+  //
+  {
+    return this.bytecode.opList[this.currOpIndex][operandIndex];
   }
 
   endOfOps()
@@ -304,12 +357,40 @@ class ObjArray
   reDim(newDimSizeList)
   //
   {
+    var newLinearSize = 1;
 
+    for(var n = 0; n < this.dimSizeList.length; n++)
+    {
+      if(newDimSizeList[n] <= 0)
+        return false;
+
+      newLinearSize *= newDimSizeList[n];
+    }
+
+    this.dimSizeList = newDimSizeList;
+    this.itemList = new Array(newLinearSize).fill(0);
+
+    return true;
   }
 
   getLinearIndex(indexList)
   //
   {
+    var linearIndex = 0;
+    var multiplier = 1;
 
+    if(indexList.length != this.dimSizeList.length)
+      return -1;
+
+    for(var n = 0; n < this.dimSizeList.length; n++)
+    {
+      if((indexList[n] < 0) || (indexList[n] >= this.dimSizeList[n]))
+        return -1;
+
+      linearIndex += indexList[n] * multiplier;
+      multiplier *= this.dimSizeList[n];
+    }
+
+    return linearIndex;
   }
 }
