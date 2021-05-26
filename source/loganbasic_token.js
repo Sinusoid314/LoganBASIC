@@ -43,7 +43,8 @@ const TOKEN_FOR = 48;
 const TOKEN_TO = 49;
 const TOKEN_STEP = 50;
 const TOKEN_NEXT = 51;
-const TOKEN_DIM = 52;
+const TOKEN_ARRAY = 52;
+const TOKEN_REDIM = 53;
 
 class Token
 {

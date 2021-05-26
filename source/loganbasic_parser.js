@@ -30,26 +30,29 @@ class Parser
   parseStatement(requireTerminator = true)
   //
   {
-    if(this.matchTokenList([TOKEN_PRINT]))
+    if(this.matchToken(TOKEN_PRINT))
       this.printStmt();
 
-    else if(this.matchTokenList([TOKEN_INPUT]))
+    else if(this.matchToken(TOKEN_INPUT))
       this.inputStmt();
 
-    else if(this.matchTokenList([TOKEN_IF]))
+    else if(this.matchToken(TOKEN_IF))
       this.ifStmt();
 
-    else if(this.matchTokenList([TOKEN_WHILE]))
+    else if(this.matchToken(TOKEN_WHILE))
       this.whileStmt();
 
-    else if(this.matchTokenList([TOKEN_FOR]))
+    else if(this.matchToken(TOKEN_FOR))
       this.forStmt();
 
-    else if(this.matchTokenList([TOKEN_END]))
+    else if(this.matchToken(TOKEN_END))
       this.endStmt();
 
-    else if(this.matchTokenList([TOKEN_DIM]))
-      this.dimStmt();
+    else if(this.matchToken(TOKEN_ARRAY))
+      this.arrayStmt();
+
+    else if(this.matchToken(TOKEN_REDIM))
+      this.reDimStmt();
 
     else if(this.checkTokenPair(TOKEN_IDENTIFIER, TOKEN_LEFT_PAREN))
       this.callStmt();
@@ -71,16 +74,25 @@ class Parser
   //
   {
     var varIdent, varIndex;
+    var indexCount, storeOp;
 
-    varIdent = this.consumeToken().lexemeStr;
-    varIndex = this.getVariableIndex(varIdent);
+    if(this.checkTokenPair(TOKEN_IDENTIFIER, TOKEN_LEFT_BRACKET))
+    {
+      indexCount = this.parseArrayItem();
+      storeOp = [OPCODE_STORE_ARRAY_ITEM, indexCount];
+    }
+    else
+    {
+      varIdent = this.consumeToken().lexemeStr;
+      varIndex = this.getVariableIndex(varIdent);
+      storeOp = [OPCODE_STORE_VAR, varIndex];
+    }
 
-    if(!this.matchTokenList([TOKEN_EQUAL]))
-      throw {message: "Expected '=' after identifier."};
+    if(!this.matchToken(TOKEN_EQUAL))
+      throw {message: "Expected '=' after variable or array item."};
 
     this.parseExpression();
-
-    this.addOp([OPCODE_STORE_VAR, varIndex]);
+    this.addOp(storeOp);
   }
 
   callStmt()
@@ -104,10 +116,10 @@ class Parser
 
     this.parseExpression();
 
-    if(!this.matchTokenList([TOKEN_COMMA]))
+    if(!this.matchToken(TOKEN_COMMA))
       throw {message: "Expected ',' after prompt expression."};
 
-    if(!this.matchTokenList([TOKEN_IDENTIFIER]))
+    if(!this.matchToken(TOKEN_IDENTIFIER))
 	  throw {message: "Expected identifier."};
 
 	varIdent = this.prevToken().lexemeStr;
@@ -125,7 +137,7 @@ class Parser
 
     this.parseExpression();
 
-    if(!this.matchTokenList([TOKEN_THEN]))
+    if(!this.matchToken(TOKEN_THEN))
       throw {message: "Expected 'then' after expression."};
 
     thenJumpOpIndex = this.addOp([OPCODE_JUMP_IF_FALSE, 0]);
@@ -152,7 +164,7 @@ class Parser
 	  console.log("END IF");
       this.patchJumpOp(thenJumpOpIndex);
     }
-    else if(this.matchTokenList([TOKEN_ELSE]))
+    else if(this.matchToken(TOKEN_ELSE))
     {
 		if(!this.matchTerminator())
           throw {message: "Expected end-of-statement after 'else'."};
@@ -191,7 +203,7 @@ class Parser
       this.parseStatement();
     }
 
-    if(!this.matchTokenList([TOKEN_WEND]))
+    if(!this.matchToken(TOKEN_WEND))
       throw {message: "Expected 'wend' at the end of 'while' block."};
 
     this.addOp([OPCODE_JUMP, startOpIndex]);
@@ -210,10 +222,17 @@ class Parser
     this.addOp([OPCODE_END]);
   }
 
-  dimStmt()
+  arrayStmt()
   //
   {
 
+  }
+
+  reDimStmt()
+  //
+  {
+    var dimCount = this.parseArrayItem();
+    this.addOp([OPCODE_REDIM_ARRAY, dimCount]);
   }
 
   parseExpression()
@@ -229,7 +248,7 @@ class Parser
 
     this.logicAndExpr();
 
-    while(this.matchTokenList([TOKEN_OR]))
+    while(this.matchToken(TOKEN_OR))
     {
       jumpOpIndex = this.addOp([OPCODE_JUMP_IF_TRUE_PERSIST, 0]);
       this.addOp([OPCODE_POP]);
@@ -247,7 +266,7 @@ class Parser
 
     this.equalityExpr();
 
-    while(this.matchTokenList([TOKEN_AND]))
+    while(this.matchToken(TOKEN_AND))
     {
       jumpOpIndex = this.addOp([OPCODE_JUMP_IF_FALSE_PERSIST, 0]);
       this.addOp([OPCODE_POP]);
@@ -388,7 +407,23 @@ class Parser
 	if(this.checkTokenPair(TOKEN_IDENTIFIER, TOKEN_LEFT_PAREN))
       this.parseFuncCall();
     else
+      this.arrayExpr();
+  }
+
+  arrayExpr()
+  //
+  {
+    var indexCount;
+
+    if(this.checkTokenPair(TOKEN_IDENTIFIER, TOKEN_LEFT_BRACKET))
+    {
+      indexCount = this.parseArrayItem();
+      this.addOp([OPCODE_LOAD_ARRAY_ITEM, indexCount]);
+    }
+    else
+    {
       this.primaryExpr();
+    }
   }
 
   primaryExpr()
@@ -398,7 +433,7 @@ class Parser
     var litVal, litIndex;
 
     //Variable
-    if(this.matchTokenList([TOKEN_IDENTIFIER]))
+    if(this.matchToken(TOKEN_IDENTIFIER))
     {
       varIdent = this.prevToken().lexemeStr;
       varIndex = this.getVariableIndex(varIdent);
@@ -407,13 +442,13 @@ class Parser
     }
 
     //Literals
-    if(this.matchTokenList([TOKEN_TRUE]))
+    if(this.matchToken(TOKEN_TRUE))
     {
       this.addOp([OPCODE_LOAD_TRUE]);
       return;
     }
 
-    if(this.matchTokenList([TOKEN_FALSE]))
+    if(this.matchToken(TOKEN_FALSE))
     {
       this.addOp([OPCODE_LOAD_FALSE]);
       return;
@@ -428,11 +463,11 @@ class Parser
     }
 
     //Nested expression
-    if(this.matchTokenList([TOKEN_LEFT_PAREN]))
+    if(this.matchToken(TOKEN_LEFT_PAREN))
     {
       this.parseExpression();
 
-      if(!this.matchTokenList([TOKEN_RIGHT_PAREN]))
+      if(!this.matchToken(TOKEN_RIGHT_PAREN))
         throw {message: "Expected ')' after expression."};
 
       return;
@@ -447,12 +482,17 @@ class Parser
   {
 	var funcIdent, funcIndex, argCount;
 
-    funcIdent = this.consumeToken().lexemeStr;
-    this.consumeToken();
+    if(this.matchToken(TOKEN_IDENTIFIER))
+      funcIdent = this.consumeToken().lexemeStr;
+    else
+      throw {message: "Expected identifier."};
+
+    if(!this.matchToken(TOKEN_LEFT_PAREN))
+      throw {message: "Expected '(' after function name."};
 
     argCount = this.parseArguments();
 
-    if(!this.matchTokenList([TOKEN_RIGHT_PAREN]))
+    if(!this.matchToken(TOKEN_RIGHT_PAREN))
       throw {message: "Expected ')' after function arguments."};
 
     funcIndex = this.getNativeFuncIndex(funcIdent);
@@ -463,6 +503,35 @@ class Parser
       throw {message: "Wrong number of arguments for function " + funcIdent + "()."};
 
     this.addOp([OPCODE_CALL_NATIVE_FUNC, funcIndex]);
+  }
+
+  parseArrayItem()
+  //
+  {
+    var varIdent, varIndex, indexCount;
+
+    if(this.matchToken(TOKEN_IDENTIFIER))
+    {
+      varIdent = this.prevToken().lexemeStr;
+      varIndex = this.getVariableIndex(varIdent);
+      this.addOp([OPCODE_LOAD_VAR, varIndex]);
+    }
+    else
+    {
+      throw {message: "Expected identifier."};
+    }
+
+    if(!this.matchToken(TOKEN_LEFT_BRACKET))
+      throw {message: "Expected '[' after identifier"};
+
+    indexCount = this.parseArguments();
+    if(indexCount == 0)
+      throw {message: "Expected one or more index expressions."};
+
+    if(!this.matchToken(TOKEN_RIGHT_BRACKET))
+      throw {message: "Expected ']' after indexes"};
+
+    return indexCount;
   }
 
   parseArguments()
@@ -478,7 +547,7 @@ class Parser
       this.parseExpression()
       argCount++;
     }
-    while(this.matchTokenList([TOKEN_COMMA]));
+    while(this.matchToken(TOKEN_COMMA));
 
     return argCount;
   }
@@ -576,6 +645,16 @@ class Parser
     }
 
     return false;
+  }
+
+  matchToken(tokenType)
+  //
+  {
+    if(this.checkToken(tokenType))
+    {
+      this.consumeToken();
+      return true;
+    }
   }
 
   checkTokenPair(tokenType1, tokenType2)

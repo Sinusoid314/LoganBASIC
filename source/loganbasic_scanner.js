@@ -16,7 +16,8 @@ var keywordList = {
                    "to": TOKEN_TO,
                    "step": TOKEN_STEP,
                    "next": TOKEN_NEXT,
-                   "dim": TOKEN_DIM
+                   "array": TOKEN_ARRAY,
+                   "redim": TOKEN_REDIM
                   }
 
 class Scanner

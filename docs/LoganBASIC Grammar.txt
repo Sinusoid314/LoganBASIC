@@ -8,7 +8,8 @@ statement  ->  ( assignment
                | whileStmt
                | forStmt
                | endStmt
-               | dimStmt )
+               | arrayStmt
+               | reDimStmt )
                terminator? ;
 
 assignment  ->  ( IDENTIFIER | arrayItem ) "=" expression ;
@@ -21,7 +22,8 @@ whileStmt   ->  "while" expression terminator statement* "wend" ;
 forStmt     ->  "for" IDENTIFIER "=" expression "to" expression ( "step" expression )? terminator
                 statement* "next" IDENTIFIER?
 endStmt     ->  "end" ;
-dimStmt     ->  "dim" arrayItem ;
+arrayStmt   ->  "array" arrayItem ;
+reDimStmt   ->  "redim" arrayItem ;
 
 expression  ->  logic_or ;
 logic_or    ->  logic_and ( "or" logic_and )* ;

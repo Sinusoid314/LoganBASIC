@@ -35,7 +35,8 @@ class Runtime
     this.opFuncList[OPCODE_JUMP_IF_TRUE_PERSIST] = this.opJumpIfTruePersist.bind(this);
     this.opFuncList[OPCODE_END] = this.opEnd.bind(this);
     this.opFuncList[OPCODE_CALL_NATIVE_FUNC] = this.opCallNativeFunc.bind(this);
-    this.opFuncList[OPCODE_DIM_ARRAY] = this.opDimArray.bind(this);
+    this.opFuncList[OPCODE_CREATE_ARRAY] = this.opCreateArray.bind(this);
+    this.opFuncList[OPCODE_REDIM_ARRAY] = this.opReDimArray.bind(this);
     this.opFuncList[OPCODE_LOAD_ARRAY_ITEM] = this.opLoadArrayItem.bind(this);
     this.opFuncList[OPCODE_STORE_ARRAY_ITEM] = this.opStoreArrayItem.bind(this);
 
@@ -268,7 +269,13 @@ class Runtime
     this.nativeFuncList[funcIndex].funcObj(this);
   }
 
-  opDimArray()
+  opCreateArray()
+  //
+  {
+
+  }
+
+  opReDimArray()
   //
   {
     var dimCount = this.getOperand(1);
@@ -281,7 +288,7 @@ class Runtime
     arrayRef = this.stack.pop();
 
     if(!(arrayRef instanceof ObjArray))
-      arrayRef = new ObjArray();
+      throw {message: "Expected array."};
 
     arrayRef.reDim(dimSizeList);
   }

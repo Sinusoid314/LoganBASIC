@@ -105,7 +105,12 @@ CALL_NATIVE_FUNC
   stack: [arg1, arg2, ...] -> []
   Call the native function at funcIndex.
 
-DIM_ARRAY
+CREATE_ARRAY
+  operands: dimCount
+  stack: [dimVal1, dimVal2, ...] -> [arrayRef]
+  Create an array with the given dimensions.
+
+REDIM_ARRAY
   operands: dimCount
   stack: [arrayRef, dimVal1, dimVal2, ...] -> []
   Set the dimensions of the given array.
