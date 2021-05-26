@@ -27,7 +27,6 @@ class Runtime
     this.opFuncList[OPCODE_GREATER] = this.opGreater.bind(this);
     this.opFuncList[OPCODE_LESS] = this.opLess.bind(this);
     this.opFuncList[OPCODE_PRINT] = this.opPrint.bind(this);
-    this.opFuncList[OPCODE_INPUT] = this.opInput.bind(this);
     this.opFuncList[OPCODE_JUMP] = this.opJump.bind(this);
     this.opFuncList[OPCODE_JUMP_IF_FALSE] = this.opJumpIfFalse.bind(this);
     this.opFuncList[OPCODE_JUMP_IF_FALSE_PERSIST] = this.opJumpIfFalsePersist.bind(this);
@@ -200,15 +199,6 @@ class Runtime
     postMessage({msgId: MSGID_PRINT, msgData: val});
   }
 
-  opInput()
-  //
-  {
-    var val = this.stack.pop();
-    postMessage({msgId: MSGID_PRINT, msgData: val});
-    postMessage({msgId: MSGID_INPUT_REQUEST});
-    this.inputting = true;
-  }
-
   opJump()
   //Jump to the instruction at opIndex
   {
@@ -376,7 +366,7 @@ class ObjArray
   {
     var newLinearSize = 1;
 
-    for(var n = 0; n < this.dimSizeList.length; n++)
+    for(var n = 0; n < newDimSizeList.length; n++)
     {
       if(newDimSizeList[n] <= 0)
         return false;

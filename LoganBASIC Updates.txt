@@ -1,6 +1,9 @@
 (May 26, 2021)
 	- Added matchToken() in Parser to check and consume a single token.
 	- Finished adding array support.
+	- Fixed bug in Runtime where arrays items were not being initialized to 0.
+	- Changed Input statement into a native function.
+	- Added two array examples to examples page.
 
 (May 23, 2021)
 	- Added getOperand() to Runtime.

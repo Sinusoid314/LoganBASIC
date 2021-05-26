@@ -3,7 +3,6 @@ program  ->  statement* EOF ;
 statement  ->  ( assignment
                | callStmt
                | printStmt
-               | inputStmt
                | ifStmt 
                | whileStmt
                | forStmt
@@ -15,7 +14,6 @@ statement  ->  ( assignment
 assignment  ->  ( IDENTIFIER | arrayItem ) "=" expression ;
 callStmt    ->  funcCall ;
 printStmt   ->  "print" expression ;
-inputStmt   ->  expression "," IDENTIFIER ;
 ifStmt      ->  "if" expression "then" 
                 ( statement | ( terminator statement* ( "else" terminator statement* )? "end" "if" ) ) ;
 whileStmt   ->  "while" expression terminator statement* "wend" ;

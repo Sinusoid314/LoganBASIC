@@ -9,10 +9,20 @@ class NativeFunc
 }
 
 nativeFuncList = [
+                  new NativeFunc("input", 1, funcInput),
                   new NativeFunc("rnd", 0, funcRnd),
                   new NativeFunc("time", 0, funcTime),
                   new NativeFunc("int", 1, funcInt)
                  ];
+
+function funcInput(runtime)
+//Prompt user for input from the consol
+{
+  var val = runtime.stack.pop();
+  postMessage({msgId: MSGID_PRINT, msgData: val});
+  postMessage({msgId: MSGID_INPUT_REQUEST});
+  runtime.inputting = true;
+}
 
 function funcRnd(runtime)
 //Return a pseudo-random number between 0 and 1

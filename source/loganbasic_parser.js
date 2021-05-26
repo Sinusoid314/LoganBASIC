@@ -33,9 +33,6 @@ class Parser
     if(this.matchToken(TOKEN_PRINT))
       this.printStmt();
 
-    else if(this.matchToken(TOKEN_INPUT))
-      this.inputStmt();
-
     else if(this.matchToken(TOKEN_IF))
       this.ifStmt();
 
@@ -107,26 +104,6 @@ class Parser
   {
     this.parseExpression();
     this.addOp([OPCODE_PRINT]);
-  }
-
-  inputStmt()
-  //
-  {
-    var varIdent, varIndex;
-
-    this.parseExpression();
-
-    if(!this.matchToken(TOKEN_COMMA))
-      throw {message: "Expected ',' after prompt expression."};
-
-    if(!this.matchToken(TOKEN_IDENTIFIER))
-	  throw {message: "Expected identifier."};
-
-	varIdent = this.prevToken().lexemeStr;
-    varIndex = this.getVariableIndex(varIdent);
-
-    this.addOp([OPCODE_INPUT]);
-    this.addOp([OPCODE_STORE_VAR, varIndex]);
   }
 
   ifStmt()
@@ -506,7 +483,7 @@ class Parser
 	var funcIdent, funcIndex, argCount;
 
     if(this.matchToken(TOKEN_IDENTIFIER))
-      funcIdent = this.consumeToken().lexemeStr;
+      funcIdent = this.prevToken().lexemeStr;
     else
       throw {message: "Expected identifier."};
 

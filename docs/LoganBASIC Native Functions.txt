@@ -1,3 +1,6 @@
+Input(prompt)
+  Prompt user for input from the consol.
+
 Rnd()
   Return a pseudo-random number between 0 and 1.
 

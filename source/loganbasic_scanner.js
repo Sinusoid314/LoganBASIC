@@ -5,7 +5,6 @@ var keywordList = {
                    "or": TOKEN_OR,
                    "and": TOKEN_AND,
                    "print": TOKEN_PRINT,
-                   "input": TOKEN_INPUT,
                    "if": TOKEN_IF,
                    "then": TOKEN_THEN,
                    "else": TOKEN_ELSE,
