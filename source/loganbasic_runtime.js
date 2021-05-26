@@ -272,7 +272,17 @@ class Runtime
   opCreateArray()
   //
   {
+    var dimCount = this.getOperand(1);
+    var dimSizeList = new Array(dimCount).fill(0);
+    var arrayRef;
 
+    for(var n = dimCount - 1; n >= 0; n--)
+      dimSizeList[n] = this.stack.pop();
+
+    arrayRef = new ObjArray();
+    arrayRef.reDim(dimSizeList);
+
+    this.stack.push(arrayRef);
   }
 
   opReDimArray()

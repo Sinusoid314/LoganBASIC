@@ -225,7 +225,30 @@ class Parser
   arrayStmt()
   //
   {
+    var varIdent, varIndex, dimCount;
 
+    if(this.matchToken(TOKEN_IDENTIFIER))
+    {
+      varIdent = this.prevToken().lexemeStr;
+      varIndex = this.getVariableIndex(varIdent);
+    }
+    else
+    {
+      throw {message: "Expected identifier."};
+    }
+
+    if(!this.matchToken(TOKEN_LEFT_BRACKET))
+      throw {message: "Expected '[' after identifier"};
+
+    dimCount = this.parseArguments();
+    if(dimCount == 0)
+      throw {message: "Expected one or more index expressions."};
+
+    if(!this.matchToken(TOKEN_RIGHT_BRACKET))
+      throw {message: "Expected ']' after indexes"};
+
+    this.addOp([OPCODE_CREATE_ARRAY, dimCount]);
+    this.addOp([OPCODE_STORE_VAR, varIndex]);
   }
 
   reDimStmt()

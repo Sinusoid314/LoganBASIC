@@ -1,5 +1,6 @@
 (May 26, 2021)
 	- Added matchToken() in Parser to check and consume a single token.
+	- Finished adding array support.
 
 (May 23, 2021)
 	- Added getOperand() to Runtime.
