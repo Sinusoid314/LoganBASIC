@@ -1,10 +1,10 @@
-gridWidth = 5
-gridHeight = 3
+var gridWidth = 5
+var gridHeight = 3
 array grid[gridWidth, gridHeight]
+var row = ""
+var x = 0
+var y = 0
 
-row = ""
-
-y = 0
 while y < gridHeight
   x = 0
   while x < gridWidth

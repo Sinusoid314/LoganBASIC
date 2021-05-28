@@ -12,7 +12,10 @@ nativeFuncList = [
                   new NativeFunc("input", 1, funcInput),
                   new NativeFunc("rnd", 0, funcRnd),
                   new NativeFunc("time", 0, funcTime),
-                  new NativeFunc("int", 1, funcInt)
+                  new NativeFunc("int", 1, funcInt),
+                  new NativeFunc("len", 1, funcLen),
+                  new NativeFunc("upper", 1, funcUpper),
+                  new NativeFunc("lower", 1, funcLower)
                  ];
 
 function funcInput(runtime)
@@ -41,4 +44,32 @@ function funcInt(runtime)
 {
   var val = runtime.stack.pop();
   runtime.stack.push(parseInt(val));
+}
+
+function funcLen(runtime)
+//Return the number of characters in a string, or the linear size of an array
+{
+  var val = runtime.stack.pop();
+  var len;
+
+  if(val instanceof ObjArray)
+    len = val.itemList.length;
+  else
+    len = val.length;
+
+  runtime.stack.push(len);
+}
+
+function funcUpper(runtime)
+//Return a string with all letters converted to uppercase
+{
+  var val = runtime.stack.pop();
+  runtime.stack.push(val.toUpperCase());
+}
+
+function funcLower(runtime)
+//Return a string with all letters converted to lowercase
+{
+  var val = runtime.stack.pop();
+  runtime.stack.push(val.toLowerCase());
 }

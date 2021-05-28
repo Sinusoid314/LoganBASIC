@@ -1,6 +1,5 @@
-- Add Len() native function that works for both strings and arrays.
 - Add FOR/NEXT loop.
-- Add DO/LOOP loop.
+- Add DO/LOOP WHILE loop.
 - Add user function/sub support.
 - Comment functions and methods.
-
+- Add native functions: Left, Right, Mid, Abs, Asc, Chr, Instr, Max, Min, Space, Sqr, Str, Trim, LTrim, RTrim, Val

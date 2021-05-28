@@ -5,11 +5,10 @@
 'the multiples of five prints "Buzz". For numbers which
 'are multiples of both three and five print "FizzBuzz".
 
-num = 1
+var num = 1
+var outStr = ""
 
 while num <= 100
-  outStr = ""
-
   if (num % 3) = 0 then outStr = outStr + "FiZZ"
   if (num % 5) = 0 then outStr = outStr + "BuZZ"
 
@@ -20,4 +19,5 @@ while num <= 100
   end if
 
   num = num + 1
+  outStr = ""
 wend

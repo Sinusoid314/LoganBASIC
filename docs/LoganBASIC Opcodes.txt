@@ -124,3 +124,6 @@ STORE_ARRAY_ITEM
   operands: indexCount
   stack: [arrayRef, indexVal1, indexVal2, ..., itemVal] -> []
   Set the given array item to the given value.
+
+CLS
+  Clears the console window.

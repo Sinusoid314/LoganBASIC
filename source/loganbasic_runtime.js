@@ -38,6 +38,7 @@ class Runtime
     this.opFuncList[OPCODE_REDIM_ARRAY] = this.opReDimArray.bind(this);
     this.opFuncList[OPCODE_LOAD_ARRAY_ITEM] = this.opLoadArrayItem.bind(this);
     this.opFuncList[OPCODE_STORE_ARRAY_ITEM] = this.opStoreArrayItem.bind(this);
+    this.opFuncList[OPCODE_CLS] = this.opCls.bind(this);
 
     //Variable values are kept at the bottom of the stack and initialized to 0
     for(var n = 0; n < this.bytecode.varIdentList.length; n++)
@@ -338,6 +339,12 @@ class Runtime
       throw {message: "Array index out of bounds."};
 
     arrayRef.itemList[linearIndex] = itemVal;
+  }
+
+  opCls()
+  //
+  {
+    postMessage({msgId: MSGID_CLEAR_CONSOLE});
   }
 
   getOperand(operandIndex)

@@ -1,7 +1,7 @@
-stuffCount = 10
+var stuffCount = 10
 array stuff[stuffCount]
+var index = 0
 
-index = 0
 while index < stuffCount
   stuff[index] = index * 2
   print stuff[index]

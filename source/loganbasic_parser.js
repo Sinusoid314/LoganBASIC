@@ -30,7 +30,13 @@ class Parser
   parseStatement(requireTerminator = true)
   //
   {
-    if(this.matchToken(TOKEN_PRINT))
+    if(this.matchToken(TOKEN_VAR))
+      this.varStmt();
+
+    else if(this.matchToken(TOKEN_ARRAY))
+      this.arrayStmt();
+
+    else if(this.matchToken(TOKEN_PRINT))
       this.printStmt();
 
     else if(this.matchToken(TOKEN_IF))
@@ -45,11 +51,11 @@ class Parser
     else if(this.matchToken(TOKEN_END))
       this.endStmt();
 
-    else if(this.matchToken(TOKEN_ARRAY))
-      this.arrayStmt();
-
     else if(this.matchToken(TOKEN_REDIM))
       this.reDimStmt();
+
+    else if(this.matchToken(TOKEN_CLS))
+      this.clsStmt();
 
     else if(this.checkTokenPair(TOKEN_IDENTIFIER, TOKEN_LEFT_PAREN))
       this.callStmt();
@@ -65,6 +71,57 @@ class Parser
       if(!this.matchTerminator())
         throw {message: "Expected end-of-statement."};
     }
+  }
+
+  varStmt()
+  //
+  {
+    var varIdent, varIndex;
+
+    if(this.matchToken(TOKEN_IDENTIFIER))
+    {
+      varIdent = this.prevToken().lexemeStr;
+      varIndex = this.getVariableIndex(varIdent, true);
+    }
+    else
+    {
+      throw {message: "Expected identifier."};
+    }
+
+    if(this.matchToken(TOKEN_EQUAL))
+    {
+      this.parseExpression();
+      this.addOp([OPCODE_STORE_VAR, varIndex]);
+    }
+  }
+
+  arrayStmt()
+  //
+  {
+    var varIdent, varIndex, dimCount;
+
+    if(this.matchToken(TOKEN_IDENTIFIER))
+    {
+      varIdent = this.prevToken().lexemeStr;
+      varIndex = this.getVariableIndex(varIdent, true);
+    }
+    else
+    {
+      throw {message: "Expected identifier."};
+    }
+
+    if(!this.matchToken(TOKEN_LEFT_BRACKET))
+      throw {message: "Expected '[' after identifier"};
+
+    dimCount = this.parseArguments();
+    if(dimCount == 0)
+      throw {message: "Expected one or more index expressions."};
+
+    if(!this.matchToken(TOKEN_RIGHT_BRACKET))
+      throw {message: "Expected ']' after indexes"};
+
+    this.addOp([OPCODE_CREATE_ARRAY, dimCount]);
+    this.addOp([OPCODE_STORE_VAR, varIndex]);
   }
 
   assignmentStmt()
@@ -199,40 +256,17 @@ class Parser
     this.addOp([OPCODE_END]);
   }
 
-  arrayStmt()
-  //
-  {
-    var varIdent, varIndex, dimCount;
-
-    if(this.matchToken(TOKEN_IDENTIFIER))
-    {
-      varIdent = this.prevToken().lexemeStr;
-      varIndex = this.getVariableIndex(varIdent);
-    }
-    else
-    {
-      throw {message: "Expected identifier."};
-    }
-
-    if(!this.matchToken(TOKEN_LEFT_BRACKET))
-      throw {message: "Expected '[' after identifier"};
-
-    dimCount = this.parseArguments();
-    if(dimCount == 0)
-      throw {message: "Expected one or more index expressions."};
-
-    if(!this.matchToken(TOKEN_RIGHT_BRACKET))
-      throw {message: "Expected ']' after indexes"};
-
-    this.addOp([OPCODE_CREATE_ARRAY, dimCount]);
-    this.addOp([OPCODE_STORE_VAR, varIndex]);
-  }
-
   reDimStmt()
   //
   {
     var dimCount = this.parseArrayItem();
     this.addOp([OPCODE_REDIM_ARRAY, dimCount]);
+  }
+
+  clsStmt()
+  //
+  {
+    this.addOp([OPCODE_CLS]);
   }
 
   parseExpression()
@@ -564,15 +598,27 @@ class Parser
     return -1;
   }
 
-  getVariableIndex(varIdent)
+  getVariableIndex(varIdent, addIfAbsent = false)
   //
   {
     var varIndex = this.bytecode.varIdentList.indexOf(varIdent);
 
-    if(varIndex == -1)
+    if(addIfAbsent)
     {
-      this.bytecode.varIdentList.push(varIdent);
-      varIndex = this.bytecode.varIdentList.length - 1;
+      if(varIndex == -1)
+	  {
+	    this.bytecode.varIdentList.push(varIdent);
+	    varIndex = this.bytecode.varIdentList.length - 1;
+      }
+      else
+      {
+        throw {message: "Variable or array '" + varIdent + "' already declared."};
+      }
+    }
+    else
+    {
+      if(varIndex == -1)
+        throw {message: "Variable or array '" + varIdent + "' not declared."};
     }
 
     return varIndex;

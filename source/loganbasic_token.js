@@ -31,19 +31,21 @@ const TOKEN_STRING_LIT = 32;
 const TOKEN_NUMBER_LIT = 33;
 const TOKEN_IDENTIFIER = 34;
 
-const TOKEN_PRINT = 40;
-const TOKEN_IF = 41;
-const TOKEN_THEN = 42;
-const TOKEN_ELSE = 43;
-const TOKEN_END = 44;
-const TOKEN_WHILE = 45;
-const TOKEN_WEND = 46;
-const TOKEN_FOR = 47;
-const TOKEN_TO = 48;
-const TOKEN_STEP = 49;
-const TOKEN_NEXT = 50;
-const TOKEN_ARRAY = 51;
-const TOKEN_REDIM = 52;
+const TOKEN_VAR = 40;
+const TOKEN_ARRAY = 41;
+const TOKEN_PRINT = 42;
+const TOKEN_IF = 43;
+const TOKEN_THEN = 44;
+const TOKEN_ELSE = 45;
+const TOKEN_END = 46;
+const TOKEN_WHILE = 47;
+const TOKEN_WEND = 48;
+const TOKEN_FOR = 49;
+const TOKEN_TO = 50;
+const TOKEN_STEP = 51;
+const TOKEN_NEXT = 52;
+const TOKEN_REDIM = 53;
+const TOKEN_CLS = 54;
 
 class Token
 {

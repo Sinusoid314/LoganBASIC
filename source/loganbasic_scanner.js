@@ -4,6 +4,8 @@ var keywordList = {
                    "not": TOKEN_NOT,
                    "or": TOKEN_OR,
                    "and": TOKEN_AND,
+                   "var": TOKEN_VAR,
+                   "array": TOKEN_ARRAY,
                    "print": TOKEN_PRINT,
                    "if": TOKEN_IF,
                    "then": TOKEN_THEN,
@@ -15,8 +17,8 @@ var keywordList = {
                    "to": TOKEN_TO,
                    "step": TOKEN_STEP,
                    "next": TOKEN_NEXT,
-                   "array": TOKEN_ARRAY,
-                   "redim": TOKEN_REDIM
+                   "redim": TOKEN_REDIM,
+                   "cls": TOKEN_CLS
                   }
 
 class Scanner

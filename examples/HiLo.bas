@@ -3,9 +3,9 @@
 'Generates a random number between 1 and 100
 'and prompts the user to guess it.
 
-guessCount = 0
-guess = 0
-guessMe = int(rnd()*100) + 1
+var guessCount = 0
+var guess = 0
+var guessMe = int(rnd()*100) + 1
 
 print "Hello!"
 print "I'm thinking of a number between 1 and 100."
@@ -13,7 +13,7 @@ print "Guess what it is. Enter 'q' to quit."
 print ""
 
 while guess <> guessMe
-  input "Enter guess: ", guess
+  guess = input("Enter guess: ")
   guessCount = guessCount + 1
   if guess < guessMe then print "Guess higher."
   if guess > guessMe then print "Guess lower."

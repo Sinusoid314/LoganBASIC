@@ -1,3 +1,9 @@
+(May 28, 2021)
+	- Added Var statement for declaring variables.
+	- Added Len() native function that works for both strings and arrays.
+	- Added Upper() and Lower() native functions.
+	- Added Cls statement for clearing the console.
+
 (May 26, 2021)
 	- Added matchToken() in Parser to check and consume a single token.
 	- Finished adding array support.

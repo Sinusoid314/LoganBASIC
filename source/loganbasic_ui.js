@@ -116,6 +116,10 @@ function progWorker_onMessage(message)
     case MSGID_INPUT_REQUEST:
       progWorker_onInputRequest();
       break;
+
+    case MSGID_CLEAR_CONSOLE:
+      progWorker_onClearConsole();
+      break;
   }
 }
 
@@ -145,3 +149,8 @@ function progWorker_onInputRequest()
   progConsole.focus();
 }
 
+function progWorker_onClearConsole()
+//
+{
+  progConsole.value = "";
+}

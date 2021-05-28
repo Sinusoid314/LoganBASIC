@@ -10,3 +10,12 @@ Time()
 Int(number)
   Return the integer portion of a number.
 
+Len(string | array)
+  Return the number of characters in a string, or the linear size of an array.
+  
+Upper(string)
+  Return a string with all letters converted to uppercase.
+  
+Lower(string)
+  Return a string with all the letters converted to lowercase.
+

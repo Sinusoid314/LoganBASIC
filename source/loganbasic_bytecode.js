@@ -30,6 +30,7 @@ const OPCODE_CREATE_ARRAY = 25;
 const OPCODE_REDIM_ARRAY = 26;
 const OPCODE_LOAD_ARRAY_ITEM = 27;
 const OPCODE_STORE_ARRAY_ITEM = 28;
+const OPCODE_CLS = 29;
 
 class Bytecode
 {

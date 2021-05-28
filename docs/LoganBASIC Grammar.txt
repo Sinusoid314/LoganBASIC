@@ -1,16 +1,20 @@
 program  ->  statement* EOF ;
 
-statement  ->  ( assignment
+statement  ->  ( varStmt
+               | arrayStmt
+               | assignment
                | callStmt
                | printStmt
                | ifStmt 
                | whileStmt
                | forStmt
                | endStmt
-               | arrayStmt
-               | reDimStmt )
+               | reDimStmt
+               | clsStmt )
                terminator? ;
 
+varStmt     ->  "var" IDENTIFIER ( "=" expression )? ;
+arrayStmt   ->  "array" arrayItem ;
 assignment  ->  ( IDENTIFIER | arrayItem ) "=" expression ;
 callStmt    ->  funcCall ;
 printStmt   ->  "print" expression ;
@@ -20,8 +24,8 @@ whileStmt   ->  "while" expression terminator statement* "wend" ;
 forStmt     ->  "for" IDENTIFIER "=" expression "to" expression ( "step" expression )? terminator
                 statement* "next" IDENTIFIER?
 endStmt     ->  "end" ;
-arrayStmt   ->  "array" arrayItem ;
 reDimStmt   ->  "redim" arrayItem ;
+clsStmt     ->  "cls" ;
 
 expression  ->  logic_or ;
 logic_or    ->  logic_and ( "or" logic_and )* ;
