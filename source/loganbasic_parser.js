@@ -15,9 +15,7 @@ class Parser
 	try
 	{
       while(!this.endOfTokens())
-      {
         this.parseStatement();
-      }
     }
     catch(errorObj)
     {
@@ -56,6 +54,9 @@ class Parser
 
     else if(this.matchToken(TOKEN_CLS))
       this.clsStmt();
+
+    else if(this.matchToken(TOKEN_DO))
+      this.doStmt();
 
     else if(this.checkTokenPair(TOKEN_IDENTIFIER, TOKEN_LEFT_PAREN))
       this.callStmt();
@@ -183,12 +184,9 @@ class Parser
       return;
     }
 
-    while(!this.checkTokenPair(TOKEN_END, TOKEN_IF)
-          && !this.checkToken(TOKEN_ELSE)
+    while(!this.checkTokenPair(TOKEN_END, TOKEN_IF) && !this.checkToken(TOKEN_ELSE)
           && !this.endOfTokens())
-    {
       this.parseStatement();
-    }
 
     if(this.endOfTokens())
       throw {message: "Expected either 'else' or 'end if' at the end of 'if' block."};
@@ -206,11 +204,8 @@ class Parser
         elseJumpOpIndex = this.addOp([OPCODE_JUMP, 0]);
 		this.patchJumpOp(thenJumpOpIndex);
 
-        while(!this.checkTokenPair(TOKEN_END, TOKEN_IF)
-	          && !this.endOfTokens())
-	    {
+        while(!this.checkTokenPair(TOKEN_END, TOKEN_IF) && !this.endOfTokens())
 	      this.parseStatement();
-        }
 
         if(!this.matchTokenPair(TOKEN_END, TOKEN_IF))
           throw {message: "Expected 'end if' at the end of 'else' block."};
@@ -233,9 +228,7 @@ class Parser
     jumpOpIndex = this.addOp([OPCODE_JUMP_IF_FALSE, 0]);
 
     while(!this.checkToken(TOKEN_WEND) && !this.endOfTokens())
-    {
       this.parseStatement();
-    }
 
     if(!this.matchToken(TOKEN_WEND))
       throw {message: "Expected 'wend' at the end of 'while' block."};
@@ -267,6 +260,24 @@ class Parser
   //
   {
     this.addOp([OPCODE_CLS]);
+  }
+
+  doStmt()
+  //
+  {
+    var startOpIndex = this.bytecode.opList.length;
+
+    if(!this.matchTerminator())
+      throw {message: "Expected statement terminator after 'do'."};
+
+    while(!this.endOfTokens() && !this.checkTokenPair(TOKEN_LOOP, TOKEN_WHILE))
+      this.parseStatement();
+
+    if(!matchTokenPair(TOKEN_LOOP, TOKEN_WHILE)
+      throw {message: "Expected 'loop while' at the end of 'do' block."};
+
+    this.parseExpression();
+    this.addOp([OPCODE_JUMP_IF_TRUE, startOpIndex]);
   }
 
   parseExpression()

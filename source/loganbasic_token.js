@@ -46,6 +46,8 @@ const TOKEN_STEP = 51;
 const TOKEN_NEXT = 52;
 const TOKEN_REDIM = 53;
 const TOKEN_CLS = 54;
+const TOKEN_DO = 55;
+const TOKEN_LOOP = 56;
 
 class Token
 {

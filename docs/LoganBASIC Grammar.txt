@@ -22,10 +22,11 @@ ifStmt      ->  "if" expression "then"
                 ( statement | ( terminator statement* ( "else" terminator statement* )? "end" "if" ) ) ;
 whileStmt   ->  "while" expression terminator statement* "wend" ;
 forStmt     ->  "for" IDENTIFIER "=" expression "to" expression ( "step" expression )? terminator
-                statement* "next" IDENTIFIER?
+                statement* "next" IDENTIFIER? ;
 endStmt     ->  "end" ;
 reDimStmt   ->  "redim" arrayItem ;
 clsStmt     ->  "cls" ;
+doStmt      -> "do" terminator statement* "loop" "while" expression ;
 
 expression  ->  logic_or ;
 logic_or    ->  logic_and ( "or" logic_and )* ;

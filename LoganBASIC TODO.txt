@@ -1,5 +1,6 @@
+- Add exponent operator ^.
 - Add FOR/NEXT loop.
-- Add DO/LOOP WHILE loop.
 - Add user function/sub support.
 - Comment functions and methods.
-- Add native functions: Left, Right, Mid, Abs, Asc, Chr, Instr, Max, Min, Space, Sqr, Str, Trim, LTrim, RTrim, Val
+- Add help page.
+- Add native functions: Mid, Trim, LTrim, RTrim, Instr, Abs, Asc, Chr, Min, Max, Space, Sqr, Str, Val

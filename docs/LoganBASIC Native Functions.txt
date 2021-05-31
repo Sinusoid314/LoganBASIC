@@ -19,3 +19,50 @@ Upper(string)
 Lower(string)
   Return a string with all the letters converted to lowercase.
 
+Left(string, number)
+  Return a string containing a specified number of characters from the left side of a string.
+
+Right(string, number)
+  Return a string containing a specified number of characters from the right side of a string.
+
+Mid()
+
+
+Trim()
+
+
+LTrim()
+
+
+RTrim()
+
+
+Instr()
+
+
+Abs()
+
+
+Asc()
+
+
+Chr()
+
+
+Min()
+
+
+Max()
+
+
+Space()
+
+
+Sqr()
+
+
+Str()
+
+
+Val()
+

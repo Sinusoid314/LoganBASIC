@@ -1,3 +1,7 @@
+(May 30, 2021)
+	- Added DO/LOOP WHILE loop.
+	- Added Left() and Right() native functions.
+
 (May 28, 2021)
 	- Added Var statement for declaring variables.
 	- Added Len() native function that works for both strings and arrays.

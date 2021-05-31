@@ -37,13 +37,13 @@ function onStart(sourceStr)
 
   if(scanner.errorMsg == "")
   {
-    parser = new Parser(tokenList, nativeFuncList);
+    parser = new Parser(tokenList, stdNativeFuncList);
     bytecode = parser.parse();
 
     if(parser.errorMsg == "")
     {
       postMessage({msgId: MSGID_STATUS, msgData: "Running..."});
-      runtime = new Runtime(bytecode, nativeFuncList);
+      runtime = new Runtime(bytecode, stdNativeFuncList);
       runtime.run();
 
       if(runtime.errorMsg == "")
