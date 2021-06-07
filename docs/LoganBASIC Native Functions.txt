@@ -28,14 +28,14 @@ Right(string, number)
 Mid()
 
 
-Trim()
+Trim(string)
+  Return a string with the whitespace removed from both ends.
 
+LTrim(string)
+  Return a string with the whitespace removed from its left side.
 
-LTrim()
-
-
-RTrim()
-
+RTrim(string)
+  Return a string with the whitespace removed from its right side.
 
 Instr()
 

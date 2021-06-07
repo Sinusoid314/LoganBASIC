@@ -104,19 +104,19 @@ function funcMid(args)
 }
 
 function funcTrim(args)
-//
+//Return a string with the whitespace removed from both ends.
 {
   return args[0].trim();
 }
 
 function funcLTrim(args)
-//
+//Return a string with the whitespace removed from its left side.
 {
   return args[0].trimStart();
 }
 
 function funcRTrim(args)
-//
+//Return a string with the whitespace removed from its right side.
 {
   return args[0].trimEnd();
 }
