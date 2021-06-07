@@ -1,6 +1,7 @@
 (June 7, 2021)
 	- Modified the calling convention of native functions to allow optional arguments.
-	- Added Trim(), LTrim(), and RTrim() native functions.
+	- Added Trim(), LTrim(), RTrim(), Mid(), Abs(), Min(), Max(), Sqr(), Asc(),
+	  Chr(), Str(), and Val() native functions.
 
 (May 30, 2021)
 	- Added DO/LOOP WHILE loop.

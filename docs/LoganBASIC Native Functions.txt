@@ -19,14 +19,14 @@ Upper(string)
 Lower(string)
   Return a string with all the letters converted to lowercase.
 
-Left(string, number)
+Left(string, length)
   Return a string containing a specified number of characters from the left side of a string.
 
-Right(string, number)
+Right(string, length)
   Return a string containing a specified number of characters from the right side of a string.
 
-Mid()
-
+Mid(string, start, [length])
+  Return a string containing a specified number of characters from a string.
 
 Trim(string)
   Return a string with the whitespace removed from both ends.
@@ -37,32 +37,29 @@ LTrim(string)
 RTrim(string)
   Return a string with the whitespace removed from its right side.
 
-Instr()
+Instr(string1, string2, [start])
+  Return the position of the first occurence of one string within another.
 
+Abs(number)
+  Return the absolute value of a number.
 
-Abs()
+Asc(string)
+  Return the ASCII value of the first character in a string.
 
+Chr(number)
+  Return the character of an ASCII number.
 
-Asc()
+Min(number1, number2)
+  Return the minumum of two numbers.
 
+Max(number1, number2)
+  Return the maximun of two numbers.
 
-Chr()
+Sqr(number)
+  Return the square root of a number.
 
+Str(number)
+  Return the string representation of a number.
 
-Min()
-
-
-Max()
-
-
-Space()
-
-
-Sqr()
-
-
-Str()
-
-
-Val()
-
+Val(string)
+  Return the number contained in a string.

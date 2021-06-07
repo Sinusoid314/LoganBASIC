@@ -3,4 +3,3 @@
 - Add user function/sub support.
 - Comment functions and methods.
 - Add help page.
-- Add native functions: Mid, Trim, LTrim, RTrim, Instr, Abs, Asc, Chr, Min, Max, Space, Sqr, Str, Val

@@ -19,11 +19,11 @@ stdNativeFuncList = [
                   new NativeFunc("lower", 1, 1, funcLower),
                   new NativeFunc("left", 2, 2, funcLeft),
                   new NativeFunc("right", 2, 2, funcRight),
-                  new NativeFunc("mid", 3, 3, funcMid),
+                  new NativeFunc("mid", 2, 3, funcMid),
                   new NativeFunc("trim", 1, 1, funcTrim),
                   new NativeFunc("ltrim", 1, 1, funcLTrim),
                   new NativeFunc("rtrim", 1, 1, funcRTrim),
-                  new NativeFunc("instr", 3, 3, funcInstr),
+                  new NativeFunc("instr", 2, 3, funcInstr),
                   new NativeFunc("abs", 1, 1, funcAbs),
                   new NativeFunc("asc", 1, 1, funcAsc),
                   new NativeFunc("chr", 1, 1, funcChr),
@@ -86,25 +86,32 @@ function funcLower(args)
 }
 
 function funcLeft(args)
-//Return a string containing a specified number of characters from the left side of a string.
+//Return a string containing a specified number of characters from the left side of a string
 {
   return args[0].slice(0, args[1]);
 }
 
 function funcRight(args)
-//Return a string containing a specified number of characters from the right side of a string.
+//Return a string containing a specified number of characters from the right side of a string
 {
   return args[0].slice(-args[1]);
 }
 
 function funcMid(args)
-//
+//Return a string containing a specified number of characters from a string
 {
-
+  if(args.length == 2)
+  {
+    return args[0].slice(args[1] - 1);
+  }
+  else
+  {
+    return args[0].slice(args[1] - 1, args[1] + args[2] - 1);
+  }
 }
 
 function funcTrim(args)
-//Return a string with the whitespace removed from both ends.
+//Return a string with the whitespace removed from both ends
 {
   return args[0].trim();
 }
@@ -116,61 +123,68 @@ function funcLTrim(args)
 }
 
 function funcRTrim(args)
-//Return a string with the whitespace removed from its right side.
+//Return a string with the whitespace removed from its right side
 {
   return args[0].trimEnd();
 }
 
 function funcInstr(args)
-//
+//Return the position of the first occurence of one string within another
 {
-
+  if(args.length == 2)
+  {
+    return args[0].indexOf(args[1]) + 1;
+  }
+  else
+  {
+    return args[0].indexOf(args[1], args[2] - 1) + 1;
+  }
 }
 
 function funcAbs(args)
-//
+//Return the absolute value of a number
 {
-
+  return Math.abs(args[0]);
 }
 
 function funcAsc(args)
-//
+//Return the ASCII value of the first character in a string
 {
-
+  return args[0].charCodeAt(0);
 }
 
 function funcChr(args)
-//
+//Return the character of an ASCII number
 {
-
+  return String.fromCharCode(args[0]);
 }
 
 function funcMin(args)
-//
+//Return the minimum of two numbers
 {
-
+  return Math.min(args[0], args[1]);
 }
 
 function funcMax(args)
-//
+//Return the maximun of two numbers
 {
-
+  return Math.max(args[0], args[1]);
 }
 
 function funcSqr(args)
-//
+//Return the square root of a number
 {
-
+  return Math.sqrt(args[0]);
 }
 
 function funcStr(args)
-//
+//Return the string representation of a number
 {
-
+  return args[0].toString();
 }
 
 function funcVal(args)
-//
+//Return the number contained in a string
 {
-
+  return parseFloat(args[0]);
 }
