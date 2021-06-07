@@ -257,7 +257,11 @@ class Runtime
   //Call the native function at funcIndex
   {
     var funcIndex = this.getOperand(1);
-    this.nativeFuncList[funcIndex].funcObj(this);
+    var argCount = this.getOperand(2);
+    var args = this.stack.splice(this.stack.length - argCount, argCount);;
+    var retVal = this.nativeFuncList[funcIndex].func(args);;
+
+    this.stack.push(retVal);
   }
 
   opCreateArray()

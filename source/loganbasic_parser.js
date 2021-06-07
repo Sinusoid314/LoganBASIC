@@ -273,7 +273,7 @@ class Parser
     while(!this.endOfTokens() && !this.checkTokenPair(TOKEN_LOOP, TOKEN_WHILE))
       this.parseStatement();
 
-    if(!matchTokenPair(TOKEN_LOOP, TOKEN_WHILE)
+    if(!matchTokenPair(TOKEN_LOOP, TOKEN_WHILE))
       throw {message: "Expected 'loop while' at the end of 'do' block."};
 
     this.parseExpression();
@@ -544,10 +544,10 @@ class Parser
     if(funcIndex == -1)
       throw {message: "Function " + funcIdent + "() does not exist."};
 
-    if(argCount != this.nativeFuncList[funcIndex].paramCount)
+    if((argCount < this.nativeFuncList[funcIndex].paramMin) || (argCount > this.nativeFuncList[funcIndex].paramMax))
       throw {message: "Wrong number of arguments for function " + funcIdent + "()."};
 
-    this.addOp([OPCODE_CALL_NATIVE_FUNC, funcIndex]);
+    this.addOp([OPCODE_CALL_NATIVE_FUNC, funcIndex, argCount]);
   }
 
   parseArrayItem()

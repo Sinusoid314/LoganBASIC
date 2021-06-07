@@ -1,185 +1,175 @@
 class NativeFunc
 {
-  constructor(ident, paramCount, funcObj)
+  constructor(ident, paramMin, paramMax, func)
   {
     this.ident = ident;
-    this.paramCount = paramCount;
-    this.funcObj = funcObj;
+    this.paramMin = paramMin;
+    this.paramMax = paramMax;
+    this.func = func;
   }
 }
 
 stdNativeFuncList = [
-                  new NativeFunc("input", 1, funcInput),
-                  new NativeFunc("rnd", 0, funcRnd),
-                  new NativeFunc("time", 0, funcTime),
-                  new NativeFunc("int", 1, funcInt),
-                  new NativeFunc("len", 1, funcLen),
-                  new NativeFunc("upper", 1, funcUpper),
-                  new NativeFunc("lower", 1, funcLower),
-                  new NativeFunc("left", 2, funcLeft),
-                  new NativeFunc("right", 2, funcRight),
-                  new NativeFunc("mid", 3, funcMid),
-                  new NativeFunc("trim", 1, funcTrim),
-                  new NativeFunc("ltrim", 1, funcLTrim),
-                  new NativeFunc("rtrim", 1, funcRTrim),
-                  new NativeFunc("instr", 3, funcInstr),
-                  new NativeFunc("abs", 1, funcAbs),
-                  new NativeFunc("asc", 1, funcAsc),
-                  new NativeFunc("chr", 1, funcChr),
-                  new NativeFunc("min", 2, funcMin),
-                  new NativeFunc("max", 2, funcMax),
-                  new NativeFunc("sqr", 1, funcSqr),
-                  new NativeFunc("str", 1, funcStr),
-                  new NativeFunc("val", 1, funcVal)
+                  new NativeFunc("input", 1, 1, funcInput),
+                  new NativeFunc("rnd", 0, 0, funcRnd),
+                  new NativeFunc("time", 0, 0, funcTime),
+                  new NativeFunc("int", 1, 1, funcInt),
+                  new NativeFunc("len", 1, 1, funcLen),
+                  new NativeFunc("upper", 1, 1, funcUpper),
+                  new NativeFunc("lower", 1, 1, funcLower),
+                  new NativeFunc("left", 2, 2, funcLeft),
+                  new NativeFunc("right", 2, 2, funcRight),
+                  new NativeFunc("mid", 3, 3, funcMid),
+                  new NativeFunc("trim", 1, 1, funcTrim),
+                  new NativeFunc("ltrim", 1, 1, funcLTrim),
+                  new NativeFunc("rtrim", 1, 1, funcRTrim),
+                  new NativeFunc("instr", 3, 3, funcInstr),
+                  new NativeFunc("abs", 1, 1, funcAbs),
+                  new NativeFunc("asc", 1, 1, funcAsc),
+                  new NativeFunc("chr", 1, 1, funcChr),
+                  new NativeFunc("min", 2, 2, funcMin),
+                  new NativeFunc("max", 2, 2, funcMax),
+                  new NativeFunc("sqr", 1, 1, funcSqr),
+                  new NativeFunc("str", 1, 1, funcStr),
+                  new NativeFunc("val", 1, 1, funcVal)
                  ];
 
-function funcInput(runtime)
+function funcInput(args)
 //Prompt user for input from the consol
 {
-  var val = runtime.stack.pop();
-  postMessage({msgId: MSGID_PRINT, msgData: val});
+  postMessage({msgId: MSGID_PRINT, msgData: args[0]});
   postMessage({msgId: MSGID_INPUT_REQUEST});
   runtime.inputting = true;
 }
 
-function funcRnd(runtime)
+function funcRnd(args)
 //Return a pseudo-random number between 0 and 1
 {
-  runtime.stack.push(Math.random());
+  return Math.random();
 }
 
-function funcTime(runtime)
+function funcTime(args)
 //Return the number of milliseconds elapsed since January 1, 1970
 {
-  runtime.stack.push(Date.now());
+  return Date.now();
 }
 
-function funcInt(runtime)
+function funcInt(args)
 //Return the integer portion of a number
 {
-  var val = runtime.stack.pop();
-  runtime.stack.push(parseInt(val));
+  return parseInt(args[0]);
 }
 
-function funcLen(runtime)
+function funcLen(args)
 //Return the number of characters in a string, or the linear size of an array
 {
-  var val = runtime.stack.pop();
   var len;
 
-  if(val instanceof ObjArray)
-    len = val.itemList.length;
+  if(args[0] instanceof ObjArray)
+    len = args[0].itemList.length;
   else
-    len = val.length;
+    len = args[0].length;
 
-  runtime.stack.push(len);
+  return len;
 }
 
-function funcUpper(runtime)
+function funcUpper(args)
 //Return a string with all letters converted to uppercase
 {
-  var str = runtime.stack.pop();
-  runtime.stack.push(str.toUpperCase());
+  return args[0].toUpperCase();
 }
 
-function funcLower(runtime)
+function funcLower(args)
 //Return a string with all letters converted to lowercase
 {
-  var str = runtime.stack.pop();
-  runtime.stack.push(str.toLowerCase());
+  return args[0].toLowerCase();
 }
 
-function funcLeft(runtime)
+function funcLeft(args)
 //Return a string containing a specified number of characters from the left side of a string.
 {
-  var len = runtime.stack.pop();
-  var str = runtime.stack.pop();
-
-  runtime.stack.push(str.slice(0, len));
+  return args[0].slice(0, args[1]);
 }
 
-function funcRight(runtime)
+function funcRight(args)
 //Return a string containing a specified number of characters from the right side of a string.
 {
-  var len = runtime.stack.pop();
-  var str = runtime.stack.pop();
-
-  runtime.stack.push(str.slice(-len));
+  return args[0].slice(-args[1]);
 }
 
-function funcMid(runtime)
+function funcMid(args)
 //
 {
 
 }
 
-function funcTrim(runtime)
+function funcTrim(args)
+//
+{
+  return args[0].trim();
+}
+
+function funcLTrim(args)
+//
+{
+  return args[0].trimStart();
+}
+
+function funcRTrim(args)
+//
+{
+  return args[0].trimEnd();
+}
+
+function funcInstr(args)
 //
 {
 
 }
 
-function funcLTrim(runtime)
+function funcAbs(args)
 //
 {
 
 }
 
-function funcRTrim(runtime)
+function funcAsc(args)
 //
 {
 
 }
 
-function funcInstr(runtime)
+function funcChr(args)
 //
 {
 
 }
 
-function funcAbs(runtime)
+function funcMin(args)
 //
 {
 
 }
 
-function funcAsc(runtime)
+function funcMax(args)
 //
 {
 
 }
 
-function funcChr(runtime)
+function funcSqr(args)
 //
 {
 
 }
 
-function funcMin(runtime)
+function funcStr(args)
 //
 {
 
 }
 
-function funcMax(runtime)
-//
-{
-
-}
-
-function funcSqr(runtime)
-//
-{
-
-}
-
-function funcStr(runtime)
-//
-{
-
-}
-
-function funcVal(runtime)
+function funcVal(args)
 //
 {
 

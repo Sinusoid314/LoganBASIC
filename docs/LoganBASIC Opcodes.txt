@@ -101,7 +101,7 @@ END
   Trigger the program to end
 
 CALL_NATIVE_FUNC
-  operands: funcIndex
+  operands: funcIndex, argCount
   stack: [arg1, arg2, ...] -> []
   Call the native function at funcIndex.
 
