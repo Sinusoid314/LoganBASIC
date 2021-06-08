@@ -1,3 +1,6 @@
+(June 8, 2021)
+	- Started the help pages.
+
 (June 7, 2021)
 	- Modified the calling convention of native functions to allow optional arguments.
 	- Added Trim(), LTrim(), RTrim(), Mid(), Abs(), Min(), Max(), Sqr(), Asc(),
