@@ -1,0 +1,60 @@
+#menu-frame
+{
+  float: left;
+  width: 150px;
+  height: 100%;
+}
+
+ul, #menu
+{
+  list-style-type: none;
+}
+
+#menu
+{
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.title-closed
+{
+  cursor: pointer;
+  user-select: none;
+}
+
+.title-closed::before
+{
+  content: "\25B6";
+  color: black;
+  display: inline-block;
+  margin-right: 6px;
+}
+
+.title-open::before
+{
+  transform: rotate(90deg);
+}
+
+.submenu-closed
+{
+  display: none;
+}
+
+.submenu-open
+{
+  display: block;
+}
+
+#docview-frame
+{
+  margin-left: 150px;
+  height: 100%;
+}
+
+#docview
+{
+  width: 100%;
+  height: 100%;
+}
