@@ -10,7 +10,8 @@ statement  ->  ( varStmt
                | forStmt
                | endStmt
                | reDimStmt
-               | clsStmt )
+               | clsStmt
+               | doStmt )
                terminator? ;
 
 varStmt     ->  "var" IDENTIFIER ( "=" expression )? ;

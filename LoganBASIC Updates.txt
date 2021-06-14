@@ -1,3 +1,7 @@
+(June 14, 2021)
+	- Set up the outlines for Statements help pages.
+	- Modified examples page to load the example code in an iframe.
+
 (June 13, 2021)
 	- Set up the main help page.
 
