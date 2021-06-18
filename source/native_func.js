@@ -9,7 +9,7 @@ class NativeFunc
   }
 }
 
-stdNativeFuncList = [
+nativeFuncList = [
                   new NativeFunc("input", 1, 1, funcInput),
                   new NativeFunc("rnd", 0, 0, funcRnd),
                   new NativeFunc("time", 0, 0, funcTime),

@@ -1,6 +1,7 @@
 (June 18, 2021)
 	- Removed the 'loganbasic_' prefix from the source file names.
 	- Renamed Parser class to Compiler.
+	- Made nativeFuncList a global variable.
 
 (June 14, 2021)
 	- Set up the outlines for Statements help pages.

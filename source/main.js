@@ -3,7 +3,7 @@ importScripts('worker_msg.js',
               'token.js',
               'bytecode.js',
               'scanner.js',
-              'parser.js',
+              'compiler.js',
               'runtime.js');
 
 var runtime;
@@ -37,13 +37,13 @@ function onStart(sourceStr)
 
   if(scanner.errorMsg == "")
   {
-    compiler = new Compiler(tokenList, stdNativeFuncList);
+    compiler = new Compiler(tokenList);
     bytecode = compiler.compile();
 
     if(compiler.errorMsg == "")
     {
       postMessage({msgId: MSGID_STATUS, msgData: "Running..."});
-      runtime = new Runtime(bytecode, stdNativeFuncList);
+      runtime = new Runtime(bytecode);
       runtime.run();
 
       if(runtime.errorMsg == "")

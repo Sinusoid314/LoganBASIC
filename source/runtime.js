@@ -1,9 +1,8 @@
 class Runtime
 {
-  constructor(bytecode, nativeFuncList)
+  constructor(bytecode)
   {
     this.bytecode = bytecode;
-    this.nativeFuncList = nativeFuncList;
     this.currOpIndex = 0;
     this.stack = [];
     this.opFuncList = [null];
@@ -259,7 +258,7 @@ class Runtime
     var funcIndex = this.getOperand(1);
     var argCount = this.getOperand(2);
     var args = this.stack.splice(this.stack.length - argCount, argCount);;
-    var retVal = this.nativeFuncList[funcIndex].func(args);;
+    var retVal = nativeFuncList[funcIndex].func(args);;
 
     this.stack.push(retVal);
   }
