@@ -1,8 +1,10 @@
 class Compiler
 {
-  constructor(tokenList)
+  constructor(sourceStr)
   {
-    this.tokenList = tokenList;
+	this.sourceStr = sourceStr;
+	this.scanner = new Scanner(sourceStr);
+    this.tokenList = [];
     this.bytecode = new Bytecode();
     this.currTokenIndex = 0;
     this.errorMsg = "";
@@ -13,6 +15,8 @@ class Compiler
   {
 	try
 	{
+      this.scanTokens();
+
       while(!this.endOfTokens())
         this.parseStatement();
     }
@@ -22,6 +26,51 @@ class Compiler
     }
 
     return this.bytecode;
+  }
+
+  scanTokens()
+  //Use the scanner to build a token list
+  {
+    var token;
+
+    do
+    {
+      token = scanner.scanToken();
+
+      switch(token.type)
+      {
+        case TOKEN_ERROR:
+          throw {message: token.lexemeStr};
+          break;
+
+        case TOKEN_NEWLINE:
+          if(this.tokenList.length > 0)
+          {
+            if(this.tokenList[this.tokenList.length - 1].type == TOKEN_UNDERSCORE)
+            {
+              this.tokenList.pop();
+            }
+            else
+            {
+              if(this.tokenList[this.tokenList.length - 1].type != TOKEN_NEWLINE)
+                this.tokenList.push(token);
+            }
+          }
+          break;
+
+        case TOKEN_COLON:
+          if(this.tokenList.length > 0)
+          {
+            if(this.tokenList[this.tokenList.length - 1].type != TOKEN_COLON)
+              this.tokenList.push(token);
+          }
+          break;
+
+        default:
+          this.tokenList.push(token);
+      }
+    }
+    while(token.type != TOKEN_EOF)
   }
 
   parseStatement(requireTerminator = true)

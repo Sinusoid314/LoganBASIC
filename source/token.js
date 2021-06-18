@@ -1,4 +1,5 @@
 //Token types
+const TOKEN_ERROR = 0;
 const TOKEN_EOF = 1;
 const TOKEN_NEWLINE = 2;
 const TOKEN_COLON = 3;

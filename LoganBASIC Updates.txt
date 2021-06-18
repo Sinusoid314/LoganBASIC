@@ -2,6 +2,8 @@
 	- Removed the 'loganbasic_' prefix from the source file names.
 	- Renamed Parser class to Compiler.
 	- Made nativeFuncList a global variable.
+	- Modified Compiler to use the Scanner to build its own token list.
+	- Started modifying Scanner to output one token at a time.
 
 (June 14, 2021)
 	- Set up the outlines for Statements help pages.

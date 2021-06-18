@@ -1,3 +1,4 @@
+- Finish implementing scanToken() and skipWhitespace() in Scanner.
 - Add exponent operator ^.
 - Add FOR/NEXT loop.
 - Add user function/sub support.

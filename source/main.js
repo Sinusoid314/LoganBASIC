@@ -6,6 +6,8 @@ importScripts('worker_msg.js',
               'compiler.js',
               'runtime.js');
 
+var compiler;
+var bytecode;
 var runtime;
 
 onmessage = function(message)
@@ -26,46 +28,29 @@ onmessage = function(message)
 function onStart(sourceStr)
 //
 {
-  var scanner;
-  var compiler;
-  var tokenList;
-  var bytecode;
-
   postMessage({msgId: MSGID_STATUS, msgData: "Compiling..."});
-  scanner = new Scanner(sourceStr);
-  tokenList = scanner.scan();
+  compiler = new Compiler(sourceStr);
+  bytecode = compiler.compile();
 
-  if(scanner.errorMsg == "")
+  if(compiler.errorMsg == "")
   {
-    compiler = new Compiler(tokenList);
-    bytecode = compiler.compile();
+    postMessage({msgId: MSGID_STATUS, msgData: "Running..."});
+    runtime = new Runtime(bytecode);
+    runtime.run();
 
-    if(compiler.errorMsg == "")
+    if(runtime.errorMsg == "")
     {
-      postMessage({msgId: MSGID_STATUS, msgData: "Running..."});
-      runtime = new Runtime(bytecode);
-      runtime.run();
-
-      if(runtime.errorMsg == "")
-      {
-        if(!runtime.inputting)
-        {
-          postMessage({msgId: MSGID_DONE, msgData: "Program run successfully."});
-        }
-      }
-      else
-      {
-        postMessage({msgId: MSGID_DONE, msgData: runtime.errorMsg});
-      }
+      if(!runtime.inputting)
+        postMessage({msgId: MSGID_DONE, msgData: "Program run successfully."});
     }
     else
     {
-      postMessage({msgId: MSGID_DONE, msgData: parser.errorMsg});
+      postMessage({msgId: MSGID_DONE, msgData: runtime.errorMsg});
     }
   }
   else
   {
-    postMessage({msgId: MSGID_DONE, msgData: scanner.errorMsg});
+    postMessage({msgId: MSGID_DONE, msgData: parser.errorMsg});
   }
 }
 
@@ -79,9 +64,7 @@ function onInputResult(inputStr)
   if(runtime.errorMsg == "")
   {
 	if(!runtime.inputting)
-	{
 	  postMessage({msgId: MSGID_DONE, msgData: "Program run successfully."});
-	}
   }
   else
   {
