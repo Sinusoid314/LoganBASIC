@@ -1,0 +1,76 @@
+button
+{
+  margin-right: 2px;
+  margin-left: 2px;
+  text-shadow: 1px 1px white;
+}
+
+label
+{
+  display: block;
+  text-shadow: 1px 1px lightgray;
+}
+
+.bar
+{
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 2px;
+  background-color: #ccccff;
+  box-shadow: 1px 1px gray;
+}
+
+.bar-seperator
+{
+  display: inline;
+  border-left: 1px solid gray;
+  border-right: 1px solid white;
+  margin-left: 8px;
+  margin-right: 8px;
+}
+
+#editorDiv
+{
+  display: block;
+}
+
+#menuBar
+{
+  margin-bottom: 15px;
+}
+
+#progEditor
+{
+  display: block;
+  margin-top: 5px;
+  width: 100%;
+}
+
+#uiDiv
+{
+  display: block;
+}
+
+#commandBar
+{
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+
+#statusBar
+{
+  display: inline;
+  margin-left: 2px;
+}
+
+#progConsole
+{
+  display: block;
+  margin-top: 5px;
+  width: 100%;
+}
+
+#version
+{
+  margin-top: 30px;
+}

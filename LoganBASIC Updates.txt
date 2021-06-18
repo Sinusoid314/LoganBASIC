@@ -1,3 +1,6 @@
+(June 18, 2021)
+	- Removed the 'loganbasic_' prefix from the source file names.
+
 (June 14, 2021)
 	- Set up the outlines for Statements help pages.
 	- Modified examples page to load the example code in an iframe.
