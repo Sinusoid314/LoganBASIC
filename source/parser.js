@@ -1,4 +1,4 @@
-class Parser
+class Compiler
 {
   constructor(tokenList, nativeFuncList)
   {
@@ -9,7 +9,7 @@ class Parser
     this.errorMsg = "";
   }
 
-  parse()
+  compile()
   //
   {
 	try

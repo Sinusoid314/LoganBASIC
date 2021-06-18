@@ -27,7 +27,7 @@ function onStart(sourceStr)
 //
 {
   var scanner;
-  var parser;
+  var compiler;
   var tokenList;
   var bytecode;
 
@@ -37,10 +37,10 @@ function onStart(sourceStr)
 
   if(scanner.errorMsg == "")
   {
-    parser = new Parser(tokenList, stdNativeFuncList);
-    bytecode = parser.parse();
+    compiler = new Compiler(tokenList, stdNativeFuncList);
+    bytecode = compiler.compile();
 
-    if(parser.errorMsg == "")
+    if(compiler.errorMsg == "")
     {
       postMessage({msgId: MSGID_STATUS, msgData: "Running..."});
       runtime = new Runtime(bytecode, stdNativeFuncList);
