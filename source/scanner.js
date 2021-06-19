@@ -56,7 +56,7 @@ class Scanner
         return this.makeToken(TOKEN_COLON);
 
       case '_':
-        return this.makeTokenTOKEN_UNDERSCORE);
+        return this.makeToken(TOKEN_UNDERSCORE);
 
       case '(':
         return this.makeToken(TOKEN_LEFT_PAREN);
@@ -103,17 +103,11 @@ class Scanner
 
       default:
         if(this.isDigit(firstChar))
-        {
           return this.consumeNumberLiteral();
-        }
         else if(this.isAlpha(firstChar))
-        {
           return this.consumeIdentifier();
-        }
         else
-        {
           return this.makeErrorToken("Unrecognized character: '" + firstChar + "'");
-        }
     }
   }
 
@@ -133,21 +127,27 @@ class Scanner
   skipWhitespace()
   //
   {
-	var char;
+	var tmpChar;
 
-	switch(char)
-	{
-      case ' ':
-      case '\r':
-      case '\t':
-        break;
-
-      case "'":
-        while((this.peekChar() != '\n') && (!this.endOfSource()))
-        {
+    while(true)
+    {
+      tmpChar = this.peekChar();
+	  switch(tmpChar)
+	  {
+        case ' ':
+        case '\r':
+        case '\t':
           this.consumeChar();
-        }
-        break;
+          break;
+
+        case "'":
+          while((this.peekChar() != '\n') && (!this.endOfSource()))
+            this.consumeChar();
+          break;
+
+        default:
+          return;
+      }
     }
   }
 
@@ -157,9 +157,7 @@ class Scanner
     var literalVal;
 
     while((this.peekChar() != '"') && (this.peekChar() != '\n') && !this.endOfSource())
-    {
       this.consumeChar();
-    }
 
     if((this.peekChar() == '\n') || this.endOfSource())
       return this.makeErrorToken("Unterminated string.");
@@ -176,17 +174,13 @@ class Scanner
     var literalVal;
 
     while(this.isDigit(this.peekChar()))
-    {
       this.consumeChar();
-    }
 
     if((this.peekChar() == '.') && this.isDigit(this.peekNextChar()))
     {
       this.consumeChar();
       while(this.isDigit(this.peekChar()))
-      {
         this.consumeChar();
-      }
     }
 
     literalVal = Number(this.sourceStr.substring(this.startCharIndex, this.currCharIndex));
@@ -200,20 +194,14 @@ class Scanner
     var tokenType;
 
     while(this.isAlphaNumeric(this.peekChar()))
-    {
       this.consumeChar();
-    }
 
     lexemeStr = this.sourceStr.substring(this.startCharIndex, this.currCharIndex).toLowerCase();
 
     if(keywordList.hasOwnProperty(lexemeStr))
-    {
       tokenType = keywordList[lexemeStr];
-    }
     else
-    {
       tokenType = TOKEN_IDENTIFIER;
-    }
 
     return this.makeToken(tokenType);
   }

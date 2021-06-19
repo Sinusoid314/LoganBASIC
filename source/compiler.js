@@ -17,6 +17,9 @@ class Compiler
 	{
       this.scanTokens();
 
+      for(var n = 0; n < this.tokenList.lenght; n++)
+        console.log(this.tokenList[n].type + "  -  " + this.tokenList.lexemeStr);
+
       while(!this.endOfTokens())
         this.parseStatement();
     }
