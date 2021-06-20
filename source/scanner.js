@@ -115,13 +115,13 @@ class Scanner
   //
   {
     var lexemeStr = this.sourceStr.substring(this.startCharIndex, this.currCharIndex);
-    return new Token(type, lexemeStr, literalVal, this.currLineNum));
+    return new Token(type, lexemeStr, literalVal, this.currLineNum);
   }
 
   makeErrorToken(errorMsg)
   //
   {
-    return new Token(TOKEN_ERROR, errorMsg, undefined, this.currLineNum));
+    return new Token(TOKEN_ERROR, errorMsg, undefined, this.currLineNum);
   }
 
   skipWhitespace()

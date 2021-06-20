@@ -1,5 +1,6 @@
 (June 19, 2021)
 	- Finished modifying Scanner to output one token at a time.
+	- Fixed bugs in Scanner and Compiler.
 
 (June 18, 2021)
 	- Removed the 'loganbasic_' prefix from the source file names.

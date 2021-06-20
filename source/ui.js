@@ -49,7 +49,7 @@ function runBtn_onClick(event)
     return;
 
   editorStr = progEditor.value;
-  progWorker = new Worker('loganbasic_main.js');
+  progWorker = new Worker('main.js');
   progWorker.onmessage = progWorker_onMessage;
   progConsole.value = "";
   progWorker.postMessage({msgId: MSGID_START, msgData: editorStr});
