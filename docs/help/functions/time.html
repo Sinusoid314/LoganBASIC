@@ -9,13 +9,21 @@
 
 <h3>Time()</h3>
 
-<p>Description</p>
+<h4>Description</h4>
 <p id="description">
 Returns the number of milliseconds elapsed since January 1, 1970.
 </p>
 
-<p>Usage</p>
+<h4>Usage</h4>
 <code id="usage">
+var startTime = time()
+
+print "Wait 1 second..."
+
+while time() - startTime < 1000
+wend
+
+print "Done."
 </code>
 
 </body>

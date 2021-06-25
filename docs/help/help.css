@@ -3,6 +3,7 @@
   float: left;
   width: 180px;
   height: 100%;
+  overflow: auto;
 }
 
 ul, #menu

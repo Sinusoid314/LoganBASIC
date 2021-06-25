@@ -1,5 +1,5 @@
-- Add exponent operator ^.
 - Add FOR/NEXT loop.
 - Add user function/sub support.
 - Finish commenting functions and methods.
-- Finish help pages.
+- Finish statement help pages.
+- Add exponent operator ^.

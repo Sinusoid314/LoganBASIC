@@ -1,3 +1,6 @@
+(June 24, 2021)
+	- Finished function help pages.
+
 (June 19, 2021)
 	- Finished modifying Scanner to output one token at a time.
 	- Fixed bugs in Scanner and Compiler.
