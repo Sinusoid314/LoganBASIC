@@ -15,7 +15,7 @@ examplesBtn.addEventListener("click", examplesBtn_onClick);
 helpBtn.addEventListener("click", helpBtn_onClick);
 
 function window_onLoad(event)
-//
+//Load a slource file into the editor if one if provided
 {
   var urlParams = new URLSearchParams(window.location.search);
   var fileURL;
@@ -58,13 +58,13 @@ function window_onLoad(event)
 }
 
 function newBtn_onClick(event)
-//
+//Open a blank editor in a new tab
 {
   window.open("loganbasic.html", "_blank");
 }
 
 function openFileBtn_onClick(event)
-//
+//Open a source file from disk
 {
     fileInput = document.createElement("input");
     fileInput.type = "file";
@@ -80,7 +80,7 @@ function openFileBtn_onClick(event)
 }
 
 function openURLBtn_onClick(event)
-//
+//Open a source file from a URL
 {
   var fileURL = prompt("Enter file URL: ");
 
@@ -91,7 +91,7 @@ function openURLBtn_onClick(event)
 }
 
 function saveBtn_onClick(event)
-//
+//Save the current source code to disk
 {
   var blob = new Blob([progEditor.value], {type: 'text/plain'});
   var url = URL.createObjectURL(blob);
@@ -104,13 +104,13 @@ function saveBtn_onClick(event)
 }
 
 function examplesBtn_onClick(event)
-//
+//Open the examples page
 {
   window.open("../examples/examples.html", "_blank");
 }
 
 function helpBtn_onClick(event)
-//
+//Open the help files page
 {
   window.open("../docs/help/help.html", "_blank");
 }

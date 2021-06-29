@@ -61,6 +61,7 @@ class Token
   }
 
   toString()
+  //Return the token info as a string
   {
     return this.lineNum + " " + this.lexemeStr + " " + this.type + " " + this.literalVal;
   }

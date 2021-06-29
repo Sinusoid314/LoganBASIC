@@ -126,4 +126,4 @@ STORE_ARRAY_ITEM
   Set the given array item to the given value.
 
 CLS
-  Clears the console window.
+  Clear the console window.

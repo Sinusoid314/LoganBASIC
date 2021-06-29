@@ -1,4 +1,4 @@
-- Finish commenting functions and methods.
+- Finish commenting Compiler methods.
 - Add FOR/NEXT loop.
 - Add user function/sub support.
 - Add exponent operator ^.

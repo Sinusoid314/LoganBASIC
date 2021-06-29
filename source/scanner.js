@@ -34,7 +34,7 @@ class Scanner
   }
 
   scanToken()
-  //
+  //Read and return the next token from the source code
   {
     var firstChar;
 
@@ -112,20 +112,20 @@ class Scanner
   }
 
   makeToken(type, literalVal)
-  //
+  //Create and return a new token
   {
     var lexemeStr = this.sourceStr.substring(this.startCharIndex, this.currCharIndex);
     return new Token(type, lexemeStr, literalVal, this.currLineNum);
   }
 
   makeErrorToken(errorMsg)
-  //
+  //Create and return an error token
   {
     return new Token(TOKEN_ERROR, errorMsg, undefined, this.currLineNum);
   }
 
   skipWhitespace()
-  //
+  //Skip over any valid characters that do not belong in a token
   {
 	var tmpChar;
 
@@ -152,7 +152,7 @@ class Scanner
   }
 
   consumeStringLiteral()
-  //
+  //Read and return a string literal token
   {
     var literalVal;
 
@@ -169,7 +169,7 @@ class Scanner
   }
 
   consumeNumberLiteral()
-  //
+  //Read and return a number literal token
   {
     var literalVal;
 
@@ -188,7 +188,7 @@ class Scanner
   }
 
   consumeIdentifier()
-  //
+  //Read and return an identifier token
   {
     var lexemeStr;
     var tokenType;
@@ -207,31 +207,31 @@ class Scanner
   }
 
   isAlpha(testChar)
-  //
+  //Return true if the given character is a letter
   {
     return /^[A-Za-z]$/.test(testChar);
   }
 
   isDigit(testChar)
-  //
+  //Return true if the given character is a number
   {
     return /^[0-9]$/.test(testChar);
   }
 
   isAlphaNumeric(testChar)
-  //
+  //Return true if the given character is a letter or number
   {
     return (this.isAlpha(testChar) || this.isDigit(testChar));
   }
 
   consumeChar()
-  //
+  //Return the current character and advance to the next character
   {
     return this.sourceStr.charAt(this.currCharIndex++);
   }
 
   matchChar(expectedChar)
-  //
+  //Return true and advance to the next character if the current character matches the given one
   {
     if(this.endOfSource())
 	  return false;
@@ -244,7 +244,7 @@ class Scanner
   }
 
   peekChar()
-  //
+  //Return the current character
   {
     if(this.endOfSource())
       return '\0';
@@ -253,7 +253,7 @@ class Scanner
   }
 
   peekNextChar()
-  //
+  //Return the character after the current character
   {
     if((this.currCharIndex + 1) >= this.sourceStr.length)
       return '\0';
@@ -262,7 +262,7 @@ class Scanner
   }
 
   endOfSource()
-  //
+  //Return true if the current character index is past the end of the source string
   {
     return (this.currCharIndex >= this.sourceStr.length);
   }

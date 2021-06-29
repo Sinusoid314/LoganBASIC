@@ -11,7 +11,7 @@ class Compiler
   }
 
   compile()
-  //
+  //Compile the source code string to a series of bytecodes
   {
 	try
 	{
@@ -698,7 +698,7 @@ class Compiler
   }
 
   addOp(operandList)
-  //
+  //Add a new bytecodce op
   {
     this.bytecode.opList.push(operandList);
     return this.bytecode.opList.length - 1;
@@ -711,12 +711,13 @@ class Compiler
   }
 
   matchTerminator()
+  //Return true if the current token is one of the statement terminators
   {
     return this.matchTokenList([TOKEN_NEWLINE, TOKEN_COLON, TOKEN_EOF]);
   }
 
   consumeToken()
-  //
+  //Return the current token and advance to the next token
   {
     if(!this.endOfTokens())
       this.currTokenIndex++;
@@ -725,7 +726,7 @@ class Compiler
   }
 
   matchTokenList(tokenTypeList)
-  //
+  //Return true if the current token's type matches any one of the given types
   {
     for(var index = 0; index < tokenTypeList.length; index++)
     {
@@ -740,7 +741,7 @@ class Compiler
   }
 
   matchTokenPair(tokenType1, tokenType2)
-  //
+  //Return true and advance past the next token if the current and next token's types match the given types
   {
     if(this.checkTokenPair(tokenType1, tokenType2))
     {
@@ -753,7 +754,7 @@ class Compiler
   }
 
   matchToken(tokenType)
-  //
+  //Return true and advance to the next token if the current token's type matches the given type
   {
     if(this.checkToken(tokenType))
     {
@@ -763,7 +764,7 @@ class Compiler
   }
 
   checkTokenPair(tokenType1, tokenType2)
-  //
+  //Return true if the current and next token's types match the given types
   {
     if(this.checkToken(tokenType1) && this.checkNextToken(tokenType2))
 	  return true;
@@ -772,25 +773,25 @@ class Compiler
   }
 
   checkToken(tokenType)
-  //
+  //Return true if the current token's type matches the given type
   {
     return (this.peekToken().type == tokenType);
   }
 
   checkNextToken(tokenType)
-  //
+  //Return true if the next token's type matches the given type
   {
     return (this.peekNextToken().type == tokenType);
   }
 
   peekToken()
-  //
+  //Return the current token
   {
     return this.tokenList[this.currTokenIndex];
   }
 
   peekNextToken()
-  //
+  //Return the token after the current token
   {
 	if(!this.endOfTokens())
       return this.tokenList[this.currTokenIndex + 1];
@@ -799,13 +800,13 @@ class Compiler
   }
 
   prevToken()
-  //
+  //Return the token before the current token
   {
     return this.tokenList[this.currTokenIndex - 1];
   }
 
   endOfTokens()
-  //
+  //Return true if the current token is the end token
   {
     return (this.peekToken().type == TOKEN_EOF)
   }

@@ -11,7 +11,7 @@ var bytecode;
 var runtime;
 
 onmessage = function(message)
-//
+//Process messages sent from the UI thread
 {
   switch(message.data.msgId)
   {
@@ -26,7 +26,7 @@ onmessage = function(message)
 }
 
 function onStart(sourceStr)
-//
+//Compile and run the program
 {
   postMessage({msgId: MSGID_STATUS, msgData: "Compiling..."});
   compiler = new Compiler(sourceStr);
@@ -55,7 +55,7 @@ function onStart(sourceStr)
 }
 
 function onInputResult(inputStr)
-//
+//Process input sent from the console
 {
   runtime.stack.push(inputStr);
   runtime.inputting = false;

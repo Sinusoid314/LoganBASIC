@@ -264,7 +264,7 @@ class Runtime
   }
 
   opCreateArray()
-  //
+  //Create an array with the given dimensions
   {
     var dimCount = this.getOperand(1);
     var dimSizeList = new Array(dimCount).fill(0);
@@ -280,7 +280,7 @@ class Runtime
   }
 
   opReDimArray()
-  //
+  //Set the dimensions of the given array
   {
     var dimCount = this.getOperand(1);
     var dimSizeList = new Array(dimCount).fill(0);
@@ -298,7 +298,7 @@ class Runtime
   }
 
   opLoadArrayItem()
-  //
+  //Push the value of the given array item onto the stack
   {
     var indexCount = this.getOperand(1);
     var indexList = new Array(indexCount).fill(0);
@@ -321,7 +321,7 @@ class Runtime
   }
 
   opStoreArrayItem()
-  //
+  //Set the given array item to the given value
   {
     var indexCount = this.getOperand(1);
     var indexList = new Array(indexCount).fill(0);
@@ -345,13 +345,13 @@ class Runtime
   }
 
   opCls()
-  //
+  //Clear the console window
   {
     postMessage({msgId: MSGID_CLEAR_CONSOLE});
   }
 
   getOperand(operandIndex)
-  //
+  //Return the operand at the given index of the current op
   {
     return this.bytecode.opList[this.currOpIndex][operandIndex];
   }
@@ -372,7 +372,7 @@ class ObjArray
   }
 
   reDim(newDimSizeList)
-  //
+  //Change the array dimensions
   {
     var newLinearSize = 1;
 
@@ -391,7 +391,7 @@ class ObjArray
   }
 
   getLinearIndex(indexList)
-  //
+  //Convert the given index list to a linear index
   {
     var linearIndex = 0;
     var multiplier = 1;

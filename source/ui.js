@@ -14,7 +14,7 @@ progConsole.inputting = false;
 progConsole.inputStr = "";
 
 function switchMode()
-//
+//Switch between run and edit modes
 {
   runBtn.disabled = !runBtn.disabled;
   stopBtn.disabled = !stopBtn.disabled;
@@ -22,7 +22,7 @@ function switchMode()
 }
 
 function stopProg(exitStatusStr)
-//
+//Stop the running program
 {
   if(!isRunning)
     return;
@@ -41,7 +41,7 @@ function stopProg(exitStatusStr)
 }
 
 function runBtn_onClick(event)
-//
+//Run the program
 {
   var editorStr;
 
@@ -58,13 +58,13 @@ function runBtn_onClick(event)
 }
 
 function stopBtn_onClick(event)
-//
+//Stop the program (user-triggered)
 {
   stopProg("Program stopped.");
 }
 
 function progConsole_onKeydown(event)
-//
+//Process the backspace and enter key inputs to the console
 {
   if(!progConsole.inputting) return;
 
@@ -88,7 +88,7 @@ function progConsole_onKeydown(event)
 }
 
 function progConsole_onKeypress(event)
-//
+//Add the input character to the console
 {
   if(!progConsole.inputting) return;
 
@@ -97,7 +97,7 @@ function progConsole_onKeypress(event)
 }
 
 function progWorker_onMessage(message)
-//
+//Process messages sent from the program thread
 {
   switch(message.data.msgId)
   {
@@ -124,33 +124,33 @@ function progWorker_onMessage(message)
 }
 
 function progWorker_onDone(exitStatusStr)
-//
+//Stop the program (self-triggered)
 {
   stopProg(exitStatusStr);
 }
 
 function progWorker_onStatus(statusStr)
-//
+//Display a status change
 {
   statusBar.innerHTML = statusStr;
 }
 
 function progWorker_onPrint(val)
-//
+//Print to the console
 {
   progConsole.value += val;
   progConsole.scrollTop = progConsole.scrollHeight;
 }
 
 function progWorker_onInputRequest()
-//
+//Allow user to enter input to the console
 {
   progConsole.inputting = true;
   progConsole.focus();
 }
 
 function progWorker_onClearConsole()
-//
+//Clear the console
 {
   progConsole.value = "";
 }
