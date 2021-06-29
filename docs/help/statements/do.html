@@ -13,12 +13,21 @@ Loop While expression</h3>
 
 <h4>Description</h4>
 <p id="description">
-
+Executes a block of statements repeatedly until expression equals false.
+Unlike the While statement, the block of statements are executed at least
+once, regardless of what expression equals.
 </p>
 
 <h4>Usage</h4>
 <code id="usage">
+var num = 4
 
+do
+  num = num + 1
+  print "num is " + num
+loop while num < 4
+
+'output: num is 5
 </code>
 
 </body>

@@ -18,12 +18,24 @@ End If
 
 <h4>Description</h4>
 <p id="description">
-
+Conditionally executes a block of statements, depending on the value of expression.
 </p>
 
 <h4>Usage</h4>
 <code id="usage">
+var num = 0
 
+num = input("Enter a number: ")
+
+if num = 10 then
+  print "Number is 10."
+else
+  if num < 10 then
+    print "Number is less than 10."
+  else
+    print "Number is greater than 10."
+  end if
+end if
 </code>
 
 </body>

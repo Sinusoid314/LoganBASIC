@@ -50,7 +50,7 @@ function onStart(sourceStr)
   }
   else
   {
-    postMessage({msgId: MSGID_DONE, msgData: parser.errorMsg});
+    postMessage({msgId: MSGID_DONE, msgData: compiler.errorMsg});
   }
 }
 

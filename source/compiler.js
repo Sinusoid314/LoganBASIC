@@ -321,7 +321,7 @@ class Compiler
     while(!this.endOfTokens() && !this.checkTokenPair(TOKEN_LOOP, TOKEN_WHILE))
       this.parseStatement();
 
-    if(!matchTokenPair(TOKEN_LOOP, TOKEN_WHILE))
+    if(!this.matchTokenPair(TOKEN_LOOP, TOKEN_WHILE))
       throw {message: "Expected 'loop while' at the end of 'do' block."};
 
     this.parseExpression();

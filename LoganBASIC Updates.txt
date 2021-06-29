@@ -1,3 +1,7 @@
+(June 29, 2021)
+	- Finished statement help pages.
+	- Fixed bug that caused the compiler to hang in some cases.
+
 (June 24, 2021)
 	- Finished function help pages.
 
