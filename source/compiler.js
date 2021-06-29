@@ -11,7 +11,7 @@ class Compiler
   }
 
   compile()
-  //Compile the source code string to a series of bytecodes
+  //Compile the source code string to a series of bytecode ops
   {
 	try
 	{
@@ -74,7 +74,7 @@ class Compiler
   }
 
   parseStatement(requireTerminator = true)
-  //
+  //Determine the next statement to parse
   {
     if(this.matchToken(TOKEN_VAR))
       this.varStmt();
@@ -123,7 +123,7 @@ class Compiler
   }
 
   varStmt()
-  //
+  //Parse a Var statement
   {
     var varIdent, varIndex;
 
@@ -145,7 +145,7 @@ class Compiler
   }
 
   arrayStmt()
-  //
+  //Parse an Array statement
   {
     var varIdent, varIndex, dimCount;
 
@@ -174,7 +174,7 @@ class Compiler
   }
 
   assignmentStmt()
-  //
+  //Parse an assignment statement
   {
     var varIdent, varIndex;
     var indexCount, storeOp;
@@ -199,21 +199,21 @@ class Compiler
   }
 
   callStmt()
-  //
+  //Parse a function call statement
   {
     this.parseFuncCall();
     this.addOp([OPCODE_POP]);
   }
 
   printStmt()
-  //
+  //Parse a Print statement
   {
     this.parseExpression();
     this.addOp([OPCODE_PRINT]);
   }
 
   ifStmt()
-  //
+  //Parse an If...Then statement
   {
     var thenJumpOpIndex;
     var elseJumpOpIndex;
@@ -263,7 +263,7 @@ class Compiler
   }
 
   whileStmt()
-  //
+  //Parse a While...Wend statement
   {
     var jumpOpIndex;
 	var startOpIndex = this.bytecode.opList.length;
@@ -286,32 +286,32 @@ class Compiler
   }
 
   forStmt()
-  //
+  //Parse a For...Next statement
   {
 
   }
 
   endStmt()
-  //
+  //Parse an End statement
   {
     this.addOp([OPCODE_END]);
   }
 
   reDimStmt()
-  //
+  //Parse a Redim statement
   {
     var dimCount = this.parseArrayItem();
     this.addOp([OPCODE_REDIM_ARRAY, dimCount]);
   }
 
   clsStmt()
-  //
+  //Parse a Cls statement
   {
     this.addOp([OPCODE_CLS]);
   }
 
   doStmt()
-  //
+  //Parse a Do...Loop While statement
   {
     var startOpIndex = this.bytecode.opList.length;
 
@@ -329,13 +329,13 @@ class Compiler
   }
 
   parseExpression()
-  //
+  //Parse an expression
   {
     this.logicOrExpr();
   }
 
   logicOrExpr()
-  //
+  //Parse a Logical OR expression
   {
     var jumpOpIndex;
 
@@ -353,7 +353,7 @@ class Compiler
   }
 
   logicAndExpr()
-  //
+  //Parse a Logical AND expression
   {
     var jumpOpIndex;
 
@@ -371,7 +371,7 @@ class Compiler
   }
 
   equalityExpr()
-  //
+  //Parse an equality expression
   {
     var operatorType;
 
@@ -397,7 +397,7 @@ class Compiler
   }
 
   comparisonExpr()
-  //
+  //Parse a comparison expression
   {
     var operatorType;
 
@@ -432,7 +432,7 @@ class Compiler
   }
 
   termExpr()
-  //
+  //Parse an addition/substraction expression
   {
     var operatorType;
 
@@ -452,7 +452,7 @@ class Compiler
   }
 
   factorExpr()
-  //
+  //Parse a multiplication/division/modulo expression
   {
     var operatorType;
 
@@ -473,7 +473,7 @@ class Compiler
   }
 
   unaryExpr()
-  //
+  //Parse a unary expression
   {
     var operatorType;
 
@@ -495,7 +495,7 @@ class Compiler
   }
 
   callExpr()
-  //
+  //Parse a function call expression
   {
 	if(this.checkTokenPair(TOKEN_IDENTIFIER, TOKEN_LEFT_PAREN))
       this.parseFuncCall();
@@ -504,7 +504,7 @@ class Compiler
   }
 
   arrayExpr()
-  //
+  //Parse an array expression
   {
     var indexCount;
 
@@ -520,7 +520,7 @@ class Compiler
   }
 
   primaryExpr()
-  //
+  //Parse a primary expression
   {
     var varIdent, varIndex;
     var litVal, litIndex;
@@ -571,7 +571,7 @@ class Compiler
   }
 
   parseFuncCall()
-  //
+  //Parse a function call
   {
 	var funcIdent, funcIndex, argCount;
 
@@ -599,7 +599,7 @@ class Compiler
   }
 
   parseArrayItem()
-  //
+  //Parse an array item
   {
     var varIdent, varIndex, indexCount;
 
@@ -628,7 +628,7 @@ class Compiler
   }
 
   parseArguments()
-  //
+  //Parse a comma-seperated list of expressions
   {
     var argCount = 0;
 
@@ -646,7 +646,7 @@ class Compiler
   }
 
   getNativeFuncIndex(funcIdent)
-  //
+  //Return the index of the given native function identifier
   {
     for(var funcIndex = 0; funcIndex < nativeFuncList.length; funcIndex++)
     {
@@ -658,7 +658,7 @@ class Compiler
   }
 
   getVariableIndex(varIdent, addIfAbsent = false)
-  //
+  //Return the index of the given variable identifier
   {
     var varIndex = this.bytecode.varIdentList.indexOf(varIdent);
 
@@ -684,7 +684,7 @@ class Compiler
   }
 
   getLiteralIndex(litVal)
-  //
+  //Return the index of the given literal value
   {
     var litIndex = this.bytecode.literalList.indexOf(litVal);
 
@@ -705,7 +705,7 @@ class Compiler
   }
 
   patchJumpOp(opIndex)
-  //
+  //Set the operand of the given jump op to the index of the next op to be added
   {
     this.bytecode.opList[opIndex][1] = this.bytecode.opList.length;
   }
