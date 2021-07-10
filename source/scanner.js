@@ -91,6 +91,9 @@ class Scanner
       case '=':
         return this.makeToken(TOKEN_EQUAL);
 
+      case '^':
+        return this.makeToken(TOKEN_CARET);
+
       case '>':
         return this.makeToken(this.matchChar('=') ? TOKEN_GREATER_EQUAL : TOKEN_GREATER);
 

@@ -25,6 +25,7 @@ class Runtime
     this.opFuncList[OPCODE_EQUAL] = this.opEqual.bind(this);
     this.opFuncList[OPCODE_GREATER] = this.opGreater.bind(this);
     this.opFuncList[OPCODE_LESS] = this.opLess.bind(this);
+    this.opFuncList[OPCODE_POW] = this.opPow.bind(this);
     this.opFuncList[OPCODE_PRINT] = this.opPrint.bind(this);
     this.opFuncList[OPCODE_JUMP] = this.opJump.bind(this);
     this.opFuncList[OPCODE_JUMP_IF_FALSE] = this.opJumpIfFalse.bind(this);
@@ -188,6 +189,15 @@ class Runtime
     var val2 = this.stack.pop();
     var val1 = this.stack.pop();
     var res = (val1 < val2);
+    this.stack.push(res);
+  }
+
+  opPow()
+  //Return value1 raised to the power of value2
+  {
+    var val2 = this.stack.pop();
+    var val1 = this.stack.pop();
+    var res = Math.pow(val1, val2);
     this.stack.push(res);
   }
 

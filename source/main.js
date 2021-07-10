@@ -6,9 +6,9 @@ importScripts('worker_msg.js',
               'compiler.js',
               'runtime.js');
 
-var compiler;
-var bytecode;
-var runtime;
+var mainCompiler;
+var mainBytecode;
+var mainRuntime;
 
 onmessage = function(message)
 //Process messages sent from the UI thread
@@ -29,45 +29,45 @@ function onStart(sourceStr)
 //Compile and run the program
 {
   postMessage({msgId: MSGID_STATUS, msgData: "Compiling..."});
-  compiler = new Compiler(sourceStr);
-  bytecode = compiler.compile();
+  mainCompiler = new Compiler(sourceStr);
+  mainBytecode = mainCompiler.compile();
 
-  if(compiler.errorMsg == "")
+  if(mainCompiler.errorMsg == "")
   {
     postMessage({msgId: MSGID_STATUS, msgData: "Running..."});
-    runtime = new Runtime(bytecode);
-    runtime.run();
+    mainRuntime = new Runtime(mainBytecode);
+    mainRuntime.run();
 
-    if(runtime.errorMsg == "")
+    if(mainRuntime.errorMsg == "")
     {
-      if(!runtime.inputting)
+      if(!mainRuntime.inputting)
         postMessage({msgId: MSGID_DONE, msgData: "Program run successfully."});
     }
     else
     {
-      postMessage({msgId: MSGID_DONE, msgData: runtime.errorMsg});
+      postMessage({msgId: MSGID_DONE, msgData: mainRuntime.errorMsg});
     }
   }
   else
   {
-    postMessage({msgId: MSGID_DONE, msgData: compiler.errorMsg});
+    postMessage({msgId: MSGID_DONE, msgData: mainCompiler.errorMsg});
   }
 }
 
 function onInputResult(inputStr)
 //Process input sent from the console
 {
-  runtime.stack.push(inputStr);
-  runtime.inputting = false;
-  runtime.run();
+  mainRuntime.stack.push(inputStr);
+  mainRuntime.inputting = false;
+  mainRuntime.run();
 
-  if(runtime.errorMsg == "")
+  if(mainRuntime.errorMsg == "")
   {
-	if(!runtime.inputting)
+	if(!mainRuntime.inputting)
 	  postMessage({msgId: MSGID_DONE, msgData: "Program run successfully."});
   }
   else
   {
-	postMessage({msgId: MSGID_DONE, msgData: runtime.errorMsg});
+	postMessage({msgId: MSGID_DONE, msgData: mainRuntime.errorMsg});
   }
 }

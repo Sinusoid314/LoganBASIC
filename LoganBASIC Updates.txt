@@ -1,6 +1,7 @@
 (July 10, 2021)
 	- Modified the native function implementation to supply a reference to the
 	  runtime object that is invoking the function.
+	- Added exponent operator ^.
 
 (June 29, 2021)
 	- Finished statement help pages.

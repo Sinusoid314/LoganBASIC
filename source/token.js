@@ -25,6 +25,7 @@ const TOKEN_LESS_EQUAL = 20;
 const TOKEN_NOT = 21;
 const TOKEN_OR = 22;
 const TOKEN_AND = 23;
+const TOKEN_CARET = 24;
 
 const TOKEN_TRUE = 30;
 const TOKEN_FALSE = 31;

@@ -456,12 +456,12 @@ class Compiler
   {
     var operatorType;
 
-    this.unaryExpr();
+    this.powerExpr();
 
     while(this.matchTokenList([TOKEN_SLASH, TOKEN_STAR, TOKEN_PERCENT]))
     {
       operatorType = this.prevToken().type;
-      this.unaryExpr();
+      this.powerExpr();
 
       switch(operatorType)
       {
@@ -471,6 +471,19 @@ class Compiler
       }
     }
   }
+
+  powerExpr()
+  //Parse an exponentiation (power) expression
+  {
+    this.unaryExpr();
+
+    while(this.matchToken(TOKEN_CARET))
+    {
+      this.unaryExpr();
+      this.addOp([OPCODE_POW]);
+    }
+  }
+
 
   unaryExpr()
   //Parse a unary expression
