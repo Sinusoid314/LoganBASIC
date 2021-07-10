@@ -1,2 +1,2 @@
 # LoganBASIC
-A small BASIC interpreter written in JavaScript.
+A BASIC interpreter written in JavaScript.
