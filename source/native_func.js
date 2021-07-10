@@ -34,7 +34,7 @@ nativeFuncList = [
                   new NativeFunc("val", 1, 1, funcVal)
                  ];
 
-function funcInput(args)
+function funcInput(runtime, args)
 //Prompt user for input from the consol
 {
   postMessage({msgId: MSGID_PRINT, msgData: args[0]});
@@ -42,25 +42,25 @@ function funcInput(args)
   runtime.inputting = true;
 }
 
-function funcRnd(args)
+function funcRnd(runtime, args)
 //Return a pseudo-random number between 0 and 1
 {
   return Math.random();
 }
 
-function funcTime(args)
+function funcTime(runtime, args)
 //Return the number of milliseconds elapsed since January 1, 1970
 {
   return Date.now();
 }
 
-function funcInt(args)
+function funcInt(runtime, args)
 //Return the integer portion of a number
 {
   return parseInt(args[0]);
 }
 
-function funcLen(args)
+function funcLen(runtime, args)
 //Return the number of characters in a string, or the linear size of an array
 {
   var len;
@@ -73,31 +73,31 @@ function funcLen(args)
   return len;
 }
 
-function funcUpper(args)
+function funcUpper(runtime, args)
 //Return a string with all letters converted to uppercase
 {
   return args[0].toUpperCase();
 }
 
-function funcLower(args)
+function funcLower(runtime, args)
 //Return a string with all letters converted to lowercase
 {
   return args[0].toLowerCase();
 }
 
-function funcLeft(args)
+function funcLeft(runtime, args)
 //Return a string containing a specified number of characters from the left side of a string
 {
   return args[0].slice(0, args[1]);
 }
 
-function funcRight(args)
+function funcRight(runtime, args)
 //Return a string containing a specified number of characters from the right side of a string
 {
   return args[0].slice(-args[1]);
 }
 
-function funcMid(args)
+function funcMid(runtime, args)
 //Return a string containing a specified number of characters from a string
 {
   if(args.length == 2)
@@ -110,25 +110,25 @@ function funcMid(args)
   }
 }
 
-function funcTrim(args)
+function funcTrim(runtime, args)
 //Return a string with the whitespace removed from both ends
 {
   return args[0].trim();
 }
 
-function funcLTrim(args)
+function funcLTrim(runtime, args)
 //Return a string with the whitespace removed from its left side.
 {
   return args[0].trimStart();
 }
 
-function funcRTrim(args)
+function funcRTrim(runtime, args)
 //Return a string with the whitespace removed from its right side
 {
   return args[0].trimEnd();
 }
 
-function funcInstr(args)
+function funcInstr(runtime, args)
 //Return the position of the first occurence of one string within another
 {
   if(args.length == 2)
@@ -141,49 +141,49 @@ function funcInstr(args)
   }
 }
 
-function funcAbs(args)
+function funcAbs(runtime, args)
 //Return the absolute value of a number
 {
   return Math.abs(args[0]);
 }
 
-function funcAsc(args)
+function funcAsc(runtime, args)
 //Return the ASCII value of the first character in a string
 {
   return args[0].charCodeAt(0);
 }
 
-function funcChr(args)
+function funcChr(runtime, args)
 //Return the character of an ASCII number
 {
   return String.fromCharCode(args[0]);
 }
 
-function funcMin(args)
+function funcMin(runtime, args)
 //Return the minimum of two numbers
 {
   return Math.min(args[0], args[1]);
 }
 
-function funcMax(args)
+function funcMax(runtime, args)
 //Return the maximun of two numbers
 {
   return Math.max(args[0], args[1]);
 }
 
-function funcSqr(args)
+function funcSqr(runtime, args)
 //Return the square root of a number
 {
   return Math.sqrt(args[0]);
 }
 
-function funcStr(args)
+function funcStr(runtime, args)
 //Return the string representation of a number
 {
   return args[0].toString();
 }
 
-function funcVal(args)
+function funcVal(runtime, args)
 //Return the number contained in a string
 {
   return parseFloat(args[0]);
