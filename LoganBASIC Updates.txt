@@ -1,3 +1,6 @@
+(July 14, 2021)
+	- Added arithmetic and logical operator sections to help file.
+
 (July 10, 2021)
 	- Modified the native function implementation to supply a reference to the
 	  runtime object that is invoking the function.
