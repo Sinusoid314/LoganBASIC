@@ -1,4 +1,3 @@
 - Fix bug where the touch-screen keypad does not appear when the consol is waiting for input.
-- Add comparison operator section to help file.
 - Add FOR/NEXT loop.
 - Add user function/sub support.
