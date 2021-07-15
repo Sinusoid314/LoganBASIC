@@ -1,3 +1,2 @@
-- Fix bug where the touch-screen keypad does not appear when the consol is waiting for input.
 - Add FOR/NEXT loop.
 - Add user function/sub support.

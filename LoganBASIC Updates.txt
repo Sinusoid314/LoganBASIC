@@ -1,5 +1,6 @@
 (July 14, 2021)
 	- Added expression operator sections to help file.
+	- Fixed bug where the touch-screen keypad does not appear when the console is waiting for input.
 
 (July 10, 2021)
 	- Modified the native function implementation to supply a reference to the

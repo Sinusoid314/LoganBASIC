@@ -76,6 +76,7 @@ function progConsole_onKeydown(event)
         progConsole.value = progConsole.value.slice(0, progConsole.value.length - 1);
         progConsole.inputStr = progConsole.inputStr.slice(0, progConsole.inputStr.length - 1);
       }
+      event.preventDefault();
       break;
 
     case 13:
@@ -83,6 +84,7 @@ function progConsole_onKeydown(event)
       progWorker.postMessage({msgId: MSGID_INPUT_RESULT, msgData: progConsole.inputStr});
       progConsole.inputting = false;
       progConsole.inputStr = "";
+      event.preventDefault();
       break;
   }
 }
@@ -90,6 +92,7 @@ function progConsole_onKeydown(event)
 function progConsole_onKeypress(event)
 //Add the input character to the console
 {
+  event.preventDefault();
   if(!progConsole.inputting) return;
 
   progConsole.value += event.key;
