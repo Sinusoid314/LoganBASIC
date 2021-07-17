@@ -39,6 +39,7 @@ class Runtime
     this.opFuncList[OPCODE_LOAD_ARRAY_ITEM] = this.opLoadArrayItem.bind(this);
     this.opFuncList[OPCODE_STORE_ARRAY_ITEM] = this.opStoreArrayItem.bind(this);
     this.opFuncList[OPCODE_CLS] = this.opCls.bind(this);
+    this.opFuncList[OPCODE_CHECK_COUNTER] = this.opCheckCounter.bind(this);
 
     //Variable values are kept at the bottom of the stack and initialized to 0
     for(var n = 0; n < this.bytecode.varIdentList.length; n++)
@@ -358,6 +359,29 @@ class Runtime
   //Clear the console window
   {
     postMessage({msgId: MSGID_CLEAR_CONSOLE});
+  }
+
+  opCheckCounter()
+  //Return true if the counter variable is past a given value
+  {
+    var varVal = this.stack[this.getOperand(1)];
+    var stepVal = this.stack[this.stack.length - 1];
+    var endVal = this.stack[this.stack.length - 2];
+
+    if(stepVal > 0)
+    {
+      if(varVal > endVal)
+        return true;
+      else
+        return false;
+    }
+    else
+    {
+      if(varVal < endVal)
+        return true;
+      else
+        return false;
+    }
   }
 
   getOperand(operandIndex)

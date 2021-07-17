@@ -1,3 +1,6 @@
+(July 17, 2021)
+	- Added CHECK_COUNTER opcode.
+
 (July 14, 2021)
 	- Added expression operator sections to help file.
 	- Fixed bug where the touch-screen keypad does not appear when the console is waiting for input.
