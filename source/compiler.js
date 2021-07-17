@@ -320,7 +320,7 @@ class Compiler
     this.addOp([OPCODE_CHECK_COUNTER, varIndex]);
     jumpOpIndex = this.addOp([OPCODE_JUMP_IF_TRUE, 0]);
 
-    while(!this.checkToken(TOKEN_WEND) && !this.endOfTokens())
+    while(!this.checkToken(TOKEN_NEXT) && !this.endOfTokens())
       this.parseStatement();
 
     if(!this.matchToken(TOKEN_NEXT))
