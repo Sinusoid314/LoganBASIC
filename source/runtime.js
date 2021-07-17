@@ -371,16 +371,16 @@ class Runtime
     if(stepVal > 0)
     {
       if(varVal > endVal)
-        return true;
+        this.stack.push(true);
       else
-        return false;
+        this.stack.push(false);
     }
     else
     {
       if(varVal < endVal)
-        return true;
+        this.stack.push(true);
       else
-        return false;
+        this.stack.push(false);
     }
   }
 

@@ -1,4 +1,3 @@
-- Add FOR/NEXT loop.
 - Add Exit statements for loops.
 - Add user function/sub support.
 - Modify grammar for arrays to be more flexible.

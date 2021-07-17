@@ -288,7 +288,54 @@ class Compiler
   forStmt()
   //Parse a For...Next statement
   {
+    var varIdent, varIndex;
+    var jumpOpIndex, startOpIndex;
 
+    if(!this.matchToken(TOKEN_IDENTIFIER))
+      throw {message: "Expected identifier after 'for'."};
+
+    varIdent = this.prevToken().lexemeStr;
+    varIndex = this.getVariableIndex(varIdent, true);
+
+    if(!this.matchToken(TOKEN_EQUAL))
+      throw {message: "Expected '=' after identifier."};
+
+ 	this.parseExpression();
+    this.addOp([OPCODE_STORE_VAR, varIndex]);
+
+    if(!this.matchToken(TOKEN_TO))
+      throw {message: "Expected 'to' after start expression."};
+
+    this.parseExpression();
+
+    if(this.matchToken(TOKEN_STEP))
+      this.parseExpression();
+    else
+      this.addOp([OPCODE_LOAD_LIT, this.getLiteralIndex(1);]);
+
+    if(!this.matchTerminator())
+      throw {message: "Expected end-of-statement after expression."};
+
+    startOpIndex = this.bytecode.opList.length;
+    this.addOp([OPCODE_CHECK_COUNTER, varIndex]);
+    jumpOpIndex = this.addOp([OPCODE_JUMP_IF_TRUE, 0]);
+
+    while(!this.checkToken(TOKEN_WEND) && !this.endOfTokens())
+      this.parseStatement();
+
+    if(!this.matchToken(TOKEN_NEXT))
+      throw {message: "Expected 'next' at the end of 'for' block."};
+
+    if(this.matchToken(TOKEN_IDENTIFIER))
+    {
+      if(varIdent != this.prevToken().lexemeStr)
+        throw {message: "Identifier '" + this.prevToken().lexemeStr + "' does not match identifier '" + varIdent + "' given in 'for' statement."};
+    }
+
+    this.addOp([OPCODE_JUMP, startOpIndex]);
+    this.patchJumpOp(jumpOpIndex);
+    this.addOp([OPCODE_POP]);
+    this.addOp([OPCODE_POP]);
   }
 
   endStmt()
