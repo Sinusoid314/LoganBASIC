@@ -40,6 +40,7 @@ function funcInput(runtime, args)
   postMessage({msgId: MSGID_PRINT, msgData: args[0]});
   postMessage({msgId: MSGID_INPUT_REQUEST});
   runtime.inputting = true;
+  return "";
 }
 
 function funcRnd(runtime, args)

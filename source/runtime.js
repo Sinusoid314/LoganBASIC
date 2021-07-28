@@ -268,8 +268,8 @@ class Runtime
   {
     var funcIndex = this.getOperand(1);
     var argCount = this.getOperand(2);
-    var args = this.stack.splice(this.stack.length - argCount, argCount);;
-    var retVal = nativeFuncList[funcIndex].func(this, args);;
+    var args = this.stack.splice(this.stack.length - argCount, argCount);
+    var retVal = nativeFuncList[funcIndex].func(this, args);
 
     this.stack.push(retVal);
   }

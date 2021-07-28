@@ -1,3 +1,6 @@
+(July 28, 2021)
+	- Fixed bug with Input() native function that was leaving an extra item on the stack.
+
 (July 17, 2021)
 	- Added CHECK_COUNTER opcode.
 	- Added FOR/NEXT loop.

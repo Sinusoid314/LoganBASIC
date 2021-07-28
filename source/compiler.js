@@ -311,7 +311,7 @@ class Compiler
     if(this.matchToken(TOKEN_STEP))
       this.parseExpression();
     else
-      this.addOp([OPCODE_LOAD_LIT, this.getLiteralIndex(1);]);
+      this.addOp([OPCODE_LOAD_LIT, this.getLiteralIndex(1)]);
 
     if(!this.matchTerminator())
       throw {message: "Expected end-of-statement after expression."};

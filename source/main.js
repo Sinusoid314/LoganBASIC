@@ -57,7 +57,7 @@ function onStart(sourceStr)
 function onInputResult(inputStr)
 //Process input sent from the console
 {
-  mainRuntime.stack.push(inputStr);
+  mainRuntime.stack[mainRuntime.stack.length - 1] = inputStr;
   mainRuntime.inputting = false;
   mainRuntime.run();
 

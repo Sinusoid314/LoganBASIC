@@ -1,4 +1,5 @@
 - Fix bug with console input on touch screens.
 - Add Exit statements for loops.
 - Add user function/sub support.
-- Modify grammar for arrays to be more flexible.
+- Modify grammar for arrays to allow direct access to items of arrays within arrays (array[x][y]).
+- Modify native functions to be first-class values.
