@@ -2,8 +2,7 @@ program  ->  statement* EOF ;
 
 statement  ->  ( varStmt
                | arrayStmt
-               | assignment
-               | callStmt
+               | exprStmt
                | printStmt
                | ifStmt 
                | whileStmt
@@ -15,9 +14,8 @@ statement  ->  ( varStmt
                terminator? ;
 
 varStmt     ->  "var" IDENTIFIER ( "=" expression )? ;
-arrayStmt   ->  "array" arrayItem ;
-assignment  ->  ( IDENTIFIER | arrayItem ) "=" expression ;
-callStmt    ->  funcCall ;
+** arrayStmt   ->  "array" IDENTIFIER "[" arguments "]" ;
+** exprStmt    ->  ( ( IDENTIFIER | arrayItem ) "=" )? expression ;
 printStmt   ->  "print" expression ;
 ifStmt      ->  "if" expression "then" 
                 ( statement | ( terminator statement* ( "else" terminator statement* )? "end" "if" ) ) ;
@@ -25,7 +23,7 @@ whileStmt   ->  "while" expression terminator statement* "wend" ;
 forStmt     ->  "for" IDENTIFIER "=" expression "to" expression ( "step" expression )? terminator
                 statement* "next" IDENTIFIER? ;
 endStmt     ->  "end" ;
-reDimStmt   ->  "redim" arrayItem ;
+** reDimStmt   ->  "redim" IDENTIFIER "[" arguments "]" ;
 clsStmt     ->  "cls" ;
 doStmt      -> "do" terminator statement* "loop" "while" expression ;
 
@@ -37,15 +35,13 @@ comparison  ->  term ( ( ">" | ">=" | "<" | "<=" ) term )* ;
 term        ->  factor ( ( "-" | "+" ) factor )* ;
 factor      ->  power ( ( "/" | "*" | "%" ) power )* ;
 power       ->  unary ( "^" unary )* ;
-unary       ->  ( "-" | "not" ) unary | callExpr ;
-callExpr    ->  funcCall | arrayExpr ;
-arrayExpr   ->  arrayItem | primary ;
+unary       ->  ( "-" | "not" ) unary | call ;
+** call    ->  arrayItem ( "(" arguments? ")" )* ;
+** arrayItem   ->  primary ( "[" arguments "]" )* ;
 primary     ->  "true" | "false" | NUMBER_LIT | STRING_LIT | IDENTIFIER
                 | ( "(" expression ")" ) ;
                
 terminator  ->  ( "\n" | ":" | EOF ) ;
-funcCall    ->  IDENTIFIER "(" arguments? ")" ;
-arrayItem   ->  IDENTIFIER "[" arguments "]" ;
 arguments   ->  expression ( "," expression )* ;
 
 NUMBER_LIT  ->  DIGIT+ ( "." DIGIT+ )? ;

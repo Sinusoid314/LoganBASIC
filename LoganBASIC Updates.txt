@@ -1,3 +1,9 @@
+(August 1, 2021)
+	- Modified the syntax grammar to allow:
+	  - Expression statements, including assignment.
+	  - Back-to-back parenthesis/brackets for function-calls/array-items.
+	  - Calling first-class functions.
+
 (July 28, 2021)
 	- Fixed bug with Input() native function that was leaving an extra item on the stack.
 

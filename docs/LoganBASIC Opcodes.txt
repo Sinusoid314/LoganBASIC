@@ -88,7 +88,7 @@ JUMP_IF_FALSE
 
 JUMP_IF_FALSE_PERSIST
   operands: opIndex
-  stack: [value] -> [value]
+  stack: [value] -> no change
   Jump to the instruction at opIndex if value is false, keeping value on the stack.
 
 JUMP_IF_TRUE
@@ -98,36 +98,43 @@ JUMP_IF_TRUE
 
 JUMP_IF_TRUE_PERSIST
   operands: opIndex
-  stack: [value] -> [value]
+  stack: [value] -> no change
   Jump to the instruction at opIndex if value is true, keeping value on the stack.
   
 END
   Trigger the program to end
 
 CALL_NATIVE_FUNC
-  operands: funcIndex, argCount
-  stack: [arg1, arg2, ...] -> []
+  operands: functionIndex, argumentCount
+  stack: [argument1, argument2, ...] -> []
   Call the native function at funcIndex.
 
 CREATE_ARRAY
   operands: dimCount
-  stack: [dimVal1, dimVal2, ...] -> [arrayRef]
+  stack: [dimValue1, dimValue2, ...] -> [arrayReference]
   Create an array with the given dimensions.
 
 REDIM_ARRAY
   operands: dimCount
-  stack: [arrayRef, dimVal1, dimVal2, ...] -> []
+  stack: [arrayReference, dimValue1, dimValue2, ...] -> []
   Set the dimensions of the given array.
 
 LOAD_ARRAY_ITEM
   operands: indexCount
-  stack: [arrayRef, indexVal1, indexVal2, ...] -> [itemVal]
+  stack: [arrayReference, indexValue1, indexValue2, ...] -> [itemValue]
   Push the value of the given array item onto the stack.
 
 STORE_ARRAY_ITEM
   operands: indexCount
-  stack: [arrayRef, indexVal1, indexVal2, ..., itemVal] -> []
+  stack: [arrayReference, indexValue1, indexValue2, ..., itemValue] -> []
   Set the given array item to the given value.
 
 CLS
   Clear the console window.
+
+CHECK_COUNTER
+  operands: counterVariableIndex
+  stack: [endValue, stepValue] -> [endValue, stepValue, result]
+  Returns true if stepValue is greater than 0 and the counter variable is
+  greater than endValue, or stepValue is less than or equal to zero and the
+  counter variable is less than endValue. Returns false otherwise.
