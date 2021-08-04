@@ -1,3 +1,7 @@
+(August 4, 2021)
+	- Added LOAD_NATIVE_FUNC and STORE_VAR_PERSIST opcodes.
+	- Modified CALL_NATIVE_FUNC to treat native functions as first-class values.
+
 (August 3, 2021)
 	- Moved nativeFuncList into Bytecode class.
 	- Renamed class NativeFunc to ObjNativeFunc.

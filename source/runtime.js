@@ -11,9 +11,11 @@ class Runtime
     //Allow the op methods to be called by indexing into a function array using the opcode constants
     this.opFuncList[OPCODE_LOAD_TRUE] = this.opLoadTrue.bind(this);
     this.opFuncList[OPCODE_LOAD_FALSE] = this.opLoadFalse.bind(this);
+    this.opFuncList[OPCODE_LOAD_NATIVE_FUNC] = this.opLoadNativeFunc.bind(this);
     this.opFuncList[OPCODE_LOAD_LIT] = this.opLoadLit.bind(this);
     this.opFuncList[OPCODE_LOAD_VAR] = this.opLoadVar.bind(this);
     this.opFuncList[OPCODE_STORE_VAR] = this.opStoreVar.bind(this);
+    this.opFuncList[OPCODE_STORE_VAR_PERSIST] = this.opStoreVarPersist.bind(this);
     this.opFuncList[OPCODE_POP] = this.opPop.bind(this);
     this.opFuncList[OPCODE_SUB] = this.opSub.bind(this);
     this.opFuncList[OPCODE_ADD] = this.opAdd.bind(this);
@@ -75,6 +77,15 @@ class Runtime
     this.stack.push(false);
   }
 
+  opLoadNativeFunc()
+  //Push a reference to the given native function object onto the stack
+  {
+    var funcIndex = this.getOperand(1);
+    var funcRef = this.bytecode.nativeFuncList[funcIndex];
+
+    this.stack.push(funcRef);
+  }
+
   opLoadLit()
   //Push the value of the given literal onto the stack
   {
@@ -96,6 +107,14 @@ class Runtime
   {
     var varIndex = this.getOperand(1);
     var val = this.stack.pop();
+    this.stack[varIndex] = val;
+  }
+
+  opStoreVarPersist()
+  //Pop value from the stack and store it in the given variable, keeping value on the stack
+  {
+    var varIndex = this.getOperand(1);
+    var val = this.stack[this.stack.length - 1];
     this.stack[varIndex] = val;
   }
 
@@ -264,12 +283,20 @@ class Runtime
   }
 
   opCallNativeFunc()
-  //Call the native function at funcIndex
+  //Call the given native function object with the given arguments
   {
-    var funcIndex = this.getOperand(1);
-    var argCount = this.getOperand(2);
-    var args = this.stack.splice(this.stack.length - argCount, argCount);
-    var retVal = this.bytecode.nativeFuncList[funcIndex].func(this, args);
+    var argCount = this.getOperand(1);
+    var funcRef = this.stack[this.stack.length - argCount - 1];
+    var args, retVal;
+
+    if(!(funcRef instanceof ObjNativeFunc))
+      throw {message: "Expected function."};
+
+    if((argCount < funcRef.paramMin) || (argCount > funcRef.paramMax))
+      throw {message: "Wrong number of arguments for function " + funcRef.ident + "()."};
+
+    args = this.stack.splice(this.stack.length - argCount, argCount)
+    retVal = funcRef.func(this, args);
 
     this.stack.push(retVal);
   }
