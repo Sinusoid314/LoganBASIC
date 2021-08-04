@@ -1,11 +1,12 @@
 class Compiler
 {
-  constructor(sourceStr)
+  constructor(sourceStr, nativeFuncList)
   {
 	this.sourceStr = sourceStr;
 	this.scanner = new Scanner(sourceStr);
     this.tokenList = [];
     this.bytecode = new Bytecode();
+    this.bytecode.nativeFuncList = nativeFuncList;
     this.currTokenIndex = 0;
     this.errorMsg = "";
   }
@@ -652,7 +653,7 @@ class Compiler
     if(funcIndex == -1)
       throw {message: "Function " + funcIdent + "() does not exist."};
 
-    if((argCount < nativeFuncList[funcIndex].paramMin) || (argCount > nativeFuncList[funcIndex].paramMax))
+    if((argCount < this.bytecode.nativeFuncList[funcIndex].paramMin) || (argCount > this.bytecode.nativeFuncList[funcIndex].paramMax))
       throw {message: "Wrong number of arguments for function " + funcIdent + "()."};
 
     this.addOp([OPCODE_CALL_NATIVE_FUNC, funcIndex, argCount]);
@@ -708,9 +709,9 @@ class Compiler
   getNativeFuncIndex(funcIdent)
   //Return the index of the given native function identifier
   {
-    for(var funcIndex = 0; funcIndex < nativeFuncList.length; funcIndex++)
+    for(var funcIndex = 0; funcIndex < this.bytecode.nativeFuncList.length; funcIndex++)
     {
-      if(nativeFuncList[funcIndex].ident == funcIdent.toLowerCase())
+      if(this.bytecode.nativeFuncList[funcIndex].ident == funcIdent.toLowerCase())
         return funcIndex;
     }
 

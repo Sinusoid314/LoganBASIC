@@ -1,4 +1,5 @@
 importScripts('worker_msg.js',
+              'object.js',
               'native_func.js',
               'token.js',
               'bytecode.js',
@@ -29,7 +30,7 @@ function onStart(sourceStr)
 //Compile and run the program
 {
   postMessage({msgId: MSGID_STATUS, msgData: "Compiling..."});
-  mainCompiler = new Compiler(sourceStr);
+  mainCompiler = new Compiler(sourceStr, stdNativeFuncList);
   mainBytecode = mainCompiler.compile();
 
   if(mainCompiler.errorMsg == "")

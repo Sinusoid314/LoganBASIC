@@ -38,6 +38,7 @@ class Bytecode
 {
   constructor()
   {
+    this.nativeFuncList = [];
     this.literalList = [];
     this.varIdentList = [];
     this.opList = [];

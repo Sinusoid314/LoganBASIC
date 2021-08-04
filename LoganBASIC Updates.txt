@@ -1,3 +1,8 @@
+(August 3, 2021)
+	- Moved nativeFuncList into Bytecode class.
+	- Renamed class NativeFunc to ObjNativeFunc.
+	- Moved ObjNativeFunc and ObjArray classes to the new Object module.
+
 (August 1, 2021)
 	- Modified the syntax grammar to allow:
 	  - Expression statements, including assignment.

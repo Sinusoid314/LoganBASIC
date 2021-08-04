@@ -1,37 +1,26 @@
-class NativeFunc
-{
-  constructor(ident, paramMin, paramMax, func)
-  {
-    this.ident = ident;
-    this.paramMin = paramMin;
-    this.paramMax = paramMax;
-    this.func = func;
-  }
-}
-
-nativeFuncList = [
-                  new NativeFunc("input", 1, 1, funcInput),
-                  new NativeFunc("rnd", 0, 0, funcRnd),
-                  new NativeFunc("time", 0, 0, funcTime),
-                  new NativeFunc("int", 1, 1, funcInt),
-                  new NativeFunc("len", 1, 1, funcLen),
-                  new NativeFunc("upper", 1, 1, funcUpper),
-                  new NativeFunc("lower", 1, 1, funcLower),
-                  new NativeFunc("left", 2, 2, funcLeft),
-                  new NativeFunc("right", 2, 2, funcRight),
-                  new NativeFunc("mid", 2, 3, funcMid),
-                  new NativeFunc("trim", 1, 1, funcTrim),
-                  new NativeFunc("ltrim", 1, 1, funcLTrim),
-                  new NativeFunc("rtrim", 1, 1, funcRTrim),
-                  new NativeFunc("instr", 2, 3, funcInstr),
-                  new NativeFunc("abs", 1, 1, funcAbs),
-                  new NativeFunc("asc", 1, 1, funcAsc),
-                  new NativeFunc("chr", 1, 1, funcChr),
-                  new NativeFunc("min", 2, 2, funcMin),
-                  new NativeFunc("max", 2, 2, funcMax),
-                  new NativeFunc("sqr", 1, 1, funcSqr),
-                  new NativeFunc("str", 1, 1, funcStr),
-                  new NativeFunc("val", 1, 1, funcVal)
+stdNativeFuncList = [
+                  new ObjNativeFunc("input", 1, 1, funcInput),
+                  new ObjNativeFunc("rnd", 0, 0, funcRnd),
+                  new ObjNativeFunc("time", 0, 0, funcTime),
+                  new ObjNativeFunc("int", 1, 1, funcInt),
+                  new ObjNativeFunc("len", 1, 1, funcLen),
+                  new ObjNativeFunc("upper", 1, 1, funcUpper),
+                  new ObjNativeFunc("lower", 1, 1, funcLower),
+                  new ObjNativeFunc("left", 2, 2, funcLeft),
+                  new ObjNativeFunc("right", 2, 2, funcRight),
+                  new ObjNativeFunc("mid", 2, 3, funcMid),
+                  new ObjNativeFunc("trim", 1, 1, funcTrim),
+                  new ObjNativeFunc("ltrim", 1, 1, funcLTrim),
+                  new ObjNativeFunc("rtrim", 1, 1, funcRTrim),
+                  new ObjNativeFunc("instr", 2, 3, funcInstr),
+                  new ObjNativeFunc("abs", 1, 1, funcAbs),
+                  new ObjNativeFunc("asc", 1, 1, funcAsc),
+                  new ObjNativeFunc("chr", 1, 1, funcChr),
+                  new ObjNativeFunc("min", 2, 2, funcMin),
+                  new ObjNativeFunc("max", 2, 2, funcMax),
+                  new ObjNativeFunc("sqr", 1, 1, funcSqr),
+                  new ObjNativeFunc("str", 1, 1, funcStr),
+                  new ObjNativeFunc("val", 1, 1, funcVal)
                  ];
 
 function funcInput(runtime, args)
