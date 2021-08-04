@@ -1,6 +1,8 @@
 (August 4, 2021)
+	- Added expression statements, making assignments part of expressions.
+	- Added back-to-back parenthesis/brackets for function-calls/array-items.
+	- Modified native functions to be first-class values.
 	- Added LOAD_NATIVE_FUNC and STORE_VAR_PERSIST opcodes.
-	- Modified CALL_NATIVE_FUNC to treat native functions as first-class values.
 
 (August 3, 2021)
 	- Moved nativeFuncList into Bytecode class.

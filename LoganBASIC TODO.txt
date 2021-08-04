@@ -1,4 +1,3 @@
-- Implement syntax grammar changes.
 - Fix bug with console input on touch screens.
 - Add Exit statements for loops.
 - Add user function/sub support.

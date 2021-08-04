@@ -107,14 +107,8 @@ class Compiler
     else if(this.matchToken(TOKEN_DO))
       this.doStmt();
 
-    else if(this.checkTokenPair(TOKEN_IDENTIFIER, TOKEN_LEFT_PAREN))
-      this.callStmt();
-
-    else if(this.checkToken(TOKEN_IDENTIFIER))
-      this.assignmentStmt();
-
     else
-      throw {message: "Expected statement."};
+      this.exprStmt();
 
     if(requireTerminator)
     {
@@ -165,7 +159,7 @@ class Compiler
 
     dimCount = this.parseArguments();
     if(dimCount == 0)
-      throw {message: "Expected one or more index expressions."};
+      throw {message: "Expected one or more dimension expressions."};
 
     if(!this.matchToken(TOKEN_RIGHT_BRACKET))
       throw {message: "Expected ']' after indexes"};
@@ -174,35 +168,10 @@ class Compiler
     this.addOp([OPCODE_STORE_VAR, varIndex]);
   }
 
-  assignmentStmt()
-  //Parse an assignment statement
+  exprStmt()
+  //Parse an expression statement
   {
-    var varIdent, varIndex;
-    var indexCount, storeOp;
-
-    if(this.checkTokenPair(TOKEN_IDENTIFIER, TOKEN_LEFT_BRACKET))
-    {
-      indexCount = this.parseArrayItem();
-      storeOp = [OPCODE_STORE_ARRAY_ITEM, indexCount];
-    }
-    else
-    {
-      varIdent = this.consumeToken().lexemeStr;
-      varIndex = this.getVariableIndex(varIdent);
-      storeOp = [OPCODE_STORE_VAR, varIndex];
-    }
-
-    if(!this.matchToken(TOKEN_EQUAL))
-      throw {message: "Expected '=' after variable or array item."};
-
-    this.parseExpression();
-    this.addOp(storeOp);
-  }
-
-  callStmt()
-  //Parse a function call statement
-  {
-    this.parseFuncCall();
+    this.parseExpression(true);
     this.addOp([OPCODE_POP]);
   }
 
@@ -348,7 +317,29 @@ class Compiler
   reDimStmt()
   //Parse a Redim statement
   {
-    var dimCount = this.parseArrayItem();
+    var varIdent, varIndex, dimCount;
+
+    if(this.matchToken(TOKEN_IDENTIFIER))
+    {
+      varIdent = this.prevToken().lexemeStr;
+      varIndex = this.getVariableIndex(varIdent);
+      this.addOp([OPCODE_LOAD_VAR, varIndex]);
+    }
+    else
+    {
+      throw {message: "Expected identifier."};
+    }
+
+    if(!this.matchToken(TOKEN_LEFT_BRACKET))
+      throw {message: "Expected '[' after identifier"};
+
+    dimCount = this.parseArguments();
+    if(dimCount == 0)
+      throw {message: "Expected one or more dimension expressions."};
+
+    if(!this.matchToken(TOKEN_RIGHT_BRACKET))
+      throw {message: "Expected ']' after indexes"};
+
     this.addOp([OPCODE_REDIM_ARRAY, dimCount]);
   }
 
@@ -376,59 +367,59 @@ class Compiler
     this.addOp([OPCODE_JUMP_IF_TRUE, startOpIndex]);
   }
 
-  parseExpression()
+  parseExpression(isStmt = false)
   //Parse an expression
   {
-    this.logicOrExpr();
+    this.logicOrExpr(isStmt);
   }
 
-  logicOrExpr()
+  logicOrExpr(isStmt)
   //Parse a Logical OR expression
   {
     var jumpOpIndex;
 
-    this.logicAndExpr();
+    this.logicAndExpr(isStmt);
 
     while(this.matchToken(TOKEN_OR))
     {
       jumpOpIndex = this.addOp([OPCODE_JUMP_IF_TRUE_PERSIST, 0]);
       this.addOp([OPCODE_POP]);
 
-      this.logicAndExpr();
+      this.logicAndExpr(isStmt);
 
       this.patchJumpOp(jumpOpIndex);
     }
   }
 
-  logicAndExpr()
+  logicAndExpr(isStmt)
   //Parse a Logical AND expression
   {
     var jumpOpIndex;
 
-    this.equalityExpr();
+    this.equalityExpr(isStmt);
 
     while(this.matchToken(TOKEN_AND))
     {
       jumpOpIndex = this.addOp([OPCODE_JUMP_IF_FALSE_PERSIST, 0]);
       this.addOp([OPCODE_POP]);
 
-      this.equalityExpr();
+      this.equalityExpr(isStmt);
 
       this.patchJumpOp(jumpOpIndex);
     }
   }
 
-  equalityExpr()
+  equalityExpr(isStmt)
   //Parse an equality expression
   {
     var operatorType;
 
-    this.comparisonExpr();
+    this.comparisonExpr(isStmt);
 
     while(this.matchTokenList([TOKEN_EQUAL, TOKEN_NOT_EQUAL]))
     {
       operatorType = this.prevToken().type;
-      this.comparisonExpr();
+      this.comparisonExpr(isStmt);
 
       switch(operatorType)
       {
@@ -444,17 +435,17 @@ class Compiler
     }
   }
 
-  comparisonExpr()
+  comparisonExpr(isStmt)
   //Parse a comparison expression
   {
     var operatorType;
 
-    this.termExpr();
+    this.termExpr(isStmt);
 
     while(this.matchTokenList([TOKEN_GREATER, TOKEN_GREATER_EQUAL, TOKEN_LESS, TOKEN_LESS_EQUAL]))
     {
       operatorType = this.prevToken().type;
-      this.termExpr();
+      this.termExpr(isStmt);
 
       switch(operatorType)
       {
@@ -479,17 +470,17 @@ class Compiler
     }
   }
 
-  termExpr()
+  termExpr(isStmt)
   //Parse an addition/substraction expression
   {
     var operatorType;
 
-    this.factorExpr();
+    this.factorExpr(isStmt);
 
     while(this.matchTokenList([TOKEN_MINUS, TOKEN_PLUS]))
     {
       operatorType = this.prevToken().type;
-      this.factorExpr();
+      this.factorExpr(isStmt);
 
       switch(operatorType)
       {
@@ -499,17 +490,17 @@ class Compiler
     }
   }
 
-  factorExpr()
+  factorExpr(isStmt)
   //Parse a multiplication/division/modulo expression
   {
     var operatorType;
 
-    this.powerExpr();
+    this.powerExpr(isStmt);
 
     while(this.matchTokenList([TOKEN_SLASH, TOKEN_STAR, TOKEN_PERCENT]))
     {
       operatorType = this.prevToken().type;
-      this.powerExpr();
+      this.powerExpr(isStmt);
 
       switch(operatorType)
       {
@@ -520,20 +511,20 @@ class Compiler
     }
   }
 
-  powerExpr()
+  powerExpr(isStmt)
   //Parse an exponentiation (power) expression
   {
-    this.unaryExpr();
+    this.unaryExpr(isStmt);
 
     while(this.matchToken(TOKEN_CARET))
     {
-      this.unaryExpr();
+      this.unaryExpr(isStmt);
       this.addOp([OPCODE_POW]);
     }
   }
 
 
-  unaryExpr()
+  unaryExpr(isStmt)
   //Parse a unary expression
   {
     var operatorType;
@@ -541,7 +532,7 @@ class Compiler
     if(this.matchTokenList([TOKEN_MINUS, TOKEN_NOT]))
     {
       operatorType = this.prevToken().type;
-      this.unaryExpr();
+      this.unaryExpr(isStmt);
 
       switch(operatorType)
       {
@@ -552,46 +543,82 @@ class Compiler
       return;
     }
 
-    this.callExpr();
+    this.callExpr(isStmt);
   }
 
-  callExpr()
+  callExpr(isStmt)
   //Parse a function call expression
   {
-	if(this.checkTokenPair(TOKEN_IDENTIFIER, TOKEN_LEFT_PAREN))
-      this.parseFuncCall();
-    else
-      this.arrayExpr();
+    var argCount;
+
+    this.arrayItemExpr(isStmt);
+
+    while(this.matchToken(TOKEN_LEFT_PAREN))
+    {
+      argCount = this.parseArguments();
+
+      if(!this.matchToken(TOKEN_RIGHT_PAREN))
+        throw {message: "Expected ')' after function arguments."};
+
+      this.addOp([OPCODE_CALL_NATIVE_FUNC, argCount]);
+    }
   }
 
-  arrayExpr()
+  arrayItemExpr(isStmt)
   //Parse an array expression
   {
     var indexCount;
 
-    if(this.checkTokenPair(TOKEN_IDENTIFIER, TOKEN_LEFT_BRACKET))
+    this.primaryExpr(isStmt);
+
+    while(this.matchToken(TOKEN_LEFT_BRACKET))
     {
-      indexCount = this.parseArrayItem();
-      this.addOp([OPCODE_LOAD_ARRAY_ITEM, indexCount]);
-    }
-    else
-    {
-      this.primaryExpr();
+      indexCount = this.parseArguments();
+
+      if(!this.matchToken(TOKEN_RIGHT_BRACKET))
+        throw {message: "Expected ']' after array indexes."};
+
+      if(isStmt && this.matchToken(TOKEN_EQUAL))
+      {
+        this.parseExpression();
+        this.addOp([OPCODE_STORE_ARRAY_ITEM_PERSIST, indexCount]);
+      }
+      else
+      {
+        this.addOp([OPCODE_LOAD_ARRAY_ITEM, indexCount]);
+      }
     }
   }
 
-  primaryExpr()
+  primaryExpr(isStmt)
   //Parse a primary expression
   {
-    var varIdent, varIndex;
+    var ident, funcIndex, varIndex;
     var litVal, litIndex;
 
-    //Variable
     if(this.matchToken(TOKEN_IDENTIFIER))
     {
-      varIdent = this.prevToken().lexemeStr;
-      varIndex = this.getVariableIndex(varIdent);
-      this.addOp([OPCODE_LOAD_VAR, varIndex]);
+      ident = this.prevToken().lexemeStr;
+
+      //Native Function
+      funcIndex = this.getNativeFuncIndex(ident);
+      if(funcIndex != -1)
+      {
+        this.addOp([LOAD_NATIVE_FUNC, funcIndex]);
+        return;
+      }
+
+      //Variable
+      varIndex = this.getVariableIndex(ident);
+      if(isStmt && this.matchToken(TOKEN_EQUAL))
+      {
+        this.parseExpression();
+        this.addOp([OPCODE_STORE_VAR_PERSIST, varIndex]);
+      }
+      else
+      {
+        this.addOp([OPCODE_LOAD_VAR, varIndex]);
+      }
       return;
     }
 
@@ -629,63 +656,6 @@ class Compiler
 
     //Invalid expression
     throw {message: "Expected expression."};
-  }
-
-  parseFuncCall()
-  //Parse a function call
-  {
-	var funcIdent, funcIndex, argCount;
-
-    if(this.matchToken(TOKEN_IDENTIFIER))
-      funcIdent = this.prevToken().lexemeStr;
-    else
-      throw {message: "Expected identifier."};
-
-    if(!this.matchToken(TOKEN_LEFT_PAREN))
-      throw {message: "Expected '(' after function name."};
-
-    argCount = this.parseArguments();
-
-    if(!this.matchToken(TOKEN_RIGHT_PAREN))
-      throw {message: "Expected ')' after function arguments."};
-
-    funcIndex = this.getNativeFuncIndex(funcIdent);
-    if(funcIndex == -1)
-      throw {message: "Function " + funcIdent + "() does not exist."};
-
-    if((argCount < this.bytecode.nativeFuncList[funcIndex].paramMin) || (argCount > this.bytecode.nativeFuncList[funcIndex].paramMax))
-      throw {message: "Wrong number of arguments for function " + funcIdent + "()."};
-
-    this.addOp([OPCODE_CALL_NATIVE_FUNC, funcIndex, argCount]);
-  }
-
-  parseArrayItem()
-  //Parse an array item
-  {
-    var varIdent, varIndex, indexCount;
-
-    if(this.matchToken(TOKEN_IDENTIFIER))
-    {
-      varIdent = this.prevToken().lexemeStr;
-      varIndex = this.getVariableIndex(varIdent);
-      this.addOp([OPCODE_LOAD_VAR, varIndex]);
-    }
-    else
-    {
-      throw {message: "Expected identifier."};
-    }
-
-    if(!this.matchToken(TOKEN_LEFT_BRACKET))
-      throw {message: "Expected '[' after identifier"};
-
-    indexCount = this.parseArguments();
-    if(indexCount == 0)
-      throw {message: "Expected one or more index expressions."};
-
-    if(!this.matchToken(TOKEN_RIGHT_BRACKET))
-      throw {message: "Expected ']' after indexes"};
-
-    return indexCount;
   }
 
   parseArguments()

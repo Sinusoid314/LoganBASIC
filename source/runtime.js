@@ -39,7 +39,7 @@ class Runtime
     this.opFuncList[OPCODE_CREATE_ARRAY] = this.opCreateArray.bind(this);
     this.opFuncList[OPCODE_REDIM_ARRAY] = this.opReDimArray.bind(this);
     this.opFuncList[OPCODE_LOAD_ARRAY_ITEM] = this.opLoadArrayItem.bind(this);
-    this.opFuncList[OPCODE_STORE_ARRAY_ITEM] = this.opStoreArrayItem.bind(this);
+    this.opFuncList[OPCODE_STORE_ARRAY_ITEM_PERSIST] = this.opStoreArrayItem.bind(this);
     this.opFuncList[OPCODE_CLS] = this.opCls.bind(this);
     this.opFuncList[OPCODE_CHECK_COUNTER] = this.opCheckCounter.bind(this);
 
@@ -358,8 +358,8 @@ class Runtime
     this.stack.push(arrayRef.itemList[linearIndex]);
   }
 
-  opStoreArrayItem()
-  //Set the given array item to the given value
+  opStoreArrayItemPersist()
+  //Set the given array item to the given value, keeping value on the stack
   {
     var indexCount = this.getOperand(1);
     var indexList = new Array(indexCount).fill(0);
