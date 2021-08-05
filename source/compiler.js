@@ -556,7 +556,7 @@ class Compiler
     while(this.matchToken(TOKEN_LEFT_PAREN))
     {
       argCount = this.parseArguments();
-
+console.log(argCount);
       if(!this.matchToken(TOKEN_RIGHT_PAREN))
         throw {message: "Expected ')' after function arguments."};
 
@@ -604,7 +604,8 @@ class Compiler
       funcIndex = this.getNativeFuncIndex(ident);
       if(funcIndex != -1)
       {
-        this.addOp([LOAD_NATIVE_FUNC, funcIndex]);
+		console.log(ident);
+        this.addOp([OPCODE_LOAD_NATIVE_FUNC, funcIndex]);
         return;
       }
 
