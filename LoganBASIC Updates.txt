@@ -1,3 +1,7 @@
+(August 5, 2021)
+	- Added toString() method to Bytecode class.
+	- Fixed bug where native function objects were not being popped off the stack after being called.
+
 (August 4, 2021)
 	- Added expression statements, making assignments part of expressions.
 	- Added back-to-back parenthesis/brackets for function-calls/array-items.

@@ -33,6 +33,8 @@ function onStart(sourceStr)
   mainCompiler = new Compiler(sourceStr, stdNativeFuncList);
   mainBytecode = mainCompiler.compile();
 
+  //console.log(mainBytecode.toString());
+
   if(mainCompiler.errorMsg == "")
   {
     postMessage({msgId: MSGID_STATUS, msgData: "Running..."});

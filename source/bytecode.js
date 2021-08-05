@@ -36,6 +36,41 @@ const OPCODE_STORE_ARRAY_ITEM_PERSIST = 31;
 const OPCODE_CLS = 32;
 const OPCODE_CHECK_COUNTER = 33;
 
+opNameList = [];
+opNameList[OPCODE_LOAD_TRUE] = "LOAD_TRUE";
+opNameList[OPCODE_LOAD_FALSE] = "LOAD_FALSE";
+opNameList[OPCODE_LOAD_NATIVE_FUNC] = "LOAD_NATIVE_FUNC";
+opNameList[OPCODE_LOAD_LIT] = "LOAD_LIT";
+opNameList[OPCODE_LOAD_VAR] = "LOAD_VAR";
+opNameList[OPCODE_STORE_VAR] = "STORE_VAR";
+opNameList[OPCODE_STORE_VAR_PERSIST] = "STORE_VAR_PERSIST";
+opNameList[OPCODE_POP] = "POP";
+opNameList[OPCODE_SUB] = "SUB";
+opNameList[OPCODE_ADD] = "ADD";
+opNameList[OPCODE_DIV] = "DIV";
+opNameList[OPCODE_MUL] = "MUL";
+opNameList[OPCODE_MOD] = "MOD";
+opNameList[OPCODE_NEGATE] = "NEGATE";
+opNameList[OPCODE_NOT] = "NOT";
+opNameList[OPCODE_EQUAL] = "EQUAL";
+opNameList[OPCODE_GREATER] = "GREATER";
+opNameList[OPCODE_LESS] = "LESS";
+opNameList[OPCODE_POW] = "POW";
+opNameList[OPCODE_PRINT] = "PRINT";
+opNameList[OPCODE_JUMP] = "JUMP";
+opNameList[OPCODE_JUMP_IF_FALSE] = "JUMP_IF_FALSE";
+opNameList[OPCODE_JUMP_IF_FALSE_PERSIST] = "JUMP_IF_FALSE_PERSIST";
+opNameList[OPCODE_JUMP_IF_TRUE] = "JUMP_IF_TRUE";
+opNameList[OPCODE_JUMP_IF_TRUE_PERSIST] = "JUMP_IF_TRUE_PERSIST";
+opNameList[OPCODE_END] = "END";
+opNameList[OPCODE_CALL_NATIVE_FUNC] = "CALL_NATIVE_FUNC";
+opNameList[OPCODE_CREATE_ARRAY] = "CREATE_ARRAY";
+opNameList[OPCODE_REDIM_ARRAY] = "REDIM_ARRAY";
+opNameList[OPCODE_LOAD_ARRAY_ITEM] = "LOAD_ARRAY_ITEM";
+opNameList[OPCODE_STORE_ARRAY_ITEM_PERSIST] = "STORE_ARRAY_ITEM_PERSIST";
+opNameList[OPCODE_CLS] = "CLS";
+opNameList[OPCODE_CHECK_COUNTER] = "CHECK_COUNTER";
+
 class Bytecode
 {
   constructor()
@@ -44,5 +79,44 @@ class Bytecode
     this.literalList = [];
     this.varIdentList = [];
     this.opList = [];
+  }
+
+  toString()
+  //Return the bytecode as a string
+  {
+    var retStr = "";
+
+    retStr += "Literals:\n";
+    retStr += "-----------\n";
+    for(var litIndex = 0; litIndex < this.literalList.length; litIndex++)
+    {
+      retStr += litIndex + ":  " + this.literalList[litIndex];
+      retStr += '\n';
+    }
+    retStr += '\n\n';
+
+    retStr += "Variables:\n";
+    retStr += "------------\n";
+    for(var varIndex = 0; varIndex < this.varIdentList.length; varIndex++)
+    {
+      retStr += varIndex + ":  " + this.varIdentList[varIndex];
+      retStr += '\n';
+    }
+    retStr += '\n\n';
+
+    retStr += "Ops:\n";
+    retStr += "------\n";
+    for(var opIndex = 0; opIndex < this.opList.length; opIndex++)
+    {
+      retStr += opNameList[this.opList[opIndex][0]];
+      for(var operandIndex = 1; operandIndex < this.opList[opIndex].length; operandIndex++)
+      {
+        retStr += ", " + this.opList[opIndex][operandIndex];
+      }
+      retStr += '\n';
+    }
+    retStr += '\n\n';
+
+    return retStr;
   }
 }

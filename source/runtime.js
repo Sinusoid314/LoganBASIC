@@ -286,8 +286,9 @@ class Runtime
   //Call the given native function object with the given arguments
   {
     var argCount = this.getOperand(1);
-    var funcRef = this.stack[this.stack.length - argCount - 1];
-    var args, retVal;
+    var args = this.stack.splice(this.stack.length - argCount, argCount)
+    var funcRef = this.stack.pop();
+    var retVal;
 
     if(!(funcRef instanceof ObjNativeFunc))
       throw {message: "Expected function."};
@@ -295,7 +296,6 @@ class Runtime
     if((argCount < funcRef.paramMin) || (argCount > funcRef.paramMax))
       throw {message: "Wrong number of arguments for function " + funcRef.ident + "()."};
 
-    args = this.stack.splice(this.stack.length - argCount, argCount)
     retVal = funcRef.func(this, args);
 
     this.stack.push(retVal);
