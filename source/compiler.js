@@ -697,6 +697,11 @@ class Compiler
     {
       if(varIndex == -1)
 	  {
+		if(getNativeFuncIndex(varIdent) != -1)
+		{
+          throw {message: "Identifier '" + varIdent + "' is already a function name."};
+        }
+
 	    this.bytecode.varIdentList.push(varIdent);
 	    varIndex = this.bytecode.varIdentList.length - 1;
       }

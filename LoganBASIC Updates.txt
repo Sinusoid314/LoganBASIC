@@ -1,3 +1,6 @@
+(August 13, 2021)
+	- Modified getVariableIndex() in Compiler to check a new variable's identifier against the native function names.
+
 (August 5, 2021)
 	- Added toString() method to Bytecode class.
 	- Fixed bug where native function objects were not being popped off the stack after being called.
