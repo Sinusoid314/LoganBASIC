@@ -32,7 +32,7 @@ class Compiler
   scanTokens()
   //Use the scanner to build a token list
   {
-    var token;
+    var token, nextToken;
 
     do
     {
@@ -47,15 +47,8 @@ class Compiler
         case TOKEN_NEWLINE:
           if(this.tokenList.length > 0)
           {
-            if(this.tokenList[this.tokenList.length - 1].type == TOKEN_UNDERSCORE)
-            {
-              this.tokenList.pop();
-            }
-            else
-            {
-              if(this.tokenList[this.tokenList.length - 1].type != TOKEN_NEWLINE)
-                this.tokenList.push(token);
-            }
+            if(this.tokenList[this.tokenList.length - 1].type != TOKEN_NEWLINE)
+              this.tokenList.push(token);
           }
           break;
 
@@ -64,6 +57,15 @@ class Compiler
           {
             if(this.tokenList[this.tokenList.length - 1].type != TOKEN_COLON)
               this.tokenList.push(token);
+          }
+          break;
+
+        case TOKEN_UNDERSCORE:
+          nextToken = this.scanner.scanToken();
+          if(nextToken.type != TOKEN_NEWLINE)
+          {
+            this.tokenList.push(token);
+            this.tokenList.push(nextToken);
           }
           break;
 

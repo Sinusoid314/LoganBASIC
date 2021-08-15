@@ -1,3 +1,6 @@
+(August 15, 2021)
+	- Refactored scanTokens() in Compiler.
+
 (August 13, 2021)
 	- Modified getVariableIndex() in Compiler to check a new variable's identifier against the native function names.
 
