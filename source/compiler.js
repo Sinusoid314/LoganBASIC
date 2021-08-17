@@ -5,10 +5,13 @@ class Compiler
 	this.sourceStr = sourceStr;
 	this.scanner = new Scanner(sourceStr);
     this.tokenList = [];
+    this.currTokenIndex = 0;
+    this.exitWhileOpIndexList = [];
+    this.exitForOpIndexList = [];
+    this.exitDoOpIndexList = [];
+    this.errorMsg = "";
     this.bytecode = new Bytecode();
     this.bytecode.nativeFuncList = nativeFuncList;
-    this.currTokenIndex = 0;
-    this.errorMsg = "";
   }
 
   compile()
@@ -91,11 +94,23 @@ class Compiler
     else if(this.matchToken(TOKEN_IF))
       this.ifStmt();
 
+    else if(this.matchToken(TOKEN_ELSE))
+      throw {message: "'else' without matching 'if' statement."};
+
+    else if(this.matchTokenPair(TOKEN_END, TOKEN_IF))
+      throw {message: "'end if' without matching 'if' statement."};
+
     else if(this.matchToken(TOKEN_WHILE))
       this.whileStmt();
 
+    else if(this.matchToken(TOKEN_WEND))
+      throw {message: "'wend' without matching 'while' statement."};
+
     else if(this.matchToken(TOKEN_FOR))
       this.forStmt();
+
+    else if(this.matchToken(TOKEN_NEXT))
+      throw {message: "'next' without matching 'for' statement."};
 
     else if(this.matchToken(TOKEN_END))
       this.endStmt();
@@ -108,6 +123,18 @@ class Compiler
 
     else if(this.matchToken(TOKEN_DO))
       this.doStmt();
+
+    else if(this.matchTokenPair(TOKEN_LOOP, TOKEN_WHILE))
+      throw {message: "'loop while' without matching 'do' statement."};
+
+    else if(this.matchTokenPair(TOKEN_EXIT, TOKEN_WHILE))
+      this.exitWhileStmt();
+
+    else if(this.matchTokenPair(TOKEN_EXIT, TOKEN_FOR))
+      this.exitForStmt();
+
+    else if(this.matchTokenPair(TOKEN_EXIT, TOKEN_DO))
+      this.exitDoStmt();
 
     else
       this.exprStmt();
@@ -247,6 +274,8 @@ class Compiler
 
     jumpOpIndex = this.addOp([OPCODE_JUMP_IF_FALSE, 0]);
 
+    this.exitWhileOpIndexList.push([]);
+
     while(!this.checkToken(TOKEN_WEND) && !this.endOfTokens())
       this.parseStatement();
 
@@ -255,6 +284,10 @@ class Compiler
 
     this.addOp([OPCODE_JUMP, startOpIndex]);
     this.patchJumpOp(jumpOpIndex);
+
+    for(var n = 0; n < this.exitWhileOpIndexList[this.exitWhileOpIndexList.length - 1].length; n++)
+      this.patchJumpOp(this.exitWhileOpIndexList[this.exitWhileOpIndexList.length - 1][n]);
+    this.exitWhileOpIndexList.pop();
   }
 
   forStmt()
@@ -292,6 +325,8 @@ class Compiler
     this.addOp([OPCODE_CHECK_COUNTER, varIndex]);
     jumpOpIndex = this.addOp([OPCODE_JUMP_IF_TRUE, 0]);
 
+    this.exitForOpIndexList.push([]);
+
     while(!this.checkToken(TOKEN_NEXT) && !this.endOfTokens())
       this.parseStatement();
 
@@ -306,6 +341,11 @@ class Compiler
 
     this.addOp([OPCODE_JUMP, startOpIndex]);
     this.patchJumpOp(jumpOpIndex);
+
+    for(var n = 0; n < this.exitForOpIndexList[this.exitForOpIndexList.length - 1].length; n++)
+      this.patchJumpOp(this.exitForOpIndexList[this.exitForOpIndexList.length - 1][n]);
+    this.exitForOpIndexList.pop();
+
     this.addOp([OPCODE_POP]);
     this.addOp([OPCODE_POP]);
   }
@@ -359,6 +399,8 @@ class Compiler
     if(!this.matchTerminator())
       throw {message: "Expected statement terminator after 'do'."};
 
+    this.exitDoOpIndexList.push([]);
+
     while(!this.endOfTokens() && !this.checkTokenPair(TOKEN_LOOP, TOKEN_WHILE))
       this.parseStatement();
 
@@ -367,6 +409,49 @@ class Compiler
 
     this.parseExpression();
     this.addOp([OPCODE_JUMP_IF_TRUE, startOpIndex]);
+
+    for(var n = 0; n < this.exitDoOpIndexList[this.exitDoOpIndexList.length - 1].length; n++)
+      this.patchJumpOp(this.exitDoOpIndexList[this.exitDoOpIndexList.length - 1][n]);
+    this.exitDoOpIndexList.pop();
+  }
+
+  exitWhileStmt()
+  //Parse an Exit While statement
+  {
+    var jumpOpIndex;
+
+    if(this.exitWhileOpIndexList.length == 0)
+      throw {message: "'exit while' outside of 'while' block."};
+
+    jumpOpIndex = this.addOp([OPCODE_JUMP, 0]);
+
+    this.exitWhileOpIndexList[this.exitWhileOpIndexList.length - 1].push(jumpOpIndex);
+  }
+
+  exitForStmt()
+  //Parse an Exit For statement
+  {
+    var jumpOpIndex;
+
+    if(this.exitForOpIndexList.length == 0)
+      throw {message: "'exit for' outside of 'for' block."};
+
+    jumpOpIndex = this.addOp([OPCODE_JUMP, 0]);
+
+    this.exitForOpIndexList[this.exitForOpIndexList.length - 1].push(jumpOpIndex);
+  }
+
+  exitDoStmt()
+  //Parse an Exit Do statement
+  {
+    var jumpOpIndex;
+
+    if(this.exitDoOpIndexList.length == 0)
+      throw {message: "'exit do' outside of 'do' block."};
+
+    jumpOpIndex = this.addOp([OPCODE_JUMP, 0]);
+
+    this.exitDoOpIndexList[this.exitDoOpIndexList.length - 1].push(jumpOpIndex);
   }
 
   parseExpression(isStmt = false)

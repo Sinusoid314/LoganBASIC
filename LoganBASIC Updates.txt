@@ -1,3 +1,7 @@
+(August 17, 2021)
+	- Added Exit statements for While, For, and Do loops.
+	- Modified parseStatement() in Compiler to report an error when a block-ending token does not match with its corresponding block.
+
 (August 15, 2021)
 	- Refactored scanTokens() in Compiler.
 

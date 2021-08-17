@@ -20,7 +20,8 @@ var keywordList = {
                    "redim": TOKEN_REDIM,
                    "cls": TOKEN_CLS,
                    "do": TOKEN_DO,
-                   "loop": TOKEN_LOOP
+                   "loop": TOKEN_LOOP,
+                   "exit": TOKEN_EXIT
                   }
 
 class Scanner
