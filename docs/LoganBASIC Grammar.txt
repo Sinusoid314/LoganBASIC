@@ -1,51 +1,57 @@
-program  ->  statement* EOF ;
+program        ->  statement* EOF ;
 
-statement  ->  ( varStmt
-               | arrayStmt
-               | exprStmt
-               | printStmt
-               | ifStmt 
-               | whileStmt
-               | forStmt
-               | endStmt
-               | reDimStmt
-               | clsStmt
-               | doStmt )
-               terminator? ;
+statement      ->  ( varStmt
+                   | arrayStmt
+                   | exprStmt
+                   | printStmt
+                   | ifStmt 
+                   | whileStmt
+                   | forStmt
+                   | endStmt
+                   | reDimStmt
+                   | clsStmt
+                   | doStmt
+                   | exitWhileStmt
+                   | exitForStmt
+                   | exitDoStmt )
+                   terminator? ;
 
-varStmt     ->  "var" IDENTIFIER ( "=" expression )? ;
-** arrayStmt   ->  "array" IDENTIFIER "[" arguments "]" ;
-** exprStmt    ->  ( ( IDENTIFIER | arrayItem ) "=" )? expression ;
-printStmt   ->  "print" expression ;
-ifStmt      ->  "if" expression "then" 
-                ( statement | ( terminator statement* ( "else" terminator statement* )? "end" "if" ) ) ;
-whileStmt   ->  "while" expression terminator statement* "wend" ;
-forStmt     ->  "for" IDENTIFIER "=" expression "to" expression ( "step" expression )? terminator
-                statement* "next" IDENTIFIER? ;
-endStmt     ->  "end" ;
-** reDimStmt   ->  "redim" IDENTIFIER "[" arguments "]" ;
-clsStmt     ->  "cls" ;
-doStmt      -> "do" terminator statement* "loop" "while" expression ;
+varStmt        ->  "var" IDENTIFIER ( "=" expression )? ;
+arrayStmt      ->  "array" IDENTIFIER "[" arguments "]" ;
+exprStmt       ->  ( ( IDENTIFIER | arrayItem ) "=" )? expression ;
+printStmt      ->  "print" expression ;
+ifStmt         ->  "if" expression "then" 
+                   ( statement | ( terminator statement* ( "else" terminator statement* )? "end" "if" ) ) ;
+whileStmt      ->  "while" expression terminator statement* "wend" ;
+forStmt        ->  "for" IDENTIFIER "=" expression "to" expression ( "step" expression )? terminator
+                   statement* "next" IDENTIFIER? ;
+endStmt        ->  "end" ;
+reDimStmt      ->  "redim" IDENTIFIER "[" arguments "]" ;
+clsStmt        ->  "cls" ;
+doStmt         -> "do" terminator statement* "loop" "while" expression ;
+exitWhileStmt  -> "exit" "while" ;
+exitForStmt    -> "exit" "for" ;
+exitDoStmt     -> "exit" "do" ;
 
-expression  ->  logic_or ;
-logic_or    ->  logic_and ( "or" logic_and )* ;
-logic_and   ->  equality ( "and" equality )* ;
-equality    ->  comparison ( ( "=" | "<>" ) comparison )* ;
-comparison  ->  term ( ( ">" | ">=" | "<" | "<=" ) term )* ;
-term        ->  factor ( ( "-" | "+" ) factor )* ;
-factor      ->  power ( ( "/" | "*" | "%" ) power )* ;
-power       ->  unary ( "^" unary )* ;
-unary       ->  ( "-" | "not" ) unary | call ;
-** call    ->  arrayItem ( "(" arguments? ")" )* ;
-** arrayItem   ->  primary ( "[" arguments "]" )* ;
-primary     ->  "true" | "false" | NUMBER_LIT | STRING_LIT | IDENTIFIER
-                | ( "(" expression ")" ) ;
+expression     ->  logic_or ;
+logic_or       ->  logic_and ( "or" logic_and )* ;
+logic_and      ->  equality ( "and" equality )* ;
+equality       ->  comparison ( ( "=" | "<>" ) comparison )* ;
+comparison     ->  term ( ( ">" | ">=" | "<" | "<=" ) term )* ;
+term           ->  factor ( ( "-" | "+" ) factor )* ;
+factor         ->  power ( ( "/" | "*" | "%" ) power )* ;
+power          ->  unary ( "^" unary )* ;
+unary          ->  ( "-" | "not" ) unary | call ;
+call           ->  arrayItem ( "(" arguments? ")" )* ;
+arrayItem      ->  primary ( "[" arguments "]" )* ;
+primary        ->  "true" | "false" | NUMBER_LIT | STRING_LIT | IDENTIFIER
+                   | ( "(" expression ")" ) ;
                
-terminator  ->  ( "\n" | ":" | EOF ) ;
-arguments   ->  expression ( "," expression )* ;
+terminator     ->  ( "\n" | ":" | EOF ) ;
+arguments      ->  expression ( "," expression )* ;
 
-NUMBER_LIT  ->  DIGIT+ ( "." DIGIT+ )? ;
-STRING_LIT  ->  "\"" <any char except "\"">* "\"" ;
-IDENTIFIER  ->  ALPHA ( ALPHA | DIGIT )* ;
-ALPHA       ->  "a" ... "z" | "A" ... "Z" | "_" ;
-DIGIT       ->  "0" ... "9" ;
+NUMBER_LIT     ->  DIGIT+ ( "." DIGIT+ )? ;
+STRING_LIT     ->  "\"" <any char except "\"">* "\"" ;
+IDENTIFIER     ->  ALPHA ( ALPHA | DIGIT )* ;
+ALPHA          ->  "a" ... "z" | "A" ... "Z" | "_" ;
+DIGIT          ->  "0" ... "9" ;

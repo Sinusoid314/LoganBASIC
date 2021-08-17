@@ -1,2 +1,3 @@
+- Write help entries for For...Next, Exit While, Exit For, and Exit Do.
 - Fix bug with console input on touch screens.
 - Add user function/sub support.

@@ -6,6 +6,11 @@ LOAD_FALSE
   stack: [] -> [false]
   Push 'false' onto the stack.
 
+LOAD_NATIVE_FUNC
+  operands: functionIndex
+  stack: [] -> [functionReference]
+  Push a reference to the given native function object onto the stack.
+
 LOAD_LIT
   operands: literalIndex
   stack: [] -> [value]
@@ -20,6 +25,11 @@ STORE_VAR
   operands: variableIndex
   stack: [value] -> []
   Pop value from the stack and store it in the given variable.
+
+STORE_VAR_PERSIST
+  operands: variableIndex
+  stack: [value] -> no change
+  Pop value from the stack and store it in the given variable, keeping value on the stack.
 
 POP
   stack: [value] -> []
@@ -105,9 +115,9 @@ END
   Trigger the program to end
 
 CALL_NATIVE_FUNC
-  operands: functionIndex, argumentCount
-  stack: [argument1, argument2, ...] -> []
-  Call the native function at funcIndex.
+  operands: argumentCount
+  stack: [functionReference, argument1, argument2, ...] -> [returnValue]
+  Call the given native function object with the given arguments.
 
 CREATE_ARRAY
   operands: dimCount
@@ -124,10 +134,10 @@ LOAD_ARRAY_ITEM
   stack: [arrayReference, indexValue1, indexValue2, ...] -> [itemValue]
   Push the value of the given array item onto the stack.
 
-STORE_ARRAY_ITEM
+STORE_ARRAY_ITEM_PERSIST
   operands: indexCount
-  stack: [arrayReference, indexValue1, indexValue2, ..., itemValue] -> []
-  Set the given array item to the given value.
+  stack: [arrayReference, indexValue1, indexValue2, ..., itemValue] -> [itemValue]
+  Set the given array item to the given value, keeping value on the stack.
 
 CLS
   Clear the console window.
