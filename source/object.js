@@ -13,8 +13,8 @@ class ObjArray
 {
   constructor()
   {
-    this.itemList = [];
-    this.dimSizeList = [];
+    this.items = [];
+    this.dimSizes = [];
   }
 
   reDim(newDimSizeList)
@@ -30,8 +30,8 @@ class ObjArray
       newLinearSize *= newDimSizeList[n];
     }
 
-    this.dimSizeList = newDimSizeList;
-    this.itemList = new Array(newLinearSize).fill(0);
+    this.dimSizes = newDimSizeList;
+    this.items = new Array(newLinearSize).fill(0);
 
     return true;
   }
@@ -42,16 +42,16 @@ class ObjArray
     var linearIndex = 0;
     var multiplier = 1;
 
-    if(indexList.length != this.dimSizeList.length)
+    if(indexList.length != this.dimSizes.length)
       return -1;
 
-    for(var n = 0; n < this.dimSizeList.length; n++)
+    for(var n = 0; n < this.dimSizes.length; n++)
     {
-      if((indexList[n] < 0) || (indexList[n] >= this.dimSizeList[n]))
+      if((indexList[n] < 0) || (indexList[n] >= this.dimSizes[n]))
         return -1;
 
       linearIndex += indexList[n] * multiplier;
-      multiplier *= this.dimSizeList[n];
+      multiplier *= this.dimSizes[n];
     }
 
     return linearIndex;

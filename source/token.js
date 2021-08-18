@@ -54,17 +54,17 @@ const TOKEN_EXIT = 57;
 
 class Token
 {
-  constructor(type, lexemeStr, literalVal, lineNum)
+  constructor(type, lexeme, literal, lineNum)
   {
     this.type = type;
-    this.lexemeStr = lexemeStr;
-    this.literalVal = literalVal;
+    this.lexeme = lexeme;
+    this.literal = literal;
     this.lineNum = lineNum;
   }
 
   toString()
   //Return the token info as a string
   {
-    return this.lineNum + " " + this.lexemeStr + " " + this.type + " " + this.literalVal;
+    return this.lineNum + " " + this.lexeme + " " + this.type + " " + this.literal;
   }
 }

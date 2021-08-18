@@ -11,12 +11,26 @@
 
 <h4>Description</h4>
 <p id="description">
-
+Exits the current Do loop and continues execution right after the loop's block.
 </p>
 
 <h4>Usage</h4>
 <code id="usage">
+var num = 0
 
+do
+  if num > 2 then
+    exit do
+  end if
+
+  print num
+  num = num + 1
+loop while num < 10
+
+'output:
+'0
+'1
+'2
 </code>
 
 </body>

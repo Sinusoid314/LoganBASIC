@@ -1,17 +1,17 @@
 class Compiler
 {
-  constructor(sourceStr, nativeFuncList)
+  constructor(source, nativeFuncs)
   {
-	this.sourceStr = sourceStr;
-	this.scanner = new Scanner(sourceStr);
-    this.tokenList = [];
+	this.source = source;
+	this.scanner = new Scanner(source);
+    this.tokens = [];
     this.currTokenIndex = 0;
-    this.exitWhileOpIndexList = [];
-    this.exitForOpIndexList = [];
-    this.exitDoOpIndexList = [];
+    this.exitWhileOpIndexes = [];
+    this.exitForOpIndexes = [];
+    this.exitDoOpIndexes = [];
     this.errorMsg = "";
     this.bytecode = new Bytecode();
-    this.bytecode.nativeFuncList = nativeFuncList;
+    this.bytecode.nativeFuncs = nativeFuncs;
   }
 
   compile()
@@ -44,22 +44,22 @@ class Compiler
       switch(token.type)
       {
         case TOKEN_ERROR:
-          throw {message: token.lexemeStr};
+          throw {message: token.lexeme};
           break;
 
         case TOKEN_NEWLINE:
-          if(this.tokenList.length > 0)
+          if(this.tokens.length > 0)
           {
-            if(this.tokenList[this.tokenList.length - 1].type != TOKEN_NEWLINE)
-              this.tokenList.push(token);
+            if(this.tokens[this.tokens.length - 1].type != TOKEN_NEWLINE)
+              this.tokens.push(token);
           }
           break;
 
         case TOKEN_COLON:
-          if(this.tokenList.length > 0)
+          if(this.tokens.length > 0)
           {
-            if(this.tokenList[this.tokenList.length - 1].type != TOKEN_COLON)
-              this.tokenList.push(token);
+            if(this.tokens[this.tokens.length - 1].type != TOKEN_COLON)
+              this.tokens.push(token);
           }
           break;
 
@@ -67,13 +67,13 @@ class Compiler
           nextToken = this.scanner.scanToken();
           if(nextToken.type != TOKEN_NEWLINE)
           {
-            this.tokenList.push(token);
-            this.tokenList.push(nextToken);
+            this.tokens.push(token);
+            this.tokens.push(nextToken);
           }
           break;
 
         default:
-          this.tokenList.push(token);
+          this.tokens.push(token);
       }
     }
     while(token.type != TOKEN_EOF)
@@ -153,7 +153,7 @@ class Compiler
 
     if(this.matchToken(TOKEN_IDENTIFIER))
     {
-      varIdent = this.prevToken().lexemeStr;
+      varIdent = this.prevToken().lexeme;
       varIndex = this.getVariableIndex(varIdent, true);
     }
     else
@@ -175,7 +175,7 @@ class Compiler
 
     if(this.matchToken(TOKEN_IDENTIFIER))
     {
-      varIdent = this.prevToken().lexemeStr;
+      varIdent = this.prevToken().lexeme;
       varIndex = this.getVariableIndex(varIdent, true);
     }
     else
@@ -265,7 +265,7 @@ class Compiler
   //Parse a While...Wend statement
   {
     var jumpOpIndex;
-	var startOpIndex = this.bytecode.opList.length;
+	var startOpIndex = this.bytecode.ops.length;
 
     this.parseExpression();
 
@@ -274,7 +274,7 @@ class Compiler
 
     jumpOpIndex = this.addOp([OPCODE_JUMP_IF_FALSE, 0]);
 
-    this.exitWhileOpIndexList.push([]);
+    this.exitWhileOpIndexes.push([]);
 
     while(!this.checkToken(TOKEN_WEND) && !this.endOfTokens())
       this.parseStatement();
@@ -285,9 +285,9 @@ class Compiler
     this.addOp([OPCODE_JUMP, startOpIndex]);
     this.patchJumpOp(jumpOpIndex);
 
-    for(var n = 0; n < this.exitWhileOpIndexList[this.exitWhileOpIndexList.length - 1].length; n++)
-      this.patchJumpOp(this.exitWhileOpIndexList[this.exitWhileOpIndexList.length - 1][n]);
-    this.exitWhileOpIndexList.pop();
+    for(var n = 0; n < this.exitWhileOpIndexes[this.exitWhileOpIndexes.length - 1].length; n++)
+      this.patchJumpOp(this.exitWhileOpIndexes[this.exitWhileOpIndexes.length - 1][n]);
+    this.exitWhileOpIndexes.pop();
   }
 
   forStmt()
@@ -299,8 +299,8 @@ class Compiler
     if(!this.matchToken(TOKEN_IDENTIFIER))
       throw {message: "Expected identifier after 'for'."};
 
-    varIdent = this.prevToken().lexemeStr;
-    varIndex = this.getVariableIndex(varIdent, true);
+    varIdent = this.prevToken().lexeme;
+    varIndex = this.getVariableIndex(varIdent);
 
     if(!this.matchToken(TOKEN_EQUAL))
       throw {message: "Expected '=' after identifier."};
@@ -321,11 +321,11 @@ class Compiler
     if(!this.matchTerminator())
       throw {message: "Expected end-of-statement after expression."};
 
-    startOpIndex = this.bytecode.opList.length;
+    startOpIndex = this.bytecode.ops.length;
     this.addOp([OPCODE_CHECK_COUNTER, varIndex]);
     jumpOpIndex = this.addOp([OPCODE_JUMP_IF_TRUE, 0]);
 
-    this.exitForOpIndexList.push([]);
+    this.exitForOpIndexes.push([]);
 
     while(!this.checkToken(TOKEN_NEXT) && !this.endOfTokens())
       this.parseStatement();
@@ -335,16 +335,16 @@ class Compiler
 
     if(this.matchToken(TOKEN_IDENTIFIER))
     {
-      if(varIdent != this.prevToken().lexemeStr)
-        throw {message: "Identifier '" + this.prevToken().lexemeStr + "' does not match identifier '" + varIdent + "' given in 'for' statement."};
+      if(varIdent != this.prevToken().lexeme)
+        throw {message: "Identifier '" + this.prevToken().lexeme + "' does not match identifier '" + varIdent + "' given in 'for' statement."};
     }
 
     this.addOp([OPCODE_JUMP, startOpIndex]);
     this.patchJumpOp(jumpOpIndex);
 
-    for(var n = 0; n < this.exitForOpIndexList[this.exitForOpIndexList.length - 1].length; n++)
-      this.patchJumpOp(this.exitForOpIndexList[this.exitForOpIndexList.length - 1][n]);
-    this.exitForOpIndexList.pop();
+    for(var n = 0; n < this.exitForOpIndexes[this.exitForOpIndexes.length - 1].length; n++)
+      this.patchJumpOp(this.exitForOpIndexes[this.exitForOpIndexes.length - 1][n]);
+    this.exitForOpIndexes.pop();
 
     this.addOp([OPCODE_POP]);
     this.addOp([OPCODE_POP]);
@@ -363,7 +363,7 @@ class Compiler
 
     if(this.matchToken(TOKEN_IDENTIFIER))
     {
-      varIdent = this.prevToken().lexemeStr;
+      varIdent = this.prevToken().lexeme;
       varIndex = this.getVariableIndex(varIdent);
       this.addOp([OPCODE_LOAD_VAR, varIndex]);
     }
@@ -394,12 +394,12 @@ class Compiler
   doStmt()
   //Parse a Do...Loop While statement
   {
-    var startOpIndex = this.bytecode.opList.length;
+    var startOpIndex = this.bytecode.ops.length;
 
     if(!this.matchTerminator())
       throw {message: "Expected statement terminator after 'do'."};
 
-    this.exitDoOpIndexList.push([]);
+    this.exitDoOpIndexes.push([]);
 
     while(!this.endOfTokens() && !this.checkTokenPair(TOKEN_LOOP, TOKEN_WHILE))
       this.parseStatement();
@@ -410,9 +410,9 @@ class Compiler
     this.parseExpression();
     this.addOp([OPCODE_JUMP_IF_TRUE, startOpIndex]);
 
-    for(var n = 0; n < this.exitDoOpIndexList[this.exitDoOpIndexList.length - 1].length; n++)
-      this.patchJumpOp(this.exitDoOpIndexList[this.exitDoOpIndexList.length - 1][n]);
-    this.exitDoOpIndexList.pop();
+    for(var n = 0; n < this.exitDoOpIndexes[this.exitDoOpIndexes.length - 1].length; n++)
+      this.patchJumpOp(this.exitDoOpIndexes[this.exitDoOpIndexes.length - 1][n]);
+    this.exitDoOpIndexes.pop();
   }
 
   exitWhileStmt()
@@ -420,12 +420,12 @@ class Compiler
   {
     var jumpOpIndex;
 
-    if(this.exitWhileOpIndexList.length == 0)
+    if(this.exitWhileOpIndexes.length == 0)
       throw {message: "'exit while' outside of 'while' block."};
 
     jumpOpIndex = this.addOp([OPCODE_JUMP, 0]);
 
-    this.exitWhileOpIndexList[this.exitWhileOpIndexList.length - 1].push(jumpOpIndex);
+    this.exitWhileOpIndexes[this.exitWhileOpIndexes.length - 1].push(jumpOpIndex);
   }
 
   exitForStmt()
@@ -433,12 +433,12 @@ class Compiler
   {
     var jumpOpIndex;
 
-    if(this.exitForOpIndexList.length == 0)
+    if(this.exitForOpIndexes.length == 0)
       throw {message: "'exit for' outside of 'for' block."};
 
     jumpOpIndex = this.addOp([OPCODE_JUMP, 0]);
 
-    this.exitForOpIndexList[this.exitForOpIndexList.length - 1].push(jumpOpIndex);
+    this.exitForOpIndexes[this.exitForOpIndexes.length - 1].push(jumpOpIndex);
   }
 
   exitDoStmt()
@@ -446,12 +446,12 @@ class Compiler
   {
     var jumpOpIndex;
 
-    if(this.exitDoOpIndexList.length == 0)
+    if(this.exitDoOpIndexes.length == 0)
       throw {message: "'exit do' outside of 'do' block."};
 
     jumpOpIndex = this.addOp([OPCODE_JUMP, 0]);
 
-    this.exitDoOpIndexList[this.exitDoOpIndexList.length - 1].push(jumpOpIndex);
+    this.exitDoOpIndexes[this.exitDoOpIndexes.length - 1].push(jumpOpIndex);
   }
 
   parseExpression(isStmt = false)
@@ -685,7 +685,7 @@ class Compiler
 
     if(this.matchToken(TOKEN_IDENTIFIER))
     {
-      ident = this.prevToken().lexemeStr;
+      ident = this.prevToken().lexeme;
 
       //Native Function
       funcIndex = this.getNativeFuncIndex(ident);
@@ -724,7 +724,7 @@ class Compiler
 
     if(this.matchTokenList([TOKEN_STRING_LIT, TOKEN_NUMBER_LIT]))
     {
-      litVal = this.prevToken().literalVal;
+      litVal = this.prevToken().literal;
       litIndex = this.getLiteralIndex(litVal);
       this.addOp([OPCODE_LOAD_LIT, litIndex]);
       return;
@@ -766,9 +766,9 @@ class Compiler
   getNativeFuncIndex(funcIdent)
   //Return the index of the given native function identifier
   {
-    for(var funcIndex = 0; funcIndex < this.bytecode.nativeFuncList.length; funcIndex++)
+    for(var funcIndex = 0; funcIndex < this.bytecode.nativeFuncs.length; funcIndex++)
     {
-      if(this.bytecode.nativeFuncList[funcIndex].ident == funcIdent.toLowerCase())
+      if(this.bytecode.nativeFuncs[funcIndex].ident == funcIdent.toLowerCase())
         return funcIndex;
     }
 
@@ -778,19 +778,17 @@ class Compiler
   getVariableIndex(varIdent, addIfAbsent = false)
   //Return the index of the given variable identifier
   {
-    var varIndex = this.bytecode.varIdentList.indexOf(varIdent);
+    var varIndex = this.bytecode.varIdents.indexOf(varIdent);
 
     if(addIfAbsent)
     {
       if(varIndex == -1)
 	  {
-		if(getNativeFuncIndex(varIdent) != -1)
-		{
+		if(this.getNativeFuncIndex(varIdent) != -1)
           throw {message: "Identifier '" + varIdent + "' is already a function name."};
-        }
 
-	    this.bytecode.varIdentList.push(varIdent);
-	    varIndex = this.bytecode.varIdentList.length - 1;
+	    this.bytecode.varIdents.push(varIdent);
+	    varIndex = this.bytecode.varIdents.length - 1;
       }
       else
       {
@@ -809,12 +807,12 @@ class Compiler
   getLiteralIndex(litVal)
   //Return the index of the given literal value
   {
-    var litIndex = this.bytecode.literalList.indexOf(litVal);
+    var litIndex = this.bytecode.literals.indexOf(litVal);
 
     if(litIndex == -1)
     {
-      this.bytecode.literalList.push(litVal);
-      litIndex = this.bytecode.literalList.length - 1;
+      this.bytecode.literals.push(litVal);
+      litIndex = this.bytecode.literals.length - 1;
     }
 
     return litIndex;
@@ -823,14 +821,14 @@ class Compiler
   addOp(operandList)
   //Add a new bytecodce op
   {
-    this.bytecode.opList.push(operandList);
-    return this.bytecode.opList.length - 1;
+    this.bytecode.ops.push(operandList);
+    return this.bytecode.ops.length - 1;
   }
 
   patchJumpOp(opIndex)
   //Set the operand of the given jump op to the index of the next op to be added
   {
-    this.bytecode.opList[opIndex][1] = this.bytecode.opList.length;
+    this.bytecode.ops[opIndex][1] = this.bytecode.ops.length;
   }
 
   matchTerminator()
@@ -910,14 +908,14 @@ class Compiler
   peekToken()
   //Return the current token
   {
-    return this.tokenList[this.currTokenIndex];
+    return this.tokens[this.currTokenIndex];
   }
 
   peekNextToken()
   //Return the token after the current token
   {
 	if(!this.endOfTokens())
-      return this.tokenList[this.currTokenIndex + 1];
+      return this.tokens[this.currTokenIndex + 1];
     else
       return this.peekToken();
   }
@@ -925,7 +923,7 @@ class Compiler
   prevToken()
   //Return the token before the current token
   {
-    return this.tokenList[this.currTokenIndex - 1];
+    return this.tokens[this.currTokenIndex - 1];
   }
 
   endOfTokens()

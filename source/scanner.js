@@ -26,9 +26,9 @@ var keywordList = {
 
 class Scanner
 {
-  constructor(sourceStr)
+  constructor(source)
   {
-    this.sourceStr = sourceStr;
+    this.source = source;
     this.startCharIndex = 0;
     this.currCharIndex = 0;
     this.currLineNum = 1;
@@ -115,11 +115,11 @@ class Scanner
     }
   }
 
-  makeToken(type, literalVal)
+  makeToken(type, literal)
   //Create and return a new token
   {
-    var lexemeStr = this.sourceStr.substring(this.startCharIndex, this.currCharIndex);
-    return new Token(type, lexemeStr, literalVal, this.currLineNum);
+    var lexeme = this.source.substring(this.startCharIndex, this.currCharIndex);
+    return new Token(type, lexeme, literal, this.currLineNum);
   }
 
   makeErrorToken(errorMsg)
@@ -158,7 +158,7 @@ class Scanner
   consumeStringLiteral()
   //Read and return a string literal token
   {
-    var literalVal;
+    var literal;
 
     while((this.peekChar() != '"') && (this.peekChar() != '\n') && !this.endOfSource())
       this.consumeChar();
@@ -168,14 +168,14 @@ class Scanner
 
     this.consumeChar();
 
-    literalVal = this.sourceStr.substring(this.startCharIndex + 1, this.currCharIndex - 1);
-    return this.makeToken(TOKEN_STRING_LIT, literalVal);
+    literal = this.source.substring(this.startCharIndex + 1, this.currCharIndex - 1);
+    return this.makeToken(TOKEN_STRING_LIT, literal);
   }
 
   consumeNumberLiteral()
   //Read and return a number literal token
   {
-    var literalVal;
+    var literal;
 
     while(this.isDigit(this.peekChar()))
       this.consumeChar();
@@ -187,23 +187,23 @@ class Scanner
         this.consumeChar();
     }
 
-    literalVal = Number(this.sourceStr.substring(this.startCharIndex, this.currCharIndex));
-    return this.makeToken(TOKEN_NUMBER_LIT, literalVal);
+    literal = Number(this.source.substring(this.startCharIndex, this.currCharIndex));
+    return this.makeToken(TOKEN_NUMBER_LIT, literal);
   }
 
   consumeIdentifier()
   //Read and return an identifier token
   {
-    var lexemeStr;
+    var lexeme;
     var tokenType;
 
     while(this.isAlphaNumeric(this.peekChar()))
       this.consumeChar();
 
-    lexemeStr = this.sourceStr.substring(this.startCharIndex, this.currCharIndex).toLowerCase();
+    lexeme = this.source.substring(this.startCharIndex, this.currCharIndex).toLowerCase();
 
-    if(keywordList.hasOwnProperty(lexemeStr))
-      tokenType = keywordList[lexemeStr];
+    if(keywordList.hasOwnProperty(lexeme))
+      tokenType = keywordList[lexeme];
     else
       tokenType = TOKEN_IDENTIFIER;
 
@@ -231,7 +231,7 @@ class Scanner
   consumeChar()
   //Return the current character and advance to the next character
   {
-    return this.sourceStr.charAt(this.currCharIndex++);
+    return this.source.charAt(this.currCharIndex++);
   }
 
   matchChar(expectedChar)
@@ -240,7 +240,7 @@ class Scanner
     if(this.endOfSource())
 	  return false;
 
-    if(this.sourceStr.charAt(this.currCharIndex) != expectedChar)
+    if(this.source.charAt(this.currCharIndex) != expectedChar)
 	  return false;
 
     this.currCharIndex++;
@@ -253,21 +253,21 @@ class Scanner
     if(this.endOfSource())
       return '\0';
 
-    return this.sourceStr.charAt(this.currCharIndex);
+    return this.source.charAt(this.currCharIndex);
   }
 
   peekNextChar()
   //Return the character after the current character
   {
-    if((this.currCharIndex + 1) >= this.sourceStr.length)
+    if((this.currCharIndex + 1) >= this.source.length)
       return '\0';
 
-    return this.sourceStr.charAt(this.currCharIndex + 1);
+    return this.source.charAt(this.currCharIndex + 1);
   }
 
   endOfSource()
   //Return true if the current character index is past the end of the source string
   {
-    return (this.currCharIndex >= this.sourceStr.length);
+    return (this.currCharIndex >= this.source.length);
   }
 }

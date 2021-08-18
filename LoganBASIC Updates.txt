@@ -1,4 +1,6 @@
 (August 17, 2021)
+	- Renamed some member variables to have more succinct names.
+	- Added help entries for For...Next, Exit While, Exit For, and Exit Do.
 	- Added Exit statements for While, For, and Do loops.
 	- Modified parseStatement() in Compiler to report an error when a block-ending token does not match with its corresponding block.
 

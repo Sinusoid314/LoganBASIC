@@ -5,46 +5,46 @@ class Runtime
     this.bytecode = bytecode;
     this.currOpIndex = 0;
     this.stack = [];
-    this.opFuncList = [null];
+    this.opFuncs = [null];
     this.errorMsg = "";
 
     //Allow the op methods to be called by indexing into a function array using the opcode constants
-    this.opFuncList[OPCODE_LOAD_TRUE] = this.opLoadTrue.bind(this);
-    this.opFuncList[OPCODE_LOAD_FALSE] = this.opLoadFalse.bind(this);
-    this.opFuncList[OPCODE_LOAD_NATIVE_FUNC] = this.opLoadNativeFunc.bind(this);
-    this.opFuncList[OPCODE_LOAD_LIT] = this.opLoadLit.bind(this);
-    this.opFuncList[OPCODE_LOAD_VAR] = this.opLoadVar.bind(this);
-    this.opFuncList[OPCODE_STORE_VAR] = this.opStoreVar.bind(this);
-    this.opFuncList[OPCODE_STORE_VAR_PERSIST] = this.opStoreVarPersist.bind(this);
-    this.opFuncList[OPCODE_POP] = this.opPop.bind(this);
-    this.opFuncList[OPCODE_SUB] = this.opSub.bind(this);
-    this.opFuncList[OPCODE_ADD] = this.opAdd.bind(this);
-    this.opFuncList[OPCODE_DIV] = this.opDiv.bind(this);
-    this.opFuncList[OPCODE_MUL] = this.opMul.bind(this);
-    this.opFuncList[OPCODE_MOD] = this.opMod.bind(this);
-    this.opFuncList[OPCODE_NEGATE] = this.opNegate.bind(this);
-    this.opFuncList[OPCODE_NOT] = this.opNot.bind(this);
-    this.opFuncList[OPCODE_EQUAL] = this.opEqual.bind(this);
-    this.opFuncList[OPCODE_GREATER] = this.opGreater.bind(this);
-    this.opFuncList[OPCODE_LESS] = this.opLess.bind(this);
-    this.opFuncList[OPCODE_POW] = this.opPow.bind(this);
-    this.opFuncList[OPCODE_PRINT] = this.opPrint.bind(this);
-    this.opFuncList[OPCODE_JUMP] = this.opJump.bind(this);
-    this.opFuncList[OPCODE_JUMP_IF_FALSE] = this.opJumpIfFalse.bind(this);
-    this.opFuncList[OPCODE_JUMP_IF_FALSE_PERSIST] = this.opJumpIfFalsePersist.bind(this);
-    this.opFuncList[OPCODE_JUMP_IF_TRUE] = this.opJumpIfTrue.bind(this);
-    this.opFuncList[OPCODE_JUMP_IF_TRUE_PERSIST] = this.opJumpIfTruePersist.bind(this);
-    this.opFuncList[OPCODE_END] = this.opEnd.bind(this);
-    this.opFuncList[OPCODE_CALL_NATIVE_FUNC] = this.opCallNativeFunc.bind(this);
-    this.opFuncList[OPCODE_CREATE_ARRAY] = this.opCreateArray.bind(this);
-    this.opFuncList[OPCODE_REDIM_ARRAY] = this.opReDimArray.bind(this);
-    this.opFuncList[OPCODE_LOAD_ARRAY_ITEM] = this.opLoadArrayItem.bind(this);
-    this.opFuncList[OPCODE_STORE_ARRAY_ITEM_PERSIST] = this.opStoreArrayItemPersist.bind(this);
-    this.opFuncList[OPCODE_CLS] = this.opCls.bind(this);
-    this.opFuncList[OPCODE_CHECK_COUNTER] = this.opCheckCounter.bind(this);
+    this.opFuncs[OPCODE_LOAD_TRUE] = this.opLoadTrue.bind(this);
+    this.opFuncs[OPCODE_LOAD_FALSE] = this.opLoadFalse.bind(this);
+    this.opFuncs[OPCODE_LOAD_NATIVE_FUNC] = this.opLoadNativeFunc.bind(this);
+    this.opFuncs[OPCODE_LOAD_LIT] = this.opLoadLit.bind(this);
+    this.opFuncs[OPCODE_LOAD_VAR] = this.opLoadVar.bind(this);
+    this.opFuncs[OPCODE_STORE_VAR] = this.opStoreVar.bind(this);
+    this.opFuncs[OPCODE_STORE_VAR_PERSIST] = this.opStoreVarPersist.bind(this);
+    this.opFuncs[OPCODE_POP] = this.opPop.bind(this);
+    this.opFuncs[OPCODE_SUB] = this.opSub.bind(this);
+    this.opFuncs[OPCODE_ADD] = this.opAdd.bind(this);
+    this.opFuncs[OPCODE_DIV] = this.opDiv.bind(this);
+    this.opFuncs[OPCODE_MUL] = this.opMul.bind(this);
+    this.opFuncs[OPCODE_MOD] = this.opMod.bind(this);
+    this.opFuncs[OPCODE_NEGATE] = this.opNegate.bind(this);
+    this.opFuncs[OPCODE_NOT] = this.opNot.bind(this);
+    this.opFuncs[OPCODE_EQUAL] = this.opEqual.bind(this);
+    this.opFuncs[OPCODE_GREATER] = this.opGreater.bind(this);
+    this.opFuncs[OPCODE_LESS] = this.opLess.bind(this);
+    this.opFuncs[OPCODE_POW] = this.opPow.bind(this);
+    this.opFuncs[OPCODE_PRINT] = this.opPrint.bind(this);
+    this.opFuncs[OPCODE_JUMP] = this.opJump.bind(this);
+    this.opFuncs[OPCODE_JUMP_IF_FALSE] = this.opJumpIfFalse.bind(this);
+    this.opFuncs[OPCODE_JUMP_IF_FALSE_PERSIST] = this.opJumpIfFalsePersist.bind(this);
+    this.opFuncs[OPCODE_JUMP_IF_TRUE] = this.opJumpIfTrue.bind(this);
+    this.opFuncs[OPCODE_JUMP_IF_TRUE_PERSIST] = this.opJumpIfTruePersist.bind(this);
+    this.opFuncs[OPCODE_END] = this.opEnd.bind(this);
+    this.opFuncs[OPCODE_CALL_NATIVE_FUNC] = this.opCallNativeFunc.bind(this);
+    this.opFuncs[OPCODE_CREATE_ARRAY] = this.opCreateArray.bind(this);
+    this.opFuncs[OPCODE_REDIM_ARRAY] = this.opReDimArray.bind(this);
+    this.opFuncs[OPCODE_LOAD_ARRAY_ITEM] = this.opLoadArrayItem.bind(this);
+    this.opFuncs[OPCODE_STORE_ARRAY_ITEM_PERSIST] = this.opStoreArrayItemPersist.bind(this);
+    this.opFuncs[OPCODE_CLS] = this.opCls.bind(this);
+    this.opFuncs[OPCODE_CHECK_COUNTER] = this.opCheckCounter.bind(this);
 
     //Variable values are kept at the bottom of the stack and initialized to 0
-    for(var n = 0; n < this.bytecode.varIdentList.length; n++)
+    for(var n = 0; n < this.bytecode.varIdents.length; n++)
       this.stack.push(0);
   }
 
@@ -55,7 +55,7 @@ class Runtime
 	{
       while(!this.endOfOps() && !this.inputting)
       {
-		this.opFuncList[this.getOperand(0)]();
+		this.opFuncs[this.getOperand(0)]();
         this.currOpIndex++;
       }
     }
@@ -81,7 +81,7 @@ class Runtime
   //Push a reference to the given native function object onto the stack
   {
     var funcIndex = this.getOperand(1);
-    var funcRef = this.bytecode.nativeFuncList[funcIndex];
+    var funcRef = this.bytecode.nativeFuncs[funcIndex];
 
     this.stack.push(funcRef);
   }
@@ -90,7 +90,7 @@ class Runtime
   //Push the value of the given literal onto the stack
   {
     var litIndex = this.getOperand(1);
-    var val = this.bytecode.literalList[litIndex];
+    var val = this.bytecode.literals[litIndex];
     this.stack.push(val);
   }
 
@@ -279,7 +279,7 @@ class Runtime
   opEnd()
   //Trigger the program to end
   {
-    this.currOpIndex = this.bytecode.opList.length;
+    this.currOpIndex = this.bytecode.ops.length;
   }
 
   opCallNativeFunc()
@@ -305,14 +305,14 @@ class Runtime
   //Create an array with the given dimensions
   {
     var dimCount = this.getOperand(1);
-    var dimSizeList = new Array(dimCount).fill(0);
+    var dimSizes = new Array(dimCount).fill(0);
     var arrayRef;
 
     for(var n = dimCount - 1; n >= 0; n--)
-      dimSizeList[n] = this.stack.pop();
+      dimSizes[n] = this.stack.pop();
 
     arrayRef = new ObjArray();
-    arrayRef.reDim(dimSizeList);
+    arrayRef.reDim(dimSizes);
 
     this.stack.push(arrayRef);
   }
@@ -321,18 +321,18 @@ class Runtime
   //Set the dimensions of the given array
   {
     var dimCount = this.getOperand(1);
-    var dimSizeList = new Array(dimCount).fill(0);
+    var dimSizes = new Array(dimCount).fill(0);
     var arrayRef;
 
     for(var n = dimCount - 1; n >= 0; n--)
-      dimSizeList[n] = this.stack.pop();
+      dimSizes[n] = this.stack.pop();
 
     arrayRef = this.stack.pop();
 
     if(!(arrayRef instanceof ObjArray))
       throw {message: "Expected array."};
 
-    arrayRef.reDim(dimSizeList);
+    arrayRef.reDim(dimSizes);
   }
 
   opLoadArrayItem()
@@ -355,7 +355,7 @@ class Runtime
     if(linearIndex < 0)
       throw {message: "Array index out of bounds."};
 
-    this.stack.push(arrayRef.itemList[linearIndex]);
+    this.stack.push(arrayRef.items[linearIndex]);
   }
 
   opStoreArrayItemPersist()
@@ -379,7 +379,7 @@ class Runtime
     if(linearIndex < 0)
       throw {message: "Array index out of bounds."};
 
-    arrayRef.itemList[linearIndex] = itemVal;
+    arrayRef.items[linearIndex] = itemVal;
   }
 
   opCls()
@@ -414,13 +414,13 @@ class Runtime
   getOperand(operandIndex)
   //Return the operand at the given index of the current op
   {
-    return this.bytecode.opList[this.currOpIndex][operandIndex];
+    return this.bytecode.ops[this.currOpIndex][operandIndex];
   }
 
   endOfOps()
   //Return true if the op index is past the end of the op list
   {
-    return (this.currOpIndex >= this.bytecode.opList.length);
+    return (this.currOpIndex >= this.bytecode.ops.length);
   }
 }
 

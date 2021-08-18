@@ -56,7 +56,7 @@ function funcLen(runtime, args)
   var len;
 
   if(args[0] instanceof ObjArray)
-    len = args[0].itemList.length;
+    len = args[0].items.length;
   else
     len = args[0].length;
 

@@ -75,10 +75,10 @@ class Bytecode
 {
   constructor()
   {
-    this.nativeFuncList = [];
-    this.literalList = [];
-    this.varIdentList = [];
-    this.opList = [];
+    this.nativeFuncs = [];
+    this.literals = [];
+    this.varIdents = [];
+    this.ops = [];
   }
 
   toString()
@@ -88,30 +88,30 @@ class Bytecode
 
     retStr += "Literals:\n";
     retStr += "-----------\n";
-    for(var litIndex = 0; litIndex < this.literalList.length; litIndex++)
+    for(var litIndex = 0; litIndex < this.literals.length; litIndex++)
     {
-      retStr += litIndex + ":  " + this.literalList[litIndex];
+      retStr += litIndex + ":  " + this.literals[litIndex];
       retStr += '\n';
     }
     retStr += '\n\n';
 
     retStr += "Variables:\n";
     retStr += "------------\n";
-    for(var varIndex = 0; varIndex < this.varIdentList.length; varIndex++)
+    for(var varIndex = 0; varIndex < this.varIdents.length; varIndex++)
     {
-      retStr += varIndex + ":  " + this.varIdentList[varIndex];
+      retStr += varIndex + ":  " + this.varIdents[varIndex];
       retStr += '\n';
     }
     retStr += '\n\n';
 
     retStr += "Ops:\n";
     retStr += "------\n";
-    for(var opIndex = 0; opIndex < this.opList.length; opIndex++)
+    for(var opIndex = 0; opIndex < this.ops.length; opIndex++)
     {
-      retStr += opNameList[this.opList[opIndex][0]];
-      for(var operandIndex = 1; operandIndex < this.opList[opIndex].length; operandIndex++)
+      retStr += opIndex + ":  " + opNameList[this.ops[opIndex][0]];
+      for(var operandIndex = 1; operandIndex < this.ops[opIndex].length; operandIndex++)
       {
-        retStr += ", " + this.opList[opIndex][operandIndex];
+        retStr += ", " + this.ops[opIndex][operandIndex];
       }
       retStr += '\n';
     }

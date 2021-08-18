@@ -26,14 +26,14 @@ onmessage = function(message)
   }
 }
 
-function onStart(sourceStr)
+function onStart(source)
 //Compile and run the program
 {
   postMessage({msgId: MSGID_STATUS, msgData: "Compiling..."});
-  mainCompiler = new Compiler(sourceStr, stdNativeFuncList);
+  mainCompiler = new Compiler(source, stdNativeFuncList);
   mainBytecode = mainCompiler.compile();
 
-  //console.log(mainBytecode.toString());
+  console.log(mainBytecode.toString());
 
   if(mainCompiler.errorMsg == "")
   {
