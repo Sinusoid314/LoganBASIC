@@ -321,8 +321,10 @@ class Compiler
     if(!this.matchTerminator())
       throw {message: "Expected end-of-statement after expression."};
 
+    this.addOp([OPCODE_LOAD_VAR, varIndex]);
+
     startOpIndex = this.bytecode.ops.length;
-    this.addOp([OPCODE_CHECK_COUNTER, varIndex]);
+    this.addOp([OPCODE_CHECK_COUNTER]);
     jumpOpIndex = this.addOp([OPCODE_JUMP_IF_TRUE, 0]);
 
     this.exitForOpIndexes.push([]);
@@ -339,6 +341,8 @@ class Compiler
         throw {message: "Identifier '" + this.prevToken().lexeme + "' does not match identifier '" + varIdent + "' given in 'for' statement."};
     }
 
+    this.addOp([OPCODE_INCREMENT_COUNTER]);
+    this.addOp([OPCODE_STORE_VAR_PERSIST, varIndex]);
     this.addOp([OPCODE_JUMP, startOpIndex]);
     this.patchJumpOp(jumpOpIndex);
 
@@ -346,6 +350,7 @@ class Compiler
       this.patchJumpOp(this.exitForOpIndexes[this.exitForOpIndexes.length - 1][n]);
     this.exitForOpIndexes.pop();
 
+    this.addOp([OPCODE_POP]);
     this.addOp([OPCODE_POP]);
     this.addOp([OPCODE_POP]);
   }

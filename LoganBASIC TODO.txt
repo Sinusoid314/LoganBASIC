@@ -1,3 +1,2 @@
-- Fix bug with For loops not terminating.
 - Fix bug with console input on touch screens.
 - Add user function/sub support.

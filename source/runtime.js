@@ -42,6 +42,7 @@ class Runtime
     this.opFuncs[OPCODE_STORE_ARRAY_ITEM_PERSIST] = this.opStoreArrayItemPersist.bind(this);
     this.opFuncs[OPCODE_CLS] = this.opCls.bind(this);
     this.opFuncs[OPCODE_CHECK_COUNTER] = this.opCheckCounter.bind(this);
+    this.opFuncs[OPCODE_INCREMENT_COUNTER] = this.opIncrementCounter.bind(this);
 
     //Variable values are kept at the bottom of the stack and initialized to 0
     for(var n = 0; n < this.bytecode.varIdents.length; n++)
@@ -389,26 +390,36 @@ class Runtime
   }
 
   opCheckCounter()
-  //Return true if the counter variable is past a given value
+  //Return true if the counter value is past the end value
   {
-    var varVal = this.stack[this.getOperand(1)];
-    var stepVal = this.stack[this.stack.length - 1];
-    var endVal = this.stack[this.stack.length - 2];
+    var counterVal = this.stack[this.stack.length - 1];
+    var stepVal = this.stack[this.stack.length - 2];
+    var endVal = this.stack[this.stack.length - 3];
 
     if(stepVal > 0)
     {
-      if(varVal > endVal)
+      if(counterVal > endVal)
         this.stack.push(true);
       else
         this.stack.push(false);
     }
     else
     {
-      if(varVal < endVal)
+      if(counterVal < endVal)
         this.stack.push(true);
       else
         this.stack.push(false);
     }
+  }
+
+  opIncrementCounter()
+  //Add a value to the counter value
+  {
+    var counterVal = this.stack[this.stack.length - 1];
+    var stepVal = this.stack[this.stack.length - 2];
+    var newCounterVal = counterVal + stepVal;
+
+    this.stack[this.stack.length - 1] = newCounterVal;
   }
 
   getOperand(operandIndex)

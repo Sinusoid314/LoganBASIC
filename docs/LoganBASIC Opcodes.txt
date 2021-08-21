@@ -143,8 +143,11 @@ CLS
   Clear the console window.
 
 CHECK_COUNTER
-  operands: counterVariableIndex
-  stack: [endValue, stepValue] -> [endValue, stepValue, result]
-  Returns true if stepValue is greater than 0 and the counter variable is
-  greater than endValue, or stepValue is less than or equal to zero and the
-  counter variable is less than endValue. Returns false otherwise.
+  stack: [endValue, stepValue, counterValue] -> [endValue, stepValue, counterValue, result]
+  Returns true if stepValue is greater than 0 and counterValue is
+  greater than endValue, or stepValue is less than or equal to zero and
+  counterValue is less than endValue. Returns false otherwise.
+
+INCREMENT_COUNTER
+  stack: [stepValue, counterValue] -> [stepValue, newCounterValue]
+  Adds stepValue to counterValue and replaces counterValue with the result.
