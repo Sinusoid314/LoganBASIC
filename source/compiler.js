@@ -35,7 +35,7 @@ class Compiler
   scanTokens()
   //Use the scanner to build a token list
   {
-    var token, nextToken;
+    var token, prevToken;
 
     do
     {
@@ -64,11 +64,12 @@ class Compiler
           break;
 
         case TOKEN_UNDERSCORE:
-          nextToken = this.scanner.scanToken();
-          if(nextToken.type != TOKEN_NEWLINE)
+          prevToken = token;
+          token = this.scanner.scanToken();
+          if(token.type != TOKEN_NEWLINE)
           {
+            this.tokens.push(prevToken);
             this.tokens.push(token);
-            this.tokens.push(nextToken);
           }
           break;
 

@@ -3,7 +3,8 @@ class Runtime
   constructor(bytecode)
   {
     this.bytecode = bytecode;
-    this.currOpIndex = 0;
+    this.currOp = null;
+    this.nextOpIndex = 0;
     this.stack = [];
     this.opFuncs = [null];
     this.errorMsg = "";
@@ -56,8 +57,9 @@ class Runtime
 	{
       while(!this.endOfOps() && !this.inputting)
       {
-		this.opFuncs[this.getOperand(0)]();
-        this.currOpIndex++;
+        this.currOp = this.bytecode.ops[this.nextOpIndex];
+        this.nextOpIndex++;
+		this.opFuncs[this.currOp[0]]();
       }
     }
     catch(errorObj)
@@ -81,7 +83,7 @@ class Runtime
   opLoadNativeFunc()
   //Push a reference to the given native function object onto the stack
   {
-    var funcIndex = this.getOperand(1);
+    var funcIndex = this.currOp[1];
     var funcRef = this.bytecode.nativeFuncs[funcIndex];
 
     this.stack.push(funcRef);
@@ -90,7 +92,7 @@ class Runtime
   opLoadLit()
   //Push the value of the given literal onto the stack
   {
-    var litIndex = this.getOperand(1);
+    var litIndex = this.currOp[1];
     var val = this.bytecode.literals[litIndex];
     this.stack.push(val);
   }
@@ -98,7 +100,7 @@ class Runtime
   opLoadVar()
   //Push the value of the given variable onto the stack
   {
-    var varIndex = this.getOperand(1);
+    var varIndex = this.currOp[1];
     var val = this.stack[varIndex];
     this.stack.push(val);
   }
@@ -106,7 +108,7 @@ class Runtime
   opStoreVar()
   //Pop value from the stack and store it in the given variable
   {
-    var varIndex = this.getOperand(1);
+    var varIndex = this.currOp[1];
     var val = this.stack.pop();
     this.stack[varIndex] = val;
   }
@@ -114,7 +116,7 @@ class Runtime
   opStoreVarPersist()
   //Pop value from the stack and store it in the given variable, keeping value on the stack
   {
-    var varIndex = this.getOperand(1);
+    var varIndex = this.currOp[1];
     var val = this.stack[this.stack.length - 1];
     this.stack[varIndex] = val;
   }
@@ -233,60 +235,60 @@ class Runtime
   opJump()
   //Jump to the instruction at opIndex
   {
-    var opIndex = this.getOperand(1);
-    this.currOpIndex = opIndex - 1;
+    var opIndex = this.currOp[1];
+    this.nextOpIndex = opIndex;
   }
 
   opJumpIfFalse()
   //Jump to the instruction at opIndex if value is false
   {
-    var opIndex = this.getOperand(1);
+    var opIndex = this.currOp[1];
     var val = this.stack.pop();
 
     if(!val)
-      this.currOpIndex = opIndex - 1;
+      this.nextOpIndex = opIndex;
   }
 
   opJumpIfFalsePersist()
   //Jump to the instruction at opIndex if value is false, keeping value on the stack
   {
-    var opIndex = this.getOperand(1);
+    var opIndex = this.currOp[1];
     var val = this.stack[this.stack.length - 1];
 
     if(!val)
-      this.currOpIndex = opIndex - 1;
+      this.nextOpIndex = opIndex;
   }
 
   opJumpIfTrue()
   //Jump to the instruction at opIndex if value is true
   {
-    var opIndex = this.getOperand(1);
+    var opIndex = this.currOp[1];
     var val = this.stack.pop();
 
     if(val)
-      this.currOpIndex = opIndex - 1;
+      this.nextOpIndex = opIndex;
   }
 
   opJumpIfTruePersist()
   //Jump to the instruction at opIndex if value is true, keeping value on the stack
   {
-    var opIndex = this.getOperand(1);
+    var opIndex = this.currOp[1];
     var val = this.stack[this.stack.length - 1];
 
     if(val)
-      this.currOpIndex = opIndex - 1;
+      this.nextOpIndex = opIndex;
   }
 
   opEnd()
   //Trigger the program to end
   {
-    this.currOpIndex = this.bytecode.ops.length;
+    this.nextOpIndex = this.bytecode.ops.length;
   }
 
   opCallNativeFunc()
   //Call the given native function object with the given arguments
   {
-    var argCount = this.getOperand(1);
+    var argCount = this.currOp[1];
     var args = this.stack.splice(this.stack.length - argCount, argCount)
     var funcRef = this.stack.pop();
     var retVal;
@@ -305,7 +307,7 @@ class Runtime
   opCreateArray()
   //Create an array with the given dimensions
   {
-    var dimCount = this.getOperand(1);
+    var dimCount = this.currOp[1];
     var dimSizes = new Array(dimCount).fill(0);
     var arrayRef;
 
@@ -321,7 +323,7 @@ class Runtime
   opReDimArray()
   //Set the dimensions of the given array
   {
-    var dimCount = this.getOperand(1);
+    var dimCount = this.currOp[1];
     var dimSizes = new Array(dimCount).fill(0);
     var arrayRef;
 
@@ -339,7 +341,7 @@ class Runtime
   opLoadArrayItem()
   //Push the value of the given array item onto the stack
   {
-    var indexCount = this.getOperand(1);
+    var indexCount = this.currOp[1];
     var indexList = new Array(indexCount).fill(0);
     var arrayRef, linearIndex;
 
@@ -362,7 +364,7 @@ class Runtime
   opStoreArrayItemPersist()
   //Set the given array item to the given value, keeping value on the stack
   {
-    var indexCount = this.getOperand(1);
+    var indexCount = this.currOp[1];
     var indexList = new Array(indexCount).fill(0);
     var arrayRef, linearIndex;
     var itemVal = this.stack.pop();
@@ -422,16 +424,10 @@ class Runtime
     this.stack[this.stack.length - 1] = newCounterVal;
   }
 
-  getOperand(operandIndex)
-  //Return the operand at the given index of the current op
-  {
-    return this.bytecode.ops[this.currOpIndex][operandIndex];
-  }
-
   endOfOps()
   //Return true if the op index is past the end of the op list
   {
-    return (this.currOpIndex >= this.bytecode.ops.length);
+    return (this.nextOpIndex >= this.bytecode.ops.length);
   }
 }
 

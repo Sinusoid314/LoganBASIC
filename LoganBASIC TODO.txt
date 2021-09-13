@@ -1,2 +1,4 @@
 - Fix bug with console input on touch screens.
 - Add user function/sub support.
+- Add graphics functionality.
+- Add debugger.
