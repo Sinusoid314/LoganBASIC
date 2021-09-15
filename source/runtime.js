@@ -1,18 +1,31 @@
+class CallFrame
+{
+  constructor(func, stackIndex)
+  {
+    this.func = func;
+    this.stackIndex = stackIndex;
+    this.nextOpIndex = 0;
+  }
+}
+
 class Runtime
 {
   constructor(bytecode)
   {
     this.bytecode = bytecode;
-    this.currOp = null;
-    this.nextOpIndex = 0;
+    this.callFrames = [];
+    this.currCallFrame = null;
     this.stack = [];
+    this.currOp = null;
     this.opFuncs = [null];
     this.errorMsg = "";
 
     //Allow the op methods to be called by indexing into a function array using the opcode constants
     this.opFuncs[OPCODE_LOAD_TRUE] = this.opLoadTrue.bind(this);
     this.opFuncs[OPCODE_LOAD_FALSE] = this.opLoadFalse.bind(this);
+    this.opFuncs[OPCODE_LOAD_INT] = this.opLoadInt.bind(this);
     this.opFuncs[OPCODE_LOAD_NATIVE_FUNC] = this.opLoadNativeFunc.bind(this);
+    this.opFuncs[OPCODE_LOAD_USER_FUNC] = this.opLoadUserFunc.bind(this);
     this.opFuncs[OPCODE_LOAD_LIT] = this.opLoadLit.bind(this);
     this.opFuncs[OPCODE_LOAD_VAR] = this.opLoadVar.bind(this);
     this.opFuncs[OPCODE_STORE_VAR] = this.opStoreVar.bind(this);
@@ -36,7 +49,7 @@ class Runtime
     this.opFuncs[OPCODE_JUMP_IF_TRUE] = this.opJumpIfTrue.bind(this);
     this.opFuncs[OPCODE_JUMP_IF_TRUE_PERSIST] = this.opJumpIfTruePersist.bind(this);
     this.opFuncs[OPCODE_END] = this.opEnd.bind(this);
-    this.opFuncs[OPCODE_CALL_NATIVE_FUNC] = this.opCallNativeFunc.bind(this);
+    this.opFuncs[OPCODE_CALL_FUNC] = this.opCallFunc.bind(this);
     this.opFuncs[OPCODE_CREATE_ARRAY] = this.opCreateArray.bind(this);
     this.opFuncs[OPCODE_REDIM_ARRAY] = this.opReDimArray.bind(this);
     this.opFuncs[OPCODE_LOAD_ARRAY_ITEM] = this.opLoadArrayItem.bind(this);
@@ -44,10 +57,7 @@ class Runtime
     this.opFuncs[OPCODE_CLS] = this.opCls.bind(this);
     this.opFuncs[OPCODE_CHECK_COUNTER] = this.opCheckCounter.bind(this);
     this.opFuncs[OPCODE_INCREMENT_COUNTER] = this.opIncrementCounter.bind(this);
-
-    //Variable values are kept at the bottom of the stack and initialized to 0
-    for(var n = 0; n < this.bytecode.varIdents.length; n++)
-      this.stack.push(0);
+    this.opFuncs[OPCODE_RETURN] = this.opReturn.bind(this);
   }
 
   run()
@@ -55,10 +65,10 @@ class Runtime
   {
 	try
 	{
-      while(!this.endOfOps() && !this.inputting)
+      while((this.currCallFrame != null) && !this.inputting)
       {
-        this.currOp = this.bytecode.ops[this.nextOpIndex];
-        this.nextOpIndex++;
+        this.currOp = this.bytecode.ops[this.currCallFrame.nextOpIndex];
+        this.currCallFrame.nextOpIndex++;
 		this.opFuncs[this.currOp[0]]();
       }
     }
@@ -80,11 +90,26 @@ class Runtime
     this.stack.push(false);
   }
 
+  opLoadInt()
+  //Push an integer value onto the stack
+  {
+    this.stack.push(this.currOp[1]);
+  }
+
   opLoadNativeFunc()
   //Push a reference to the given native function object onto the stack
   {
     var funcIndex = this.currOp[1];
     var funcRef = this.bytecode.nativeFuncs[funcIndex];
+
+    this.stack.push(funcRef);
+  }
+
+  opLoadUserFunc()
+  //Push a reference to the given user function object onto the stack
+  {
+    var funcIndex = this.currOp[1];
+    var funcRef = this.bytecode.userFuncs[funcIndex];
 
     this.stack.push(funcRef);
   }
@@ -100,25 +125,42 @@ class Runtime
   opLoadVar()
   //Push the value of the given variable onto the stack
   {
-    var varIndex = this.currOp[1];
-    var val = this.stack[varIndex];
+    var varScope = this.currOp[1]
+    var varIndex = this.currOp[2];
+    var val;
+
+    if(varScope == SCOPE_GLOBAL)
+      val = this.stack[varIndex];
+    else
+      val = this.stack[this.currCallFrame.stackIndex + varIndex];
+
     this.stack.push(val);
   }
 
   opStoreVar()
   //Pop value from the stack and store it in the given variable
   {
-    var varIndex = this.currOp[1];
+    var varScope = this.currOp[1]
+    var varIndex = this.currOp[2];
     var val = this.stack.pop();
-    this.stack[varIndex] = val;
+
+    if(varScope == SCOPE_GLOBAL)
+      this.stack[varIndex] = val;
+    else
+      this.stack[this.currCallFrame.stackIndex + varIndex] = val;
   }
 
   opStoreVarPersist()
-  //Pop value from the stack and store it in the given variable, keeping value on the stack
+  //Store value from top of the stack in the given variable, keeping value on the stack
   {
-    var varIndex = this.currOp[1];
+    var varScope = this.currOp[1]
+    var varIndex = this.currOp[2];
     var val = this.stack[this.stack.length - 1];
-    this.stack[varIndex] = val;
+
+    if(varScope == SCOPE_GLOBAL)
+      this.stack[varIndex] = val;
+    else
+      this.stack[this.currCallFrame.stackIndex + varIndex] = val;
   }
 
   opPop()
@@ -236,7 +278,7 @@ class Runtime
   //Jump to the instruction at opIndex
   {
     var opIndex = this.currOp[1];
-    this.nextOpIndex = opIndex;
+    this.currCallFrame.nextOpIndex = opIndex;
   }
 
   opJumpIfFalse()
@@ -246,7 +288,7 @@ class Runtime
     var val = this.stack.pop();
 
     if(!val)
-      this.nextOpIndex = opIndex;
+      this.currCallFrame.nextOpIndex = opIndex;
   }
 
   opJumpIfFalsePersist()
@@ -256,7 +298,7 @@ class Runtime
     var val = this.stack[this.stack.length - 1];
 
     if(!val)
-      this.nextOpIndex = opIndex;
+      this.currCallFrame.nextOpIndex = opIndex;
   }
 
   opJumpIfTrue()
@@ -266,7 +308,7 @@ class Runtime
     var val = this.stack.pop();
 
     if(val)
-      this.nextOpIndex = opIndex;
+      this.currCallFrame.nextOpIndex = opIndex;
   }
 
   opJumpIfTruePersist()
@@ -276,17 +318,17 @@ class Runtime
     var val = this.stack[this.stack.length - 1];
 
     if(val)
-      this.nextOpIndex = opIndex;
+      this.currCallFrame.nextOpIndex = opIndex;
   }
 
   opEnd()
   //Trigger the program to end
   {
-    this.nextOpIndex = this.bytecode.ops.length;
+    this.currCallFrame = null;
   }
 
-  opCallNativeFunc()
-  //Call the given native function object with the given arguments
+  opCallFunc()
+  //Call the given function object with the given arguments
   {
     var argCount = this.currOp[1];
     var args = this.stack.splice(this.stack.length - argCount, argCount)
@@ -424,10 +466,10 @@ class Runtime
     this.stack[this.stack.length - 1] = newCounterVal;
   }
 
-  endOfOps()
-  //Return true if the op index is past the end of the op list
+  opReturn
+  //Return from the currently running user function
   {
-    return (this.nextOpIndex >= this.bytecode.ops.length);
+
   }
 }
 

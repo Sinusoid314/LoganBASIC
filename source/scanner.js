@@ -21,7 +21,9 @@ var keywordList = {
                    "cls": TOKEN_CLS,
                    "do": TOKEN_DO,
                    "loop": TOKEN_LOOP,
-                   "exit": TOKEN_EXIT
+                   "exit": TOKEN_EXIT,
+                   "functions": TOKEN_FUNCTION,
+                   "return": TOKEN_RETURN
                   }
 
 class Scanner

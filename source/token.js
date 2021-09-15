@@ -51,6 +51,8 @@ const TOKEN_CLS = 54;
 const TOKEN_DO = 55;
 const TOKEN_LOOP = 56;
 const TOKEN_EXIT = 57;
+const TOKEN_FUNCTION = 58;
+const TOKEN_RETURN = 59;
 
 class Token
 {

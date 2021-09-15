@@ -1,3 +1,14 @@
+(September 14, 2021)
+	- Added ObjUserFunc and CallFrame classes.
+	- Modified Bytecode, Runtime, and Compiler members to support user functions.
+	- Added FUNCTION and RETURN tokens.
+	- Modified grammar to support user functions.
+	- Added SCOPE_GLOBAL and SCOPE_LOCAL types for distinguishing variable scope.
+	- Renamed CALL_NATIVE_FUNC opcode to CALL_FUNC.
+	- Added LOAD_INT and LOAD_USER_FUNC opcodes.
+	- Modified LOAD_VAR, STORE_VAR, and STORE_VAR_PERSIST, JUMP, JUMP_IF_FALSE, JUMP_IF_FALSE_PERSIST,
+	  JUMP_IF_TRUE, JUMP_IF_TRUE_PERSIST, and END opcodes to support user functions.
+
 (September 12, 2021)
 	- Replaced nextToken with prevToken in scanTokens() in Compiler.
 	- In Runtime, replaced getOperand() and currOpIndex with currOp and nextOpIndex.

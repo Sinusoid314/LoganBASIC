@@ -4,14 +4,14 @@ class Compiler
   {
 	this.source = source;
 	this.scanner = new Scanner(source);
-    this.tokens = [];
+    this.bytecode = new Bytecode();
+    this.bytecode.nativeFuncs = nativeFuncs;
+    this.currUserFunc = null;
     this.currTokenIndex = 0;
     this.exitWhileOpIndexes = [];
     this.exitForOpIndexes = [];
     this.exitDoOpIndexes = [];
     this.errorMsg = "";
-    this.bytecode = new Bytecode();
-    this.bytecode.nativeFuncs = nativeFuncs;
   }
 
   compile()

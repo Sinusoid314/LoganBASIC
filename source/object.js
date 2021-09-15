@@ -1,3 +1,15 @@
+class ObjUserFunc
+{
+  constructor(ident)
+  {
+    this.ident = ident;
+    this.paramCount = 0;
+    this.varIdents = [];
+    this.ops = [];
+    this.tokens = [];
+  }
+}
+
 class ObjNativeFunc
 {
   constructor(ident, paramMin, paramMax, func)
