@@ -1,3 +1,9 @@
+(September 26, 2021)
+	- Added makeEOFToken() method to Scanner.
+	- Modified forStmt() in Compiler to use LOAD_INT opcode instead of LOAD_LIT.
+	- Added opsCount() method to Compiler.
+	- Renamed 'inputting' member in Runtime to 'paused'.
+
 (September 14, 2021)
 	- Added ObjUserFunc and CallFrame classes.
 	- Modified Bytecode, Runtime, and Compiler members to support user functions.

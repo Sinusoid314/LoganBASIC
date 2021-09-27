@@ -1,4 +1,7 @@
-- Fix bug with console input on touch screens.
 - Add user function/sub support.
+- Add a toString() method to ObjUserFunc.
+- Fix bug with console input on touch screens.
+- Add Pause statement/opcode.
+- Add ability to collapse/expand the editor and console.
 - Add graphics functionality.
 - Add debugger.

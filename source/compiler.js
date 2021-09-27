@@ -266,7 +266,7 @@ class Compiler
   //Parse a While...Wend statement
   {
     var jumpOpIndex;
-	var startOpIndex = this.bytecode.ops.length;
+	var startOpIndex = this.opsCount();
 
     this.parseExpression();
 
@@ -317,14 +317,14 @@ class Compiler
     if(this.matchToken(TOKEN_STEP))
       this.parseExpression();
     else
-      this.addOp([OPCODE_LOAD_LIT, this.getLiteralIndex(1)]);
+      this.addOp([OPCODE_LOAD_INT, 1]);
 
     if(!this.matchTerminator())
       throw {message: "Expected end-of-statement after expression."};
 
     this.addOp([OPCODE_LOAD_VAR, varIndex]);
 
-    startOpIndex = this.bytecode.ops.length;
+    startOpIndex = this.opsCount();
     this.addOp([OPCODE_CHECK_COUNTER]);
     jumpOpIndex = this.addOp([OPCODE_JUMP_IF_TRUE, 0]);
 
@@ -400,7 +400,7 @@ class Compiler
   doStmt()
   //Parse a Do...Loop While statement
   {
-    var startOpIndex = this.bytecode.ops.length;
+    var startOpIndex = this.opsCount();
 
     if(!this.matchTerminator())
       throw {message: "Expected statement terminator after 'do'."};
@@ -828,13 +828,19 @@ class Compiler
   //Add a new bytecodce op
   {
     this.bytecode.ops.push(operandList);
-    return this.bytecode.ops.length - 1;
+    return this.opsCount() - 1;
   }
 
   patchJumpOp(opIndex)
   //Set the operand of the given jump op to the index of the next op to be added
   {
-    this.bytecode.ops[opIndex][1] = this.bytecode.ops.length;
+    this.bytecode.ops[opIndex][1] = this.opsCount();
+  }
+
+  opsCount()
+  //Return the current number of ops
+  {
+    return this.bytecode.ops.length;
   }
 
   matchTerminator()

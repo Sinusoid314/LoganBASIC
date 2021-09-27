@@ -43,7 +43,7 @@ function onStart(source)
 
     if(mainRuntime.errorMsg == "")
     {
-      if(!mainRuntime.inputting)
+      if(!mainRuntime.paused)
         postMessage({msgId: MSGID_DONE, msgData: "Program run successfully."});
     }
     else
@@ -61,12 +61,12 @@ function onInputResult(inputStr)
 //Process input sent from the console
 {
   mainRuntime.stack[mainRuntime.stack.length - 1] = inputStr;
-  mainRuntime.inputting = false;
+  mainRuntime.paused = false;
   mainRuntime.run();
 
   if(mainRuntime.errorMsg == "")
   {
-	if(!mainRuntime.inputting)
+	if(!mainRuntime.paused)
 	  postMessage({msgId: MSGID_DONE, msgData: "Program run successfully."});
   }
   else

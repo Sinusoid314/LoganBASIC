@@ -45,7 +45,7 @@ class Scanner
     this.startCharIndex = this.currCharIndex;
 
     if(this.endOfSource())
-      return this.makeToken(TOKEN_EOF);
+      return this.makeEOFToken();
 
     firstChar = this.consumeChar();
 
@@ -128,6 +128,12 @@ class Scanner
   //Create and return an error token
   {
     return new Token(TOKEN_ERROR, errorMsg, undefined, this.currLineNum);
+  }
+
+  makeEOFToken()
+  //Create and return an EOF token
+  {
+    return new Token(TOKEN_EOF, "EOF", undefined, this.currLineNum);
   }
 
   skipWhitespace()

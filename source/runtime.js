@@ -18,6 +18,7 @@ class Runtime
     this.stack = [];
     this.currOp = null;
     this.opFuncs = [null];
+    this.paused = false;
     this.errorMsg = "";
 
     //Allow the op methods to be called by indexing into a function array using the opcode constants
@@ -65,7 +66,7 @@ class Runtime
   {
 	try
 	{
-      while((this.currCallFrame != null) && !this.inputting)
+      while((this.currCallFrame != null) && !this.paused)
       {
         this.currOp = this.bytecode.ops[this.currCallFrame.nextOpIndex];
         this.currCallFrame.nextOpIndex++;
