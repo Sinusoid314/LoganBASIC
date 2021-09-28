@@ -1,3 +1,12 @@
+class VariableReference
+{
+  constructor(scope, index)
+  {
+    this.scope = scope;
+    this.index = index;
+  }
+}
+
 class Compiler
 {
   constructor(source, nativeFuncs)
@@ -6,6 +15,7 @@ class Compiler
 	this.scanner = new Scanner(source);
     this.bytecode = new Bytecode();
     this.bytecode.nativeFuncs = nativeFuncs;
+    this.mainUserFunc = null;
     this.currUserFunc = null;
     this.currTokenIndex = 0;
     this.exitWhileOpIndexes = [];
@@ -21,8 +31,18 @@ class Compiler
 	{
       this.scanTokens();
 
-      while(!this.endOfTokens())
-        this.parseStatement();
+      for(var funcIndex = 0; funcIndex < this.bytecode.userFuncs.length; funcIndex++)
+      {
+        this.currUserFunc = this.bytecode.userFuncs[funcIndex];
+        this.parseParameters();
+
+        while(!this.endOfTokens())
+          this.parseStatement();
+
+        this.addReturnOps();
+        this.currUserFunc.tokens.splice(0);
+        this.currTokenIndex = 0;
+      }
     }
     catch(errorObj)
     {
@@ -33,9 +53,13 @@ class Compiler
   }
 
   scanTokens()
-  //Use the scanner to build a token list
+  //Use the scanner to build a token list for each user function
   {
-    var token, prevToken;
+    var token, prevToken, func;
+
+    func = new ObjUserFunc("<main>");
+    this.bytecode.userFuncs.push(func);
+    this.mainUserFunc = func;
 
     do
     {
@@ -48,18 +72,18 @@ class Compiler
           break;
 
         case TOKEN_NEWLINE:
-          if(this.tokens.length > 0)
+          if(func.tokens.length > 0)
           {
-            if(this.tokens[this.tokens.length - 1].type != TOKEN_NEWLINE)
-              this.tokens.push(token);
+            if(func.tokens[func.tokens.length - 1].type != TOKEN_NEWLINE)
+              func.tokens.push(token);
           }
           break;
 
         case TOKEN_COLON:
-          if(this.tokens.length > 0)
+          if(func.tokens.length > 0)
           {
-            if(this.tokens[this.tokens.length - 1].type != TOKEN_COLON)
-              this.tokens.push(token);
+            if(func.tokens[func.tokens.length - 1].type != TOKEN_COLON)
+              func.tokens.push(token);
           }
           break;
 
@@ -68,16 +92,55 @@ class Compiler
           token = this.scanner.scanToken();
           if(token.type != TOKEN_NEWLINE)
           {
-            this.tokens.push(prevToken);
-            this.tokens.push(token);
+            func.tokens.push(prevToken);
+            func.tokens.push(token);
+          }
+          break;
+
+        case TOKEN_FUNCTION:
+          if(func != this.mainUserFunc)
+            throw {message: "Cannot have nested functions."};
+
+          token = this.scanner.scanToken();
+          if(token.type != TOKEN_IDENTIFIER)
+            throw {message: "Expected identifier after 'function'."};
+
+          if(this.getNativeFuncIndex(token.lexeme) != -1)
+            throw {message: "'" + token.lexeme + "' is already a function."};
+
+          if(this.getUserFuncIndex(token.lexeme) != -1)
+            throw {message: "'" + token.lexeme + "' is already a function."};
+
+          func = new ObjUserFunc(token.lexeme);
+          this.bytecode.userFuncs.push(func);
+          break;
+
+        case TOKEN_END:
+          prevToken = token;
+          token = this.scanner.scanToken();
+          if(token.type != TOKEN_FUNCTION)
+          {
+            func.tokens.push(prevToken);
+            func.tokens.push(token);
+          }
+          else
+          {
+            if(func == this.mainUserFunc)
+              throw {message: "'end function' without 'function'."};
+
+            func.tokens.push(this.scanner.makeEOFToken());
+            func = this.mainUserFunc;
           }
           break;
 
         default:
-          this.tokens.push(token);
+          func.tokens.push(token);
       }
     }
     while(token.type != TOKEN_EOF)
+
+    if(func != this.mainUserFunc)
+      throw {message: "'function' without 'end function'."};
   }
 
   parseStatement(requireTerminator = true)
@@ -137,25 +200,28 @@ class Compiler
     else if(this.matchTokenPair(TOKEN_EXIT, TOKEN_DO))
       this.exitDoStmt();
 
+    else if(this.matchToken(TOKEN_RETURN))
+      this.returnStmt();
+
     else
       this.exprStmt();
 
     if(requireTerminator)
     {
       if(!this.matchTerminator())
-        throw {message: "Expected end-of-statement."};
+        throw {message: "Expected terminator."};
     }
   }
 
   varStmt()
   //Parse a Var statement
   {
-    var varIdent, varIndex;
+    var varIdent, varRef;
 
     if(this.matchToken(TOKEN_IDENTIFIER))
     {
       varIdent = this.prevToken().lexeme;
-      varIndex = this.getVariableIndex(varIdent, true);
+      varRef = this.addVariable(varIdent);
     }
     else
     {
@@ -165,19 +231,19 @@ class Compiler
     if(this.matchToken(TOKEN_EQUAL))
     {
       this.parseExpression();
-      this.addOp([OPCODE_STORE_VAR, varIndex]);
+      this.addOp([OPCODE_STORE_VAR, varRef.scope, varRef.index]);
     }
   }
 
   arrayStmt()
   //Parse an Array statement
   {
-    var varIdent, varIndex, dimCount;
+    var varIdent, varRef, dimCount;
 
     if(this.matchToken(TOKEN_IDENTIFIER))
     {
       varIdent = this.prevToken().lexeme;
-      varIndex = this.getVariableIndex(varIdent, true);
+      varRef = this.addVariable(varIdent);
     }
     else
     {
@@ -195,7 +261,7 @@ class Compiler
       throw {message: "Expected ']' after indexes"};
 
     this.addOp([OPCODE_CREATE_ARRAY, dimCount]);
-    this.addOp([OPCODE_STORE_VAR, varIndex]);
+    this.addOp([OPCODE_STORE_VAR, varRef.scope, varRef.index]);
   }
 
   exprStmt()
@@ -247,7 +313,7 @@ class Compiler
     else if(this.matchToken(TOKEN_ELSE))
     {
 		if(!this.matchTerminator())
-          throw {message: "Expected end-of-statement after 'else'."};
+          throw {message: "Expected terminator after 'else'."};
 
         elseJumpOpIndex = this.addOp([OPCODE_JUMP, 0]);
 		this.patchJumpOp(thenJumpOpIndex);
@@ -271,7 +337,7 @@ class Compiler
     this.parseExpression();
 
     if(!this.matchTerminator())
-      throw {message: "Expected end-of-statement after expression."};
+      throw {message: "Expected terminator after expression."};
 
     jumpOpIndex = this.addOp([OPCODE_JUMP_IF_FALSE, 0]);
 
@@ -294,20 +360,20 @@ class Compiler
   forStmt()
   //Parse a For...Next statement
   {
-    var varIdent, varIndex;
+    var varIdent, varRef;
     var jumpOpIndex, startOpIndex;
 
     if(!this.matchToken(TOKEN_IDENTIFIER))
       throw {message: "Expected identifier after 'for'."};
 
     varIdent = this.prevToken().lexeme;
-    varIndex = this.getVariableIndex(varIdent);
+    varRef = this.getVariableReference(varIdent);
 
     if(!this.matchToken(TOKEN_EQUAL))
       throw {message: "Expected '=' after identifier."};
 
  	this.parseExpression();
-    this.addOp([OPCODE_STORE_VAR, varIndex]);
+    this.addOp([OPCODE_STORE_VAR, varRef.scope, varRef.index]);
 
     if(!this.matchToken(TOKEN_TO))
       throw {message: "Expected 'to' after start expression."};
@@ -320,9 +386,9 @@ class Compiler
       this.addOp([OPCODE_LOAD_INT, 1]);
 
     if(!this.matchTerminator())
-      throw {message: "Expected end-of-statement after expression."};
+      throw {message: "Expected terminator after expression."};
 
-    this.addOp([OPCODE_LOAD_VAR, varIndex]);
+    this.addOp([OPCODE_LOAD_VAR, varRef.scope, varRef.index]);
 
     startOpIndex = this.opsCount();
     this.addOp([OPCODE_CHECK_COUNTER]);
@@ -343,7 +409,7 @@ class Compiler
     }
 
     this.addOp([OPCODE_INCREMENT_COUNTER]);
-    this.addOp([OPCODE_STORE_VAR_PERSIST, varIndex]);
+    this.addOp([OPCODE_STORE_VAR_PERSIST, varRef.scope, varRef.index]);
     this.addOp([OPCODE_JUMP, startOpIndex]);
     this.patchJumpOp(jumpOpIndex);
 
@@ -365,13 +431,13 @@ class Compiler
   reDimStmt()
   //Parse a Redim statement
   {
-    var varIdent, varIndex, dimCount;
+    var varIdent, varRef, dimCount;
 
     if(this.matchToken(TOKEN_IDENTIFIER))
     {
       varIdent = this.prevToken().lexeme;
-      varIndex = this.getVariableIndex(varIdent);
-      this.addOp([OPCODE_LOAD_VAR, varIndex]);
+      varRef = this.getVariableReference(varIdent);
+      this.addOp([OPCODE_LOAD_VAR, varRef.scope, varRef.index]);
     }
     else
     {
@@ -458,6 +524,20 @@ class Compiler
     jumpOpIndex = this.addOp([OPCODE_JUMP, 0]);
 
     this.exitDoOpIndexes[this.exitDoOpIndexes.length - 1].push(jumpOpIndex);
+  }
+
+  returnStmt()
+  //Parse a Return statement
+  {
+    if(this.matchTerminator())
+    {
+      this.addReturnOps();
+    }
+    else
+    {
+      this.parseExpression();
+      this.addOp([OPCODE_RETURN]);
+    }
   }
 
   parseExpression(isStmt = false)
@@ -653,7 +733,7 @@ class Compiler
       if(!this.matchToken(TOKEN_RIGHT_PAREN))
         throw {message: "Expected ')' after function arguments."};
 
-      this.addOp([OPCODE_CALL_NATIVE_FUNC, argCount]);
+      this.addOp([OPCODE_CALL_FUNC, argCount]);
     }
   }
 
@@ -686,7 +766,7 @@ class Compiler
   primaryExpr(isStmt)
   //Parse a primary expression
   {
-    var ident, funcIndex, varIndex;
+    var ident, funcIndex, varRef;
     var litVal, litIndex;
 
     if(this.matchToken(TOKEN_IDENTIFIER))
@@ -701,16 +781,24 @@ class Compiler
         return;
       }
 
+      //User Function
+      funcIndex = this.getUserFuncIndex(ident);
+      if(funcIndex != -1)
+      {
+        this.addOp([OPCODE_LOAD_USER_FUNC, funcIndex]);
+        return;
+      }
+
       //Variable
-      varIndex = this.getVariableIndex(ident);
+      varRef = this.getVariableReference(ident);
       if(isStmt && this.matchToken(TOKEN_EQUAL))
       {
         this.parseExpression();
-        this.addOp([OPCODE_STORE_VAR_PERSIST, varIndex]);
+        this.addOp([OPCODE_STORE_VAR_PERSIST, varRef.scope, varRef.index]);
       }
       else
       {
-        this.addOp([OPCODE_LOAD_VAR, varIndex]);
+        this.addOp([OPCODE_LOAD_VAR, varRef.scope, varRef.index]);
       }
       return;
     }
@@ -769,6 +857,58 @@ class Compiler
     return argCount;
   }
 
+  parseParameters()
+  //Parse a comma-seperated list of identifiers
+  {
+    if(!this.matchToken(TOKEN_LEFT_PAREN))
+      throw {message: "Expected '(' after function identifier."};
+
+    if(this.matchToken(TOKEN_RIGHT_PAREN))
+      return;
+
+    do
+    {
+      if(!this.matchToken(TOKEN_IDENTIFIER))
+        throw {message: "Expected identifier for function parameter."};
+
+      currUserFunc.varIdents.push(this.prevToken().lexeme);
+    }
+    while(this.matchToken(TOKEN_COMMA));
+
+    if(!this.matchToken(TOKEN_RIGHT_PAREN))
+      throw {message: "Expected ')' after function parameters."};
+
+    if(!this.matchTerminator())
+      throw {message: "Expected terminator after ')'."};
+
+    currUserFunc.paramCount = currUserFunc.varIdents.length;
+  }
+
+  addVariable(varIdent)
+  //Add a variable identifier to the current user function
+  {
+    var varScope, varIndex;
+
+    if(this.getNativeFuncIndex(token.lexeme) != -1)
+      throw {message: "'" + varIdent + "' is already a function."};
+
+    if(this.getUserFuncIndex(token.lexeme) != -1)
+      throw {message: "'" + varIdent + "' is already a function."};
+
+    if(this.currUserFunc.varIdents.indexOf(varIdent) != -1)
+      throw {message: "Variable or array '" + varIdent + "' already declared."};
+
+    this.currUserFunc.varIdents.push(varIdent);
+
+    varIndex = this.currUserFunc.varIdents.length - 1;
+    if(this.currUserFunc == this.mainUserFunc)
+      varScope = SCOPE_GLOBAL;
+    else
+      varScope = SCOPE_LOCAL;
+
+    return new VariableReference(varScope, varIndex);
+  }
+
   getNativeFuncIndex(funcIdent)
   //Return the index of the given native function identifier
   {
@@ -781,33 +921,16 @@ class Compiler
     return -1;
   }
 
-  getVariableIndex(varIdent, addIfAbsent = false)
-  //Return the index of the given variable identifier
+  getUserFuncIndex(funcIdent)
+  //Return the index of the given user function identifier
   {
-    var varIndex = this.bytecode.varIdents.indexOf(varIdent);
-
-    if(addIfAbsent)
+    for(var funcIndex = 0; funcIndex < this.bytecode.userFuncs.length; funcIndex++)
     {
-      if(varIndex == -1)
-	  {
-		if(this.getNativeFuncIndex(varIdent) != -1)
-          throw {message: "Identifier '" + varIdent + "' is already a function name."};
-
-	    this.bytecode.varIdents.push(varIdent);
-	    varIndex = this.bytecode.varIdents.length - 1;
-      }
-      else
-      {
-        throw {message: "Variable or array '" + varIdent + "' already declared."};
-      }
-    }
-    else
-    {
-      if(varIndex == -1)
-        throw {message: "Variable or array '" + varIdent + "' not declared."};
+      if(this.bytecode.userFuncs[funcIndex].ident == funcIdent.toLowerCase())
+        return funcIndex;
     }
 
-    return varIndex;
+    return -1;
   }
 
   getLiteralIndex(litVal)
@@ -824,23 +947,49 @@ class Compiler
     return litIndex;
   }
 
+  getVariableReference(varIdent)
+  //Return a [scope,index] reference to the given variable identifier
+  {
+    var varIndex;
+
+    if(this.currUserFunc != this.mainUserFunc)
+    {
+      varIndex = this.currUserFunc.varIdents.indexOf(varIdent);
+      if(varIndex != -1)
+        return new VariableReference(SCOPE_LOCAL, varIndex);
+    }
+
+    varIndex = this.mainUserFunc.varIdents.indexOf(varIdent);
+    if(varIndex != -1)
+      return new VariableReference(SCOPE_GLOBAL, varIndex);
+
+    throw {message: "Variable or array '" + varIdent + "' not declared."};
+  }
+
   addOp(operandList)
   //Add a new bytecodce op
   {
-    this.bytecode.ops.push(operandList);
+    this.currUserFunc.ops.push(operandList);
     return this.opsCount() - 1;
   }
 
   patchJumpOp(opIndex)
   //Set the operand of the given jump op to the index of the next op to be added
   {
-    this.bytecode.ops[opIndex][1] = this.opsCount();
+    this.currUserFunc.ops[opIndex][1] = this.opsCount();
+  }
+
+  addReturnOps()
+  //Add bytecode ops for returning from a user function
+  {
+    this.addOp([OPCODE_LOAD_INT, 0]);
+    this.addOp([OPCODE_RETURN]);
   }
 
   opsCount()
-  //Return the current number of ops
+  //Return the number of ops in the current user function
   {
-    return this.bytecode.ops.length;
+    return this.currUserFunc.ops.length;
   }
 
   matchTerminator()
@@ -920,14 +1069,14 @@ class Compiler
   peekToken()
   //Return the current token
   {
-    return this.tokens[this.currTokenIndex];
+    return this.currUserFunc.tokens[this.currTokenIndex];
   }
 
   peekNextToken()
   //Return the token after the current token
   {
 	if(!this.endOfTokens())
-      return this.tokens[this.currTokenIndex + 1];
+      return this.currUserFunc.tokens[this.currTokenIndex + 1];
     else
       return this.peekToken();
   }
@@ -935,7 +1084,7 @@ class Compiler
   prevToken()
   //Return the token before the current token
   {
-    return this.tokens[this.currTokenIndex - 1];
+    return this.currUserFunc.tokens[this.currTokenIndex - 1];
   }
 
   endOfTokens()

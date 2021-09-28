@@ -8,16 +8,42 @@ class ObjUserFunc
     this.ops = [];
     this.tokens = [];
   }
+
+  toString()
+  //Return the function as a string
+  {
+    var retStr = "";
+
+    retStr += "Name: " + this.ident + "\n";
+    retStr += "Parameter #: " + this.paramCount + "\n";
+
+    retStr += "Variables:\n------------\n";
+    for(var varIndex = 0; varIndex < this.varIdents.length; varIndex++)
+      retStr += varIndex + ":  " + this.varIdents[varIndex] + "\n";
+    retStr += '\n\n';
+
+    retStr += "Ops:\n------\n";
+    for(var opIndex = 0; opIndex < this.ops.length; opIndex++)
+    {
+      retStr += opIndex + ":  " + opNames[this.ops[opIndex][0]];
+      for(var operandIndex = 1; operandIndex < this.ops[opIndex].length; operandIndex++)
+        retStr += ", " + this.ops[opIndex][operandIndex];
+      retStr += '\n';
+    }
+    retStr += '\n\n';
+
+    return retStr;
+  }
 }
 
 class ObjNativeFunc
 {
-  constructor(ident, paramMin, paramMax, func)
+  constructor(ident, paramMin, paramMax, jsFunc)
   {
     this.ident = ident;
     this.paramMin = paramMin;
     this.paramMax = paramMax;
-    this.func = func;
+    this.jsFunc = jsFunc;
   }
 }
 

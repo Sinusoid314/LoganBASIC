@@ -1,5 +1,4 @@
-- Add user function/sub support.
-- Add a toString() method to ObjUserFunc.
+- Add entries for Return and Function in help docs.
 - Fix bug with console input on touch screens.
 - Add Pause statement/opcode.
 - Add ability to collapse/expand the editor and console.

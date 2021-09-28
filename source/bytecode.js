@@ -97,36 +97,14 @@ class Bytecode
   {
     var retStr = "";
 
-    retStr += "Literals:\n";
-    retStr += "-----------\n";
+    retStr += "Literals:\n-----------\n";
     for(var litIndex = 0; litIndex < this.literals.length; litIndex++)
-    {
-      retStr += litIndex + ":  " + this.literals[litIndex];
-      retStr += '\n';
-    }
+      retStr += litIndex + ":  " + this.literals[litIndex] + "\n";
     retStr += '\n\n';
 
-    retStr += "Variables:\n";
-    retStr += "------------\n";
-    for(var varIndex = 0; varIndex < this.varIdents.length; varIndex++)
-    {
-      retStr += varIndex + ":  " + this.varIdents[varIndex];
-      retStr += '\n';
-    }
-    retStr += '\n\n';
-
-    retStr += "Ops:\n";
-    retStr += "------\n";
-    for(var opIndex = 0; opIndex < this.ops.length; opIndex++)
-    {
-      retStr += opIndex + ":  " + opNames[this.ops[opIndex][0]];
-      for(var operandIndex = 1; operandIndex < this.ops[opIndex].length; operandIndex++)
-      {
-        retStr += ", " + this.ops[opIndex][operandIndex];
-      }
-      retStr += '\n';
-    }
-    retStr += '\n\n';
+    retStr += "Functions:\n------------\n";
+    for(var funcIndex = 0; funcIndex < this.userFuncs.length; funcIndex++)
+      retStr += this.userFuncs[funcIndex].toString() + "\n";
 
     return retStr;
   }

@@ -1,3 +1,8 @@
+(September 28, 2021)
+	- Finished implementing user function support in Runtime.
+	- Finished implementing user function support in Compiler.
+	- Added a toString() method to ObjUserFunc.
+
 (September 26, 2021)
 	- Added makeEOFToken() method to Scanner.
 	- Modified forStmt() in Compiler to use LOAD_INT opcode instead of LOAD_LIT.

@@ -64,11 +64,17 @@ class Runtime
   run()
   //Execute the bytecode ops
   {
+    var mainFunc;
+
 	try
 	{
+      mainFunc = this.bytecode.userFuncs[0];
+      this.stack.push(mainFunc);
+      this.callUserFunc(mainFunc, 0, 0);
+
       while((this.currCallFrame != null) && !this.paused)
       {
-        this.currOp = this.bytecode.ops[this.currCallFrame.nextOpIndex];
+        this.currOp = this.currCallFrame.func.ops[this.currCallFrame.nextOpIndex];
         this.currCallFrame.nextOpIndex++;
 		this.opFuncs[this.currOp[0]]();
       }
@@ -76,6 +82,12 @@ class Runtime
     catch(errorObj)
     {
       this.errorMsg = "Runtime error: " + errorObj.message;
+    }
+
+    if(!this.paused)
+    {
+      this.stack.splice(0);
+      this.callFrames.splice(0);
     }
   }
 
@@ -332,19 +344,15 @@ class Runtime
   //Call the given function object with the given arguments
   {
     var argCount = this.currOp[1];
-    var args = this.stack.splice(this.stack.length - argCount, argCount)
-    var funcRef = this.stack.pop();
-    var retVal;
+    var stackIndex = this.stack.length - argCount - 1;
+    var func = this.stacl[stackIndex];
 
-    if(!(funcRef instanceof ObjNativeFunc))
-      throw {message: "Expected function."};
-
-    if((argCount < funcRef.paramMin) || (argCount > funcRef.paramMax))
-      throw {message: "Wrong number of arguments for function " + funcRef.ident + "()."};
-
-    retVal = funcRef.func(this, args);
-
-    this.stack.push(retVal);
+    if(func instanceof ObjNativeFunc)
+      this.callNativeFunc(func, argCount);
+    else if(func instanceof ObjUserFunc)
+      this.callUserFunc(func, argCount, stackIndex);
+    else
+      throw {message: "Can only call functions."};
   }
 
   opCreateArray()
@@ -470,7 +478,40 @@ class Runtime
   opReturn
   //Return from the currently running user function
   {
+    this.stack.splice(this.currCallFrame.stackIndex, this.stack.length - this.currCallFrame.stackIndex - 1);
+    this.callFrames.pop();
 
+    if(this.callFrames.length == 0)
+      this.currCallFrame = null;
+    else
+      this.currCallFrame = this.callFrames[this.callFrames.length - 1];
+  }
+
+  callNativeFunc(func, argCount)
+  //Call the given native function
+  {
+    var args, retVal;
+
+    if((argCount < func.paramMin) || (argCount > func.paramMax))
+      throw {message: "Wrong number of arguments for function '" + func.ident + "'."};
+
+    args = this.stack.splice(this.stack.length - argCount, argCount);
+    retVal = func.jsFunc(this, args);
+    this.stack.push(retVal);
+  }
+
+  callUserFunc(func, argCount, stackIndex)
+  //Load a new call frame for the given user function
+  {
+    if(argCount != func.paramCount)
+      throw {message: "Wrong number of arguments for function '" + func.ident + "'."};
+
+    this.callFrames.push(new CallFrame(func, stackIndex));
+
+    for(var n = 0; n < func.varIdents.length; n++)
+      this.stack.push(0);
+
+    this.currCallFrame = this.callFrames[this.callFrames.length - 1];
   }
 }
 
