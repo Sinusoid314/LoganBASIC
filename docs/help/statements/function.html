@@ -1,0 +1,37 @@
+<html>
+
+<head>
+  <title>Function...End Function Declaration</title>
+  <link rel="stylesheet" type="text/css" href="../reference_doc.css"></link>
+</head>
+
+<body>
+
+<h3>Function identifier( [ parameter1, parameter2, ... ] )
+  statements
+End Function</h3>
+
+<h4>Description</h4>
+<p id="description">
+Defines a block of statements that can be called from anywhere in the program.
+Functions can optionally take any number of argument values from, and return a
+value to, the function's caller.
+</p>
+
+<h4>Usage</h4>
+<code id="usage">
+print getGreeting("Alice")
+print getGreeting("Bob")
+
+function getGreeting(name)
+  var greeting = "Hello, " + name + "!"
+  return greeting
+end function
+
+'output:
+'Hello, Alice!
+'Hello, Bob!
+</code>
+
+</body>
+</html>

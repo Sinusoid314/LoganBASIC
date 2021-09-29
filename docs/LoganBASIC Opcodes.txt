@@ -6,10 +6,20 @@ LOAD_FALSE
   stack: [] -> [false]
   Push 'false' onto the stack.
 
+LOAD_INT
+  operands: integer
+  stack: [] -> [integer]
+  Push an integer value onto the stack.
+
 LOAD_NATIVE_FUNC
   operands: functionIndex
   stack: [] -> [functionReference]
   Push a reference to the given native function object onto the stack.
+
+LOAD_USER_FUNC
+  operands: functionIndex
+  stack: [] -> [functionReference]
+  Push a reference to the given user function object onto the stack.
 
 LOAD_LIT
   operands: literalIndex
@@ -17,19 +27,19 @@ LOAD_LIT
   Push the value of the given literal onto the stack.
 
 LOAD_VAR
-  operands: variableIndex
+  operands: variableScope, variableIndex
   stack: [] -> [value]
   Push the value of the given variable onto the stack.
 
 STORE_VAR
-  operands: variableIndex
+  operands: variableScope, variableIndex
   stack: [value] -> []
   Pop value from the stack and store it in the given variable.
 
 STORE_VAR_PERSIST
-  operands: variableIndex
+  operands: variableScope, variableIndex
   stack: [value] -> no change
-  Pop value from the stack and store it in the given variable, keeping value on the stack.
+  Store value from top of the stack in the given variable, keeping value on the stack.
 
 POP
   stack: [value] -> []
@@ -114,10 +124,10 @@ JUMP_IF_TRUE_PERSIST
 END
   Trigger the program to end
 
-CALL_NATIVE_FUNC
+CALL_FUNC
   operands: argumentCount
   stack: [functionReference, argument1, argument2, ...] -> [returnValue]
-  Call the given native function object with the given arguments.
+  Call the given function object with the given arguments.
 
 CREATE_ARRAY
   operands: dimCount
@@ -151,3 +161,6 @@ CHECK_COUNTER
 INCREMENT_COUNTER
   stack: [stepValue, counterValue] -> [stepValue, newCounterValue]
   Adds stepValue to counterValue and replaces counterValue with the result.
+
+RETURN
+  Return from the currently running user function.

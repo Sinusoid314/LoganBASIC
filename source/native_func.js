@@ -1,4 +1,4 @@
-stdNativeFuncList = [
+var stdNativeFuncList = [
                   new ObjNativeFunc("input", 1, 1, funcInput),
                   new ObjNativeFunc("rnd", 0, 0, funcRnd),
                   new ObjNativeFunc("time", 0, 0, funcTime),

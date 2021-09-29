@@ -2,6 +2,7 @@
 	- Finished implementing user function support in Runtime.
 	- Finished implementing user function support in Compiler.
 	- Added a toString() method to ObjUserFunc.
+	- Added entries for Return and Function in help docs.
 
 (September 26, 2021)
 	- Added makeEOFToken() method to Scanner.

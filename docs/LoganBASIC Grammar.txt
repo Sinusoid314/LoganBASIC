@@ -1,4 +1,7 @@
-program        ->  statement* EOF ;
+program        ->  ( funcDecl | statement )* EOF ;
+
+funcDecl       ->  "function" IDENTIFIER "(" parameters? ")" terminator
+                   statement* "end" "function" ;
 
 statement      ->  ( varStmt
                    | arrayStmt
@@ -13,7 +16,8 @@ statement      ->  ( varStmt
                    | doStmt
                    | exitWhileStmt
                    | exitForStmt
-                   | exitDoStmt )
+                   | exitDoStmt
+                   | returnStmt )
                    terminator? ;
 
 varStmt        ->  "var" IDENTIFIER ( "=" expression )? ;
@@ -28,10 +32,11 @@ forStmt        ->  "for" IDENTIFIER "=" expression "to" expression ( "step" expr
 endStmt        ->  "end" ;
 reDimStmt      ->  "redim" IDENTIFIER "[" arguments "]" ;
 clsStmt        ->  "cls" ;
-doStmt         -> "do" terminator statement* "loop" "while" expression ;
-exitWhileStmt  -> "exit" "while" ;
-exitForStmt    -> "exit" "for" ;
-exitDoStmt     -> "exit" "do" ;
+doStmt         ->  "do" terminator statement* "loop" "while" expression ;
+exitWhileStmt  ->  "exit" "while" ;
+exitForStmt    ->  "exit" "for" ;
+exitDoStmt     ->  "exit" "do" ;
+returnStmt     ->  "return" expression? ;
 
 expression     ->  logic_or ;
 logic_or       ->  logic_and ( "or" logic_and )* ;
@@ -49,6 +54,7 @@ primary        ->  "true" | "false" | NUMBER_LIT | STRING_LIT | IDENTIFIER
                
 terminator     ->  ( "\n" | ":" | EOF ) ;
 arguments      ->  expression ( "," expression )* ;
+parameters     ->  IDENTIFIER ( "," IDENTIFIER )* ;
 
 NUMBER_LIT     ->  DIGIT+ ( "." DIGIT+ )? ;
 STRING_LIT     ->  "\"" <any char except "\"">* "\"" ;

@@ -475,7 +475,7 @@ class Runtime
     this.stack[this.stack.length - 1] = newCounterVal;
   }
 
-  opReturn
+  opReturn()
   //Return from the currently running user function
   {
     this.stack.splice(this.currCallFrame.stackIndex, this.stack.length - this.currCallFrame.stackIndex - 1);

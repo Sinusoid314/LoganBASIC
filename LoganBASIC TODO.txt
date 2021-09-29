@@ -1,4 +1,4 @@
-- Add entries for Return and Function in help docs.
+- Fix bug with user functions not compiling.
 - Fix bug with console input on touch screens.
 - Add Pause statement/opcode.
 - Add ability to collapse/expand the editor and console.

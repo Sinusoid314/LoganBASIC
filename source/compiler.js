@@ -34,7 +34,9 @@ class Compiler
       for(var funcIndex = 0; funcIndex < this.bytecode.userFuncs.length; funcIndex++)
       {
         this.currUserFunc = this.bytecode.userFuncs[funcIndex];
-        this.parseParameters();
+
+        if(this.currUserFunc != this.mainUserFunc)
+          this.parseParameters();
 
         while(!this.endOfTokens())
           this.parseStatement();
@@ -47,6 +49,7 @@ class Compiler
     catch(errorObj)
     {
       this.errorMsg = "Compile error on line " + this.peekToken().lineNum + ": " + errorObj.message;
+      //console.log(this.peekToken().lexeme);
     }
 
     return this.bytecode;
@@ -529,6 +532,9 @@ class Compiler
   returnStmt()
   //Parse a Return statement
   {
+    if(this.currUserFunc == this.mainUserFunc)
+      throw {message: "'return' only allowed within a function."};
+
     if(this.matchTerminator())
     {
       this.addReturnOps();

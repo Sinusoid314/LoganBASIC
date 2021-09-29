@@ -24,7 +24,7 @@ var keywordList = {
                    "exit": TOKEN_EXIT,
                    "functions": TOKEN_FUNCTION,
                    "return": TOKEN_RETURN
-                  }
+                  };
 
 class Scanner
 {

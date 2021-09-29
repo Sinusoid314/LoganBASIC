@@ -1,7 +1,7 @@
 #menu-frame
 {
   float: left;
-  width: 180px;
+  width: 215px;
   height: 100%;
   overflow: auto;
 }
@@ -50,7 +50,7 @@ ul, #menu
 
 #docview-frame
 {
-  margin-left: 180px;
+  margin-left: 215px;
   height: 100%;
 }
 
