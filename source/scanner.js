@@ -22,7 +22,7 @@ var keywordList = {
                    "do": TOKEN_DO,
                    "loop": TOKEN_LOOP,
                    "exit": TOKEN_EXIT,
-                   "functions": TOKEN_FUNCTION,
+                   "function": TOKEN_FUNCTION,
                    "return": TOKEN_RETURN
                   };
 

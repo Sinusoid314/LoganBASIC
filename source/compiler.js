@@ -877,7 +877,7 @@ class Compiler
       if(!this.matchToken(TOKEN_IDENTIFIER))
         throw {message: "Expected identifier for function parameter."};
 
-      currUserFunc.varIdents.push(this.prevToken().lexeme);
+      this.addVariable(this.prevToken().lexeme);
     }
     while(this.matchToken(TOKEN_COMMA));
 
@@ -887,7 +887,7 @@ class Compiler
     if(!this.matchTerminator())
       throw {message: "Expected terminator after ')'."};
 
-    currUserFunc.paramCount = currUserFunc.varIdents.length;
+    this.currUserFunc.paramCount = this.currUserFunc.varIdents.length;
   }
 
   addVariable(varIdent)
