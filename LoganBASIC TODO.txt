@@ -1,4 +1,3 @@
-- Fix bug with user functions not compiling.
 - Fix bug with console input on touch screens.
 - Add source code line to runtime error messages.
 - Add Pause statement/opcode.

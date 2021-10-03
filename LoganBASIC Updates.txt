@@ -1,3 +1,6 @@
+(October 3, 2021)
+	- Fixed bug with user functions not compiling.
+
 (September 28, 2021)
 	- Finished implementing user function support in Runtime.
 	- Finished implementing user function support in Compiler.

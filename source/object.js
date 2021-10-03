@@ -15,12 +15,12 @@ class ObjUserFunc
     var retStr = "";
 
     retStr += "Name: " + this.ident + "\n";
-    retStr += "Parameter #: " + this.paramCount + "\n";
+    retStr += "Parameter #: " + this.paramCount + "\n\n";
 
     retStr += "Variables:\n------------\n";
     for(var varIndex = 0; varIndex < this.varIdents.length; varIndex++)
       retStr += varIndex + ":  " + this.varIdents[varIndex] + "\n";
-    retStr += '\n\n';
+    retStr += '\n';
 
     retStr += "Ops:\n------\n";
     for(var opIndex = 0; opIndex < this.ops.length; opIndex++)
@@ -30,7 +30,7 @@ class ObjUserFunc
         retStr += ", " + this.ops[opIndex][operandIndex];
       retStr += '\n';
     }
-    retStr += '\n\n';
+    retStr += '\n';
 
     return retStr;
   }

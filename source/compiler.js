@@ -46,10 +46,9 @@ class Compiler
         this.currTokenIndex = 0;
       }
     }
-    catch(errorObj)
+    catch(err)
     {
-      this.errorMsg = "Compile error on line " + this.peekToken().lineNum + ": " + errorObj.message;
-      //console.log(this.peekToken().lexeme);
+      this.errorMsg = "Compile error on line " + this.peekToken().lineNum + ": " + err.message;
     }
 
     return this.bytecode;
@@ -895,14 +894,17 @@ class Compiler
   {
     var varScope, varIndex;
 
-    if(this.getNativeFuncIndex(token.lexeme) != -1)
+    if(this.getNativeFuncIndex(varIdent) != -1)
       throw {message: "'" + varIdent + "' is already a function."};
 
-    if(this.getUserFuncIndex(token.lexeme) != -1)
+    if(this.getUserFuncIndex(varIdent) != -1)
       throw {message: "'" + varIdent + "' is already a function."};
 
-    if(this.currUserFunc.varIdents.indexOf(varIdent) != -1)
-      throw {message: "Variable or array '" + varIdent + "' already declared."};
+    for(varIndex = 0; varIndex < this.currUserFunc.varIdents.length; varIndex++)
+    {
+      if(this.currUserFunc.varIdents[varIndex].toLowerCase() == varIdent.toLowerCase())
+        throw {message: "Variable or array '" + varIdent + "' already declared."};
+    }
 
     this.currUserFunc.varIdents.push(varIdent);
 
@@ -918,9 +920,11 @@ class Compiler
   getNativeFuncIndex(funcIdent)
   //Return the index of the given native function identifier
   {
+    funcIdent = funcIdent.toLowerCase();
+
     for(var funcIndex = 0; funcIndex < this.bytecode.nativeFuncs.length; funcIndex++)
     {
-      if(this.bytecode.nativeFuncs[funcIndex].ident == funcIdent.toLowerCase())
+      if(this.bytecode.nativeFuncs[funcIndex].ident.toLowerCase() == funcIdent)
         return funcIndex;
     }
 
@@ -930,9 +934,11 @@ class Compiler
   getUserFuncIndex(funcIdent)
   //Return the index of the given user function identifier
   {
+    funcIdent = funcIdent.toLowerCase();
+
     for(var funcIndex = 0; funcIndex < this.bytecode.userFuncs.length; funcIndex++)
     {
-      if(this.bytecode.userFuncs[funcIndex].ident == funcIdent.toLowerCase())
+      if(this.bytecode.userFuncs[funcIndex].ident.toLowerCase() == funcIdent)
         return funcIndex;
     }
 
@@ -958,16 +964,22 @@ class Compiler
   {
     var varIndex;
 
+    varIdent = varIdent.toLowerCase();
+
     if(this.currUserFunc != this.mainUserFunc)
     {
-      varIndex = this.currUserFunc.varIdents.indexOf(varIdent);
-      if(varIndex != -1)
-        return new VariableReference(SCOPE_LOCAL, varIndex);
+      for(varIndex = 0; varIndex < this.currUserFunc.varIdents.length; varIndex++)
+      {
+        if(this.currUserFunc.varIdents[varIndex].toLowerCase() == varIdent)
+          return new VariableReference(SCOPE_LOCAL, varIndex);
+      }
     }
 
-    varIndex = this.mainUserFunc.varIdents.indexOf(varIdent);
-    if(varIndex != -1)
-      return new VariableReference(SCOPE_GLOBAL, varIndex);
+    for(varIndex = 0; varIndex < this.mainUserFunc.varIdents.length; varIndex++)
+    {
+      if(this.mainUserFunc.varIdents[varIndex].toLowerCase() == varIdent)
+        return new VariableReference(SCOPE_GLOBAL, varIndex);
+    }
 
     throw {message: "Variable or array '" + varIdent + "' not declared."};
   }

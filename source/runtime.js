@@ -79,9 +79,9 @@ class Runtime
 		this.opFuncs[this.currOp[0]]();
       }
     }
-    catch(errorObj)
+    catch(err)
     {
-      this.errorMsg = "Runtime error: " + errorObj.message;
+      this.errorMsg = "Runtime error: " + err.message;
     }
 
     if(!this.paused)
@@ -113,18 +113,18 @@ class Runtime
   //Push a reference to the given native function object onto the stack
   {
     var funcIndex = this.currOp[1];
-    var funcRef = this.bytecode.nativeFuncs[funcIndex];
+    var func = this.bytecode.nativeFuncs[funcIndex];
 
-    this.stack.push(funcRef);
+    this.stack.push(func);
   }
 
   opLoadUserFunc()
   //Push a reference to the given user function object onto the stack
   {
     var funcIndex = this.currOp[1];
-    var funcRef = this.bytecode.userFuncs[funcIndex];
+    var func = this.bytecode.userFuncs[funcIndex];
 
-    this.stack.push(funcRef);
+    this.stack.push(func);
   }
 
   opLoadLit()
@@ -139,7 +139,7 @@ class Runtime
   //Push the value of the given variable onto the stack
   {
     var varScope = this.currOp[1]
-    var varIndex = this.currOp[2];
+    var varIndex = this.currOp[2] + 1;
     var val;
 
     if(varScope == SCOPE_GLOBAL)
@@ -154,7 +154,7 @@ class Runtime
   //Pop value from the stack and store it in the given variable
   {
     var varScope = this.currOp[1]
-    var varIndex = this.currOp[2];
+    var varIndex = this.currOp[2] + 1;
     var val = this.stack.pop();
 
     if(varScope == SCOPE_GLOBAL)
@@ -167,7 +167,7 @@ class Runtime
   //Store value from top of the stack in the given variable, keeping value on the stack
   {
     var varScope = this.currOp[1]
-    var varIndex = this.currOp[2];
+    var varIndex = this.currOp[2] + 1;
     var val = this.stack[this.stack.length - 1];
 
     if(varScope == SCOPE_GLOBAL)
@@ -345,7 +345,7 @@ class Runtime
   {
     var argCount = this.currOp[1];
     var stackIndex = this.stack.length - argCount - 1;
-    var func = this.stacl[stackIndex];
+    var func = this.stack[stackIndex];
 
     if(func instanceof ObjNativeFunc)
       this.callNativeFunc(func, argCount);
@@ -508,7 +508,7 @@ class Runtime
 
     this.callFrames.push(new CallFrame(func, stackIndex));
 
-    for(var n = 0; n < func.varIdents.length; n++)
+    for(var n = func.paramCount; n < func.varIdents.length; n++)
       this.stack.push(0);
 
     this.currCallFrame = this.callFrames[this.callFrames.length - 1];

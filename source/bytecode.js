@@ -102,7 +102,7 @@ class Bytecode
       retStr += litIndex + ":  " + this.literals[litIndex] + "\n";
     retStr += '\n\n';
 
-    retStr += "Functions:\n------------\n";
+    retStr += "Functions:\n------------\n\n";
     for(var funcIndex = 0; funcIndex < this.userFuncs.length; funcIndex++)
       retStr += this.userFuncs[funcIndex].toString() + "\n";
 
