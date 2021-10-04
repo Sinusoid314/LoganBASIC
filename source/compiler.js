@@ -992,6 +992,7 @@ class Compiler
   //Add a new bytecodce op
   {
     this.currUserFunc.ops.push(operandList);
+    this.updateSourceLineMap();
     return this.opsCount() - 1;
   }
 
@@ -1113,6 +1114,22 @@ class Compiler
   //Return true if the current token is the end token
   {
     return (this.peekToken().type == TOKEN_EOF)
+  }
+
+  updateSourceLineMap()
+  //
+  {
+    var lineNum = this.peekToken().lineNum;
+    var opIndex = this.opsCount() - 1;
+    var map = this.currUserFunc.sourceLineMap;
+    var indexRange;
+
+    if(map.has(lineNum))
+      indexRange = {startOpIndex: map.get(lineNum).startOpIndex, endOpIndex: opIndex};
+    else
+      indexRange = {startOpIndex: opIndex, endOpIndex: opIndex};
+
+    map.set(lineNum, indexRange);
   }
 
   raiseError(message, token = null)

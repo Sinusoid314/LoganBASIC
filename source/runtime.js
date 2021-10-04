@@ -81,7 +81,7 @@ class Runtime
     }
     catch(err)
     {
-      this.errorMsg = "Runtime error: " + err.message;
+      this.errorMsg = "Runtime error on line " + err.lineNum + ": "  + err.message;
     }
 
     if(!this.paused)
@@ -515,12 +515,23 @@ class Runtime
     this.currCallFrame = this.callFrames[this.callFrames.length - 1];
   }
 
+  getSourceLine()
+  //
+  {
+    var opIndex = this.currCallFrame.nextOpIndex - 1;
+    var map = this.currCallFrame.func.sourceLineMap;
+
+    for(let [lineNum, indexRange] of map)
+    {
+      if((opIndex >= indexRange.startOpIndex) && (opIndex <= indexRange.endOpIndex))
+        return lineNum;
+    }
+  }
+
   raiseError(message)
   //
   {
-    var err = {message: message};
-
-    throw err;
+    throw {message: message, lineNum: this.getSourceLine()};
   }
 }
 

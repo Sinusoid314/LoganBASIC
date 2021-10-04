@@ -7,6 +7,7 @@ class ObjUserFunc
     this.varIdents = [];
     this.ops = [];
     this.tokens = [];
+    this.sourceLineMap = new Map();
   }
 
   toString()

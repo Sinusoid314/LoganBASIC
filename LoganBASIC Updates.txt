@@ -1,3 +1,6 @@
+(October 4, 2021)
+	- Added source code line to runtime error messages.
+
 (October 3, 2021)
 	- Fixed bug with user functions not compiling.
 	- Added raiseError() method to Compiler and Runtime.

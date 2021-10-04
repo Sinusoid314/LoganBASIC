@@ -39,7 +39,7 @@ class Scanner
   scanToken()
   //Read and return the next token from the source code
   {
-    var firstChar;
+    var firstChar, token;
 
     this.skipWhitespace();
     this.startCharIndex = this.currCharIndex;
@@ -52,8 +52,9 @@ class Scanner
     switch(firstChar)
     {
       case '\n':
+        token = this.makeToken(TOKEN_NEWLINE);
         this.currLineNum++;
-        return this.makeToken(TOKEN_NEWLINE);
+        return token;
 
       case ':':
         return this.makeToken(TOKEN_COLON);
