@@ -48,7 +48,7 @@ class Compiler
     }
     catch(err)
     {
-      this.errorMsg = "Compile error on line " + this.peekToken().lineNum + ": " + err.message;
+      this.errorMsg = "Compile error on line " + err.token.lineNum + ", token '" + err.token.lexeme + "': " + err.message;
     }
 
     return this.bytecode;
@@ -70,7 +70,7 @@ class Compiler
       switch(token.type)
       {
         case TOKEN_ERROR:
-          throw {message: token.lexeme};
+          this.raiseError(token.lexeme, token);
           break;
 
         case TOKEN_NEWLINE:
@@ -101,17 +101,17 @@ class Compiler
 
         case TOKEN_FUNCTION:
           if(func != this.mainUserFunc)
-            throw {message: "Cannot have nested functions."};
+            this.raiseError("Cannot have nested functions.", token);
 
           token = this.scanner.scanToken();
           if(token.type != TOKEN_IDENTIFIER)
-            throw {message: "Expected identifier after 'function'."};
+            this.raiseError("Expected identifier after 'function'.", token);
 
           if(this.getNativeFuncIndex(token.lexeme) != -1)
-            throw {message: "'" + token.lexeme + "' is already a function."};
+            this.raiseError("'" + token.lexeme + "' is already a function.", token);
 
           if(this.getUserFuncIndex(token.lexeme) != -1)
-            throw {message: "'" + token.lexeme + "' is already a function."};
+            this.raiseError("'" + token.lexeme + "' is already a function.", token);
 
           func = new ObjUserFunc(token.lexeme);
           this.bytecode.userFuncs.push(func);
@@ -128,7 +128,7 @@ class Compiler
           else
           {
             if(func == this.mainUserFunc)
-              throw {message: "'end function' without 'function'."};
+              this.raiseError("'end function' without 'function'.", token);
 
             func.tokens.push(this.scanner.makeEOFToken());
             func = this.mainUserFunc;
@@ -142,7 +142,7 @@ class Compiler
     while(token.type != TOKEN_EOF)
 
     if(func != this.mainUserFunc)
-      throw {message: "'function' without 'end function'."};
+      this.raiseError("'function' without 'end function'.", func.tokens[0]);
   }
 
   parseStatement(requireTerminator = true)
@@ -161,22 +161,22 @@ class Compiler
       this.ifStmt();
 
     else if(this.matchToken(TOKEN_ELSE))
-      throw {message: "'else' without matching 'if' statement."};
+      this.raiseError("'else' without matching 'if' statement.");
 
     else if(this.matchTokenPair(TOKEN_END, TOKEN_IF))
-      throw {message: "'end if' without matching 'if' statement."};
+      this.raiseError("'end if' without matching 'if' statement.");
 
     else if(this.matchToken(TOKEN_WHILE))
       this.whileStmt();
 
     else if(this.matchToken(TOKEN_WEND))
-      throw {message: "'wend' without matching 'while' statement."};
+      this.raiseError("'wend' without matching 'while' statement.");
 
     else if(this.matchToken(TOKEN_FOR))
       this.forStmt();
 
     else if(this.matchToken(TOKEN_NEXT))
-      throw {message: "'next' without matching 'for' statement."};
+      this.raiseError("'next' without matching 'for' statement.");
 
     else if(this.matchToken(TOKEN_END))
       this.endStmt();
@@ -191,7 +191,7 @@ class Compiler
       this.doStmt();
 
     else if(this.matchTokenPair(TOKEN_LOOP, TOKEN_WHILE))
-      throw {message: "'loop while' without matching 'do' statement."};
+      this.raiseError("'loop while' without matching 'do' statement.");
 
     else if(this.matchTokenPair(TOKEN_EXIT, TOKEN_WHILE))
       this.exitWhileStmt();
@@ -211,7 +211,7 @@ class Compiler
     if(requireTerminator)
     {
       if(!this.matchTerminator())
-        throw {message: "Expected terminator."};
+        this.raiseError("Expected terminator.");
     }
   }
 
@@ -227,7 +227,7 @@ class Compiler
     }
     else
     {
-      throw {message: "Expected identifier."};
+      this.raiseError("Expected identifier.");
     }
 
     if(this.matchToken(TOKEN_EQUAL))
@@ -249,18 +249,18 @@ class Compiler
     }
     else
     {
-      throw {message: "Expected identifier."};
+      this.raiseError("Expected identifier.");
     }
 
     if(!this.matchToken(TOKEN_LEFT_BRACKET))
-      throw {message: "Expected '[' after identifier"};
+      this.raiseError("Expected '[' after identifier");
 
     dimCount = this.parseArguments();
     if(dimCount == 0)
-      throw {message: "Expected one or more dimension expressions."};
+      this.raiseError("Expected one or more dimension expressions.");
 
     if(!this.matchToken(TOKEN_RIGHT_BRACKET))
-      throw {message: "Expected ']' after indexes"};
+      this.raiseError("Expected ']' after indexes");
 
     this.addOp([OPCODE_CREATE_ARRAY, dimCount]);
     this.addOp([OPCODE_STORE_VAR, varRef.scope, varRef.index]);
@@ -289,7 +289,7 @@ class Compiler
     this.parseExpression();
 
     if(!this.matchToken(TOKEN_THEN))
-      throw {message: "Expected 'then' after expression."};
+      this.raiseError("Expected 'then' after expression.");
 
     thenJumpOpIndex = this.addOp([OPCODE_JUMP_IF_FALSE, 0]);
 
@@ -305,7 +305,7 @@ class Compiler
       this.parseStatement();
 
     if(this.endOfTokens())
-      throw {message: "Expected either 'else' or 'end if' at the end of 'if' block."};
+      this.raiseError("Expected either 'else' or 'end if' at the end of 'if' block.");
 
     if(this.matchTokenPair(TOKEN_END, TOKEN_IF))
     {
@@ -315,7 +315,7 @@ class Compiler
     else if(this.matchToken(TOKEN_ELSE))
     {
 		if(!this.matchTerminator())
-          throw {message: "Expected terminator after 'else'."};
+          this.raiseError("Expected terminator after 'else'.");
 
         elseJumpOpIndex = this.addOp([OPCODE_JUMP, 0]);
 		this.patchJumpOp(thenJumpOpIndex);
@@ -324,7 +324,7 @@ class Compiler
 	      this.parseStatement();
 
         if(!this.matchTokenPair(TOKEN_END, TOKEN_IF))
-          throw {message: "Expected 'end if' at the end of 'else' block."};
+          this.raiseError("Expected 'end if' at the end of 'else' block.");
 
         this.patchJumpOp(elseJumpOpIndex);
     }
@@ -339,7 +339,7 @@ class Compiler
     this.parseExpression();
 
     if(!this.matchTerminator())
-      throw {message: "Expected terminator after expression."};
+      this.raiseError("Expected terminator after expression.");
 
     jumpOpIndex = this.addOp([OPCODE_JUMP_IF_FALSE, 0]);
 
@@ -349,7 +349,7 @@ class Compiler
       this.parseStatement();
 
     if(!this.matchToken(TOKEN_WEND))
-      throw {message: "Expected 'wend' at the end of 'while' block."};
+      this.raiseError("Expected 'wend' at the end of 'while' block.");
 
     this.addOp([OPCODE_JUMP, startOpIndex]);
     this.patchJumpOp(jumpOpIndex);
@@ -366,19 +366,19 @@ class Compiler
     var jumpOpIndex, startOpIndex;
 
     if(!this.matchToken(TOKEN_IDENTIFIER))
-      throw {message: "Expected identifier after 'for'."};
+      this.raiseError("Expected identifier after 'for'.");
 
     varIdent = this.prevToken().lexeme;
     varRef = this.getVariableReference(varIdent);
 
     if(!this.matchToken(TOKEN_EQUAL))
-      throw {message: "Expected '=' after identifier."};
+      this.raiseError("Expected '=' after identifier.");
 
  	this.parseExpression();
     this.addOp([OPCODE_STORE_VAR, varRef.scope, varRef.index]);
 
     if(!this.matchToken(TOKEN_TO))
-      throw {message: "Expected 'to' after start expression."};
+      this.raiseError("Expected 'to' after start expression.");
 
     this.parseExpression();
 
@@ -388,7 +388,7 @@ class Compiler
       this.addOp([OPCODE_LOAD_INT, 1]);
 
     if(!this.matchTerminator())
-      throw {message: "Expected terminator after expression."};
+      this.raiseError("Expected terminator after expression.");
 
     this.addOp([OPCODE_LOAD_VAR, varRef.scope, varRef.index]);
 
@@ -402,12 +402,12 @@ class Compiler
       this.parseStatement();
 
     if(!this.matchToken(TOKEN_NEXT))
-      throw {message: "Expected 'next' at the end of 'for' block."};
+      this.raiseError("Expected 'next' at the end of 'for' block.");
 
     if(this.matchToken(TOKEN_IDENTIFIER))
     {
       if(varIdent != this.prevToken().lexeme)
-        throw {message: "Identifier '" + this.prevToken().lexeme + "' does not match identifier '" + varIdent + "' given in 'for' statement."};
+        this.raiseError("Identifier '" + this.prevToken().lexeme + "' does not match identifier '" + varIdent + "' given in 'for' statement.");
     }
 
     this.addOp([OPCODE_INCREMENT_COUNTER]);
@@ -443,18 +443,18 @@ class Compiler
     }
     else
     {
-      throw {message: "Expected identifier."};
+      this.raiseError("Expected identifier.");
     }
 
     if(!this.matchToken(TOKEN_LEFT_BRACKET))
-      throw {message: "Expected '[' after identifier"};
+      this.raiseError("Expected '[' after identifier");
 
     dimCount = this.parseArguments();
     if(dimCount == 0)
-      throw {message: "Expected one or more dimension expressions."};
+      this.raiseError("Expected one or more dimension expressions.");
 
     if(!this.matchToken(TOKEN_RIGHT_BRACKET))
-      throw {message: "Expected ']' after indexes"};
+      this.raiseError("Expected ']' after indexes");
 
     this.addOp([OPCODE_REDIM_ARRAY, dimCount]);
   }
@@ -471,7 +471,7 @@ class Compiler
     var startOpIndex = this.opsCount();
 
     if(!this.matchTerminator())
-      throw {message: "Expected statement terminator after 'do'."};
+      this.raiseError("Expected statement terminator after 'do'.");
 
     this.exitDoOpIndexes.push([]);
 
@@ -479,7 +479,7 @@ class Compiler
       this.parseStatement();
 
     if(!this.matchTokenPair(TOKEN_LOOP, TOKEN_WHILE))
-      throw {message: "Expected 'loop while' at the end of 'do' block."};
+      this.raiseError("Expected 'loop while' at the end of 'do' block.");
 
     this.parseExpression();
     this.addOp([OPCODE_JUMP_IF_TRUE, startOpIndex]);
@@ -495,7 +495,7 @@ class Compiler
     var jumpOpIndex;
 
     if(this.exitWhileOpIndexes.length == 0)
-      throw {message: "'exit while' outside of 'while' block."};
+      this.raiseError("'exit while' outside of 'while' block.");
 
     jumpOpIndex = this.addOp([OPCODE_JUMP, 0]);
 
@@ -508,7 +508,7 @@ class Compiler
     var jumpOpIndex;
 
     if(this.exitForOpIndexes.length == 0)
-      throw {message: "'exit for' outside of 'for' block."};
+      this.raiseError("'exit for' outside of 'for' block.");
 
     jumpOpIndex = this.addOp([OPCODE_JUMP, 0]);
 
@@ -521,7 +521,7 @@ class Compiler
     var jumpOpIndex;
 
     if(this.exitDoOpIndexes.length == 0)
-      throw {message: "'exit do' outside of 'do' block."};
+      this.raiseError("'exit do' outside of 'do' block.");
 
     jumpOpIndex = this.addOp([OPCODE_JUMP, 0]);
 
@@ -532,7 +532,7 @@ class Compiler
   //Parse a Return statement
   {
     if(this.currUserFunc == this.mainUserFunc)
-      throw {message: "'return' only allowed within a function."};
+      this.raiseError("'return' only allowed within a function.");
 
     if(this.matchTerminator())
     {
@@ -736,7 +736,7 @@ class Compiler
       argCount = this.parseArguments();
 
       if(!this.matchToken(TOKEN_RIGHT_PAREN))
-        throw {message: "Expected ')' after function arguments."};
+        this.raiseError("Expected ')' after function arguments.");
 
       this.addOp([OPCODE_CALL_FUNC, argCount]);
     }
@@ -754,7 +754,7 @@ class Compiler
       indexCount = this.parseArguments();
 
       if(!this.matchToken(TOKEN_RIGHT_BRACKET))
-        throw {message: "Expected ']' after array indexes."};
+        this.raiseError("Expected ']' after array indexes.");
 
       if(isStmt && this.matchToken(TOKEN_EQUAL))
       {
@@ -835,13 +835,13 @@ class Compiler
       this.parseExpression();
 
       if(!this.matchToken(TOKEN_RIGHT_PAREN))
-        throw {message: "Expected ')' after expression."};
+        this.raiseError("Expected ')' after expression.");
 
       return;
     }
 
     //Invalid expression
-    throw {message: "Expected expression."};
+    this.raiseError("Expected expression.");
   }
 
   parseArguments()
@@ -863,28 +863,32 @@ class Compiler
   }
 
   parseParameters()
-  //Parse a comma-seperated list of identifiers
+  //Parse a comma-seperated list of identifiers surrounded in parentheses
   {
     if(!this.matchToken(TOKEN_LEFT_PAREN))
-      throw {message: "Expected '(' after function identifier."};
+      this.raiseError("Expected '(' after function identifier.");
 
     if(this.matchToken(TOKEN_RIGHT_PAREN))
+    {
+      if(!this.matchTerminator())
+        this.raiseError("Expected terminator after ')'.");
       return;
+    }
 
     do
     {
       if(!this.matchToken(TOKEN_IDENTIFIER))
-        throw {message: "Expected identifier for function parameter."};
+        this.raiseError("Expected identifier for function parameter.");
 
       this.addVariable(this.prevToken().lexeme);
     }
     while(this.matchToken(TOKEN_COMMA));
 
     if(!this.matchToken(TOKEN_RIGHT_PAREN))
-      throw {message: "Expected ')' after function parameters."};
+      this.raiseError("Expected ')' after function parameters.");
 
     if(!this.matchTerminator())
-      throw {message: "Expected terminator after ')'."};
+      this.raiseError("Expected terminator after ')'.");
 
     this.currUserFunc.paramCount = this.currUserFunc.varIdents.length;
   }
@@ -895,15 +899,15 @@ class Compiler
     var varScope, varIndex;
 
     if(this.getNativeFuncIndex(varIdent) != -1)
-      throw {message: "'" + varIdent + "' is already a function."};
+      this.raiseError("'" + varIdent + "' is already a function.");
 
     if(this.getUserFuncIndex(varIdent) != -1)
-      throw {message: "'" + varIdent + "' is already a function."};
+      this.raiseError("'" + varIdent + "' is already a function.");
 
     for(varIndex = 0; varIndex < this.currUserFunc.varIdents.length; varIndex++)
     {
       if(this.currUserFunc.varIdents[varIndex].toLowerCase() == varIdent.toLowerCase())
-        throw {message: "Variable or array '" + varIdent + "' already declared."};
+        this.raiseError("Variable or array '" + varIdent + "' already declared.");
     }
 
     this.currUserFunc.varIdents.push(varIdent);
@@ -981,7 +985,7 @@ class Compiler
         return new VariableReference(SCOPE_GLOBAL, varIndex);
     }
 
-    throw {message: "Variable or array '" + varIdent + "' not declared."};
+    this.raiseError("Variable or array '" + varIdent + "' not declared.");
   }
 
   addOp(operandList)
@@ -1109,5 +1113,18 @@ class Compiler
   //Return true if the current token is the end token
   {
     return (this.peekToken().type == TOKEN_EOF)
+  }
+
+  raiseError(message, token = null)
+  //
+  {
+    var err = {message: message};
+
+    if(token == null)
+      err.token = this.peekToken();
+    else
+      err.token = token;
+
+    throw err;
   }
 }

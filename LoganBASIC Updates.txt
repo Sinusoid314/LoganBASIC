@@ -1,5 +1,7 @@
 (October 3, 2021)
 	- Fixed bug with user functions not compiling.
+	- Added raiseError() method to Compiler and Runtime.
+	- Fixed a bug with STORE_ARRAY_ITEM_PERSIST not leaving the item value on the stack.
 
 (September 28, 2021)
 	- Finished implementing user function support in Runtime.

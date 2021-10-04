@@ -352,7 +352,7 @@ class Runtime
     else if(func instanceof ObjUserFunc)
       this.callUserFunc(func, argCount, stackIndex);
     else
-      throw {message: "Can only call functions."};
+      this.raiseError("Can only call functions.");
   }
 
   opCreateArray()
@@ -384,7 +384,7 @@ class Runtime
     arrayRef = this.stack.pop();
 
     if(!(arrayRef instanceof ObjArray))
-      throw {message: "Expected array."};
+      this.raiseError("Expected array.");
 
     arrayRef.reDim(dimSizes);
   }
@@ -402,12 +402,12 @@ class Runtime
     arrayRef = this.stack.pop();
 
     if(!(arrayRef instanceof ObjArray))
-      throw {message: "Expected array."};
+      this.raiseError("Expected array.");
 
     linearIndex = arrayRef.getLinearIndex(indexList);
 
     if(linearIndex < 0)
-      throw {message: "Array index out of bounds."};
+      this.raiseError("Array index out of bounds.");
 
     this.stack.push(arrayRef.items[linearIndex]);
   }
@@ -426,14 +426,15 @@ class Runtime
     arrayRef = this.stack.pop();
 
     if(!(arrayRef instanceof ObjArray))
-      throw {message: "Expected array."};
+      this.raiseError("Expected array.");
 
     linearIndex = arrayRef.getLinearIndex(indexList);
 
     if(linearIndex < 0)
-      throw {message: "Array index out of bounds."};
+      this.raiseError("Array index out of bounds.");
 
     arrayRef.items[linearIndex] = itemVal;
+    this.stack.push(itemVal);
   }
 
   opCls()
@@ -493,7 +494,7 @@ class Runtime
     var args, retVal;
 
     if((argCount < func.paramMin) || (argCount > func.paramMax))
-      throw {message: "Wrong number of arguments for function '" + func.ident + "'."};
+      this.raiseError("Wrong number of arguments for function '" + func.ident + "'.");
 
     args = this.stack.splice(this.stack.length - argCount, argCount);
     retVal = func.jsFunc(this, args);
@@ -504,7 +505,7 @@ class Runtime
   //Load a new call frame for the given user function
   {
     if(argCount != func.paramCount)
-      throw {message: "Wrong number of arguments for function '" + func.ident + "'."};
+      this.raiseError("Wrong number of arguments for function '" + func.ident + "'.");
 
     this.callFrames.push(new CallFrame(func, stackIndex));
 
@@ -512,6 +513,14 @@ class Runtime
       this.stack.push(0);
 
     this.currCallFrame = this.callFrames[this.callFrames.length - 1];
+  }
+
+  raiseError(message)
+  //
+  {
+    var err = {message: message};
+
+    throw err;
   }
 }
 
