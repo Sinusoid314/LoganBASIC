@@ -1,6 +1,8 @@
 (October 7, 2021)
 	- Added ability to declare more than one variable per Var statement.
 	- Added Wait statement and PAUSE opcode to pause program execution and wait for callback events.
+	- Moved the main user function loading from run() to constructor() in Runtime.
+	- Added ability to collapse/expand the editor and console.
 
 (October 4, 2021)
 	- Added source code line to runtime error messages.

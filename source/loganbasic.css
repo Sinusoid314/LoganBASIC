@@ -5,12 +5,6 @@ button
   text-shadow: 1px 1px white;
 }
 
-label
-{
-  display: block;
-  text-shadow: 1px 1px lightgray;
-}
-
 .bar
 {
   padding-top: 5px;
@@ -29,9 +23,34 @@ label
   margin-right: 8px;
 }
 
-#editorDiv
+.toggle-open
+{
+  text-shadow: 1px 1px lightgray;
+  cursor: pointer;
+  user-select: none;
+}
+
+.toggle-open::after
+{
+  content: "\25BC";
+  color: black;
+  display: inline-block;
+  margin-left: 6px;
+}
+
+.toggle-closed::after
+{
+  transform: rotate(-90deg);
+}
+
+.pane-open
 {
   display: block;
+}
+
+.pane-closed
+{
+  display: none;
 }
 
 #menuBar
@@ -44,11 +63,6 @@ label
   display: block;
   margin-top: 5px;
   width: 100%;
-}
-
-#uiDiv
-{
-  display: block;
 }
 
 #commandBar

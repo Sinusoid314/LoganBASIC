@@ -4,14 +4,24 @@ var runBtn = document.getElementById("runBtn");
 var stopBtn = document.getElementById("stopBtn");
 var statusBar = document.getElementById("statusBar");
 var progConsole = document.getElementById("progConsole");
+var toggles = document.getElementsByClassName("toggle-open");
 
 runBtn.addEventListener("click", runBtn_onClick);
 stopBtn.addEventListener("click", stopBtn_onClick);
 progConsole.addEventListener("keydown", progConsole_onKeydown);
 progConsole.addEventListener("keypress", progConsole_onKeypress);
 
+for(var i = 0; i < toggles.length; i++)
+  toggles[i].addEventListener("click", toggle_onClick);
+
 progConsole.inputting = false;
 progConsole.inputStr = "";
+
+function toggle_onClick(event)
+{
+  this.parentElement.querySelector(".pane-open").classList.toggle("pane-closed");
+  this.classList.toggle("toggle-closed");
+}
 
 function switchMode()
 //Switch between run and edit modes

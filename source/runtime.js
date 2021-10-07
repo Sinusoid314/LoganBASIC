@@ -60,19 +60,17 @@ class Runtime
     this.opFuncs[OPCODE_INCREMENT_COUNTER] = this.opIncrementCounter.bind(this);
     this.opFuncs[OPCODE_RETURN] = this.opReturn.bind(this);
     this.opFuncs[OPCODE_PAUSE] = this.opPause.bind(this);
+
+    //Load and call the main user function
+    this.stack.push(this.bytecode.userFuncs[0]);
+    this.callUserFunc(this.bytecode.userFuncs[0], 0, 0);
   }
 
   run()
   //Execute the bytecode ops
   {
-    var mainFunc;
-
 	try
 	{
-      mainFunc = this.bytecode.userFuncs[0];
-      this.stack.push(mainFunc);
-      this.callUserFunc(mainFunc, 0, 0);
-
       while((this.currCallFrame != null) && !this.paused)
       {
         this.currOp = this.currCallFrame.func.ops[this.currCallFrame.nextOpIndex];
@@ -504,6 +502,7 @@ class Runtime
       this.raiseError("Wrong number of arguments for function '" + func.ident + "'.");
 
     args = this.stack.splice(this.stack.length - argCount, argCount);
+    this.stack.pop();
     retVal = func.jsFunc(this, args);
     this.stack.push(retVal);
   }

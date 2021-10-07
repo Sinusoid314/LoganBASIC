@@ -33,7 +33,7 @@ function onStart(source)
   mainCompiler = new Compiler(source, stdNativeFuncList);
   mainBytecode = mainCompiler.compile();
 
-  //console.log(mainBytecode.toString());
+  console.log(mainBytecode.toString());
 
   if(mainCompiler.errorMsg == "")
   {
