@@ -3,6 +3,8 @@
 	- Added Wait statement and PAUSE opcode to pause program execution and wait for callback events.
 	- Moved the main user function loading from run() to constructor() in Runtime.
 	- Added ability to collapse/expand the editor and console.
+	- Fix bug with console not collapsing.
+	- Added a canvas UI element to the main page.
 
 (October 4, 2021)
 	- Added source code line to runtime error messages.

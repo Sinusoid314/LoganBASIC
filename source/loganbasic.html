@@ -21,9 +21,11 @@
   <button id="helpBtn">Help</button>
 </div>
 
-<label class="toggle-open">Code Editor</label>
-<div class="pane-open">
-  <textarea id="progEditor" cols="80" rows="15" wrap="off" spellcheck="false"></textarea>
+<div id="editorDiv">
+  <label class="toggle-open">Code Editor</label>
+  <div class="pane-open">
+    <textarea id="progEditor" cols="80" rows="15" wrap="off" spellcheck="false"></textarea>
+  </div>
 </div>
 
 <div id="commandBar" class="bar">
@@ -33,9 +35,18 @@
   <div id="statusBar">Ready.</div>
 </div>
 
-<label class="toggle-open">Console</label>
-<div class="pane-open">
-  <textarea id="progConsole" cols="80" rows="15" wrap="off" spellcheck="false"></textarea>
+<div id="consoleDiv">
+  <label class="toggle-open">Console</label>
+  <div class="pane-open">
+    <textarea id="progConsole" cols="80" rows="15" wrap="off" spellcheck="false"></textarea>
+  </div>
+</div>
+
+<div id="canvasDiv">
+  <label class="toggle-open">Canvas</label>
+  <div class="pane-open">
+    <canvas id="progCanvas"></canvas>
+  </div>
 </div>
 
 <div id="version">Version 1.0.2.6</div>

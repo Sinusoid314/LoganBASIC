@@ -84,6 +84,18 @@ button
   width: 100%;
 }
 
+#consoleDiv
+{
+  margin-bottom: 20px;
+}
+
+#progCanvas
+{
+  border-style: inset;
+  width: 100%;
+  height: 100px;
+}
+
 #version
 {
   margin-top: 30px;

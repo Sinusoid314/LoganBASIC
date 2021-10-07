@@ -1,4 +1,3 @@
-- Fix bug with console not collapsing.
 - Fix bug with console input on touch screens.
 - Add timer callback.
 - Add graphics functionality.
