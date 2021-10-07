@@ -17,10 +17,11 @@ statement      ->  ( varStmt
                    | exitWhileStmt
                    | exitForStmt
                    | exitDoStmt
-                   | returnStmt )
+                   | returnStmt
+                   | waitStmt )
                    terminator? ;
 
-varStmt        ->  "var" IDENTIFIER ( "=" expression )? ;
+varStmt        ->  "var" IDENTIFIER ( "=" expression )? ( "," IDENTIFIER ( "=" expression )? )*;
 arrayStmt      ->  "array" IDENTIFIER "[" arguments "]" ;
 exprStmt       ->  ( ( IDENTIFIER | arrayItem ) "=" )? expression ;
 printStmt      ->  "print" expression ;
@@ -37,6 +38,7 @@ exitWhileStmt  ->  "exit" "while" ;
 exitForStmt    ->  "exit" "for" ;
 exitDoStmt     ->  "exit" "do" ;
 returnStmt     ->  "return" expression? ;
+waitStmt       ->  "wait" ;
 
 expression     ->  logic_or ;
 logic_or       ->  logic_and ( "or" logic_and )* ;

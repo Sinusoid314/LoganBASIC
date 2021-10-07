@@ -59,6 +59,7 @@ class Runtime
     this.opFuncs[OPCODE_CHECK_COUNTER] = this.opCheckCounter.bind(this);
     this.opFuncs[OPCODE_INCREMENT_COUNTER] = this.opIncrementCounter.bind(this);
     this.opFuncs[OPCODE_RETURN] = this.opReturn.bind(this);
+    this.opFuncs[OPCODE_PAUSE] = this.opPause.bind(this);
   }
 
   run()
@@ -486,6 +487,12 @@ class Runtime
       this.currCallFrame = null;
     else
       this.currCallFrame = this.callFrames[this.callFrames.length - 1];
+  }
+
+  opPause()
+  //Pause program execution and exit from the main runtime loop
+  {
+    this.paused = true;
   }
 
   callNativeFunc(func, argCount)

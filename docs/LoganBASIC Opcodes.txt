@@ -164,3 +164,6 @@ INCREMENT_COUNTER
 
 RETURN
   Return from the currently running user function.
+
+PAUSE
+  Pause program execution and exit from the main runtime loop.

@@ -7,20 +7,21 @@
 
 <body>
 
-<h3>Var identifier [ = expression ]</h3>
+<h3>Var identifier1 [ = expression1 ]  [ , identifier2 [ = expression2 ] ... ]</h3>
 
 <h4>Description</h4>
 <p id="description">
-Creates a variable and, optionally, assigns it an initial value.
+Creates one or more variables and, optionally, assigns them each an initial value.
 </p>
 
 <h4>Usage</h4>
 <code id="usage">
-var name
+var firstName, lastName
 
-name = input("Enter your name: ")
+firstName = input("Enter your first name: ")
+lastName = input("Enter your last name: ")
 
-print "Hello " + name + "!"
+print "Hello " + firstName + " " + lastName + "!"
 </code>
 
 </body>

@@ -1,6 +1,5 @@
 - Fix bug with console input on touch screens.
 - Add ability to collapse/expand the editor and console.
 - Add timer callback.
-- Add Pause statement/opcode.
 - Add graphics functionality.
 - Add debugger.

@@ -205,6 +205,9 @@ class Compiler
     else if(this.matchToken(TOKEN_RETURN))
       this.returnStmt();
 
+    else if(this.matchToken(TOKEN_WAIT))
+      this.waitStmt();
+
     else
       this.exprStmt();
 
@@ -220,21 +223,25 @@ class Compiler
   {
     var varIdent, varRef;
 
-    if(this.matchToken(TOKEN_IDENTIFIER))
+    do
     {
-      varIdent = this.prevToken().lexeme;
-      varRef = this.addVariable(varIdent);
-    }
-    else
-    {
-      this.raiseError("Expected identifier.");
-    }
+      if(this.matchToken(TOKEN_IDENTIFIER))
+      {
+        varIdent = this.prevToken().lexeme;
+        varRef = this.addVariable(varIdent);
+      }
+      else
+      {
+        this.raiseError("Expected identifier.");
+      }
 
-    if(this.matchToken(TOKEN_EQUAL))
-    {
-      this.parseExpression();
-      this.addOp([OPCODE_STORE_VAR, varRef.scope, varRef.index]);
+      if(this.matchToken(TOKEN_EQUAL))
+      {
+        this.parseExpression();
+        this.addOp([OPCODE_STORE_VAR, varRef.scope, varRef.index]);
+      }
     }
+    while(this.matchToken(TOKEN_COMMA));
   }
 
   arrayStmt()
@@ -543,6 +550,15 @@ class Compiler
       this.parseExpression();
       this.addOp([OPCODE_RETURN]);
     }
+  }
+
+  waitStmt()
+  //Parse a Wait statement
+  {
+    var pauseOpIndex;
+
+    pauseOpIndex = this.addOp([OPCODE_PAUSE]);
+    this.addOp([OPCODE_JUMP, pauseOpIndex]);
   }
 
   parseExpression(isStmt = false)

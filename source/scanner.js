@@ -23,7 +23,8 @@ var keywordList = {
                    "loop": TOKEN_LOOP,
                    "exit": TOKEN_EXIT,
                    "function": TOKEN_FUNCTION,
-                   "return": TOKEN_RETURN
+                   "return": TOKEN_RETURN,
+                   "wait": TOKEN_WAIT
                   };
 
 class Scanner
