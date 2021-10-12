@@ -1,3 +1,6 @@
+(October 11, 2021)
+	- Rearranged the UI into four modules: editor_ui, console_ui, canvas_ui, and main_ui.
+
 (October 7, 2021)
 	- Added ability to declare more than one variable per Var statement.
 	- Added Wait statement and PAUSE opcode to pause program execution and wait for callback events.
