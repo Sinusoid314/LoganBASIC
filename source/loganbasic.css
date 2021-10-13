@@ -77,9 +77,16 @@ button
   margin-left: 2px;
 }
 
-#progConsole
+#consoleOutput
 {
   display: block;
+  margin-top: 5px;
+  width: 100%;
+}
+
+#consoleInputDiv
+{
+  display: none;
   margin-top: 5px;
   width: 100%;
 }

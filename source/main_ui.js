@@ -11,12 +11,6 @@ stopBtn.addEventListener("click", stopBtn_onClick);
 for(var i = 0; i < toggles.length; i++)
   toggles[i].addEventListener("click", toggle_onClick);
 
-function toggle_onClick(event)
-{
-  this.parentElement.querySelector(".pane-open").classList.toggle("pane-closed");
-  this.classList.toggle("toggle-closed");
-}
-
 function switchMode()
 //Switch between run and edit modes
 {
@@ -31,11 +25,7 @@ function stopProg(exitStatusStr)
   if(!isRunning)
     return;
 
-  if(progConsole.inputting)
-  {
-    progConsole.inputting = false;
-    progConsole.inputStr = "";
-  }
+  closeConsoleInput()
 
   progWorker.terminate();
   progWorker = null;
@@ -55,10 +45,16 @@ function runBtn_onClick(event)
   editorStr = progEditor.value;
   progWorker = new Worker('main.js');
   progWorker.onmessage = progWorker_onMessage;
-  progConsole.value = "";
+  clearConsoleOutput();
   progWorker.postMessage({msgId: MSGID_START, msgData: editorStr});
 
   switchMode();
+}
+
+function toggle_onClick(event)
+{
+  this.parentElement.querySelector(".pane-open").classList.toggle("pane-closed");
+  this.classList.toggle("toggle-closed");
 }
 
 function stopBtn_onClick(event)
@@ -81,15 +77,15 @@ function progWorker_onMessage(message)
       break;
 
     case MSGID_PRINT:
-      progWorker_onPrint(message.data.msgData);
+      printToConsoleOutput(message.data.msgData);
       break;
 
     case MSGID_INPUT_REQUEST:
-      progWorker_onInputRequest();
+      openConsoleInput();
       break;
 
     case MSGID_CLEAR_CONSOLE:
-      progWorker_onClearConsole();
+      clearConsoleOutput();
       break;
   }
 }

@@ -1,62 +1,59 @@
-var progConsole = document.getElementById("progConsole");
+var consoleOutput = document.getElementById("consoleOutput");
+var consoleInput = document.getElementById("consoleInput");
+var consoleInputBtn = document.getElementById("consoleInputBtn");
+var consoleInputDiv = document.getElementById("consoleInputDiv");
 
-progConsole.inputting = false;
-progConsole.inputStr = "";
+consoleInput.addEventListener("keydown", consoleInput_onKeydown);
+consoleInputBtn.addEventListener("click", consoleInputBtn_onClick);
 
-progConsole.addEventListener("keydown", progConsole_onKeydown);
-progConsole.addEventListener("keypress", progConsole_onKeypress);
-
-function progConsole_onKeydown(event)
-//Process the backspace and enter key inputs to the console
+function printToConsoleOutput(val)
+//Print to the console output
 {
-  if(!progConsole.inputting) return;
+  consoleOutput.value += val;
+  consoleOutput.scrollTop = consoleOutput.scrollHeight;
+}
 
-  switch(event.keyCode)
+function clearConsoleOutput()
+//Clear the console
+{
+  consoleOutput.value = "";
+}
+
+function openConsoleInput()
+//
+{
+  consoleInputDiv.style.display = "block";
+  consoleInput.focus();
+}
+
+function closeConsoleInput()
+//
+{
+  consoleInputDiv.style.display = "none";
+  consoleInput.value = "";
+}
+
+function enterConsoleInput()
+//
+{
+  consoleOutput.value += consoleInput.value + '\n';
+  progWorker.postMessage({msgId: MSGID_INPUT_RESULT, msgData: consoleInput.value});
+  closeConsoleInput();
+}
+
+function consoleInput_onKeydown(event)
+//Process enter key for the console input
+{
+  if(event.key === "Enter")
   {
-    case 8:
-      if(progConsole.inputStr.length > 0)
-      {
-        progConsole.value = progConsole.value.slice(0, progConsole.value.length - 1);
-        progConsole.inputStr = progConsole.inputStr.slice(0, progConsole.inputStr.length - 1);
-      }
-      event.preventDefault();
-      break;
-
-    case 13:
-      progConsole.value += '\n';
-      progWorker.postMessage({msgId: MSGID_INPUT_RESULT, msgData: progConsole.inputStr});
-      progConsole.inputting = false;
-      progConsole.inputStr = "";
-      event.preventDefault();
-      break;
+    enterConsoleInput();
+    event.preventDefault();
   }
 }
 
-function progConsole_onKeypress(event)
-//Add the input character to the console
+function consoleInputBtn_onClick(event)
+//Process the console input button click
 {
-  event.preventDefault();
-  if(!progConsole.inputting) return;
-  progConsole.value += event.key;
-  progConsole.inputStr += event.key;
+  enterConsoleInput();
 }
 
-function progWorker_onPrint(val)
-//Print to the console
-{
-  progConsole.value += val;
-  progConsole.scrollTop = progConsole.scrollHeight;
-}
-
-function progWorker_onInputRequest()
-//Allow user to enter input to the console
-{
-  progConsole.inputting = true;
-  progConsole.focus();
-}
-
-function progWorker_onClearConsole()
-//Clear the console
-{
-  progConsole.value = "";
-}

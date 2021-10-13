@@ -1,3 +1,6 @@
+(October 12, 2021)
+	- Changed console to have a separate textbox for input.
+
 (October 11, 2021)
 	- Rearranged the UI into four modules: editor_ui, console_ui, canvas_ui, and main_ui.
 
