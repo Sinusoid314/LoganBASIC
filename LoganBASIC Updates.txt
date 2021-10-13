@@ -1,3 +1,7 @@
+(October 13, 2021)
+	- Added CallbackContext class to facilitate calling user functions from outside of the Runtime class.
+	- Added startTimer() and stopTimer() native functions.
+
 (October 12, 2021)
 	- Changed console to have a separate textbox for input.
 

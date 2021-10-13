@@ -20,8 +20,22 @@ var stdNativeFuncList = [
                   new ObjNativeFunc("max", 2, 2, funcMax),
                   new ObjNativeFunc("sqr", 1, 1, funcSqr),
                   new ObjNativeFunc("str", 1, 1, funcStr),
-                  new ObjNativeFunc("val", 1, 1, funcVal)
+                  new ObjNativeFunc("val", 1, 1, funcVal),
+                  new ObjNativeFunc("starttimer", 2, 2, funcStartTimer),
+                  new ObjNativeFunc("stoptimer", 0, 0, funcStopTimer)
                  ];
+
+var timerID = 0;
+var timerCallback = null;
+
+function timer_onTick()
+//
+{
+  if(timerID == 0)
+    return;
+
+  timerCallback.callFunc();
+}
 
 function funcInput(runtime, args)
 //Prompt user for input from the consol
@@ -178,3 +192,32 @@ function funcVal(runtime, args)
 {
   return parseFloat(args[0]);
 }
+
+function funcStartTimer(runtime, args)
+//Set the timer to call the given user function at the interval
+{
+  if(!(args[1] instanceof ObjUserFunc))
+    runtime.raiseError("Second argument of StartTimer() must be a function.");
+
+  if(timerID != 0)
+  {
+    clearInterval(timerID);
+    timerID = 0;
+    timerCallback = null;
+  }
+
+  timerCallback = new CallbackContext(runtime, args[1]);
+  timerID = setInterval(timer_onTick, args[0]);
+}
+
+function funcStopTimer(runtime, args)
+//Stop the timer
+{
+  if(timerID == 0)
+    return 0;
+
+  clearInterval(timerID);
+  timerID = 0;
+  timerCallback = null;
+}
+

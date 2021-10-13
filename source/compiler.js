@@ -316,7 +316,6 @@ class Compiler
 
     if(this.matchTokenPair(TOKEN_END, TOKEN_IF))
     {
-	  console.log("END IF");
       this.patchJumpOp(thenJumpOpIndex);
     }
     else if(this.matchToken(TOKEN_ELSE))

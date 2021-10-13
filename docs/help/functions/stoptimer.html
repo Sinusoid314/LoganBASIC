@@ -1,0 +1,37 @@
+<html>
+
+<head>
+  <title></title>
+  <link rel="stylesheet" type="text/css" href="../reference_doc.css"></link>
+</head>
+
+<body>
+
+<h3>StopTimer()</h3>
+
+<h4>Description</h4>
+<p id="description">
+Stops the timer.
+</p>
+
+<h4>Usage</h4>
+<code id="usage">
+var tickCount = 0
+
+startTimer(1000, onTick)
+
+wait
+
+function onTick()
+  tickCount = tickCount + 1
+  print "Tick " + tickCount + " at " + time()
+  if tickCount = 5 then
+    stopTimer()
+    print "Done."
+    end
+  end if
+end function
+</code>
+
+</body>
+</html>
