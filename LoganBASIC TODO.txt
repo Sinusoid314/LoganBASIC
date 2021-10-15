@@ -1,2 +1,3 @@
 - Add graphics functionality.
+- Add a line number display to the editor.
 - Add debugger.
