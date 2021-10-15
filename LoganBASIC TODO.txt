@@ -1,3 +1,2 @@
-- Fix bug with displaying success status after ending program in a timer callback function.
 - Add graphics functionality.
 - Add debugger.

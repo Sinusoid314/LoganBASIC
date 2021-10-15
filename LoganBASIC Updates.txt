@@ -1,3 +1,7 @@
+(October 14, 2021)
+	- Added a status member to Runtime class that can be either RUNNING, PAUSED, or DONE.
+	- Fixed bug with timer callback not ending program properly.
+
 (October 13, 2021)
 	- Added CallbackContext class to facilitate calling user functions from outside of the Runtime class.
 	- Added startTimer() and stopTimer() native functions.

@@ -11,6 +11,18 @@ var mainCompiler;
 var mainBytecode;
 var mainRuntime;
 
+function checkRuntimeIsDone(runtime)
+//
+{
+  if(runtime.status != RUNTIME_STATUS_DONE)
+    return;
+
+  if(runtime.errorMsg == "")
+	postMessage({msgId: MSGID_DONE, msgData: "Program run successfully."});
+  else
+	postMessage({msgId: MSGID_DONE, msgData: runtime.errorMsg});
+}
+
 onmessage = function(message)
 //Process messages sent from the UI thread
 {
@@ -41,15 +53,7 @@ function onStart(source)
     mainRuntime = new Runtime(mainBytecode);
     mainRuntime.run();
 
-    if(mainRuntime.errorMsg == "")
-    {
-      if(!mainRuntime.paused)
-        postMessage({msgId: MSGID_DONE, msgData: "Program run successfully."});
-    }
-    else
-    {
-      postMessage({msgId: MSGID_DONE, msgData: mainRuntime.errorMsg});
-    }
+    checkRuntimeIsDone(mainRuntime);
   }
   else
   {
@@ -61,16 +65,8 @@ function onInputResult(inputStr)
 //Process input sent from the console
 {
   mainRuntime.stack[mainRuntime.stack.length - 1] = inputStr;
-  mainRuntime.paused = false;
+  mainRuntime.status = RUNTIME_STATUS_RUNNING;
   mainRuntime.run();
 
-  if(mainRuntime.errorMsg == "")
-  {
-	if(!mainRuntime.paused)
-	  postMessage({msgId: MSGID_DONE, msgData: "Program run successfully."});
-  }
-  else
-  {
-	postMessage({msgId: MSGID_DONE, msgData: mainRuntime.errorMsg});
-  }
+  checkRuntimeIsDone(mainRuntime);
 }

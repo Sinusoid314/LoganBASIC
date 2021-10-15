@@ -1,3 +1,7 @@
+const RUNTIME_STATUS_RUNNING = 1;
+const RUNTIME_STATUS_PAUSED = 2;
+const RUNTIME_STATUS_DONE = 3;
+
 class CallbackContext
 {
   constructor(runtime, userFunc)
@@ -6,8 +10,8 @@ class CallbackContext
     this.userFunc = userFunc;
   }
 
-  callFunc()
-  //Load the user function and arguments onto the runtime's stack and call the function
+  runFunc()
+  //Load the user function and arguments onto the runtime's stack, call the function, and start the runtime
   {
     var argCount = arguments.length;
     var stackIndex = this.runtime.stack.length;
@@ -18,7 +22,7 @@ class CallbackContext
       this.runtime.stack.push(arguments[argIndex]);
 
     this.runtime.callUserFunc(this.userFunc, argCount, stackIndex);
-    this.runtime.paused = false;
+    this.runtime.status = RUNTIME_STATUS_RUNNING;
     this.runtime.run();
   }
 }
@@ -43,7 +47,7 @@ class Runtime
     this.stack = [];
     this.currOp = null;
     this.opFuncs = [null];
-    this.paused = false;
+    this.status = RUNTIME_STATUS_RUNNING;
     this.errorMsg = "";
 
     //Allow the op methods to be called by indexing into a function array using the opcode constants
@@ -96,7 +100,7 @@ class Runtime
   {
 	try
 	{
-      while((this.currCallFrame != null) && !this.paused)
+      while(this.status == RUNTIME_STATUS_RUNNING)
       {
         this.currOp = this.currCallFrame.func.ops[this.currCallFrame.nextOpIndex];
         this.currCallFrame.nextOpIndex++;
@@ -108,7 +112,7 @@ class Runtime
       this.errorMsg = "Runtime error on line " + err.lineNum + ": "  + err.message;
     }
 
-    if(!this.paused)
+    if(this.status == RUNTIME_STATUS_DONE)
     {
       this.stack.splice(0);
       this.callFrames.splice(0);
@@ -361,7 +365,7 @@ class Runtime
   opEnd()
   //Trigger the program to end
   {
-    this.currCallFrame = null;
+    this.status = RUNTIME_STATUS_DONE;
   }
 
   opCallFunc()
@@ -507,15 +511,20 @@ class Runtime
     this.callFrames.pop();
 
     if(this.callFrames.length == 0)
+    {
       this.currCallFrame = null;
+      this.status = RUNTIME_STATUS_DONE;
+    }
     else
+    {
       this.currCallFrame = this.callFrames[this.callFrames.length - 1];
+    }
   }
 
   opPause()
   //Pause program execution and exit from the main runtime loop
   {
-    this.paused = true;
+    this.status = RUNTIME_STATUS_PAUSED;
   }
 
   callNativeFunc(func, argCount)
@@ -562,6 +571,7 @@ class Runtime
   raiseError(message)
   //
   {
+    this.status = RUNTIME_STATUS_DONE;
     throw {message: message, lineNum: this.getSourceLine()};
   }
 }

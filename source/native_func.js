@@ -34,7 +34,8 @@ function timer_onTick()
   if(timerID == 0)
     return;
 
-  timerCallback.callFunc();
+  timerCallback.runFunc();
+  checkRuntimeIsDone(timerCallback.runtime);
 }
 
 function funcInput(runtime, args)
@@ -42,7 +43,7 @@ function funcInput(runtime, args)
 {
   postMessage({msgId: MSGID_PRINT, msgData: args[0]});
   postMessage({msgId: MSGID_INPUT_REQUEST});
-  runtime.paused = true;
+  runtime.status = RUNTIME_STATUS_PAUSED;
   return "";
 }
 
@@ -200,13 +201,18 @@ function funcStartTimer(runtime, args)
     runtime.raiseError("Second argument of StartTimer() must be a function.");
 
   if(timerID != 0)
-  {
     clearInterval(timerID);
-    timerID = 0;
-    timerCallback = null;
+
+  if(timerCallback == null)
+  {
+    timerCallback = new CallbackContext(runtime, args[1]);
+  }
+  else
+  {
+    timerCallback.runtime = runtime;
+    timerCallback.userFunc = args[1];
   }
 
-  timerCallback = new CallbackContext(runtime, args[1]);
   timerID = setInterval(timer_onTick, args[0]);
 }
 
@@ -218,6 +224,5 @@ function funcStopTimer(runtime, args)
 
   clearInterval(timerID);
   timerID = 0;
-  timerCallback = null;
 }
 
