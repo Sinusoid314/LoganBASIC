@@ -47,6 +47,7 @@ class Runtime
     this.stack = [];
     this.currOp = null;
     this.opFuncs = [null];
+    this.onDoneJsFunc = null;
     this.status = RUNTIME_STATUS_RUNNING;
     this.errorMsg = "";
 
@@ -116,6 +117,7 @@ class Runtime
     {
       this.stack.splice(0);
       this.callFrames.splice(0);
+      this.onDoneJsFunc(this);
     }
   }
 

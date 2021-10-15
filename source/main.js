@@ -11,12 +11,9 @@ var mainCompiler;
 var mainBytecode;
 var mainRuntime;
 
-function checkRuntimeIsDone(runtime)
+function onRuntimeDone(runtime)
 //
 {
-  if(runtime.status != RUNTIME_STATUS_DONE)
-    return;
-
   if(runtime.errorMsg == "")
 	postMessage({msgId: MSGID_DONE, msgData: "Program run successfully."});
   else
@@ -51,9 +48,8 @@ function onStart(source)
   {
     postMessage({msgId: MSGID_STATUS, msgData: "Running..."});
     mainRuntime = new Runtime(mainBytecode);
+    mainRuntime.onDoneJsFunc = onRuntimeDone;
     mainRuntime.run();
-
-    checkRuntimeIsDone(mainRuntime);
   }
   else
   {
@@ -67,6 +63,4 @@ function onInputResult(inputStr)
   mainRuntime.stack[mainRuntime.stack.length - 1] = inputStr;
   mainRuntime.status = RUNTIME_STATUS_RUNNING;
   mainRuntime.run();
-
-  checkRuntimeIsDone(mainRuntime);
 }

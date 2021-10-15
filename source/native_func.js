@@ -35,7 +35,6 @@ function timer_onTick()
     return;
 
   timerCallback.runFunc();
-  checkRuntimeIsDone(timerCallback.runtime);
 }
 
 function funcInput(runtime, args)

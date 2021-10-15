@@ -1,3 +1,6 @@
+(October 15, 2021)
+	- Added onDoneJsFunc member to Runtime class to provide a callback for when the runtime object is done executing the program.
+
 (October 14, 2021)
 	- Added a status member to Runtime class that can be either RUNNING, PAUSED, or DONE.
 	- Fixed bug with timer callback not ending program properly.
