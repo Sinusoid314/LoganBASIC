@@ -1,3 +1,8 @@
-- Add graphics functionality.
+- Fix bug with isolated string literals not raising a compile error.
+- Fix bug with images being stretched when drawn to the canvas.
+- Combine all canvas messages into one MSGID_CANVAS_MESSAGE.
+- Add entries for clearCanvas(), loadImage(), unloadImage(), and drawImage() to the help page.
+- Add ability to resize the height of the canvas pane.
+- Add event callbacks for the canvas.
 - Add a line number display to the editor.
 - Add debugger.
