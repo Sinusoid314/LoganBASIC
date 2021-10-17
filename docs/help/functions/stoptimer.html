@@ -11,7 +11,7 @@
 
 <h4>Description</h4>
 <p id="description">
-Stops the timer.
+Stops the timer that was started with <a href="starttimer.html">StartTimer</a>.
 </p>
 
 <h4>Usage</h4>
@@ -26,7 +26,7 @@ function onTick()
   tickCount = tickCount + 1
   print "Tick " + tickCount + " at " + time()
   if tickCount = 5 then
-    stopTimer()
+    <b>stopTimer()</b>
     print "Done."
     end
   end if

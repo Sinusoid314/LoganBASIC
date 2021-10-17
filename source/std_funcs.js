@@ -213,6 +213,8 @@ function funcStartTimer(runtime, args)
   }
 
   timerID = setInterval(timer_onTick, args[0]);
+
+  return 0;
 }
 
 function funcStopTimer(runtime, args)
@@ -223,5 +225,7 @@ function funcStopTimer(runtime, args)
 
   clearInterval(timerID);
   timerID = 0;
+
+  return 0;
 }
 

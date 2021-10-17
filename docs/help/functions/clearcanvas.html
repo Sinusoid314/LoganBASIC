@@ -7,22 +7,24 @@
 
 <body>
 
-<h3>Time()</h3>
+<h3>ClearCanvas()</h3>
 
 <h4>Description</h4>
 <p id="description">
-Returns the number of milliseconds elapsed since January 1, 1970.
+Erases all graphics from the canvas.
 </p>
 
 <h4>Usage</h4>
 <code id="usage">
-var startTime = <b>time()</b>
+loadImage("fish", "../examples/fishy-fart-os.png")
 
-print "Wait 1 second..."
+input("Press enter to draw image...")
+drawImage("fish", 10, 10)
 
-while <b>time()</b> - startTime < 1000
-wend
+input("Press enter to clear the canvas...")
+<b>clearCanvas()</b>
 
+unloadImage("fish")
 print "Done."
 </code>
 

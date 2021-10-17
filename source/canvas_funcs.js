@@ -25,6 +25,7 @@ function funcClearCanvas(runtime, args)
 //Send a message to the canvas to clear it
 {
   postMessage({msgId: MSGID_CLEAR_CANVAS});
+  return 0;
 }
 
 function funcLoadImage(runtime, args)
@@ -38,6 +39,8 @@ function funcLoadImage(runtime, args)
 
   canvasImageNames.push(imageName);
   postMessage({msgId: MSGID_LOAD_CANVAS_IMAGE, msgData: imageSource});
+
+  return 0;
 }
 
 function funcUnloadImage(runtime, args)
@@ -51,6 +54,8 @@ function funcUnloadImage(runtime, args)
 
   canvasImageNames.splice(imageNameIndex, 1);
   postMessage({msgId: MSGID_UNLOAD_CANVAS_IMAGE, msgData: imageNameIndex});
+
+  return 0;
 }
 
 function funcDrawImage(runtime, args)
@@ -65,5 +70,7 @@ function funcDrawImage(runtime, args)
     runtime.raiseError("Image '" + imageName + "' does not exist.");
 
   postMessage({msgId: MSGID_DRAW_CANVAS_IMAGE, msgData: [imageNameIndex, drawLeft, drawTop]});
+
+  return 0;
 }
 

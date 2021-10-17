@@ -29,7 +29,6 @@ function stopProg(exitStatusStr)
   progWorker = null;
 
   closeConsoleInput();
-  cleanupCanvas();
   statusBar.innerHTML = exitStatusStr;
 
   switchMode();
@@ -47,7 +46,7 @@ function runBtn_onClick(event)
   progWorker = new Worker('main.js');
   progWorker.onmessage = progWorker_onMessage;
   clearConsoleOutput();
-  clearCanvas();
+  cleanupCanvas();
   progWorker.postMessage({msgId: MSGID_START, msgData: editorStr});
 
   switchMode();

@@ -1,3 +1,9 @@
+(October 16, 2021)
+	- Fixed bug with images being stretched when drawn to the canvas.
+	- Added entries for clearCanvas(), loadImage(), unloadImage(), and drawImage() to the help page.
+	- Added setCanvasWidth() and setCanvasHeight() functions to canvas_ui module.
+	- Modified cleanupCanvas() in canvas_ui module to reset the canvas size.
+
 (October 15, 2021)
 	- Added onDoneJsFunc member to Runtime class to provide a callback for when the runtime object is done executing the program.
 	- Added canvas_funcs module and renamed native_func module to std_funcs.
