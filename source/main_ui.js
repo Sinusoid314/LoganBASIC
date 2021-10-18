@@ -89,20 +89,8 @@ function progWorker_onMessage(message)
       clearConsoleOutput();
       break;
 
-    case MSGID_CLEAR_CANVAS:
-      clearCanvas();
-      break;
-
-    case MSGID_LOAD_CANVAS_IMAGE:
-      loadCanvasImage(message.data.msgData);
-      break;
-
-    case MSGID_UNLOAD_CANVAS_IMAGE:
-      unloadCanvasImage(message.data.msgData);
-      break;
-
-    case MSGID_DRAW_CANVAS_IMAGE:
-      drawCanvasImage(message.data.msgData[0], message.data.msgData[1], message.data.msgData[2]);
+    case MSGID_CANVAS_MSG:
+      canvasWorker_onMessage(message.data.msgData);
       break;
   }
 }

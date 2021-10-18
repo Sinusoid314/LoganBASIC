@@ -1,3 +1,7 @@
+(October 17, 2021)
+	- Combined all canvas messages into MSGID_CANVAS_MSG handled by canvasWorker_onMessage() in canvas_ui module.
+	- Added setCanvasWidth() and setCanvasHeight() native functions.
+
 (October 16, 2021)
 	- Fixed bug with images being stretched when drawn to the canvas.
 	- Added entries for clearCanvas(), loadImage(), unloadImage(), and drawImage() to the help page.

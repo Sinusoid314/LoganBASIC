@@ -1,5 +1,3 @@
-- Combine all canvas messages into one MSGID_CANVAS_MESSAGE.
-- Add ability to resize the height of the canvas pane.
 - Add event callbacks for the canvas.
 - Add a line number display to the editor.
 - Add debugger.

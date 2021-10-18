@@ -14,6 +14,37 @@ function cleanupCanvas()
   setCanvasHeight(300);
 }
 
+function canvasWorker_onMessage(msgData)
+//Process canvas messages sent from the program thread
+{
+  switch(msgData[0])
+  {
+    case CANVAS_MSG_CLEAR_CANVAS:
+      clearCanvas();
+      break;
+
+    case CANVAS_MSG_SET_CANVAS_WIDTH:
+      setCanvasWidth(msgData[1]);
+      break;
+
+    case CANVAS_MSG_SET_CANVAS_HEIGHT:
+      setCanvasHeight(msgData[1]);
+      break;
+
+    case CANVAS_MSG_LOAD_IMAGE:
+      loadCanvasImage(msgData[1]);
+      break;
+
+    case CANVAS_MSG_UNLOAD_IMAGE:
+      unloadCanvasImage(msgData[1]);
+      break;
+
+    case CANVAS_MSG_DRAW_IMAGE:
+      drawCanvasImage(msgData[1], msgData[2], msgData[3]);
+      break;
+  }
+}
+
 function clearCanvas()
 //Clear all graphics from the canvas
 {
