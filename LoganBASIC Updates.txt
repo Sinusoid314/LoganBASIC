@@ -1,3 +1,7 @@
+(October 20, 2021)
+	- Modified runFunc() member in CallbackContext class to take a single array as an argument.
+	- Added setCanvasEvent() native function to support user input for the canvas.
+
 (October 19, 2021)
 	- Added enableCanvasBuffer(), disableCanvasBuffer(), and drawCanvasBuffer() native functions.
 	- Modified setCanvasWidth() and setCanvasHeight() to resize the buffer canvas with the main canvas and retain the graphics of both.

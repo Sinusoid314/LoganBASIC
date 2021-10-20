@@ -1,4 +1,14 @@
-var canvasNativeFuncList = [
+class CanvasEvent
+{
+  constructor(name, paramCount, callback)
+  {
+    this.name = name;
+    this.paramCount = paramCount;
+    this.callback = callback;
+  }
+}
+
+var canvasNativeFuncs = [
                   new ObjNativeFunc("setcanvaswidth", 1, 1, funcSetCanvasWidth),
                   new ObjNativeFunc("setcanvasheight", 1, 1, funcSetCanvasHeight),
                   new ObjNativeFunc("clearcanvas", 0, 0, funcClearCanvas),
@@ -7,10 +17,27 @@ var canvasNativeFuncList = [
                   new ObjNativeFunc("drawimage", 3, 3, funcDrawImage),
                   new ObjNativeFunc("enablecanvasbuffer", 0, 0, funcEnableCanvasBuffer),
                   new ObjNativeFunc("disablecanvasbuffer", 0, 0, funcDisableCanvasBuffer),
-                  new ObjNativeFunc("drawcanvasbuffer", 0, 0, funcDrawCanvasBuffer)
+                  new ObjNativeFunc("drawcanvasbuffer", 0, 0, funcDrawCanvasBuffer),
+                  new ObjNativeFunc("setcanvasevent", 1, 2, funcSetCanvasEvent)
+                 ];
+
+var canvasEvents = [
+                  new CanvasEvent("pointerdown", 2, null),
+                  new CanvasEvent("pointerup", 2, null),
+                  new CanvasEvent("keydown", 1, null),
+                  new CanvasEvent("keyup", 1, null)
                  ];
 
 var canvasImageNames = [];
+
+function onCanvasEvent(eventData)
+//
+{
+  var eventIndex = canvasEvents.findIndex((event) => event.name == eventData[0]);
+
+  eventData.splice(0, 1);
+  canvasEvents[eventIndex].callback.runFunc(eventData);
+}
 
 function getCanvasImageIndex(imageName)
 //Return the index of the given image item
@@ -117,6 +144,47 @@ function funcDrawCanvasBuffer(runtime, args)
 //
 {
   postMessage({msgId: MSGID_CANVAS_MSG, msgData: [CANVAS_MSG_DRAW_CANVAS_BUFFER]});
+  return 0;
+}
+
+function funcSetCanvasEvent(runtime, args)
+//
+{
+  var eventName = args[0];
+  var eventIndex = canvasEvents.findIndex((event) => event.name == eventName);
+  var eventUserFunc;
+
+  if(eventIndex == -1)
+    runtime.raiseError("SetCanvasEvent() does not recognize event named '" + eventName + "'.");
+
+  if(args.length == 2)
+  {
+    eventUserFunc = args[1];
+
+    if(!(eventUserFunc instanceof ObjUserFunc))
+      runtime.raiseError("Second argument of SetCanvasEvent() must be a function.");
+
+    if(eventUserFunc.paramCount != canvasEvents[eventIndex].paramCount)
+      runtime.raiseError("Handler function " + eventUserFunc.ident + "() for event '" + eventName + "' must have " + canvasEvents[eventIndex].paramCount + " parameters.");
+
+    if(canvasEvents[eventIndex].callback == null)
+    {
+      canvasEvents[eventIndex].callback = new CallbackContext(runtime, eventUserFunc);
+    }
+    else
+    {
+      canvasEvents[eventIndex].callback.runtime = runtime;
+      canvasEvents[eventIndex].callback.userFunc = eventUserFunc;
+    }
+
+    postMessage({msgId: MSGID_CANVAS_MSG, msgData: [CANVAS_MSG_ADD_CANVAS_EVENT, eventName]});
+  }
+  else
+  {
+    canvasEvents[eventIndex].callback = null;
+    postMessage({msgId: MSGID_CANVAS_MSG, msgData: [CANVAS_MSG_REMOVE_CANVAS_EVENT, eventName]});
+  }
+
   return 0;
 }
 

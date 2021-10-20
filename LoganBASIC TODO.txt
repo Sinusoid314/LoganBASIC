@@ -1,3 +1,5 @@
-- Add event callbacks for the canvas.
+- Add entry for setCanvasEvent() to the help page.
+- Fix bug with keyboard input not working in the canvas.
+- Add audio support.
 - Add a line number display to the editor.
 - Add debugger.

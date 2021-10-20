@@ -44,10 +44,10 @@ function runBtn_onClick(event)
 
   editorStr = progEditor.value;
   progWorker = new Worker('main.js');
-  progWorker.onmessage = progWorker_onMessage;
+  progWorker.onmessage = progUI_onMessage;
   clearConsoleOutput();
   cleanupCanvas();
-  progWorker.postMessage({msgId: MSGID_START, msgData: editorStr});
+  progWorker.postMessage({msgId: MSGID_START_PROG, msgData: editorStr});
 
   switchMode();
 }
@@ -64,17 +64,17 @@ function stopBtn_onClick(event)
   stopProg("Program stopped.");
 }
 
-function progWorker_onMessage(message)
-//Process messages sent from the program thread
+function progUI_onMessage(message)
+//Process messages sent from the worker thread
 {
   switch(message.data.msgId)
   {
-    case MSGID_DONE:
-      progWorker_onDone(message.data.msgData);
+    case MSGID_PROG_DONE:
+      onProgDone(message.data.msgData);
       break;
 
-    case MSGID_STATUS:
-      progWorker_onStatus(message.data.msgData);
+    case MSGID_STATUS_CHANGE:
+      onStatusChange(message.data.msgData);
       break;
 
     case MSGID_PRINT:
@@ -90,18 +90,18 @@ function progWorker_onMessage(message)
       break;
 
     case MSGID_CANVAS_MSG:
-      canvasWorker_onMessage(message.data.msgData);
+      canvasUI_onMessage(message.data.msgData);
       break;
   }
 }
 
-function progWorker_onDone(exitStatusStr)
+function onProgDone(exitStatusStr)
 //Stop the program (self-triggered)
 {
   stopProg(exitStatusStr);
 }
 
-function progWorker_onStatus(statusStr)
+function onStatusChange(statusStr)
 //Display a status change
 {
   statusBar.innerHTML = statusStr;

@@ -30,8 +30,29 @@ function canvas_onAnimationFrame()
   progCanvasContext.putImageData(imageData, 0, 0);
 }
 
-function canvasWorker_onMessage(msgData)
-//Process canvas messages sent from the program thread
+function canvas_onEvent(event)
+//
+{
+  var canvasRect;
+  var pointerX, pointerY;
+
+  if(event instanceof PointerEvent)
+  {
+    canvasRect = progCanvas.getBoundingClientRect();
+    pointerX = event.clientX - canvasRect.left;
+    pointerY = event.clientY - canvasRect.top;
+    progWorker.postMessage({msgId: MSGID_CANVAS_EVENT, msgData: [event.type, pointerX, pointerY]});
+  }
+  else if(event instanceof KeyboardEvent)
+  {
+    progWorker.postMessage({msgId: MSGID_CANVAS_EVENT, msgData: [event.type, event.key]});
+  }
+
+  console.log(event instanceof KeyboardEvent);
+}
+
+function canvasUI_onMessage(msgData)
+//Process canvas messages sent from the worker thread
 {
   switch(msgData[0])
   {
@@ -69,6 +90,14 @@ function canvasWorker_onMessage(msgData)
 
     case CANVAS_MSG_DRAW_CANVAS_BUFFER:
       drawCanvasBuffer();
+      break;
+
+    case CANVAS_MSG_ADD_CANVAS_EVENT:
+      addCanvasEvent(msgData[1]);
+      break;
+
+    case CANVAS_MSG_REMOVE_CANVAS_EVENT:
+      removeCanvasEvent(msgData[1]);
       break;
   }
 }
@@ -145,3 +174,14 @@ function drawCanvasBuffer()
   window.requestAnimationFrame(canvas_onAnimationFrame);
 }
 
+function addCanvasEvent(eventName)
+//
+{
+  progCanvas.addEventListener(eventName, canvas_onEvent);
+}
+
+function removeCanvasEvent(eventName)
+//
+{
+  progCanvas.removeEventListener(eventName, canvas_onEvent);
+}
