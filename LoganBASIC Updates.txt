@@ -1,3 +1,8 @@
+(October 19, 2021)
+	- Added enableCanvasBuffer(), disableCanvasBuffer(), and drawCanvasBuffer() native functions.
+	- Modified setCanvasWidth() and setCanvasHeight() to resize the buffer canvas with the main canvas and retain the graphics of both.
+	- Added MoveImage to the examples page.
+
 (October 17, 2021)
 	- Combined all canvas messages into MSGID_CANVAS_MSG handled by canvasWorker_onMessage() in canvas_ui module.
 	- Added setCanvasWidth() and setCanvasHeight() native functions.

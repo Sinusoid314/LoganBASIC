@@ -1,10 +1,13 @@
 var canvasNativeFuncList = [
-                  new ObjNativeFunc("clearcanvas", 0, 0, funcClearCanvas),
                   new ObjNativeFunc("setcanvaswidth", 1, 1, funcSetCanvasWidth),
                   new ObjNativeFunc("setcanvasheight", 1, 1, funcSetCanvasHeight),
+                  new ObjNativeFunc("clearcanvas", 0, 0, funcClearCanvas),
                   new ObjNativeFunc("loadimage", 2, 2, funcLoadImage),
                   new ObjNativeFunc("unloadimage", 1, 1, funcUnloadImage),
-                  new ObjNativeFunc("drawimage", 3, 3, funcDrawImage)
+                  new ObjNativeFunc("drawimage", 3, 3, funcDrawImage),
+                  new ObjNativeFunc("enablecanvasbuffer", 0, 0, funcEnableCanvasBuffer),
+                  new ObjNativeFunc("disablecanvasbuffer", 0, 0, funcDisableCanvasBuffer),
+                  new ObjNativeFunc("drawcanvasbuffer", 0, 0, funcDrawCanvasBuffer)
                  ];
 
 var canvasImageNames = [];
@@ -21,14 +24,6 @@ function getCanvasImageIndex(imageName)
   }
 
   return -1;
-}
-
-function funcClearCanvas(runtime, args)
-//Send a message to the canvas to clear it
-{
-  postMessage({msgId: MSGID_CANVAS_MSG, msgData: [CANVAS_MSG_CLEAR_CANVAS]});
-
-  return 0;
 }
 
 function funcSetCanvasWidth(runtime, args)
@@ -48,6 +43,13 @@ function funcSetCanvasHeight(runtime, args)
 
   postMessage({msgId: MSGID_CANVAS_MSG, msgData: [CANVAS_MSG_SET_CANVAS_HEIGHT, newHeight]});
 
+  return 0;
+}
+
+function funcClearCanvas(runtime, args)
+//Send a message to the canvas to clear it
+{
+  postMessage({msgId: MSGID_CANVAS_MSG, msgData: [CANVAS_MSG_CLEAR_CANVAS]});
   return 0;
 }
 
@@ -94,6 +96,27 @@ function funcDrawImage(runtime, args)
 
   postMessage({msgId: MSGID_CANVAS_MSG, msgData: [CANVAS_MSG_DRAW_IMAGE, imageNameIndex, drawLeft, drawTop]});
 
+  return 0;
+}
+
+function funcEnableCanvasBuffer(runtime, args)
+//
+{
+  postMessage({msgId: MSGID_CANVAS_MSG, msgData: [CANVAS_MSG_ENABLE_CANVAS_BUFFER]});
+  return 0;
+}
+
+function funcDisableCanvasBuffer(runtime, args)
+//
+{
+  postMessage({msgId: MSGID_CANVAS_MSG, msgData: [CANVAS_MSG_DISABLE_CANVAS_BUFFER]});
+  return 0;
+}
+
+function funcDrawCanvasBuffer(runtime, args)
+//
+{
+  postMessage({msgId: MSGID_CANVAS_MSG, msgData: [CANVAS_MSG_DRAW_CANVAS_BUFFER]});
   return 0;
 }
 

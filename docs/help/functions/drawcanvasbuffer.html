@@ -7,24 +7,30 @@
 
 <body>
 
-<h3>ClearCanvas()</h3>
+<h3>DrawCanvasBuffer()</h3>
 
 <h4>Description</h4>
 <p id="description">
-Erases all graphics from the canvas, or the canvas buffer if it is enabled.
+Transers all graphics from the offscreen buffer to the visible canvas.
 </p>
 
 <h4>Usage</h4>
 <code id="usage">
 loadImage("fish", "../examples/fishy-fart-os.png")
+enableCanvasBuffer()
 
-input("Press enter to draw image...")
+input("Press enter to draw image to buffer...")
 drawImage("fish", 10, 10)
 
-input("Press enter to clear the canvas...")
-<b>clearCanvas()</b>
+input("Press enter to draw image to canvas...")
+disableCanvasBuffer()
+drawImage("fish", 50, 50)
+
+input("Press enter to draw buffer to canvas...")
+<b>drawCanvasBuffer()</b>
 
 unloadImage("fish")
+
 print "Done."
 </code>
 

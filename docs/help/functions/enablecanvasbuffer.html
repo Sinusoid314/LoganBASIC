@@ -1,0 +1,38 @@
+<html>
+
+<head>
+  <title></title>
+  <link rel="stylesheet" type="text/css" href="../reference_doc.css"></link>
+</head>
+
+<body>
+
+<h3>EnableCanvasBuffer()</h3>
+
+<h4>Description</h4>
+<p id="description">
+Enables drawing to the canvas' offscreen buffer. Any subsequent graphics will be drawn to the buffer.
+</p>
+
+<h4>Usage</h4>
+<code id="usage">
+loadImage("fish", "../examples/fishy-fart-os.png")
+<b>enableCanvasBuffer()</b>
+
+input("Press enter to draw image to buffer...")
+drawImage("fish", 10, 10)
+
+input("Press enter to draw image to canvas...")
+disableCanvasBuffer()
+drawImage("fish", 50, 50)
+
+input("Press enter to draw buffer to canvas...")
+drawCanvasBuffer()
+
+unloadImage("fish")
+
+print "Done."
+</code>
+
+</body>
+</html>
