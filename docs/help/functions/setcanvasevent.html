@@ -1,0 +1,46 @@
+<html>
+
+<head>
+  <title></title>
+  <link rel="stylesheet" type="text/css" href="../reference_doc.css"></link>
+</head>
+
+<body>
+
+<h3>SetCanvasEvent(eventName, functionName)</h3>
+
+<h4>Description</h4>
+<p id="description">
+Sets up a function, given by functionName, that will be called whenever a user input event, given by eventName, occurs.
+The following is a list of acceptable values for eventName:
+<ul>
+  <li><b>"pointerdown"</b> - Occurs when a pointer becomes active.</li>
+  <li><b>"pointerup"</b> - Occurs when a pointer is no longer active.</li>
+  <li><b>"keydown"</b> - Occurs when a keyboard key is pressed down.</li>
+  <li><b>"keyup"</b> - Occurs when a keyboard key is released.</li>
+</ul>
+</p>
+
+<h4>Usage</h4>
+<code id="usage">
+loadImage("fish", "../examples/fishy-fart-os.png")
+
+<b>setCanvasEvent("pointerup", onPointerUp)</b>
+<b>setCanvasEvent("keyup", onKeyUp)</b>
+
+wait
+
+function onPointerUp(pointerX, pointerY)
+  drawImage("fish", pointerX, pointerY)
+end function
+
+function onKeyUp(key)
+  if key = "q" then
+    unloadImage("fish")
+    end
+  end if
+end function
+</code>
+
+</body>
+</html>

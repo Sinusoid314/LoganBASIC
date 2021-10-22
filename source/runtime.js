@@ -10,7 +10,7 @@ class CallbackContext
     this.userFunc = userFunc;
   }
 
-  runFunc(args)
+  runFunc(args = [])
   //Load the user function and arguments onto the runtime's stack, call the function, and start the runtime
   {
     var argCount = args.length;

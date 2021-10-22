@@ -1,3 +1,7 @@
+(October 21, 2021)
+	- Fixed bug with keyboard input not working in the canvas.
+	- Added entry for setCanvasEvent() to the help page.
+
 (October 20, 2021)
 	- Modified runFunc() member in CallbackContext class to take a single array as an argument.
 	- Added setCanvasEvent() native function to support user input for the canvas.
