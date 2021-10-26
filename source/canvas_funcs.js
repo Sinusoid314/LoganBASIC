@@ -29,7 +29,18 @@ var canvasEvents = [
                  ];
 
 var canvasImageNames = [];
+var loadImageCallback = null;
 var drawBufferCallback = null;
+
+function onLoadImageResult(result)
+//
+{
+  if(!result)
+    canvasImageNames.pop();
+
+  loadImageCallback.runtime.stack[loadImageCallback.runtime.stack.length - 1] = result;
+  loadImageCallback.runFunc();
+}
 
 function onCanvasEvent(eventData)
 //
@@ -68,7 +79,7 @@ function funcSetCanvasWidth(runtime, args)
 {
   var newWidth = args[0];
 
-  postMessage({msgId: MSGID_CANVAS_MSG, msgData: [CANVAS_MSG_SET_CANVAS_WIDTH, newWidth]});
+  postMessage({msgId: MSGID_SET_CANVAS_WIDTH, msgData: newWidth});
 
   return 0;
 }
@@ -78,7 +89,7 @@ function funcSetCanvasHeight(runtime, args)
 {
   var newHeight = args[0];
 
-  postMessage({msgId: MSGID_CANVAS_MSG, msgData: [CANVAS_MSG_SET_CANVAS_HEIGHT, newHeight]});
+  postMessage({msgId: MSGID_SET_CANVAS_HEIGHT, msgData: newHeight});
 
   return 0;
 }
@@ -86,7 +97,7 @@ function funcSetCanvasHeight(runtime, args)
 function funcClearCanvas(runtime, args)
 //Send a message to the canvas to clear it
 {
-  postMessage({msgId: MSGID_CANVAS_MSG, msgData: [CANVAS_MSG_CLEAR_CANVAS]});
+  postMessage({msgId: MSGID_CLEAR_CANVAS});
   return 0;
 }
 
@@ -100,9 +111,17 @@ function funcLoadImage(runtime, args)
     runtime.raiseError("Image '" + imageName + "' is already loaded.");
 
   canvasImageNames.push(imageName);
-  postMessage({msgId: MSGID_CANVAS_MSG, msgData: [CANVAS_MSG_LOAD_IMAGE, imageSource]});
 
-  return 0;
+  if(loadImageCallback == null)
+    loadImageCallback = new CallbackContext(runtime);
+  else
+    loadImageCallback.runtime = runtime;
+
+  postMessage({msgId: MSGID_LOAD_IMAGE_REQUEST, msgData: imageSource});
+
+  runtime.status = RUNTIME_STATUS_PAUSED;
+
+  return false;
 }
 
 function funcUnloadImage(runtime, args)
@@ -115,7 +134,7 @@ function funcUnloadImage(runtime, args)
     runtime.raiseError("Image '" + imageName + "' does not exist.");
 
   canvasImageNames.splice(imageNameIndex, 1);
-  postMessage({msgId: MSGID_CANVAS_MSG, msgData: [CANVAS_MSG_UNLOAD_IMAGE, imageNameIndex]});
+  postMessage({msgId: MSGID_UNLOAD_IMAGE, msgData: imageNameIndex});
 
   return 0;
 }
@@ -131,7 +150,7 @@ function funcDrawImage(runtime, args)
   if(imageNameIndex == -1)
     runtime.raiseError("Image '" + imageName + "' does not exist.");
 
-  postMessage({msgId: MSGID_CANVAS_MSG, msgData: [CANVAS_MSG_DRAW_IMAGE, imageNameIndex, drawLeft, drawTop]});
+  postMessage({msgId: MSGID_DRAW_IMAGE, msgData: [imageNameIndex, drawLeft, drawTop]});
 
   return 0;
 }
@@ -139,14 +158,14 @@ function funcDrawImage(runtime, args)
 function funcEnableCanvasBuffer(runtime, args)
 //
 {
-  postMessage({msgId: MSGID_CANVAS_MSG, msgData: [CANVAS_MSG_ENABLE_CANVAS_BUFFER]});
+  postMessage({msgId: MSGID_ENABLE_CANVAS_BUFFER});
   return 0;
 }
 
 function funcDisableCanvasBuffer(runtime, args)
 //
 {
-  postMessage({msgId: MSGID_CANVAS_MSG, msgData: [CANVAS_MSG_DISABLE_CANVAS_BUFFER]});
+  postMessage({msgId: MSGID_DISABLE_CANVAS_BUFFER});
   return 0;
 }
 
@@ -181,7 +200,7 @@ function funcDrawCanvasBuffer(runtime, args)
     }
   }
 
-  postMessage({msgId: MSGID_CANVAS_MSG, msgData: [CANVAS_MSG_DRAW_CANVAS_BUFFER]});
+  postMessage({msgId: MSGID_DRAW_CANVAS_BUFFER});
 
   return 0;
 }
@@ -216,12 +235,12 @@ function funcSetCanvasEvent(runtime, args)
       canvasEvents[eventIndex].callback.userFunc = eventUserFunc;
     }
 
-    postMessage({msgId: MSGID_CANVAS_MSG, msgData: [CANVAS_MSG_ADD_CANVAS_EVENT, eventName]});
+    postMessage({msgId: MSGID_ADD_CANVAS_EVENT, msgData: eventName});
   }
   else
   {
     canvasEvents[eventIndex].callback = null;
-    postMessage({msgId: MSGID_CANVAS_MSG, msgData: [CANVAS_MSG_REMOVE_CANVAS_EVENT, eventName]});
+    postMessage({msgId: MSGID_REMOVE_CANVAS_EVENT, msgData: eventName});
   }
 
   return 0;

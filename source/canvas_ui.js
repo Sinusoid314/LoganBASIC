@@ -23,6 +23,26 @@ function cleanupCanvas()
   setCanvasHeight(300);
 }
 
+function image_onLoad(event)
+//
+{
+  this.removeEventListener("load", image_onLoad);
+  this.removeEventListener("error", image_onError);
+
+  canvasImages.push(this);
+
+  progWorker.postMessage({msgId: MSGID_LOAD_IMAGE_RESULT, msgData: true});
+}
+
+function image_onError(event)
+//
+{
+  this.removeEventListener("load", image_onLoad);
+  this.removeEventListener("error", image_onError);
+
+  progWorker.postMessage({msgId: MSGID_LOAD_IMAGE_RESULT, msgData: false});
+}
+
 function canvas_onAnimationFrame()
 //
 {
@@ -48,57 +68,6 @@ function canvas_onEvent(event)
   else if(event instanceof KeyboardEvent)
   {
     progWorker.postMessage({msgId: MSGID_CANVAS_EVENT, msgData: [event.type, event.key]});
-  }
-}
-
-function canvasUI_onMessage(msgData)
-//Process canvas messages sent from the worker thread
-{
-  switch(msgData[0])
-  {
-    case CANVAS_MSG_SET_CANVAS_WIDTH:
-      setCanvasWidth(msgData[1]);
-      break;
-
-    case CANVAS_MSG_SET_CANVAS_HEIGHT:
-      setCanvasHeight(msgData[1]);
-      break;
-
-    case CANVAS_MSG_CLEAR_CANVAS:
-      clearCanvas();
-      break;
-
-    case CANVAS_MSG_LOAD_IMAGE:
-      loadCanvasImage(msgData[1]);
-      break;
-
-    case CANVAS_MSG_UNLOAD_IMAGE:
-      unloadCanvasImage(msgData[1]);
-      break;
-
-    case CANVAS_MSG_DRAW_IMAGE:
-      drawCanvasImage(msgData[1], msgData[2], msgData[3]);
-      break;
-
-    case CANVAS_MSG_ENABLE_CANVAS_BUFFER:
-      enableCanvasBuffer();
-      break;
-
-    case CANVAS_MSG_DISABLE_CANVAS_BUFFER:
-      disableCanvasBuffer();
-      break;
-
-    case CANVAS_MSG_DRAW_CANVAS_BUFFER:
-      drawCanvasBuffer();
-      break;
-
-    case CANVAS_MSG_ADD_CANVAS_EVENT:
-      addCanvasEvent(msgData[1]);
-      break;
-
-    case CANVAS_MSG_REMOVE_CANVAS_EVENT:
-      removeCanvasEvent(msgData[1]);
-      break;
   }
 }
 
@@ -140,8 +109,11 @@ function loadCanvasImage(imageSource)
 //Load an image for drawing on the canvas
 {
   var newImage = new Image();
+
+  newImage.addEventListener("load", image_onLoad);
+  newImage.addEventListener("error", image_onError);
+
   newImage.src = imageSource;
-  canvasImages.push(newImage);
 }
 
 function unloadCanvasImage(imageIndex)

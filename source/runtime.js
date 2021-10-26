@@ -4,7 +4,7 @@ const RUNTIME_STATUS_DONE = 3;
 
 class CallbackContext
 {
-  constructor(runtime, userFunc)
+  constructor(runtime, userFunc = null)
   {
     this.runtime = runtime;
     this.userFunc = userFunc;
@@ -19,12 +19,16 @@ class CallbackContext
     if(this.runtime.status != RUNTIME_STATUS_PAUSED)
       return;
 
-    this.runtime.stack.push(this.userFunc);
+    if(this.userFunc != null)
+    {
+      this.runtime.stack.push(this.userFunc);
 
-    for(var argIndex = 0; argIndex < argCount; argIndex++)
-      this.runtime.stack.push(args[argIndex]);
+      for(var argIndex = 0; argIndex < argCount; argIndex++)
+        this.runtime.stack.push(args[argIndex]);
 
-    this.runtime.callUserFunc(this.userFunc, argCount, stackIndex);
+      this.runtime.callUserFunc(this.userFunc, argCount, stackIndex);
+    }
+
     this.runtime.status = RUNTIME_STATUS_RUNNING;
     this.runtime.run();
   }

@@ -25,8 +25,16 @@ var stdNativeFuncs = [
                   new ObjNativeFunc("stoptimer", 0, 0, funcStopTimer)
                  ];
 
+var inputCallback = null;
 var timerID = 0;
 var timerCallback = null;
+
+function onInputResult(inputStr)
+//Process input sent from the console
+{
+  inputCallback.runtime.stack[inputCallback.runtime.stack.length - 1] = inputStr;
+  inputCallback.runFunc();
+}
 
 function timer_onTick()
 //
@@ -40,9 +48,16 @@ function timer_onTick()
 function funcInput(runtime, args)
 //Prompt user for input from the consol
 {
+  if(inputCallback == null)
+    inputCallback = new CallbackContext(runtime);
+  else
+    inputCallback.runtime = runtime;
+
   postMessage({msgId: MSGID_PRINT, msgData: args[0]});
   postMessage({msgId: MSGID_INPUT_REQUEST});
+
   runtime.status = RUNTIME_STATUS_PAUSED;
+
   return "";
 }
 

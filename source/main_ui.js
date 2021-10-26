@@ -89,8 +89,48 @@ function progUI_onMessage(message)
       clearConsoleOutput();
       break;
 
-    case MSGID_CANVAS_MSG:
-      canvasUI_onMessage(message.data.msgData);
+    case MSGID_SET_CANVAS_WIDTH:
+      setCanvasWidth(message.data.msgData);
+      break;
+
+    case MSGID_SET_CANVAS_HEIGHT:
+      setCanvasHeight(message.data.msgData);
+      break;
+
+    case MSGID_CLEAR_CANVAS:
+      clearCanvas();
+      break;
+
+    case MSGID_LOAD_IMAGE_REQUEST:
+      loadCanvasImage(message.data.msgData);
+      break;
+
+    case MSGID_UNLOAD_IMAGE:
+      unloadCanvasImage(message.data.msgData);
+      break;
+
+    case MSGID_DRAW_IMAGE:
+      drawCanvasImage(message.data.msgData[0], message.data.msgData[1], message.data.msgData[2]);
+      break;
+
+    case MSGID_ENABLE_CANVAS_BUFFER:
+      enableCanvasBuffer();
+      break;
+
+    case MSGID_DISABLE_CANVAS_BUFFER:
+      disableCanvasBuffer();
+      break;
+
+    case MSGID_DRAW_CANVAS_BUFFER:
+      drawCanvasBuffer();
+      break;
+
+    case MSGID_ADD_CANVAS_EVENT:
+      addCanvasEvent(message.data.msgData);
+      break;
+
+    case MSGID_REMOVE_CANVAS_EVENT:
+      removeCanvasEvent(message.data.msgData);
       break;
   }
 }

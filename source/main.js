@@ -36,6 +36,10 @@ function progWorker_onMessage(message)
       onInputResult(message.data.msgData);
       break;
 
+    case MSGID_LOAD_IMAGE_RESULT:
+      onLoadImageResult(message.data.msgData);
+      break;
+
     case MSGID_CANVAS_EVENT:
       onCanvasEvent(message.data.msgData);
       break;
@@ -68,10 +72,3 @@ function onStartProg(source)
   }
 }
 
-function onInputResult(inputStr)
-//Process input sent from the console
-{
-  mainRuntime.stack[mainRuntime.stack.length - 1] = inputStr;
-  mainRuntime.status = RUNTIME_STATUS_RUNNING;
-  mainRuntime.run();
-}
