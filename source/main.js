@@ -39,6 +39,10 @@ function progWorker_onMessage(message)
     case MSGID_CANVAS_EVENT:
       onCanvasEvent(message.data.msgData);
       break;
+
+    case MSGID_DRAW_CANVAS_BUFFER_DONE:
+      onDrawCanvasBufferDone();
+      break;
   }
 }
 

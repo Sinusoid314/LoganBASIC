@@ -28,6 +28,8 @@ function canvas_onAnimationFrame()
 {
   var imageData = bufferCanvasContext.getImageData(0, 0, bufferCanvas.width, bufferCanvas.height);
   progCanvasContext.putImageData(imageData, 0, 0);
+
+  progWorker.postMessage({msgId: MSGID_DRAW_CANVAS_BUFFER_DONE});
 }
 
 function canvas_onEvent(event)
@@ -47,8 +49,6 @@ function canvas_onEvent(event)
   {
     progWorker.postMessage({msgId: MSGID_CANVAS_EVENT, msgData: [event.type, event.key]});
   }
-
-  console.log(event instanceof KeyboardEvent);
 }
 
 function canvasUI_onMessage(msgData)

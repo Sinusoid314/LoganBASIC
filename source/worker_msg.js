@@ -2,6 +2,7 @@
 const MSGID_START_PROG = 1;
 const MSGID_INPUT_RESULT = 2;
 const MSGID_CANVAS_EVENT = 3;
+const MSGID_DRAW_CANVAS_BUFFER_DONE = 4;
 
 //Worker -> UI messages
 const MSGID_PROG_DONE = 1;

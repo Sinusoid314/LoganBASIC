@@ -16,6 +16,9 @@ class CallbackContext
     var argCount = args.length;
     var stackIndex = this.runtime.stack.length;
 
+    if(this.runtime.status != RUNTIME_STATUS_PAUSED)
+      return;
+
     this.runtime.stack.push(this.userFunc);
 
     for(var argIndex = 0; argIndex < argCount; argIndex++)

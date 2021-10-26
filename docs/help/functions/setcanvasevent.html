@@ -7,11 +7,12 @@
 
 <body>
 
-<h3>SetCanvasEvent(eventName, functionName)</h3>
+<h3>SetCanvasEvent(eventName, [ functionName ])</h3>
 
 <h4>Description</h4>
 <p id="description">
-Sets up a function, given by functionName, that will be called whenever a user input event, given by eventName, occurs.
+Sets up a callback function, given by functionName, that will be called whenever a user input event, given by eventName, occurs.
+If functionName is not specified, then the input event will be removed and no longer trigger a callback.
 The following is a list of acceptable values for eventName:
 <ul>
   <li><b>"pointerdown"</b> - Occurs when a pointer becomes active.</li>

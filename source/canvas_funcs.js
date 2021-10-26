@@ -17,7 +17,7 @@ var canvasNativeFuncs = [
                   new ObjNativeFunc("drawimage", 3, 3, funcDrawImage),
                   new ObjNativeFunc("enablecanvasbuffer", 0, 0, funcEnableCanvasBuffer),
                   new ObjNativeFunc("disablecanvasbuffer", 0, 0, funcDisableCanvasBuffer),
-                  new ObjNativeFunc("drawcanvasbuffer", 0, 0, funcDrawCanvasBuffer),
+                  new ObjNativeFunc("drawcanvasbuffer", 0, 1, funcDrawCanvasBuffer),
                   new ObjNativeFunc("setcanvasevent", 1, 2, funcSetCanvasEvent)
                  ];
 
@@ -29,6 +29,7 @@ var canvasEvents = [
                  ];
 
 var canvasImageNames = [];
+var drawBufferCallback = null;
 
 function onCanvasEvent(eventData)
 //
@@ -37,6 +38,15 @@ function onCanvasEvent(eventData)
 
   eventData.splice(0, 1);
   canvasEvents[eventIndex].callback.runFunc(eventData);
+}
+
+function onDrawCanvasBufferDone()
+//
+{
+  if(drawBufferCallback == null)
+    return;
+
+  drawBufferCallback.runFunc();
 }
 
 function getCanvasImageIndex(imageName)
@@ -143,7 +153,36 @@ function funcDisableCanvasBuffer(runtime, args)
 function funcDrawCanvasBuffer(runtime, args)
 //
 {
+  var callbackUserFunc;
+
+  if(args.length == 0)
+  {
+    if(drawBufferCallback != null)
+      drawBufferCallback = null;
+  }
+  else
+  {
+    callbackUserFunc = args[0];
+
+    if(!(callbackUserFunc instanceof ObjUserFunc))
+      runtime.raiseError("Argument of DrawCanvasBuffer() must be a function.");
+
+    if(callbackUserFunc.paramCount != 0)
+      runtime.raiseError("Callback function for DrawCanvasBuffer() must have zero parameters.");
+
+    if(drawBufferCallback == null)
+    {
+      drawBufferCallback = new CallbackContext(runtime, callbackUserFunc);
+    }
+    else
+    {
+      drawBufferCallback.runtime = runtime;
+      drawBufferCallback.userFunc = callbackUserFunc;
+    }
+  }
+
   postMessage({msgId: MSGID_CANVAS_MSG, msgData: [CANVAS_MSG_DRAW_CANVAS_BUFFER]});
+
   return 0;
 }
 

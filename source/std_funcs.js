@@ -196,23 +196,29 @@ function funcVal(runtime, args)
 function funcStartTimer(runtime, args)
 //Set the timer to call the given user function at the interval
 {
-  if(!(args[1] instanceof ObjUserFunc))
+  var timeout = args[0];
+  var callbackUserFunc = args[1];
+
+  if(!(callbackUserFunc instanceof ObjUserFunc))
     runtime.raiseError("Second argument of StartTimer() must be a function.");
+
+  if(callbackUserFunc.paramCount != 0)
+    runtime.raiseError("Callback function for StartTimer() must have zero parameters.");
 
   if(timerID != 0)
     clearInterval(timerID);
 
   if(timerCallback == null)
   {
-    timerCallback = new CallbackContext(runtime, args[1]);
+    timerCallback = new CallbackContext(runtime, callbackUserFunc);
   }
   else
   {
     timerCallback.runtime = runtime;
-    timerCallback.userFunc = args[1];
+    timerCallback.userFunc = callbackUserFunc;
   }
 
-  timerID = setInterval(timer_onTick, args[0]);
+  timerID = setInterval(timer_onTick, timeout);
 
   return 0;
 }
