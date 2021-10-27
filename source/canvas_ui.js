@@ -71,6 +71,32 @@ function canvas_onEvent(event)
   }
 }
 
+function showCanvas()
+//Show the canvas pane
+{
+  var toggle = document.getElementById("canvasToggle");
+  var pane = document.getElementById("canvasPane");
+
+  if(toggle.classList.contains("toggle-closed"))
+  {
+    toggle.classList.toggle("toggle-closed");
+    pane.classList.toggle("pane-closed");
+  }
+}
+
+function hideCanvas()
+//Hide the canvas pane
+{
+  var toggle = document.getElementById("canvasToggle");
+  var pane = document.getElementById("canvasPane");
+
+  if(!(toggle.classList.contains("toggle-closed")))
+  {
+    toggle.classList.toggle("toggle-closed");
+    pane.classList.toggle("pane-closed");
+  }
+}
+
 function setCanvasWidth(newWidth)
 //
 {

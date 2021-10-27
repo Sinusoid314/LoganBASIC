@@ -1,3 +1,6 @@
+(October 27, 2021)
+	- Added showEditor(), hideEditor(), showConsole(), hideConsole(), showCanvas(), and hideCanvas() native functions.
+
 (October 26, 2021)
 	- Moved onInputResult() from main module to std_funcs module.
 	- Moved routing of worker-to-ui canvas messages back to progUI_onMessage() in main_ui module.

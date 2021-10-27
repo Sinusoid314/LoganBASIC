@@ -56,7 +56,7 @@ class Runtime
     this.opFuncs = [null];
     this.onDoneJsFunc = null;
     this.status = RUNTIME_STATUS_RUNNING;
-    this.errorMsg = "";
+    this.error = null;
 
     //Allow the op methods to be called by indexing into a function array using the opcode constants
     this.opFuncs[OPCODE_LOAD_TRUE] = this.opLoadTrue.bind(this);
@@ -115,9 +115,9 @@ class Runtime
 		this.opFuncs[this.currOp[0]]();
       }
     }
-    catch(err)
+    catch(error)
     {
-      this.errorMsg = "Runtime error on line " + err.lineNum + ": "  + err.message;
+      this.error = error;
     }
 
     if(this.status == RUNTIME_STATUS_DONE)
@@ -580,8 +580,13 @@ class Runtime
   raiseError(message)
   //
   {
+    var lineNum = this.getSourceLine();
+
+    message = "Runtime error on line " + lineNum + ": "  + message;
+
     this.status = RUNTIME_STATUS_DONE;
-    throw {message: message, lineNum: this.getSourceLine()};
+
+    throw {message: message, lineNum: lineNum};
   }
 }
 

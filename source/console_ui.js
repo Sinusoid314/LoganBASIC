@@ -6,6 +6,32 @@ var consoleInputDiv = document.getElementById("consoleInputDiv");
 consoleInput.addEventListener("keydown", consoleInput_onKeydown);
 consoleInputBtn.addEventListener("click", consoleInputBtn_onClick);
 
+function showConsole()
+//Show the console pane
+{
+  var toggle = document.getElementById("consoleToggle");
+  var pane = document.getElementById("consolePane");
+
+  if(toggle.classList.contains("toggle-closed"))
+  {
+    toggle.classList.toggle("toggle-closed");
+    pane.classList.toggle("pane-closed");
+  }
+}
+
+function hideConsole()
+//Hide the console pane
+{
+  var toggle = document.getElementById("consoleToggle");
+  var pane = document.getElementById("consolePane");
+
+  if(!(toggle.classList.contains("toggle-closed")))
+  {
+    toggle.classList.toggle("toggle-closed");
+    pane.classList.toggle("pane-closed");
+  }
+}
+
 function printToConsoleOutput(val)
 //Print to the console output
 {

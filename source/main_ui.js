@@ -77,6 +77,22 @@ function progUI_onMessage(message)
       onStatusChange(message.data.msgData);
       break;
 
+    case MSGID_SHOW_EDITOR:
+      showEditor();
+      break;
+
+    case MSGID_HIDE_EDITOR:
+      hideEditor();
+      break;
+
+    case MSGID_SHOW_CONSOLE:
+      showConsole();
+      break;
+
+    case MSGID_HIDE_CONSOLE:
+      hideConsole();
+      break;
+
     case MSGID_PRINT:
       printToConsoleOutput(message.data.msgData);
       break;
@@ -87,6 +103,14 @@ function progUI_onMessage(message)
 
     case MSGID_CLEAR_CONSOLE:
       clearConsoleOutput();
+      break;
+
+    case MSGID_SHOW_CANVAS:
+      showCanvas();
+      break;
+
+    case MSGID_HIDE_CANVAS:
+      hideCanvas();
       break;
 
     case MSGID_SET_CANVAS_WIDTH:
@@ -150,3 +174,4 @@ function onStatusChange(statusStr)
 {
   statusBar.innerHTML = statusStr;
 }
+

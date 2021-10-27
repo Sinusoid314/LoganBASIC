@@ -1,4 +1,8 @@
 var stdNativeFuncs = [
+                  new ObjNativeFunc("showeditor", 0, 0, funcShowEditor),
+                  new ObjNativeFunc("hideeditor", 0, 0, funcHideEditor),
+                  new ObjNativeFunc("showconsole", 0, 0, funcShowConsole),
+                  new ObjNativeFunc("hideconsole", 0, 0, funcHideConsole),
                   new ObjNativeFunc("input", 1, 1, funcInput),
                   new ObjNativeFunc("rnd", 0, 0, funcRnd),
                   new ObjNativeFunc("time", 0, 0, funcTime),
@@ -43,6 +47,30 @@ function timer_onTick()
     return;
 
   timerCallback.runFunc();
+}
+
+function funcShowEditor(runtime, args)
+//Tell the UI thread to show the program editor pane
+{
+  postMessage({msgId: MSGID_SHOW_EDITOR});
+}
+
+function funcHideEditor(runtime, args)
+//Tell the UI thread to hide the program editor pane
+{
+  postMessage({msgId: MSGID_HIDE_EDITOR});
+}
+
+function funcShowConsole(runtime, args)
+//Tell the UI thread to show the console pane
+{
+  postMessage({msgId: MSGID_SHOW_CONSOLE});
+}
+
+function funcHideConsole(runtime, args)
+//Tell the UI thread to hide the console pane
+{
+  postMessage({msgId: MSGID_HIDE_CONSOLE});
 }
 
 function funcInput(runtime, args)

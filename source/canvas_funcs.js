@@ -9,6 +9,8 @@ class CanvasEvent
 }
 
 var canvasNativeFuncs = [
+                  new ObjNativeFunc("showcanvas", 0, 0, funcShowCanvas),
+                  new ObjNativeFunc("hidecanvas", 0, 0, funcHideCanvas),
                   new ObjNativeFunc("setcanvaswidth", 1, 1, funcSetCanvasWidth),
                   new ObjNativeFunc("setcanvasheight", 1, 1, funcSetCanvasHeight),
                   new ObjNativeFunc("clearcanvas", 0, 0, funcClearCanvas),
@@ -79,6 +81,18 @@ function getCanvasImageIndex(imageName)
   }
 
   return -1;
+}
+
+function funcShowCanvas(runtime, args)
+//Tell the UI thread to show the canvas pane
+{
+  postMessage({msgId: MSGID_SHOW_CANVAS});
+}
+
+function funcHideCanvas(runtime, args)
+//Tell the UI thread to hide the canvas pane
+{
+  postMessage({msgId: MSGID_HIDE_CANVAS});
 }
 
 function funcSetCanvasWidth(runtime, args)

@@ -21,7 +21,7 @@ class Compiler
     this.exitWhileOpIndexes = [];
     this.exitForOpIndexes = [];
     this.exitDoOpIndexes = [];
-    this.errorMsg = "";
+    this.error = null;
   }
 
   compile()
@@ -46,9 +46,9 @@ class Compiler
         this.currTokenIndex = 0;
       }
     }
-    catch(err)
+    catch(error)
     {
-      this.errorMsg = "Compile error on line " + err.token.lineNum + ", token '" + err.token.lexeme + "': " + err.message;
+      this.error = "Compile error on line " + error.token.lineNum + ", token '" + error.token.lexeme + "': " + error.message;
     }
 
     return this.bytecode;

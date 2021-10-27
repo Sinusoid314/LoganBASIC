@@ -14,6 +14,53 @@ saveBtn.addEventListener("click", saveBtn_onClick);
 examplesBtn.addEventListener("click", examplesBtn_onClick);
 helpBtn.addEventListener("click", helpBtn_onClick);
 
+function showEditor()
+//Show the program editor pane
+{
+  var toggle = document.getElementById("editorToggle");
+  var pane = document.getElementById("editorPane");
+
+  if(toggle.classList.contains("toggle-closed"))
+  {
+    toggle.classList.toggle("toggle-closed");
+    pane.classList.toggle("pane-closed");
+  }
+}
+
+function hideEditor()
+//Hide the program editor pane
+{
+  var toggle = document.getElementById("editorToggle");
+  var pane = document.getElementById("editorPane");
+
+  if(!(toggle.classList.contains("toggle-closed")))
+  {
+    toggle.classList.toggle("toggle-closed");
+    pane.classList.toggle("pane-closed");
+  }
+}
+
+function selectEditorLine(selLine)
+//Select the given editor line number
+{
+  var lines = progEditor.value.split("\n");
+  var startPos = 0, endPos = 0;
+
+  if((selLine < 1) || (selLine > lines.length))
+    return;
+
+  selLine--;
+
+  for(var currLine = 0; currLine < selLine; currLine++)
+    startPos += lines[currLine].length + 1;
+
+  endPos = startPos + lines[selLine].length;
+
+  //progEditor.focus();
+  progEditor.selectionStart = startPos;
+  progEditor.selectionEnd = endPos;
+}
+
 function window_onLoad(event)
 //Load a slource file into the editor if one if provided
 {

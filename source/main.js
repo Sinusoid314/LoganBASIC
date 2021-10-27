@@ -17,10 +17,10 @@ onmessage = progWorker_onMessage;
 function onRuntimeDone(runtime)
 //
 {
-  if(runtime.errorMsg == "")
+  if(runtime.error == null)
 	postMessage({msgId: MSGID_PROG_DONE, msgData: "Program run successfully."});
   else
-	postMessage({msgId: MSGID_PROG_DONE, msgData: runtime.errorMsg});
+	postMessage({msgId: MSGID_PROG_DONE, msgData: runtime.error});
 }
 
 function progWorker_onMessage(message)

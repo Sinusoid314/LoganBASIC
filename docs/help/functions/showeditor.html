@@ -1,0 +1,34 @@
+<html>
+
+<head>
+  <title></title>
+  <link rel="stylesheet" type="text/css" href="../reference_doc.css"></link>
+</head>
+
+<body>
+
+<h3>ShowEditor()</h3>
+
+<h4>Description</h4>
+<p id="description">
+Shows the program editor.
+</p>
+
+<h4>Usage</h4>
+<code id="usage">
+var sel
+
+print "Enter 's' to show editor, 'h' to hide editor, and 'q' to quit."
+
+do
+  sel = input(": ")
+
+  if sel = "s" then <b>showEditor()</b>
+  if sel = "h" then hideEditor()
+loop while sel <> "q"
+
+print "Done."
+</code>
+
+</body>
+</html>
