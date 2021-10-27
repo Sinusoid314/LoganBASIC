@@ -132,6 +132,10 @@ function progUI_onMessage(message)
     case MSGID_REMOVE_CANVAS_EVENT:
       removeCanvasEvent(message.data.msgData);
       break;
+
+    case MSGID_DRAW_TEXT:
+      drawCanvasText(message.data.msgData[0], message.data.msgData[1], message.data.msgData[2]);
+      break;
   }
 }
 

@@ -31,7 +31,7 @@ function image_onLoad(event)
 
   canvasImages.push(this);
 
-  progWorker.postMessage({msgId: MSGID_LOAD_IMAGE_RESULT, msgData: true});
+  progWorker.postMessage({msgId: MSGID_LOAD_IMAGE_RESULT, msgData: [true, this.width, this.height]});
 }
 
 function image_onError(event)
@@ -40,7 +40,7 @@ function image_onError(event)
   this.removeEventListener("load", image_onLoad);
   this.removeEventListener("error", image_onError);
 
-  progWorker.postMessage({msgId: MSGID_LOAD_IMAGE_RESULT, msgData: false});
+  progWorker.postMessage({msgId: MSGID_LOAD_IMAGE_RESULT, msgData: [false]});
 }
 
 function canvas_onAnimationFrame()
@@ -157,3 +157,10 @@ function removeCanvasEvent(eventName)
 {
   progCanvas.removeEventListener(eventName, canvas_onEvent);
 }
+
+function drawCanvasText(text, drawLeft, drawTop)
+//
+{
+  activeContext.fillText(text, drawLeft, drawTop);
+}
+

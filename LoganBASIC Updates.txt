@@ -5,6 +5,9 @@
 	- Added inputCallback to store the runtime object that requested console input.
 	- Modified loadImage() native function to pause the runtime until the image has either succeeded
 	  or failed to load, and return the result as either true or false respectively.
+	- Added drawText() native function.
+	- Added "pointermove" canvas event.
+	- Added getImageWidth() and getImageHeight() native functions.
 
 (October 25, 2021)
 	- Modified DrawCanvasBuffer() to take an optional callback function that is called after the buffer has been drawn.

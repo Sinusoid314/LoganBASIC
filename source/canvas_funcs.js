@@ -18,27 +18,34 @@ var canvasNativeFuncs = [
                   new ObjNativeFunc("enablecanvasbuffer", 0, 0, funcEnableCanvasBuffer),
                   new ObjNativeFunc("disablecanvasbuffer", 0, 0, funcDisableCanvasBuffer),
                   new ObjNativeFunc("drawcanvasbuffer", 0, 1, funcDrawCanvasBuffer),
-                  new ObjNativeFunc("setcanvasevent", 1, 2, funcSetCanvasEvent)
+                  new ObjNativeFunc("setcanvasevent", 1, 2, funcSetCanvasEvent),
+                  new ObjNativeFunc("drawtext", 3, 3, funcDrawText),
+                  new ObjNativeFunc("getimagewidth", 1, 1, funcGetImageWidth),
+                  new ObjNativeFunc("getimageheight", 1, 1, funcGetImageHeight)
                  ];
 
 var canvasEvents = [
                   new CanvasEvent("pointerdown", 2, null),
                   new CanvasEvent("pointerup", 2, null),
+                  new CanvasEvent("pointermove", 2, null),
                   new CanvasEvent("keydown", 1, null),
                   new CanvasEvent("keyup", 1, null)
                  ];
 
 var canvasImageNames = [];
+var canvasImageSizes = [];
 var loadImageCallback = null;
 var drawBufferCallback = null;
 
-function onLoadImageResult(result)
+function onLoadImageResult(resultData)
 //
 {
-  if(!result)
+  if(!resultData[0])
     canvasImageNames.pop();
+  else
+    canvasImageSizes.push({width: resultData[1], height: resultData[2]});
 
-  loadImageCallback.runtime.stack[loadImageCallback.runtime.stack.length - 1] = result;
+  loadImageCallback.runtime.stack[loadImageCallback.runtime.stack.length - 1] = resultData[0];
   loadImageCallback.runFunc();
 }
 
@@ -67,7 +74,7 @@ function getCanvasImageIndex(imageName)
 
   for(var imageIndex = 0; imageIndex < canvasImageNames.length; imageIndex++)
   {
-    if(canvasImageNames[imageIndex].id.toLowerCase() == imageName)
+    if(canvasImageNames[imageIndex].toLowerCase() == imageName)
       return imageIndex;
   }
 
@@ -244,5 +251,41 @@ function funcSetCanvasEvent(runtime, args)
   }
 
   return 0;
+}
+
+function funcDrawText(runtime, args)
+//
+{
+  var text = args[0];
+  var drawLeft = args[1];
+  var drawTop = args[2];
+
+  postMessage({msgId: MSGID_DRAW_TEXT, msgData: [text, drawLeft, drawTop]});
+
+  return 0;
+}
+
+function funcGetImageWidth(runtime, args)
+//
+{
+  var imageName = args[0];
+  var imageNameIndex = canvasImageNames.indexOf(imageName);
+
+  if(imageNameIndex == -1)
+    runtime.raiseError("Image '" + imageName + "' does not exist.");
+
+  return canvasImageSizes[imageNameIndex].width;
+}
+
+function funcGetImageHeight(runtime, args)
+//
+{
+  var imageName = args[0];
+  var imageNameIndex = canvasImageNames.indexOf(imageName);
+
+  if(imageNameIndex == -1)
+    runtime.raiseError("Image '" + imageName + "' does not exist.");
+
+  return canvasImageSizes[imageNameIndex].height;
 }
 
