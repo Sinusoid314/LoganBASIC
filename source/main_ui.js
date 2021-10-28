@@ -19,7 +19,7 @@ function switchMode()
   isRunning = !isRunning;
 }
 
-function stopProg(exitStatusStr)
+function stopProg(exitStatus)
 //Stop the running program
 {
   if(!isRunning)
@@ -29,7 +29,7 @@ function stopProg(exitStatusStr)
   progWorker = null;
 
   closeConsoleInput();
-  statusBar.innerHTML = exitStatusStr;
+  statusBar.innerHTML = exitStatus;
 
   switchMode();
 }
@@ -69,8 +69,12 @@ function progUI_onMessage(message)
 {
   switch(message.data.msgId)
   {
-    case MSGID_PROG_DONE:
-      onProgDone(message.data.msgData);
+    case MSGID_PROG_DONE_SUCCESS:
+      onProgDoneSuccess();
+      break;
+
+    case MSGID_PROG_DONE_ERROR:
+      onProgDoneError(message.data.msgData);
       break;
 
     case MSGID_STATUS_CHANGE:
@@ -163,10 +167,17 @@ function progUI_onMessage(message)
   }
 }
 
-function onProgDone(exitStatusStr)
-//Stop the program (self-triggered)
+function onProgDoneSuccess()
+//Stop the program with success (self-triggered)
 {
-  stopProg(exitStatusStr);
+  stopProg("Program run successfully.");
+}
+
+function onProgDoneError(error)
+//Stop the program with error (self-triggered)
+{
+  selectEditorLine(error.lineNum);
+  stopProg(error.message);
 }
 
 function onStatusChange(statusStr)

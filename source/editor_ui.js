@@ -56,9 +56,10 @@ function selectEditorLine(selLine)
 
   endPos = startPos + lines[selLine].length;
 
-  //progEditor.focus();
+  progEditor.focus();
   progEditor.selectionStart = startPos;
   progEditor.selectionEnd = endPos;
+  progEditor.scrollTop = (progEditor.clientHeight / progEditor.rows) * selLine;
 }
 
 function window_onLoad(event)

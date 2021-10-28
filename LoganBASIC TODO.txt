@@ -1,3 +1,2 @@
-- Add editor line selection when reporting an error.
 - Add audio support.
 - Add debugger.

@@ -1,5 +1,6 @@
 (October 27, 2021)
 	- Added showEditor(), hideEditor(), showConsole(), hideConsole(), showCanvas(), and hideCanvas() native functions.
+	- Added editor line selection when reporting an error.
 
 (October 26, 2021)
 	- Moved onInputResult() from main module to std_funcs module.

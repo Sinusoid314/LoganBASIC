@@ -48,7 +48,7 @@ class Compiler
     }
     catch(error)
     {
-      this.error = "Compile error on line " + error.token.lineNum + ", token '" + error.token.lexeme + "': " + error.message;
+      this.error = error;
     }
 
     return this.bytecode;
@@ -1150,13 +1150,15 @@ class Compiler
   raiseError(message, token = null)
   //
   {
-    var err = {message: message};
+    var lineNum;
 
     if(token == null)
-      err.token = this.peekToken();
+      lineNum = this.peekToken().lineNum;
     else
-      err.token = token;
+      lineNum = token.lineNum;
 
-    throw err;
+    message = "Compile error on line " + lineNum + ": " + message;
+
+    throw {message: message, lineNum: lineNum};
   }
 }

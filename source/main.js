@@ -18,9 +18,9 @@ function onRuntimeDone(runtime)
 //
 {
   if(runtime.error == null)
-	postMessage({msgId: MSGID_PROG_DONE, msgData: "Program run successfully."});
+	postMessage({msgId: MSGID_PROG_DONE_SUCCESS});
   else
-	postMessage({msgId: MSGID_PROG_DONE, msgData: runtime.error});
+	postMessage({msgId: MSGID_PROG_DONE_ERROR, msgData: runtime.error});
 }
 
 function progWorker_onMessage(message)
@@ -59,7 +59,7 @@ function onStartProg(source)
 
   //console.log(mainBytecode.toString());
 
-  if(mainCompiler.errorMsg == "")
+  if(mainCompiler.error == null)
   {
     postMessage({msgId: MSGID_STATUS_CHANGE, msgData: "Running..."});
     mainRuntime = new Runtime(mainBytecode);
@@ -68,7 +68,7 @@ function onStartProg(source)
   }
   else
   {
-    postMessage({msgId: MSGID_PROG_DONE, msgData: mainCompiler.errorMsg});
+    postMessage({msgId: MSGID_PROG_DONE_ERROR, msgData: mainCompiler.error});
   }
 }
 
