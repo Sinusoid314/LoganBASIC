@@ -1,3 +1,6 @@
+(October 29, 2021)
+	- Added loadSound() and unloadSound() native functions, along with sound_funcs and sound_ui modules.
+
 (October 27, 2021)
 	- Added showEditor(), hideEditor(), showConsole(), hideConsole(), showCanvas(), and hideCanvas() native functions.
 	- Added editor line selection when reporting an error.

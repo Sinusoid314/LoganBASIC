@@ -164,6 +164,14 @@ function progUI_onMessage(message)
     case MSGID_DRAW_TEXT:
       drawCanvasText(message.data.msgData[0], message.data.msgData[1], message.data.msgData[2]);
       break;
+
+    case MSGID_LOAD_SOUND_REQUEST:
+      loadSound(message.data.msgData);
+      break;
+
+    case MSGID_UNLOAD_SOUND:
+      unloadSound(message.data.msgData);
+      break;
   }
 }
 

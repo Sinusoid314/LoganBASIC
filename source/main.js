@@ -47,6 +47,10 @@ function progWorker_onMessage(message)
     case MSGID_DRAW_CANVAS_BUFFER_DONE:
       onDrawCanvasBufferDone();
       break;
+
+    case MSGID_LOAD_SOUND_RESULT:
+      onLoadSoundResult(message.data.msgData);
+      break;
   }
 }
 
