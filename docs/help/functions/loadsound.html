@@ -1,0 +1,50 @@
+<html>
+
+<head>
+  <title></title>
+  <link rel="stylesheet" type="text/css" href="../reference_doc.css"></link>
+</head>
+
+<body>
+
+<h3>LoadSound(soundName, soundSource)</h3>
+
+<h4>Description</h4>
+<p id="description">
+Loads an audio file specified by soundSource and assigns it a reference name specified by soundName.
+The function waits for the sound to load before returning, and returns true if the sound successfully
+loaded, and false otherwise. Once loaded, the sound can be played with <a href="playsound.html">PlaySound</a>
+and unloaded with <a href="unloadsound.html">UnloadSound</a>.
+</p>
+
+<h4>Usage</h4>
+<code id="usage">
+var choice
+
+print "Loading sound file..."
+
+if not <b>loadSound("mac_intro", "../examples/mac_intro.wav")</b> then
+  print "Sound failed to load."
+  end
+end if
+
+print "Sound loaded."
+
+do
+  print ""
+  print "Enter 'play', 'pause', 'stop', or 'q' to quit."
+  choice = input(": ")
+
+  if choice = "play" then playSound("mac_intro")
+  if choice = "pause" then pauseSound("mac_intro")
+  if choice = "stop" then stopSound("mac_intro")
+loop while choice <> "q"
+
+unloadSound("mac_intro")
+
+print ""
+print "Done."
+</code>
+
+</body>
+</html>

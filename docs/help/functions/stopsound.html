@@ -1,0 +1,47 @@
+<html>
+
+<head>
+  <title></title>
+  <link rel="stylesheet" type="text/css" href="../reference_doc.css"></link>
+</head>
+
+<body>
+
+<h3>StopSound(soundName)</h3>
+
+<h4>Description</h4>
+<p id="description">
+Stops play of the sound specified by soundName.
+</p>
+
+<h4>Usage</h4>
+<code id="usage">
+var choice
+
+print "Loading sound file..."
+
+if not loadSound("mac_intro", "../examples/mac_intro.wav") then
+  print "Sound failed to load."
+  end
+end if
+
+print "Sound loaded."
+
+do
+  print ""
+  print "Enter 'play', 'pause', 'stop', or 'q' to quit."
+  choice = input(": ")
+
+  if choice = "play" then playSound("mac_intro")
+  if choice = "pause" then pauseSound("mac_intro")
+  if choice = "stop" then <b>stopSound("mac_intro")</b>
+loop while choice <> "q"
+
+unloadSound("mac_intro")
+
+print ""
+print "Done."
+</code>
+
+</body>
+</html>

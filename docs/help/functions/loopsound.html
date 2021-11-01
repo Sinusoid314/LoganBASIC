@@ -1,0 +1,40 @@
+<html>
+
+<head>
+  <title></title>
+  <link rel="stylesheet" type="text/css" href="../reference_doc.css"></link>
+</head>
+
+<body>
+
+<h3>LoopSound(soundName, isLooped)</h3>
+
+<h4>Description</h4>
+<p id="description">
+Makes the sound, specified by soundName, start over when it reaches the end if isLooped is true.
+Setting isLooped to false will turn looping off.
+</p>
+
+<h4>Usage</h4>
+<code id="usage">
+print "Loading sound file..."
+
+if not loadSound("laff", "../examples/laff.wav") then
+  print "Sound failed to load."
+  end
+end if
+
+print "Sound loaded."
+print ""
+
+<b>loopSound("laff", true)</b>
+
+playSound("laff")
+
+input("Press enter to quit...")
+
+unloadSound("laff")
+</code>
+
+</body>
+</html>
