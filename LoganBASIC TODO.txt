@@ -1,3 +1,2 @@
-- Add playSound(), pauseSound(), stopSound(), getSoundLen(), and getSoundPos() native functions.
-- Add help page entries for loadSound() and unloadSound().
+- Add help page entries for sound functions.
 - Add debugger.

@@ -128,7 +128,7 @@ function funcLoadImage(runtime, args)
   var imageName = args[0];
   var imageSource = args[1];
 
-  if(canvasImageNames.indexOf(imageName) != -1)
+  if(getCanvasImageIndex(imageName) != -1)
     runtime.raiseError("Image '" + imageName + "' is already loaded.");
 
   canvasImageNames.push(imageName);
@@ -149,12 +149,13 @@ function funcUnloadImage(runtime, args)
 //Send a message to the canvas to unload an image
 {
   var imageName = args[0];
-  var imageNameIndex = canvasImageNames.indexOf(imageName);
+  var imageIndex = getCanvasImageIndex(imageName);
 
-  if(imageNameIndex == -1)
+  if(imageIndex == -1)
     runtime.raiseError("Image '" + imageName + "' does not exist.");
 
   canvasImageNames.splice(imageNameIndex, 1);
+
   postMessage({msgId: MSGID_UNLOAD_IMAGE, msgData: imageNameIndex});
 
   return 0;
@@ -164,11 +165,11 @@ function funcDrawImage(runtime, args)
 //Send an image to the canvas to draw an image
 {
   var imageName = args[0];
-  var imageNameIndex = canvasImageNames.indexOf(imageName);
+  var imageIndex = getCanvasImageIndex(imageName);
   var drawLeft = args[1];
   var drawTop = args[2];
 
-  if(imageNameIndex == -1)
+  if(imageIndex == -1)
     runtime.raiseError("Image '" + imageName + "' does not exist.");
 
   postMessage({msgId: MSGID_DRAW_IMAGE, msgData: [imageNameIndex, drawLeft, drawTop]});
@@ -283,9 +284,9 @@ function funcGetImageWidth(runtime, args)
 //
 {
   var imageName = args[0];
-  var imageNameIndex = canvasImageNames.indexOf(imageName);
+  var imageIndex = getCanvasImageIndex(imageName);
 
-  if(imageNameIndex == -1)
+  if(imageIndex == -1)
     runtime.raiseError("Image '" + imageName + "' does not exist.");
 
   return canvasImageSizes[imageNameIndex].width;
@@ -295,9 +296,9 @@ function funcGetImageHeight(runtime, args)
 //
 {
   var imageName = args[0];
-  var imageNameIndex = canvasImageNames.indexOf(imageName);
+  var imageIndex = getCanvasImageIndex(imageName);
 
-  if(imageNameIndex == -1)
+  if(imageIndex == -1)
     runtime.raiseError("Image '" + imageName + "' does not exist.");
 
   return canvasImageSizes[imageNameIndex].height;

@@ -34,6 +34,45 @@ function loadSound(soundSource)
 function unloadSound(soundIndex)
 //Unload an audio element
 {
+  sounds[soundIndex].pause();
+  sounds[soundIndex].currentTime = sounds[soundIndex].duration;
   sounds.splice(soundIndex, 1);
+}
+
+function playSound(soundIndex)
+//
+{
+  sounds[soundIndex].play();
+}
+
+function pauseSound(soundIndex)
+//
+{
+  sounds[soundIndex].pause();
+}
+
+function stopSound(soundIndex)
+//
+{
+  sounds[soundIndex].pause();
+  sounds[soundIndex].currentTime = 0;
+}
+
+function getSoundPos(soundIndex)
+//
+{
+  progWorker.postMessage({msgId: MSGID_GET_SOUND_POS_RESULT, msgData: sounds[soundIndex].currentTime});
+}
+
+function setSoundPos(soundIndex, newPos)
+//
+{
+  sounds[soundIndex].currentTime = newPos;
+}
+
+function loopSound(soundIndex, isLooped)
+//
+{
+  sounds[soundIndex].loop = isLooped;
 }
 

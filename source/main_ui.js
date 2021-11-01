@@ -172,6 +172,30 @@ function progUI_onMessage(message)
     case MSGID_UNLOAD_SOUND:
       unloadSound(message.data.msgData);
       break;
+
+    case MSGID_PLAY_SOUND:
+      playSound(message.data.msgData);
+      break;
+
+    case MSGID_PAUSE_SOUND:
+      pauseSound(message.data.msgData);
+      break;
+
+    case MSGID_STOP_SOUND:
+      stopSound(message.data.msgData);
+      break;
+
+    case MSGID_GET_SOUND_POS:
+      getSoundPos(message.data.msgData);
+      break;
+
+    case MSGID_SET_SOUND_POS:
+      setSoundPos(message.data.msgData[0], message.data.msgData[1]);
+      break;
+
+    case MSGID_LOOP_SOUND:
+      loopSound(message.data.msgData[0], message.data.msgData[1]);
+      break;
   }
 }
 

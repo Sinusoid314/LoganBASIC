@@ -1,3 +1,7 @@
+(November 1, 2021)
+	- Added playSound(), pauseSound(), stopSound(), getSoundLen(), getSoundPos(), setSoundPos(), and loopSound() native functions.
+	- Added entries for the sound functions to the help page.
+
 (October 29, 2021)
 	- Added loadSound() and unloadSound() native functions, along with sound_funcs and sound_ui modules.
 
