@@ -1,3 +1,6 @@
+(November 10, 2021)
+	- Fixed bug with images not drawing to the canvas.
+
 (November 1, 2021)
 	- Added playSound(), pauseSound(), stopSound(), getSoundLen(), getSoundPos(), setSoundPos(), and loopSound() native functions.
 	- Added entries for the sound functions to the help page.
