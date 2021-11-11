@@ -9,23 +9,24 @@ const TOKEN_RIGHT_PAREN = 6;
 const TOKEN_LEFT_BRACKET = 7;
 const TOKEN_RIGHT_BRACKET = 8;
 const TOKEN_COMMA = 9;
+const TOKEN_DOT = 10;
 
-const TOKEN_MINUS = 10;
-const TOKEN_PLUS = 11;
-const TOKEN_SLASH = 12;
-const TOKEN_STAR = 13;
-const TOKEN_PERCENT = 14;
+const TOKEN_MINUS = 11;
+const TOKEN_PLUS = 12;
+const TOKEN_SLASH = 13;
+const TOKEN_STAR = 14;
+const TOKEN_PERCENT = 15;
 
-const TOKEN_EQUAL = 15;
-const TOKEN_NOT_EQUAL = 16;
-const TOKEN_GREATER = 17;
-const TOKEN_GREATER_EQUAL = 18;
-const TOKEN_LESS = 19;
-const TOKEN_LESS_EQUAL = 20;
-const TOKEN_NOT = 21;
-const TOKEN_OR = 22;
-const TOKEN_AND = 23;
-const TOKEN_CARET = 24;
+const TOKEN_EQUAL = 16;
+const TOKEN_NOT_EQUAL = 17;
+const TOKEN_GREATER = 18;
+const TOKEN_GREATER_EQUAL = 19;
+const TOKEN_LESS = 20;
+const TOKEN_LESS_EQUAL = 21;
+const TOKEN_NOT = 22;
+const TOKEN_OR = 23;
+const TOKEN_AND = 24;
+const TOKEN_CARET = 25;
 
 const TOKEN_TRUE = 30;
 const TOKEN_FALSE = 31;
@@ -54,6 +55,8 @@ const TOKEN_EXIT = 57;
 const TOKEN_FUNCTION = 58;
 const TOKEN_RETURN = 59;
 const TOKEN_WAIT = 60;
+const TOKEN_STRUCTURE = 61;
+const TOKEN_NEW = 62;
 
 class Token
 {

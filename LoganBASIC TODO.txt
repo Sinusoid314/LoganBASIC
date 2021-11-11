@@ -1,2 +1,2 @@
-- Add help page entries for sound functions.
+- Add help page entries for Structure statement and New operator.
 - Add debugger.

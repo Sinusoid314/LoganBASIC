@@ -44,6 +44,9 @@ const OPCODE_CHECK_COUNTER = 35;
 const OPCODE_INCREMENT_COUNTER = 36;
 const OPCODE_RETURN = 37;
 const OPCODE_PAUSE = 38;
+const OPCODE_CREATE_STRUCT = 39;
+const OPCODE_LOAD_STRUCT_FIELD = 40;
+const OPCODE_STORE_STRUCT_FIELD_PERSIST = 41;
 
 opNames = [];
 opNames[OPCODE_LOAD_TRUE] = "LOAD_TRUE";
@@ -84,6 +87,19 @@ opNames[OPCODE_CHECK_COUNTER] = "CHECK_COUNTER";
 opNames[OPCODE_INCREMENT_COUNTER] = "INCREMENT_COUNTER";
 opNames[OPCODE_RETURN] = "RETURN";
 opNames[OPCODE_PAUSE] = "PAUSE";
+opNames[OPCODE_CREATE_STRUCT] = "CREATE_STRUCT";
+opNames[OPCODE_LOAD_STRUCT_FIELD] = "LOAD_STRUCT_FIELD";
+opNames[OPCODE_STORE_STRUCT_FIELD_PERSIST] = "STORE_STRUCT_FIELD_PERSIST";
+
+class StructureDef
+{
+  constructor(ident)
+  {
+    this.ident = ident;
+    this.fieldIdents = [];
+    this.tokens = [];
+  }
+}
 
 class Bytecode
 {
@@ -91,6 +107,7 @@ class Bytecode
   {
     this.nativeFuncs = [];
     this.userFuncs = [];
+    this.structDefs = [];
     this.literals = [];
   }
 

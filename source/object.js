@@ -96,3 +96,15 @@ class ObjArray
     return linearIndex;
   }
 }
+
+class ObjStructure
+{
+  constructor(def)
+  {
+    this.def = def;
+    this.fieldMap = new Map();
+
+    for(var fieldIndex = 0; fieldIndex < def.fieldIdents.length; fieldIndex++)
+      this.fieldMap.set(def.fieldIdents[fieldIndex], 0);
+  }
+}

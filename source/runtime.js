@@ -97,6 +97,9 @@ class Runtime
     this.opFuncs[OPCODE_INCREMENT_COUNTER] = this.opIncrementCounter.bind(this);
     this.opFuncs[OPCODE_RETURN] = this.opReturn.bind(this);
     this.opFuncs[OPCODE_PAUSE] = this.opPause.bind(this);
+    this.opFuncs[OPCODE_CREATE_STRUCT] = this.opCreateStruct.bind(this);
+    this.opFuncs[OPCODE_LOAD_STRUCT_FIELD] = this.opLoadStructField.bind(this);
+    this.opFuncs[OPCODE_STORE_STRUCT_FIELD_PERSIST] = this.opStoreStructFieldPersist.bind(this);
 
     //Load and call the main user function
     this.stack.push(this.bytecode.userFuncs[0]);
@@ -534,6 +537,49 @@ class Runtime
   //Pause program execution and exit from the main runtime loop
   {
     this.status = RUNTIME_STATUS_PAUSED;
+  }
+
+  opCreateStruct()
+  //Create an instance of the given structure definition
+  {
+    var structDefIndex = this.currOp[1];
+    var structDef = this.bytecode.structDefs[structDefIndex];
+    var struct = new ObjStructure(structDef);
+
+    this.stack.push(struct);
+  }
+
+  opLoadStructField()
+  //Push the value of the given structure field onto the stack
+  {
+    var fieldIdent = this.stack.pop();
+    var struct = this.stack.pop();
+
+    if(!(struct instanceof ObjStructure))
+      this.raiseError("Expected structure.");
+
+    if(!struct.fieldMap.has(fieldIdent))
+      this.raiseError("Structure field '" + fieldIdent + "' not defined.");
+
+    this.stack.push(struct.fieldMap.get(fieldIdent));
+  }
+
+  opStoreStructFieldPersist()
+  //Set the given structure field to the given value, keeping value on the stack
+  {
+    var fieldVal = this.stack.pop();
+    var fieldIdent = this.stack.pop();
+    var struct = this.stack.pop();
+
+    if(!(struct instanceof ObjStructure))
+      this.raiseError("Expected structure.");
+
+    if(!struct.fieldMap.has(fieldIdent))
+      this.raiseError("Structure field '" + fieldIdent + "' not defined.");
+
+    struct.fieldMap.set(fieldIdent, fieldVal);
+
+    this.stack.push(fieldVal);
   }
 
   callNativeFunc(func, argCount)

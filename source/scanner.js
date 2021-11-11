@@ -24,7 +24,9 @@ var keywordList = {
                    "exit": TOKEN_EXIT,
                    "function": TOKEN_FUNCTION,
                    "return": TOKEN_RETURN,
-                   "wait": TOKEN_WAIT
+                   "wait": TOKEN_WAIT,
+                   "structure": TOKEN_STRUCTURE,
+                   "new": TOKEN_NEW
                   };
 
 class Scanner
@@ -77,6 +79,9 @@ class Scanner
 
       case ',':
         return this.makeToken(TOKEN_COMMA);
+
+      case '.':
+        return this.makeToken(TOKEN_DOT);
 
       case '-':
         return this.makeToken(TOKEN_MINUS);

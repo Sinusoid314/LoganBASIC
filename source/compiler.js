@@ -17,6 +17,7 @@ class Compiler
     this.bytecode.nativeFuncs = nativeFuncs;
     this.mainUserFunc = null;
     this.currUserFunc = null;
+    this.currTokens = null;
     this.currTokenIndex = 0;
     this.exitWhileOpIndexes = [];
     this.exitForOpIndexes = [];
@@ -31,20 +32,9 @@ class Compiler
 	{
       this.scanTokens();
 
-      for(var funcIndex = 0; funcIndex < this.bytecode.userFuncs.length; funcIndex++)
-      {
-        this.currUserFunc = this.bytecode.userFuncs[funcIndex];
+      this.parseStructDefs();
 
-        if(this.currUserFunc != this.mainUserFunc)
-          this.parseParameters();
-
-        while(!this.endOfTokens())
-          this.parseStatement();
-
-        this.addReturnOps();
-        this.currUserFunc.tokens.splice(0);
-        this.currTokenIndex = 0;
-      }
+      this.parseUserFuncs();
     }
     catch(error)
     {
@@ -57,92 +47,190 @@ class Compiler
   scanTokens()
   //Use the scanner to build a token list for each user function
   {
-    var token, prevToken, func;
+    var currToken, prevToken, tokens;
+    var inFunc = false;
+    var inStructDef = false;
 
-    func = new ObjUserFunc("<main>");
-    this.bytecode.userFuncs.push(func);
-    this.mainUserFunc = func;
+    this.mainUserFunc = new ObjUserFunc("<main>");
+    this.bytecode.userFuncs.push(this.mainUserFunc);
+    tokens = this.mainUserFunc.tokens;
 
     do
     {
-      token = this.scanner.scanToken();
+      currToken = this.scanner.scanToken();
 
-      switch(token.type)
+      switch(currToken.type)
       {
         case TOKEN_ERROR:
-          this.raiseError(token.lexeme, token);
+          this.raiseError(currToken.lexeme, currToken);
           break;
 
         case TOKEN_NEWLINE:
-          if(func.tokens.length > 0)
+          if(tokens.length > 0)
           {
-            if(func.tokens[func.tokens.length - 1].type != TOKEN_NEWLINE)
-              func.tokens.push(token);
+            if(tokens[tokens.length - 1].type != TOKEN_NEWLINE)
+              tokens.push(currToken);
           }
           break;
 
         case TOKEN_COLON:
-          if(func.tokens.length > 0)
+          if(tokens.length > 0)
           {
-            if(func.tokens[func.tokens.length - 1].type != TOKEN_COLON)
-              func.tokens.push(token);
+            if(tokens[tokens.length - 1].type != TOKEN_COLON)
+              tokens.push(currToken);
           }
           break;
 
         case TOKEN_UNDERSCORE:
-          prevToken = token;
-          token = this.scanner.scanToken();
-          if(token.type != TOKEN_NEWLINE)
+          prevToken = currToken;
+          currToken = this.scanner.scanToken();
+
+          if(currToken.type != TOKEN_NEWLINE)
           {
-            func.tokens.push(prevToken);
-            func.tokens.push(token);
+            tokens.push(prevToken);
+            tokens.push(currToken);
           }
           break;
 
         case TOKEN_FUNCTION:
-          if(func != this.mainUserFunc)
-            this.raiseError("Cannot have nested functions.", token);
+          if(inFunc)
+            this.raiseError("Cannot have nested functions.", currToken);
 
-          token = this.scanner.scanToken();
-          if(token.type != TOKEN_IDENTIFIER)
-            this.raiseError("Expected identifier after 'function'.", token);
+          if(inStructDef)
+            this.raiseError("Cannot have functions within structures.", currToken);
 
-          if(this.getNativeFuncIndex(token.lexeme) != -1)
-            this.raiseError("'" + token.lexeme + "' is already a function.", token);
+          currToken = this.scanner.scanToken();
 
-          if(this.getUserFuncIndex(token.lexeme) != -1)
-            this.raiseError("'" + token.lexeme + "' is already a function.", token);
+          if(currToken.type != TOKEN_IDENTIFIER)
+            this.raiseError("Expected identifier after 'function'.", currToken);
 
-          func = new ObjUserFunc(token.lexeme);
-          this.bytecode.userFuncs.push(func);
+          if(this.getNativeFuncIndex(currToken.lexeme) != -1)
+            this.raiseError("'" + currToken.lexeme + "' is already a function.", currToken);
+
+          if(this.getUserFuncIndex(currToken.lexeme) != -1)
+            this.raiseError("'" + currToken.lexeme + "' is already a function.", currToken);
+
+          if(this.getStructDefIndex(currToken.lexeme) != -1)
+            this.raiseError("'" + currToken.lexeme + "' is already a structure.", currToken);
+
+          this.bytecode.userFuncs.push(new ObjUserFunc(currToken.lexeme));
+          tokens = this.bytecode.userFuncs[this.bytecode.userFuncs.length - 1].tokens;
+          inFunc = true;
           break;
 
+        case TOKEN_STRUCTURE:
+          if(inStructDef)
+            this.raiseError("Cannot have nested structures.", currToken);
+
+          if(inFunc)
+            this.raiseError("Cannot have structures within functions.", currToken);
+
+          currToken = this.scanner.scanToken();
+
+          if(currToken.type != TOKEN_IDENTIFIER)
+            this.raiseError("Expected identifier after 'structure'.", currToken);
+
+          if(this.getNativeFuncIndex(currToken.lexeme) != -1)
+            this.raiseError("'" + currToken.lexeme + "' is already a function.", currToken);
+
+          if(this.getUserFuncIndex(currToken.lexeme) != -1)
+            this.raiseError("'" + currToken.lexeme + "' is already a function.", currToken);
+
+          if(this.getStructDefIndex(currToken.lexeme) != -1)
+            this.raiseError("'" + currToken.lexeme + "' is already a structure.", currToken);
+
+          this.bytecode.structDefs.push(new StructureDef(currToken.lexeme));
+          tokens = this.bytecode.structDefs[this.bytecode.structDefs.length - 1].tokens;
+          inStructDef = true;
+          break;
+
+
         case TOKEN_END:
-          prevToken = token;
-          token = this.scanner.scanToken();
-          if(token.type != TOKEN_FUNCTION)
+          prevToken = currToken;
+          currToken = this.scanner.scanToken();
+
+          if(currToken.type == TOKEN_FUNCTION)
           {
-            func.tokens.push(prevToken);
-            func.tokens.push(token);
+            if(!inFunc)
+              this.raiseError("'end function' without 'function'.", currToken);
+
+            tokens.push(this.scanner.makeEOFToken());
+            tokens = this.mainUserFunc.tokens;
+            inFunc = false;
+          }
+          else if(currToken.type == TOKEN_STRUCTURE)
+          {
+            if(!inStructDef)
+              this.raiseError("'end structure' without 'structure'.", currToken);
+
+            tokens.push(this.scanner.makeEOFToken());
+            tokens = this.mainUserFunc.tokens;
+            inStructDef = false;
           }
           else
           {
-            if(func == this.mainUserFunc)
-              this.raiseError("'end function' without 'function'.", token);
-
-            func.tokens.push(this.scanner.makeEOFToken());
-            func = this.mainUserFunc;
+            tokens.push(prevToken);
+            tokens.push(currToken);
           }
           break;
 
         default:
-          func.tokens.push(token);
+          tokens.push(currToken);
       }
     }
-    while(token.type != TOKEN_EOF)
+    while(currToken.type != TOKEN_EOF)
 
-    if(func != this.mainUserFunc)
-      this.raiseError("'function' without 'end function'.", func.tokens[0]);
+    if(inFunc)
+      this.raiseError("'function' without 'end function'.", tokens[0]);
+
+    if(inStructDef)
+      this.raiseError("'structure' without 'end structure'.", tokens[0]);
+  }
+
+  parseStructDefs()
+  //
+  {
+    for(var structDefIndex = 0; structDefIndex < this.bytecode.structDefs.length; structDefIndex++)
+    {
+      this.currTokens = this.bytecode.structDefs[structDefIndex].tokens;
+
+      if(!this.matchTerminator())
+        this.raiseError("Expected terminator.");
+
+      while(!this.endOfTokens())
+      {
+        if(!this.matchToken(TOKEN_IDENTIFIER))
+          this.raiseError("Expected identifier.");
+
+        this.bytecode.structDefs[structDefIndex].fieldIdents.push(this.prevToken().lexeme);
+
+		if(!this.matchTerminator())
+          this.raiseError("Expected terminator after identifier.");
+      }
+
+      this.currTokens.splice(0);
+      this.currTokenIndex = 0;
+    }
+  }
+
+  parseUserFuncs()
+  //
+  {
+    for(var funcIndex = 0; funcIndex < this.bytecode.userFuncs.length; funcIndex++)
+    {
+      this.currUserFunc = this.bytecode.userFuncs[funcIndex];
+      this.currTokens = this.currUserFunc.tokens;
+
+      if(this.currUserFunc != this.mainUserFunc)
+        this.parseParameters();
+
+      while(!this.endOfTokens())
+        this.parseStatement();
+
+      this.addReturnOps();
+      this.currTokens.splice(0);
+      this.currTokenIndex = 0;
+    }
   }
 
   parseStatement(requireTerminator = true)
@@ -260,14 +348,14 @@ class Compiler
     }
 
     if(!this.matchToken(TOKEN_LEFT_BRACKET))
-      this.raiseError("Expected '[' after identifier");
+      this.raiseError("Expected '[' after identifier.");
 
     dimCount = this.parseArguments();
     if(dimCount == 0)
       this.raiseError("Expected one or more dimension expressions.");
 
     if(!this.matchToken(TOKEN_RIGHT_BRACKET))
-      this.raiseError("Expected ']' after indexes");
+      this.raiseError("Expected ']' after dimensions.");
 
     this.addOp([OPCODE_CREATE_ARRAY, dimCount]);
     this.addOp([OPCODE_STORE_VAR, varRef.scope, varRef.index]);
@@ -743,17 +831,44 @@ class Compiler
   //Parse a function call expression
   {
     var argCount;
+    var fieldIdent;
 
     this.arrayItemExpr(isStmt);
 
-    while(this.matchToken(TOKEN_LEFT_PAREN))
+    while(true)
     {
-      argCount = this.parseArguments();
+      if(this.matchToken(TOKEN_LEFT_PAREN))
+      {
+        argCount = this.parseArguments();
 
-      if(!this.matchToken(TOKEN_RIGHT_PAREN))
-        this.raiseError("Expected ')' after function arguments.");
+        if(!this.matchToken(TOKEN_RIGHT_PAREN))
+          this.raiseError("Expected ')' after function arguments.");
 
-      this.addOp([OPCODE_CALL_FUNC, argCount]);
+        this.addOp([OPCODE_CALL_FUNC, argCount]);
+      }
+      else if(this.matchToken(TOKEN_DOT))
+      {
+        if(!this.matchToken(TOKEN_IDENTIFIER))
+          this.raiseError("Expected identifier after '.'.");
+
+        fieldIdent = this.prevToken().lexeme;
+
+        this.addOp([OPCODE_LOAD_LIT, this.getLiteralIndex(fieldIdent)]);
+
+        if(isStmt && this.matchToken(TOKEN_EQUAL))
+        {
+          this.parseExpression();
+          this.addOp([OPCODE_STORE_STRUCT_FIELD_PERSIST]);
+        }
+        else
+        {
+          this.addOp([OPCODE_LOAD_STRUCT_FIELD]);
+        }
+      }
+      else
+      {
+        break;
+      }
     }
   }
 
@@ -762,7 +877,7 @@ class Compiler
   {
     var indexCount;
 
-    this.primaryExpr(isStmt);
+    this.newExpr(isStmt);
 
     while(this.matchToken(TOKEN_LEFT_BRACKET))
     {
@@ -780,6 +895,50 @@ class Compiler
       {
         this.addOp([OPCODE_LOAD_ARRAY_ITEM, indexCount]);
       }
+    }
+  }
+
+  newExpr(isStmt)
+  //Parse a New expression
+  {
+    var dimCount;
+    var structDefIdent;
+    var structDefIndex;
+
+    if(!this.matchToken(TOKEN_NEW))
+    {
+      this.primaryExpr(isStmt);
+      return;
+    }
+
+    if(this.matchToken(TOKEN_ARRAY))
+    {
+      if(!this.matchToken(TOKEN_LEFT_BRACKET))
+        this.raiseError("Expected '[' after 'array'.");
+
+      dimCount = this.parseArguments();
+
+      if(dimCount == 0)
+        this.raiseError("Expected one or more dimension expressions.");
+
+      if(!this.matchToken(TOKEN_RIGHT_BRACKET))
+        this.raiseError("Expected ']' after dimensions.");
+
+      this.addOp([OPCODE_CREATE_ARRAY, dimCount]);
+    }
+    else if(this.matchToken(TOKEN_IDENTIFIER))
+    {
+      structDefIdent = this.prevToken().lexeme;
+      structDefIndex = this.getStructDefIndex(structDefIdent);
+
+      if(structDefIndex == -1)
+        this.raiseError("Structure '" + structDefIdent + "' not defined.");
+
+      this.addOp([OPCODE_CREATE_STRUCT, structDefIndex]);
+    }
+    else
+    {
+      this.raiseError("Expected 'array' or structure identifier after 'new'.");
     }
   }
 
@@ -919,6 +1078,9 @@ class Compiler
     if(this.getUserFuncIndex(varIdent) != -1)
       this.raiseError("'" + varIdent + "' is already a function.");
 
+    if(this.getStructDefIndex(varIdent) != -1)
+      this.raiseError("'" + varIdent + "' is already a structure.");
+
     for(varIndex = 0; varIndex < this.currUserFunc.varIdents.length; varIndex++)
     {
       if(this.currUserFunc.varIdents[varIndex].toLowerCase() == varIdent.toLowerCase())
@@ -959,6 +1121,20 @@ class Compiler
     {
       if(this.bytecode.userFuncs[funcIndex].ident.toLowerCase() == funcIdent)
         return funcIndex;
+    }
+
+    return -1;
+  }
+
+  getStructDefIndex(structDefIdent)
+  //Return the index of the given structure definition identifier
+  {
+    structDefIdent = structDefIdent.toLowerCase();
+
+    for(var structDefIndex = 0; structDefIndex < this.bytecode.structDefs.length; structDefIndex++)
+    {
+      if(this.bytecode.structDefs[structDefIndex].ident.toLowerCase() == structDefIdent)
+        return structDefIndex;
     }
 
     return -1;
@@ -1107,14 +1283,14 @@ class Compiler
   peekToken()
   //Return the current token
   {
-    return this.currUserFunc.tokens[this.currTokenIndex];
+    return this.currTokens[this.currTokenIndex];
   }
 
   peekNextToken()
   //Return the token after the current token
   {
 	if(!this.endOfTokens())
-      return this.currUserFunc.tokens[this.currTokenIndex + 1];
+      return this.currTokens[this.currTokenIndex + 1];
     else
       return this.peekToken();
   }
@@ -1122,7 +1298,7 @@ class Compiler
   prevToken()
   //Return the token before the current token
   {
-    return this.currUserFunc.tokens[this.currTokenIndex - 1];
+    return this.currTokens[this.currTokenIndex - 1];
   }
 
   endOfTokens()
