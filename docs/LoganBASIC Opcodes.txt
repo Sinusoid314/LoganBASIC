@@ -154,16 +154,29 @@ CLS
 
 CHECK_COUNTER
   stack: [endValue, stepValue, counterValue] -> [endValue, stepValue, counterValue, result]
-  Returns true if stepValue is greater than 0 and counterValue is
+  Return true if stepValue is greater than 0 and counterValue is
   greater than endValue, or stepValue is less than or equal to zero and
-  counterValue is less than endValue. Returns false otherwise.
+  counterValue is less than endValue. Return false otherwise.
 
 INCREMENT_COUNTER
   stack: [stepValue, counterValue] -> [stepValue, newCounterValue]
-  Adds stepValue to counterValue and replaces counterValue with the result.
+  Add stepValue to counterValue and replace counterValue with the result.
 
 RETURN
   Return from the currently running user function.
 
 PAUSE
   Pause program execution and exit from the main runtime loop.
+
+CREATE_STRUCT
+  operands: structureDefIndex
+  stack: [] -> [structureReference]
+  Create an instance of the given structure definition.
+  
+LOAD_STRUCT_FIELD
+  stack: [structureReference, fieldIdentifier] -> [fieldValue]
+  Push the value of the given structure field onto the stack.
+  
+STORE_STRUCT_FIELD_PERSIST
+  stack: [structureReference, fieldIdentifier, fieldValue] -> [fieldValue]
+  Set the given structure field to the given value, keeping value on the stack.
