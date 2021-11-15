@@ -23,7 +23,8 @@ var canvasNativeFuncs = [
                   new ObjNativeFunc("setcanvasevent", 1, 2, funcSetCanvasEvent),
                   new ObjNativeFunc("drawtext", 3, 3, funcDrawText),
                   new ObjNativeFunc("getimagewidth", 1, 1, funcGetImageWidth),
-                  new ObjNativeFunc("getimageheight", 1, 1, funcGetImageHeight)
+                  new ObjNativeFunc("getimageheight", 1, 1, funcGetImageHeight),
+                  new ObjNativeFunc("drawrect", 4, 4, funcDrawRect)
                  ];
 
 var canvasEvents = [
@@ -302,5 +303,18 @@ function funcGetImageHeight(runtime, args)
     runtime.raiseError("Image '" + imageName + "' does not exist.");
 
   return canvasImageSizes[imageIndex].height;
+}
+
+function funcDrawRect(runtime, args)
+//
+{
+  var drawLeft = args[0];
+  var drawTop = args[1];
+  var drawWidth = args[2];
+  var drawHeight = args[3];
+
+  postMessage({msgId: MSGID_DRAW_RECT, msgData: [drawLeft, drawTop, drawWidth, drawHeight]});
+
+  return 0;
 }
 

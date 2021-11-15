@@ -71,12 +71,22 @@ class Compiler
             if(tokens[tokens.length - 1].type != TOKEN_NEWLINE)
               tokens.push(currToken);
           }
+          else
+          {
+            if(inStructDef)
+              tokens.push(currToken);
+          }
           break;
 
         case TOKEN_COLON:
           if(tokens.length > 0)
           {
             if(tokens[tokens.length - 1].type != TOKEN_COLON)
+              tokens.push(currToken);
+          }
+          else
+          {
+            if(inStructDef)
               tokens.push(currToken);
           }
           break;

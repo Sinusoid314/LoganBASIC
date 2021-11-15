@@ -162,7 +162,11 @@ function progUI_onMessage(message)
       break;
 
     case MSGID_DRAW_TEXT:
-      drawCanvasText(message.data.msgData[0], message.data.msgData[1], message.data.msgData[2]);
+      drawText(message.data.msgData[0], message.data.msgData[1], message.data.msgData[2]);
+      break;
+
+    case MSGID_DRAW_RECT:
+      drawRect(message.data.msgData[0], message.data.msgData[1], message.data.msgData[2], message.data.msgData[3]);
       break;
 
     case MSGID_LOAD_SOUND_REQUEST:

@@ -99,6 +99,21 @@ class StructureDef
     this.fieldIdents = [];
     this.tokens = [];
   }
+
+  toString()
+  //Return the function as a string
+  {
+    var retStr = "";
+
+    retStr += "Name: " + this.ident + "\n";
+
+    retStr += "Fields:\n------------\n";
+    for(var fieldIndex = 0; fieldIndex < this.varIdents.length; fieldIndex++)
+      retStr += fieldIndex + ":  " + this.fieldIdents[fieldIndex] + "\n";
+    retStr += '\n';
+
+    return retStr;
+  }
 }
 
 class Bytecode
@@ -120,6 +135,10 @@ class Bytecode
     for(var litIndex = 0; litIndex < this.literals.length; litIndex++)
       retStr += litIndex + ":  " + this.literals[litIndex] + "\n";
     retStr += '\n\n';
+
+    retStr += "Structure Defs:\n------------\n\n";
+    for(var structDefIndex = 0; structDefIndex < this.structDefs.length; structDefIndex++)
+      retStr += this.structDefs[structDefIndex].toString() + "\n";
 
     retStr += "Functions:\n------------\n\n";
     for(var funcIndex = 0; funcIndex < this.userFuncs.length; funcIndex++)

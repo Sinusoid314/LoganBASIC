@@ -184,9 +184,15 @@ function removeCanvasEvent(eventName)
   progCanvas.removeEventListener(eventName, canvas_onEvent);
 }
 
-function drawCanvasText(text, drawLeft, drawTop)
+function drawText(text, drawLeft, drawTop)
 //
 {
   activeContext.fillText(text, drawLeft, drawTop);
+}
+
+function drawRect(drawLeft, drawTop, drawWidth, drawHeight)
+//
+{
+  activeContext.strokeRect(drawLeft, drawTop, drawWidth, drawHeight);
 }
 
