@@ -7,18 +7,43 @@
 
 <body>
 
-<h3>Structure identifier
-  fieldIdentifiers
+<h3>Structure s
+  field1
+  field2
+  ...
 End Structure</h3>
 
 <h4>Description</h4>
 <p id="description">
-
+Defines a set of related variables, called <i>fields</i>, that are accessed and modified through a single variable.
+New instances of a structure are created with the <a href="../operators/new.html">New</a> operator.
 </p>
 
 <h4>Usage</h4>
 <code id="usage">
+<b>structure Rectangle</b>
+  x
+  y
+  width
+  height
+<b>end structure</b>
 
+array rects[10]
+var n
+
+'Create 10 random rectangles
+for n = 0 to 9
+  rects[n] = new Rectangle
+  rects[n].x = int(rnd() * 300) + 1
+  rects[n].y = int(rnd() * 300) + 1
+  rects[n].width = int(rnd() * 100) + 1
+  rects[n].height = int(rnd() * 100) + 1
+next n
+
+'Draw the rectangles
+for n = 0 to 9
+  drawRect(rects[n].x, rects[n].y, rects[n].width, rects[n].height)
+next n
 </code>
 
 </body>
