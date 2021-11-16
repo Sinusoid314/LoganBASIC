@@ -1,3 +1,7 @@
+(November 15, 2021)
+	- Added optional scaling parameters to drawImage() native function.
+	- Added drawImageClip() native function.
+
 (November 14, 2021)
 	- Added help page entries for Structure statement and New operator.
 	- Added drawRect() native function.

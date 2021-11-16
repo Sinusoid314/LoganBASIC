@@ -131,7 +131,7 @@ function clearCanvas()
   activeContext.clearRect(0, 0, activeContext.canvas.width, activeContext.canvas.height);
 }
 
-function loadCanvasImage(imageSource)
+function loadImage(imageSource)
 //Load an image for drawing on the canvas
 {
   var newImage = new Image();
@@ -142,16 +142,34 @@ function loadCanvasImage(imageSource)
   newImage.src = imageSource;
 }
 
-function unloadCanvasImage(imageIndex)
+function unloadImage(imageIndex)
 //Unload a canvas image
 {
   canvasImages.splice(imageIndex, 1);
 }
 
-function drawCanvasImage(imageIndex, drawLeft, drawTop)
+function drawImage(imageIndex, drawX, drawY, drawWidth, drawHeight)
 //Draw the given image to the active canvas
 {
-  activeContext.drawImage(canvasImages[imageIndex], drawLeft, drawTop);
+  if(drawWidth == null)
+    drawWidth = canvasImages[imageIndex].width;
+
+  if(drawHeight == null)
+    drawHeight = canvasImages[imageIndex].height;
+
+  activeContext.drawImage(canvasImages[imageIndex], drawX, drawY, drawWidth, drawHeight);
+}
+
+function drawImageClip(imageIndex, clipX, clipY, clipWidth, clipHeight, drawX, drawY, drawWidth, drawHeight)
+//Draw the given image to the active canvas
+{
+  if(drawWidth == null)
+    drawWidth = canvasImages[imageIndex].width;
+
+  if(drawHeight == null)
+    drawHeight = canvasImages[imageIndex].height;
+
+  activeContext.drawImage(canvasImages[imageIndex], clipX, clipY, clipWidth, clipHeight, drawX, drawY, drawWidth, drawHeight);
 }
 
 function enableCanvasBuffer()
@@ -184,15 +202,15 @@ function removeCanvasEvent(eventName)
   progCanvas.removeEventListener(eventName, canvas_onEvent);
 }
 
-function drawText(text, drawLeft, drawTop)
+function drawText(text, drawX, drawY)
 //
 {
-  activeContext.fillText(text, drawLeft, drawTop);
+  activeContext.fillText(text, drawX, drawY);
 }
 
-function drawRect(drawLeft, drawTop, drawWidth, drawHeight)
+function drawRect(drawX, drawY, drawWidth, drawHeight)
 //
 {
-  activeContext.strokeRect(drawLeft, drawTop, drawWidth, drawHeight);
+  activeContext.strokeRect(drawX, drawY, drawWidth, drawHeight);
 }
 

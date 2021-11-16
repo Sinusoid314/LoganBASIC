@@ -16,7 +16,8 @@ var canvasNativeFuncs = [
                   new ObjNativeFunc("clearcanvas", 0, 0, funcClearCanvas),
                   new ObjNativeFunc("loadimage", 2, 2, funcLoadImage),
                   new ObjNativeFunc("unloadimage", 1, 1, funcUnloadImage),
-                  new ObjNativeFunc("drawimage", 3, 3, funcDrawImage),
+                  new ObjNativeFunc("drawimage", 3, 5, funcDrawImage),
+                  new ObjNativeFunc("drawimageclip", 7, 9, funcDrawImageClip),
                   new ObjNativeFunc("enablecanvasbuffer", 0, 0, funcEnableCanvasBuffer),
                   new ObjNativeFunc("disablecanvasbuffer", 0, 0, funcDisableCanvasBuffer),
                   new ObjNativeFunc("drawcanvasbuffer", 0, 1, funcDrawCanvasBuffer),
@@ -167,13 +168,49 @@ function funcDrawImage(runtime, args)
 {
   var imageName = args[0];
   var imageIndex = getCanvasImageIndex(imageName);
-  var drawLeft = args[1];
-  var drawTop = args[2];
+  var drawX = args[1];
+  var drawY = args[2];
+  var drawWidth = null;
+  var drawHeight = null;
+
+  if(args.length >= 4)
+    drawWidth = args[3];
+
+  if(args.length == 5)
+    drawHeight = args[4];
 
   if(imageIndex == -1)
     runtime.raiseError("Image '" + imageName + "' does not exist.");
 
-  postMessage({msgId: MSGID_DRAW_IMAGE, msgData: [imageIndex, drawLeft, drawTop]});
+  postMessage({msgId: MSGID_DRAW_IMAGE, msgData: [imageIndex, drawX, drawY, drawWidth, drawHeight]});
+
+  return 0;
+}
+
+function funcDrawImageClip(runtime, args)
+//Send an image to the canvas to draw an image
+{
+  var imageName = args[0];
+  var imageIndex = getCanvasImageIndex(imageName);
+  var clipX = args[1];
+  var clipY = args[2];
+  var clipWidth = args[3];
+  var clipHeight = args[4];
+  var drawX = args[5];
+  var drawY = args[6];
+  var drawWidth = null;
+  var drawHeight = null;
+
+  if(args.length >= 8)
+    drawWidth = args[7];
+
+  if(args.length == 9)
+    drawHeight = args[8];
+
+  if(imageIndex == -1)
+    runtime.raiseError("Image '" + imageName + "' does not exist.");
+
+  postMessage({msgId: MSGID_DRAW_IMAGE_CLIP, msgData: [imageIndex, clipX, clipY, clipWidth, clipHeight, drawX, drawY, drawWidth, drawHeight]});
 
   return 0;
 }
@@ -273,10 +310,10 @@ function funcDrawText(runtime, args)
 //
 {
   var text = args[0];
-  var drawLeft = args[1];
-  var drawTop = args[2];
+  var drawX = args[1];
+  var drawY = args[2];
 
-  postMessage({msgId: MSGID_DRAW_TEXT, msgData: [text, drawLeft, drawTop]});
+  postMessage({msgId: MSGID_DRAW_TEXT, msgData: [text, drawX, drawY]});
 
   return 0;
 }
@@ -308,12 +345,12 @@ function funcGetImageHeight(runtime, args)
 function funcDrawRect(runtime, args)
 //
 {
-  var drawLeft = args[0];
-  var drawTop = args[1];
+  var drawX = args[0];
+  var drawY = args[1];
   var drawWidth = args[2];
   var drawHeight = args[3];
 
-  postMessage({msgId: MSGID_DRAW_RECT, msgData: [drawLeft, drawTop, drawWidth, drawHeight]});
+  postMessage({msgId: MSGID_DRAW_RECT, msgData: [drawX, drawY, drawWidth, drawHeight]});
 
   return 0;
 }
