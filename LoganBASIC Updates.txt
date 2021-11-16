@@ -1,3 +1,6 @@
+(November 16, 2021)
+	- Added drawCircle() and drawLine() native functions.
+
 (November 15, 2021)
 	- Added optional scaling parameters to drawImage() native function.
 	- Added drawImageClip() native function.

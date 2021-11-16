@@ -25,7 +25,9 @@ var canvasNativeFuncs = [
                   new ObjNativeFunc("drawtext", 3, 3, funcDrawText),
                   new ObjNativeFunc("getimagewidth", 1, 1, funcGetImageWidth),
                   new ObjNativeFunc("getimageheight", 1, 1, funcGetImageHeight),
-                  new ObjNativeFunc("drawrect", 4, 4, funcDrawRect)
+                  new ObjNativeFunc("drawrect", 4, 5, funcDrawRect),
+                  new ObjNativeFunc("drawcircle", 3, 4, funcDrawCircle),
+                  new ObjNativeFunc("drawline", 4, 5, funcDrawLine)
                  ];
 
 var canvasEvents = [
@@ -349,8 +351,41 @@ function funcDrawRect(runtime, args)
   var drawY = args[1];
   var drawWidth = args[2];
   var drawHeight = args[3];
+  var isFilled = true;
 
-  postMessage({msgId: MSGID_DRAW_RECT, msgData: [drawX, drawY, drawWidth, drawHeight]});
+  if(args.length == 5)
+    isFilled = args[4];
+
+  postMessage({msgId: MSGID_DRAW_RECT, msgData: [drawX, drawY, drawWidth, drawHeight, isFilled]});
+
+  return 0;
+}
+
+function funcDrawCircle(runtime, args)
+//
+{
+  var centerX = args[0];
+  var centerY = args[1];
+  var radius = args[2];
+  var isFilled = true;
+
+  if(args.length == 4)
+    isFilled = args[3];
+
+  postMessage({msgId: MSGID_DRAW_CIRCLE, msgData: [centerX, centerY, radius, isFilled]});
+
+  return 0;
+}
+
+function funcDrawLine(runtime, args)
+//
+{
+  var startX = args[0];
+  var startY = args[1];
+  var endX = args[2];
+  var endY = args[3];
+
+  postMessage({msgId: MSGID_DRAW_LINE, msgData: [startX, startY, endX, endY]});
 
   return 0;
 }

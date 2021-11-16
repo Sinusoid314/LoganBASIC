@@ -1,2 +1,3 @@
-- Add more canvas drawing functions.
+- Add setFillColor(), setLineColor(), and setLineSize() native functions.
+- Italicize parameters in the help page descriptions.
 - Add debugger.

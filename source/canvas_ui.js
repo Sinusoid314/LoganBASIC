@@ -208,9 +208,33 @@ function drawText(text, drawX, drawY)
   activeContext.fillText(text, drawX, drawY);
 }
 
-function drawRect(drawX, drawY, drawWidth, drawHeight)
+function drawRect(drawX, drawY, drawWidth, drawHeight, isFilled)
 //
 {
-  activeContext.strokeRect(drawX, drawY, drawWidth, drawHeight);
+  if(isFilled)
+    activeContext.fillRect(drawX, drawY, drawWidth, drawHeight);
+  else
+    activeContext.strokeRect(drawX, drawY, drawWidth, drawHeight);
+}
+
+function drawCircle(centerX, centerY, radius, isFilled)
+//
+{
+  activeContext.beginPath();
+  activeContext.arc(centerX, centerY, radius, 0, 2 * Math.PI);
+
+  if(isFilled)
+    activeContext.fill();
+  else
+    activeContext.stroke();
+}
+
+function drawLine(startX, startY, endX, endY)
+//
+{
+  activeContext.beginPath();
+  activeContext.moveTo(startX, startY);
+  activeContext.lineTo(endX, endY);
+  activeContext.stroke();
 }
 

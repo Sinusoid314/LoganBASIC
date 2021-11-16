@@ -171,7 +171,15 @@ function progUI_onMessage(message)
       break;
 
     case MSGID_DRAW_RECT:
-      drawRect(message.data.msgData[0], message.data.msgData[1], message.data.msgData[2], message.data.msgData[3]);
+      drawRect(message.data.msgData[0], message.data.msgData[1], message.data.msgData[2], message.data.msgData[3], message.data.msgData[4]);
+      break;
+
+    case MSGID_DRAW_CIRCLE:
+      drawCircle(message.data.msgData[0], message.data.msgData[1], message.data.msgData[2], message.data.msgData[3]);
+      break;
+
+    case MSGID_DRAW_LINE:
+      drawLine(message.data.msgData[0], message.data.msgData[1], message.data.msgData[2], message.data.msgData[3]);
       break;
 
     case MSGID_LOAD_SOUND_REQUEST:
