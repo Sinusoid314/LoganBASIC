@@ -202,10 +202,13 @@ function removeCanvasEvent(eventName)
   progCanvas.removeEventListener(eventName, canvas_onEvent);
 }
 
-function drawText(text, drawX, drawY)
+function drawText(text, drawX, drawY, isFilled)
 //
 {
-  activeContext.fillText(text, drawX, drawY);
+  if(isFilled)
+    activeContext.fillText(text, drawX, drawY);
+  else
+    activeContext.strokeText(text, drawX, drawY);
 }
 
 function drawRect(drawX, drawY, drawWidth, drawHeight, isFilled)
@@ -236,5 +239,29 @@ function drawLine(startX, startY, endX, endY)
   activeContext.moveTo(startX, startY);
   activeContext.lineTo(endX, endY);
   activeContext.stroke();
+}
+
+function setTextFont(font)
+//
+{
+  activeContext.font = font;
+}
+
+function setFillColor(color)
+//
+{
+  activeContext.fillStyle = color;
+}
+
+function setLineColor(color)
+//
+{
+  activeContext.strokeStyle = color;
+}
+
+function setLineSize(size)
+//
+{
+  activeContext.lineWidth = size;
 }
 

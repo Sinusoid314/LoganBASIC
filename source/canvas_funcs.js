@@ -22,12 +22,16 @@ var canvasNativeFuncs = [
                   new ObjNativeFunc("disablecanvasbuffer", 0, 0, funcDisableCanvasBuffer),
                   new ObjNativeFunc("drawcanvasbuffer", 0, 1, funcDrawCanvasBuffer),
                   new ObjNativeFunc("setcanvasevent", 1, 2, funcSetCanvasEvent),
-                  new ObjNativeFunc("drawtext", 3, 3, funcDrawText),
+                  new ObjNativeFunc("drawtext", 3, 4, funcDrawText),
                   new ObjNativeFunc("getimagewidth", 1, 1, funcGetImageWidth),
                   new ObjNativeFunc("getimageheight", 1, 1, funcGetImageHeight),
                   new ObjNativeFunc("drawrect", 4, 5, funcDrawRect),
                   new ObjNativeFunc("drawcircle", 3, 4, funcDrawCircle),
-                  new ObjNativeFunc("drawline", 4, 5, funcDrawLine)
+                  new ObjNativeFunc("drawline", 4, 5, funcDrawLine),
+                  new ObjNativeFunc("settextfont", 1, 1, funcSetTextFont),
+                  new ObjNativeFunc("setfillcolor", 1, 1, funcSetFillColor),
+                  new ObjNativeFunc("setlinecolor", 1, 1, funcSetLineColor),
+                  new ObjNativeFunc("setlinesize", 1, 1, funcSetLineSize)
                  ];
 
 var canvasEvents = [
@@ -314,8 +318,12 @@ function funcDrawText(runtime, args)
   var text = args[0];
   var drawX = args[1];
   var drawY = args[2];
+  var isFilled = true;
 
-  postMessage({msgId: MSGID_DRAW_TEXT, msgData: [text, drawX, drawY]});
+  if(args.length == 4)
+    isFilled = args[3];
+
+  postMessage({msgId: MSGID_DRAW_TEXT, msgData: [text, drawX, drawY, isFilled]});
 
   return 0;
 }
@@ -386,6 +394,45 @@ function funcDrawLine(runtime, args)
   var endY = args[3];
 
   postMessage({msgId: MSGID_DRAW_LINE, msgData: [startX, startY, endX, endY]});
+
+  return 0;
+}
+
+function funcSetTextFont(runtime, args)
+//
+{
+  var font = args[0];
+
+  postMessage({msgId: MSGID_SET_TEXT_FONT, msgData: font});
+
+  return 0;
+}
+
+function funcSetFillColor(runtime, args)
+//
+{
+  var color = args[0];
+
+  postMessage({msgId: MSGID_SET_FILL_COLOR, msgData: color});
+
+  return 0;
+}
+
+function funcSetLineColor(runtime, args)
+//
+{
+  var color = args[0];
+
+  postMessage({msgId: MSGID_SET_LINE_COLOR, msgData: color});
+
+  return 0;
+}
+
+function funcSetLineSize(runtime, args)
+{
+  var size = args[0];
+
+  postMessage({msgId: MSGID_SET_LINE_SIZE, msgData: size});
 
   return 0;
 }
