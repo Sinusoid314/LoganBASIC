@@ -95,6 +95,39 @@ class ObjArray
 
     return linearIndex;
   }
+
+  addItem(newVal, beforeIndex)
+  //Add an item to the array
+  {
+    if(this.dimSizes.length != 1)
+      return "Can only add items to a one-dimensional array.";
+
+    if(beforeIndex == -1)
+      beforeIndex = this.items.length - 1;
+
+    if((beforeIndex < 0) || (beforeIndex >= this.items.length))
+      return "Array index '" + beforeIndex + "' out of bounds.";
+
+    this.items.splice(beforeIndex, 0, newVal);
+    this.dimSizes[0]++;
+
+    return "";
+  }
+
+  removeItem(itemIndex)
+  //Remove an item from the array
+  {
+    if(this.dimSizes.length != 1)
+      return "Can only remove items from a one-dimensional array.";
+
+    if((itemIndex < 0) || (itemIndex >= this.items.length))
+      return "Array index '" + itemIndex + "' out of bounds.";
+
+    this.items.splice(itemIndex, 1);
+    this.dimSizes[0]--;
+
+    return "";
+  }
 }
 
 class ObjStructure

@@ -1,3 +1,7 @@
+(November 19, 2021)
+	- Added addItem() and removeItem() methods to ObjArray class.
+	- Added addArrayItem() and removeArrayItem() native functions.
+
 (November 17, 2021)
 	- Added isFilled parameter to drawText() native funciton.
 	- Added setTextFont(), setFillColor(), setLineColor(), and setLineSize() native functions.

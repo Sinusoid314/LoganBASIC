@@ -1,1 +1,2 @@
+- Add trig functions sin(), cos(), and tan().
 - Add debugger.

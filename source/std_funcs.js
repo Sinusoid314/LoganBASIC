@@ -26,7 +26,9 @@ var stdNativeFuncs = [
                   new ObjNativeFunc("str", 1, 1, funcStr),
                   new ObjNativeFunc("val", 1, 1, funcVal),
                   new ObjNativeFunc("starttimer", 2, 2, funcStartTimer),
-                  new ObjNativeFunc("stoptimer", 0, 0, funcStopTimer)
+                  new ObjNativeFunc("stoptimer", 0, 0, funcStopTimer),
+                  new ObjNativeFunc("addarrayitem", 2, 3, funcAddArrayItem),
+                  new ObjNativeFunc("removearrayitem", 2, 2, funcRemoveArrayItem)
                  ];
 
 var inputCallback = null;
@@ -53,24 +55,28 @@ function funcShowEditor(runtime, args)
 //Tell the UI thread to show the program editor pane
 {
   postMessage({msgId: MSGID_SHOW_EDITOR});
+  return 0;
 }
 
 function funcHideEditor(runtime, args)
 //Tell the UI thread to hide the program editor pane
 {
   postMessage({msgId: MSGID_HIDE_EDITOR});
+  return 0;
 }
 
 function funcShowConsole(runtime, args)
 //Tell the UI thread to show the console pane
 {
   postMessage({msgId: MSGID_SHOW_CONSOLE});
+  return 0;
 }
 
 function funcHideConsole(runtime, args)
 //Tell the UI thread to hide the console pane
 {
   postMessage({msgId: MSGID_HIDE_CONSOLE});
+  return 0;
 }
 
 function funcInput(runtime, args)
@@ -243,10 +249,10 @@ function funcStartTimer(runtime, args)
   var callbackUserFunc = args[1];
 
   if(!(callbackUserFunc instanceof ObjUserFunc))
-    runtime.raiseError("Second argument of StartTimer() must be a function.");
+    runtime.raiseError("Second argument of startTimer() must be a function.");
 
   if(callbackUserFunc.paramCount != 0)
-    runtime.raiseError("Callback function for StartTimer() must have zero parameters.");
+    runtime.raiseError("Callback function for startTimer() must have zero parameters.");
 
   if(timerID != 0)
     clearInterval(timerID);
@@ -274,6 +280,46 @@ function funcStopTimer(runtime, args)
 
   clearInterval(timerID);
   timerID = 0;
+
+  return 0;
+}
+
+function funcAddArrayItem(runtime, args)
+//
+{
+  var array = args[0];
+  var newVal = args[1];
+  var beforeIndex = -1;
+  var errorMsg = "";
+
+  if(args.length == 3)
+    beforeIndex = args[2];
+
+  if(!(array instanceof ObjArray))
+    runtime.raiseError("First argument of addArrayItem() must be an array.");
+
+  errorMsg = array.addItem(newVal, beforeIndex);
+
+  if(errorMsg != "")
+    runtime.raiseError(errorMsg);
+
+  return 0;
+}
+
+function funcRemoveArrayItem(runtime, args)
+//
+{
+  var array = args[0];
+  var itemIndex = args[1];
+  var errorMsg = "";
+
+  if(!(array instanceof ObjArray))
+    runtime.raiseError("First argument of removeArrayItem() must be an array.");
+
+  errorMsg = array.removeItem(itemIndex);
+
+  if(errorMsg != "")
+    runtime.raiseError(errorMsg);
 
   return 0;
 }
