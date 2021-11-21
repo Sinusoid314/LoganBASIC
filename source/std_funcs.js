@@ -28,7 +28,8 @@ var stdNativeFuncs = [
                   new ObjNativeFunc("starttimer", 2, 2, funcStartTimer),
                   new ObjNativeFunc("stoptimer", 0, 0, funcStopTimer),
                   new ObjNativeFunc("addarrayitem", 2, 3, funcAddArrayItem),
-                  new ObjNativeFunc("removearrayitem", 2, 2, funcRemoveArrayItem)
+                  new ObjNativeFunc("removearrayitem", 2, 2, funcRemoveArrayItem),
+                  new ObjNativeFunc("clamp", 3, 3, funcClamp)
                  ];
 
 var inputCallback = null;
@@ -322,5 +323,15 @@ function funcRemoveArrayItem(runtime, args)
     runtime.raiseError(errorMsg);
 
   return 0;
+}
+
+function funcClamp(runtime, args)
+//
+{
+  var val = args[0];
+  var min = args[1];
+  var max = args[2];
+
+  return Math.max(min, Math.min(val, max));
 }
 
