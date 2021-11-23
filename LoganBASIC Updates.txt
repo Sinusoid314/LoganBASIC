@@ -1,3 +1,6 @@
+(November 22, 2021)
+	- Modified some of the graphic function help pages to refer to fish.png.
+
 (November 20, 2021)
 	- Added clamp() native function.
 
