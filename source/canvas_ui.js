@@ -8,12 +8,9 @@ var canvasImages = [];
 bufferCanvas.width = progCanvas.width;
 bufferCanvas.width = progCanvas.height;
 
-function cleanupCanvas()
-//Unload all the canvas resources
+function resetCanvas()
+//Set the canvas back to its initial state
 {
-  if(canvasImages.length > 0)
-    canvasImages.splice(0);
-
   activeContext = bufferCanvasContext;
   clearCanvas();
   activeContext = progCanvasContext;
@@ -21,6 +18,13 @@ function cleanupCanvas()
 
   setCanvasWidth(500);
   setCanvasHeight(300);
+}
+
+function cleanupImages()
+//Unload all images
+{
+  if(canvasImages.length > 0)
+    canvasImages.splice(0);
 }
 
 function image_onLoad(event)

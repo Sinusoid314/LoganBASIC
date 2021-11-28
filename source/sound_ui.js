@@ -1,5 +1,12 @@
 var sounds = [];
 
+function cleanupSounds()
+//Unload all sounds
+{
+  if(sounds.length > 0)
+    sounds.splice(0);
+}
+
 function sound_onLoad(event)
 //
 {

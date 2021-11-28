@@ -1,3 +1,9 @@
+(November 27, 2021)
+	- Split cleanupCanvas() in canvas_ui into resetCanvas() and cleanupImages().
+	- Added cleanupSounds() in sound_ui.
+	- Replaced fish.png with ship1.png in help pages.
+	- Added "Letter Count" to the examples page.
+
 (November 22, 2021)
 	- Modified some of the graphic function help pages to refer to fish.png.
 

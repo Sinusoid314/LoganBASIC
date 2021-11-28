@@ -29,6 +29,8 @@ function stopProg(exitStatus)
   progWorker = null;
 
   closeConsoleInput();
+  cleanupImages();
+  cleanupSounds();
   statusBar.innerHTML = exitStatus;
 
   switchMode();
@@ -46,7 +48,7 @@ function runBtn_onClick(event)
   progWorker = new Worker('main.js');
   progWorker.onmessage = progUI_onMessage;
   clearConsoleOutput();
-  cleanupCanvas();
+  resetCanvas();
   progWorker.postMessage({msgId: MSGID_START_PROG, msgData: editorStr});
 
   switchMode();
