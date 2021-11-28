@@ -26,7 +26,7 @@ of acceptable values for eventName:
 
 <h4>Usage</h4>
 <code id="usage">
-loadImage("fish", "../examples/fish.png")
+loadImage("ship", "../examples/ship1.png")
 
 <b>setCanvasEvent("pointerup", onPointerUp)</b>
 <b>setCanvasEvent("keyup", onKeyUp)</b>
@@ -34,12 +34,12 @@ loadImage("fish", "../examples/fish.png")
 wait
 
 function onPointerUp(pointerX, pointerY)
-  drawImage("fish", pointerX, pointerY)
+  drawImage("ship", pointerX, pointerY)
 end function
 
 function onKeyUp(key)
   if key = "q" then
-    unloadImage("fish")
+    unloadImage("ship")
     end
   end if
 end function

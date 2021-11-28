@@ -16,20 +16,20 @@ Enables drawing to the canvas' offscreen buffer. Any subsequent graphics will be
 
 <h4>Usage</h4>
 <code id="usage">
-loadImage("fish", "../examples/fish.png")
+loadImage("ship", "../examples/ship1.png")
 <b>enableCanvasBuffer()</b>
 
 input("Press enter to draw image to buffer...")
-drawImage("fish", 10, 10)
+drawImage("ship", 10, 10)
 
 input("Press enter to draw image to canvas...")
 disableCanvasBuffer()
-drawImage("fish", 50, 50)
+drawImage("ship", 50, 50)
 
 input("Press enter to draw buffer to canvas...")
 drawCanvasBuffer()
 
-unloadImage("fish")
+unloadImage("ship")
 
 print "Done."
 </code>
