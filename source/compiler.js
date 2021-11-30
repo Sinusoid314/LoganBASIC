@@ -1169,20 +1169,18 @@ class Compiler
   {
     var varIndex;
 
-    varIdent = varIdent.toLowerCase();
-
     if(this.currUserFunc != this.mainUserFunc)
     {
       for(varIndex = 0; varIndex < this.currUserFunc.varIdents.length; varIndex++)
       {
-        if(this.currUserFunc.varIdents[varIndex].toLowerCase() == varIdent)
+        if(this.currUserFunc.varIdents[varIndex].toLowerCase() == varIdent.toLowerCase())
           return new VariableReference(SCOPE_LOCAL, varIndex);
       }
     }
 
     for(varIndex = 0; varIndex < this.mainUserFunc.varIdents.length; varIndex++)
     {
-      if(this.mainUserFunc.varIdents[varIndex].toLowerCase() == varIdent)
+      if(this.mainUserFunc.varIdents[varIndex].toLowerCase() == varIdent.toLowerCase())
         return new VariableReference(SCOPE_GLOBAL, varIndex);
     }
 

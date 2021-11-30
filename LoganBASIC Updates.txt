@@ -1,3 +1,7 @@
+(November 30, 2021)
+	- Added a bar graph to "Letter Count" example.
+	- Added "Conway's Game of Life" to the examples page.
+
 (November 27, 2021)
 	- Split cleanupCanvas() in canvas_ui into resetCanvas() and cleanupImages().
 	- Added cleanupSounds() in sound_ui.
