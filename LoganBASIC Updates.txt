@@ -1,3 +1,6 @@
+(December 1, 2021)
+	- Started "Breakout" example.
+	
 (November 30, 2021)
 	- Added a bar graph to "Letter Count" example.
 	- Added "Conway's Game of Life" to the examples page.

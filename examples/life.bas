@@ -7,17 +7,17 @@ var cellCountY = 30
 var cellSize = 8
 var aliveColor = "black"
 var deadColor = "white"
-var updateTime = 100
-var prevTime = 0
 array currCells[cellCountX, cellCountY]
 array nextCells[cellCountX, cellCountY]
+var updateTime = 200
+var prevTime = time()
 
 hideConsole()
 enableCanvasBuffer()
 
-prevTime = time()
 setupCells()
 drawCells()
+drawCanvasBuffer(mainLoop)
 
 wait
 
@@ -40,9 +40,10 @@ function mainLoop()
   if deltaTime >= updateTime then
     prevTime = time()
     updateCells()
+    drawCells()
   end if
 
-  drawCells()
+  drawCanvasBuffer(mainLoop)
 end function
 
 function drawCells()
@@ -61,8 +62,6 @@ function drawCells()
       drawRect(cellX * cellSize, cellY * cellSize, cellSize, cellSize)
     next cellX
   next cellY
-
-  drawCanvasBuffer(mainLoop)
 end function
 
 function updateCells()
