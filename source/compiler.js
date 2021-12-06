@@ -638,7 +638,7 @@ class Compiler
     if(this.currUserFunc == this.mainUserFunc)
       this.raiseError("'return' only allowed within a function.");
 
-    if(this.matchTerminator())
+    if(this.checkTerminator())
     {
       this.addReturnOps();
     }
@@ -1215,9 +1215,15 @@ class Compiler
   }
 
   matchTerminator()
-  //Return true if the current token is one of the statement terminators
+  //Return true and advance to the next token if the current token is one of the statement terminators
   {
     return this.matchTokenList([TOKEN_NEWLINE, TOKEN_COLON, TOKEN_EOF]);
+  }
+
+  checkTerminator()
+  //Return true if the current token is one of the statement terminators
+  {
+    return this.checkTokenList([TOKEN_NEWLINE, TOKEN_COLON, TOKEN_EOF]);
   }
 
   consumeToken()
@@ -1230,7 +1236,7 @@ class Compiler
   }
 
   matchTokenList(tokenTypeList)
-  //Return true if the current token's type matches any one of the given types
+  //Return true and advance to the next token if the current token's type matches any one of the given types
   {
     for(var index = 0; index < tokenTypeList.length; index++)
     {
@@ -1265,6 +1271,18 @@ class Compiler
       this.consumeToken();
       return true;
     }
+  }
+
+  checkTokenList(tokenTypeList)
+  //Return true if the current token's type matches any one of the given types
+  {
+    for(var index = 0; index < tokenTypeList.length; index++)
+    {
+      if(this.checkToken(tokenTypeList[index]))
+        return true;
+    }
+
+    return false;
   }
 
   checkTokenPair(tokenType1, tokenType2)

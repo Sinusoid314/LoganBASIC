@@ -85,6 +85,7 @@ function showCanvas()
   {
     toggle.classList.toggle("toggle-closed");
     pane.classList.toggle("pane-closed");
+    progCanvas.focus()
   }
 }
 

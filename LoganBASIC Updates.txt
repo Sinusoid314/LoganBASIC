@@ -1,3 +1,9 @@
+(December 6, 2021)
+	- Finished "Breakout" example.
+	- Added checkTerminator() and checkTokenList() methods to Compiler class.
+	- Modified returnStmt() in Compiler to use checkTerminator() instead of matchTerminator().
+	- Modified showCanvas() in console_ui module to set focus on the canvas.
+
 (December 1, 2021)
 	- Started "Breakout" example.
 	

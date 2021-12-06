@@ -2,59 +2,51 @@
 '
 '
 
-structure Vector2D
+structure Position
   x
   y
 end structure
 
 var gapHeight = 200
-
 var brickColumns = 4
 var brickRows = 4
 
-var brickSize = new Vector2D
-    brickSize.x = 100
-    brickSize.y = 25
-
+var brickWidth = 100
+var brickHeight = 25
 array brickPositions[brickColumns * brickRows]
 var brickPadding = 8
 var brickColor = "black"
 
-var canvasSize = new Vector2D
-    canvasSize.x = ((brickSize.x + brickPadding) * brickColumns) + brickPadding
-    canvasSize.y = ((brickSize.y + brickPadding) * brickRows) + gapHeight
+var canvasWidth = ((brickWidth + brickPadding) * brickColumns) + brickPadding
+var canvasHeight = ((brickHeight + brickPadding) * brickRows) + gapHeight
 
-var paddleSize = new Vector2D
-    paddleSize.x = 80
-    paddleSize.y = 10
-
-var paddlePosition = new Vector2D
-    paddlePosition.x = (canvasSize.x - paddleSize.x) / 2
-    paddlePosition.y = canvasSize.y - paddleSize.y - 10
-    
-var paddleVelocity = new Vector2D
-    paddleVelocity.x = 0
-    paddleVelocity.y = 0
-
+var paddleWidth = 80
+var paddleHeight = 10
+var paddleX = (canvasWidth - paddleWidth) / 2
+var paddleY = canvasHeight - paddleHeight - 10
+var paddleVelX = 0
+var paddleVelXMax = 70
 var paddleColor = "blue"
 
 var ballRadius = 10
-var ballPosition = new Vector2D
-    ballPosition.x = canvasWidth / 2
-    ballPosition.y = canvasHeight - gapHeight + 20
-    
-var ballVelocity = new Vector2D
-    ballVelocity.x = 0
-    ballVelocity.y = 5
-    
+var ballX = canvasWidth / 2
+var ballY = canvasHeight - gapHeight + 20
+var ballVelX = 0
+var ballVelY = 70
 var ballColor = "red"
 
 var prevTime
 
 hideConsole()
+showCanvas()
+setCanvasWidth(canvasWidth)
+setCanvasHeight(canvasHeight)
 enableCanvasBuffer()
 
 setupBricks()
+
+setCanvasEvent("keydown", onKeyDown)
+setCanvasEvent("keyup", onKeyUp)
 
 prevTime = time()
 draw()
@@ -67,6 +59,7 @@ function setupBricks()
   for column = 0 to brickColumns - 1
     for row = 0 to brickRows - 1
       index = column + (row * brickColumns)
+      brickPositions[index] = new Position
       brickPositions[index].x = brickPadding + ((brickPadding + brickWidth) * column)
       brickPositions[index].y = brickPadding + ((brickPadding + brickHeight) * row)
     next row
@@ -83,55 +76,121 @@ function update()
   var deltaTime = (time() - prevTime) / 1000
   prevTime = time()
   
-  ballPosition.x = ballPosition.x + (ballVelocity.x * deltaTime)
-  ballPosition.y = ballPosition.y + (ballVelocity.y * deltaTime)
+  ballX = ballX + (ballVelX * deltaTime)
+  ballY = ballY + (ballVelY * deltaTime)
   
-  paddlePosition.x = paddlePosition.x + (paddleVelocity.x * deltaTime)
-  paddlePosition.y = paddlePosition.y + (paddleVelocity.y * deltaTime)
+  paddleX = paddleX + (paddleVelX * deltaTime)
 end function
 
 function checkCollisions()
-  if ballHitPaddle() then
-    return
-  end if
-  
-  if ballHitBrick() then
-    return
-  end if
-  
-  if ballHitBottom then
-    gameOver("LOSER!!!")
-  end if
+  if ballHitPaddle() then return
+  if ballHitBrick() then return
+  if ballHitSide() then return
+  if ballHitTop() then return
+  ballHitBottom()
 end function
 
 function draw()
   var brickIndex
   
+  clearCanvas()
+
   setFillColor(brickColor)
   for brickIndex = 0 to len(brickPositions) - 1
-      drawRect(brickPositions[brickIndex].x, brickPositions[brickIndex].y, brickSize.x, brickSize.y)
-    next row
-  next column
+      drawRect(brickPositions[brickIndex].x, brickPositions[brickIndex].y, brickWidth, brickHeight)
+  next brickIndex
   
   setFillColor(ballColor)
-  drawCircle(ballPosition.x, ballPosition.y, ballRadius)
+  drawCircle(ballX, ballY, ballRadius)
   
   setFillColor(paddleColor)
-  drawRect(paddlePosition.x, paddlePosition.y, paddleSize.x, paddleSize.y)
+  drawRect(paddleX, paddleY, paddleWidth, paddleHeight)
   
   drawCanvasBuffer(mainLoop)
 end function
 
+function onKeyDown(key)
+  if key = "ArrowLeft" then
+    paddleVelX = -paddleVelXMax
+    return
+  end if
+  
+  if key = "ArrowRight" then
+    paddleVelX = paddleVelXMax
+    return
+  end if
+end function
+
+function onKeyUp(key)
+  paddleVelX = 0
+end function
+
 function ballHitPaddle()
+  if ballHitRect(paddleX, paddleY, paddleWidth, paddleHeight) then
+    if ballVelY > 0 then
+      ballVelX = paddleVelX
+      ballVelY = -ballVelY
+    end if
+    return true
+  else
+    return false
+  end if
 end function
 
 function ballHitBrick()
+  var brickIndex
+
+  for brickIndex = 0 to len(brickPositions) - 1
+    if ballHitRect(brickPositions[brickIndex].x, brickPositions[brickIndex].y, brickWidth, brickHeight) then
+      removeArrayItem(brickPositions, brickIndex)
+      ballVelY = -ballVelY
+      return true
+    end if
+  next brickIndex
+  
+  return false
+end function
+
+function ballHitSide()
+  if (ballX - ballRadius <= 0) then
+    if ballVelX < 0 then ballVelX = -ballVelX
+    return true
+  end if
+  
+  if (ballX + ballRadius >= canvasWidth) then
+    if ballVelX > 0 then ballVelX = -ballVelX
+    return true
+  end if
+  
+  return false
+end function
+
+function ballHitTop()
+  if ballY - ballRadius <= 0 then
+    ballVelY = -ballVelY
+    return true
+  else
+    return false
+  end if
 end function
 
 function ballHitBottom()
+  if ballY + ballRadius >= canvasHeight then
+    gameOver("LOSER!!!")
+  end if
+end function
+
+function ballHitRect(x, y, width, height)
+  var closestX = clamp(ballX, x, x + width)
+  var closestY = clamp(ballY, y, y + height)
+  var distanceX = ballX - closestX
+  var distanceY = ballY - closestY
+  var distance = (distanceX ^ 2) + (distanceY ^ 2)
+  
+  return distance < (ballRadius ^ 2)
 end function
 
 function gameOver(message)
-  print message
+  drawText(message, (canvasWidth + 100) / 2, (canvasHeight + 25) / 2)
   end
 end function
