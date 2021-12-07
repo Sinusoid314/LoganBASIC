@@ -1,3 +1,6 @@
+(December 7, 2021)
+	- Added "Bouncing Sprites" to the examples page.
+
 (December 6, 2021)
 	- Finished "Breakout" example.
 	- Added checkTerminator() and checkTokenList() methods to Compiler class.

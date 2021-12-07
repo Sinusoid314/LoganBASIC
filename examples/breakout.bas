@@ -152,12 +152,12 @@ function ballHitBrick()
 end function
 
 function ballHitSide()
-  if (ballX - ballRadius <= 0) then
+  if ballX - ballRadius <= 0 then
     if ballVelX < 0 then ballVelX = -ballVelX
     return true
   end if
   
-  if (ballX + ballRadius >= canvasWidth) then
+  if ballX + ballRadius >= canvasWidth then
     if ballVelX > 0 then ballVelX = -ballVelX
     return true
   end if
@@ -167,7 +167,7 @@ end function
 
 function ballHitTop()
   if ballY - ballRadius <= 0 then
-    ballVelY = -ballVelY
+    if ballVelY < 0 then ballVelY = -ballVelY
     return true
   else
     return false

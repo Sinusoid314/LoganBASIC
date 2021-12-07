@@ -1,2 +1,3 @@
+- Fix bug with arrays as structure fields not compiling.
 - Add trig functions sin(), cos(), and tan().
 - Add debugger.
