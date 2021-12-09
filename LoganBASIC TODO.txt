@@ -1,3 +1,4 @@
-- Fix bug with arrays as structure fields not compiling.
+- Remove canvas event handlers when program ends.
+- Set focus to the canvas when showing it.
 - Add trig functions sin(), cos(), and tan().
 - Add debugger.

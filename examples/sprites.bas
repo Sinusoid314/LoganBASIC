@@ -110,7 +110,7 @@ function checkCollisions()
     if currSprite.x <= 0 then
       if currSprite.velX < 0 then currSprite.velX = -currSprite.velX
     else
-      if (currSprite.x + currSprite.width) >= canvasWidth then
+      if (currSprite.x + (currSprite.width * currSprite.scale)) >= canvasWidth then
         if currSprite.velX > 0 then currSprite.velX = -currSprite.velX
       end if
     end if
@@ -118,7 +118,7 @@ function checkCollisions()
     if currSprite.y <= 0 then
       if currSprite.velY < 0 then currSprite.velY = -currSprite.velY
     else
-      if (currSprite.y + currSprite.height) >= canvasHeight then
+      if (currSprite.y + (currSprite.height * currSprite.scale)) >= canvasHeight then
         if currSprite.velY > 0 then currSprite.velY = -currSprite.velY
       end if
     end if

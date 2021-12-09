@@ -312,7 +312,7 @@ class Compiler
     if(requireTerminator)
     {
       if(!this.matchTerminator())
-        this.raiseError("Expected terminator.");
+        this.raiseError("Expected terminator after statement.");
     }
   }
 
@@ -834,19 +834,20 @@ class Compiler
       return;
     }
 
-    this.callExpr(isStmt);
+    this.postfixExpr(isStmt);
   }
 
-  callExpr(isStmt)
-  //Parse a function call expression
+  postfixExpr(isStmt)
+  //Parse a function call, array item, or structure field expression
   {
     var argCount;
     var fieldIdent;
 
-    this.arrayItemExpr(isStmt);
+    this.newExpr(isStmt);
 
     while(true)
     {
+      //Function call
       if(this.matchToken(TOKEN_LEFT_PAREN))
       {
         argCount = this.parseArguments();
@@ -856,6 +857,7 @@ class Compiler
 
         this.addOp([OPCODE_CALL_FUNC, argCount]);
       }
+      //Structure field
       else if(this.matchToken(TOKEN_DOT))
       {
         if(!this.matchToken(TOKEN_IDENTIFIER))
@@ -875,35 +877,27 @@ class Compiler
           this.addOp([OPCODE_LOAD_STRUCT_FIELD]);
         }
       }
+      //Array item
+      else if(this.matchToken(TOKEN_LEFT_BRACKET))
+      {
+        argCount = this.parseArguments();
+
+        if(!this.matchToken(TOKEN_RIGHT_BRACKET))
+          this.raiseError("Expected ']' after array indexes.");
+
+        if(isStmt && this.matchToken(TOKEN_EQUAL))
+        {
+          this.parseExpression();
+          this.addOp([OPCODE_STORE_ARRAY_ITEM_PERSIST, argCount]);
+        }
+        else
+        {
+          this.addOp([OPCODE_LOAD_ARRAY_ITEM, argCount]);
+        }
+      }
       else
       {
         break;
-      }
-    }
-  }
-
-  arrayItemExpr(isStmt)
-  //Parse an array expression
-  {
-    var indexCount;
-
-    this.newExpr(isStmt);
-
-    while(this.matchToken(TOKEN_LEFT_BRACKET))
-    {
-      indexCount = this.parseArguments();
-
-      if(!this.matchToken(TOKEN_RIGHT_BRACKET))
-        this.raiseError("Expected ']' after array indexes.");
-
-      if(isStmt && this.matchToken(TOKEN_EQUAL))
-      {
-        this.parseExpression();
-        this.addOp([OPCODE_STORE_ARRAY_ITEM_PERSIST, indexCount]);
-      }
-      else
-      {
-        this.addOp([OPCODE_LOAD_ARRAY_ITEM, indexCount]);
       }
     }
   }

@@ -191,6 +191,7 @@ function ballHitRect(x, y, width, height)
 end function
 
 function gameOver(message)
-  drawText(message, (canvasWidth + 100) / 2, (canvasHeight + 25) / 2)
+  disableCanvasBuffer()
+  drawText(message, canvasWidth / 2, canvasHeight / 2)
   end
 end function

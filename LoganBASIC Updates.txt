@@ -1,3 +1,6 @@
+(December 9, 2021)
+	- Renamed the call grammar rules to postfix and merged it with the arrayItem rule.
+
 (December 7, 2021)
 	- Added "Bouncing Sprites" to the examples page.
 
