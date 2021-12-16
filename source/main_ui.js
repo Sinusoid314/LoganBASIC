@@ -29,7 +29,7 @@ function stopProg(exitStatus)
   progWorker = null;
 
   closeConsoleInput();
-  cleanupImages();
+  cleanupCanvas();
   cleanupSounds();
   statusBar.innerHTML = exitStatus;
 
@@ -204,31 +204,31 @@ function progUI_onMessage(message)
       loadSound(message.data.msgData);
       break;
 
-    case MSGID_UNLOAD_SOUND:
+    case MSGID_UNLOAD_SOUND_REQUEST:
       unloadSound(message.data.msgData);
       break;
 
-    case MSGID_PLAY_SOUND:
+    case MSGID_PLAY_SOUND_REQUEST:
       playSound(message.data.msgData);
       break;
 
-    case MSGID_PAUSE_SOUND:
+    case MSGID_PAUSE_SOUND_REQUEST:
       pauseSound(message.data.msgData);
       break;
 
-    case MSGID_STOP_SOUND:
+    case MSGID_STOP_SOUND_REQUEST:
       stopSound(message.data.msgData);
       break;
 
-    case MSGID_GET_SOUND_POS:
+    case MSGID_GET_SOUND_POS_REQUEST:
       getSoundPos(message.data.msgData);
       break;
 
-    case MSGID_SET_SOUND_POS:
+    case MSGID_SET_SOUND_POS_REQUEST:
       setSoundPos(message.data.msgData[0], message.data.msgData[1]);
       break;
 
-    case MSGID_LOOP_SOUND:
+    case MSGID_LOOP_SOUND_REQUEST:
       loopSound(message.data.msgData[0], message.data.msgData[1]);
       break;
   }

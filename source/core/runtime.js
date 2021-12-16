@@ -32,6 +32,16 @@ class CallbackContext
     this.runtime.status = RUNTIME_STATUS_RUNNING;
     this.runtime.run();
   }
+
+  endRuntime(errorMessage)
+  //Stop the runtime, clean it up, and set it's error object (if applicable)
+  {
+	if(errorMessage != "")
+      this.runtime.setError(errorMessage);
+
+    this.runtime.status = RUNTIME_STATUS_DONE;
+    this.runtime.cleanup();
+  }
 }
 
 class CallFrame
@@ -120,15 +130,10 @@ class Runtime
     }
     catch(error)
     {
-      this.error = error;
     }
 
     if(this.status == RUNTIME_STATUS_DONE)
-    {
-      this.stack.splice(0);
-      this.callFrames.splice(0);
-      this.onDoneJsFunc(this);
-    }
+      this.cleanup();
   }
 
   opLoadTrue()
@@ -392,7 +397,7 @@ class Runtime
     else if(func instanceof ObjUserFunc)
       this.callUserFunc(func, argCount, stackIndex);
     else
-      this.raiseError("Can only call functions.");
+      this.endWithError("Can only call functions.");
   }
 
   opCreateArray()
@@ -424,7 +429,7 @@ class Runtime
     arrayRef = this.stack.pop();
 
     if(!(arrayRef instanceof ObjArray))
-      this.raiseError("Expected array.");
+      this.endWithError("Expected array.");
 
     arrayRef.reDim(dimSizes);
   }
@@ -442,12 +447,12 @@ class Runtime
     arrayRef = this.stack.pop();
 
     if(!(arrayRef instanceof ObjArray))
-      this.raiseError("Expected array.");
+      this.endWithError("Expected array.");
 
     linearIndex = arrayRef.getLinearIndex(indexList);
 
     if(linearIndex < 0)
-      this.raiseError("Array index out of bounds.");
+      this.endWithError("Array index out of bounds.");
 
     this.stack.push(arrayRef.items[linearIndex]);
   }
@@ -466,12 +471,12 @@ class Runtime
     arrayRef = this.stack.pop();
 
     if(!(arrayRef instanceof ObjArray))
-      this.raiseError("Expected array.");
+      this.endWithError("Expected array.");
 
     linearIndex = arrayRef.getLinearIndex(indexList);
 
     if(linearIndex < 0)
-      this.raiseError("Array index out of bounds.");
+      this.endWithError("Array index out of bounds.");
 
     arrayRef.items[linearIndex] = itemVal;
     this.stack.push(itemVal);
@@ -556,10 +561,10 @@ class Runtime
     var struct = this.stack.pop();
 
     if(!(struct instanceof ObjStructure))
-      this.raiseError("Expected structure.");
+      this.endWithError("Expected structure.");
 
     if(!struct.fieldMap.has(fieldIdent))
-      this.raiseError("Structure field '" + fieldIdent + "' not defined.");
+      this.endWithError("Structure field '" + fieldIdent + "' not defined.");
 
     this.stack.push(struct.fieldMap.get(fieldIdent));
   }
@@ -572,10 +577,10 @@ class Runtime
     var struct = this.stack.pop();
 
     if(!(struct instanceof ObjStructure))
-      this.raiseError("Expected structure.");
+      this.endWithError("Expected structure.");
 
     if(!struct.fieldMap.has(fieldIdent))
-      this.raiseError("Structure field '" + fieldIdent + "' not defined.");
+      this.endWithError("Structure field '" + fieldIdent + "' not defined.");
 
     struct.fieldMap.set(fieldIdent, fieldVal);
 
@@ -588,7 +593,7 @@ class Runtime
     var args, retVal;
 
     if((argCount < func.paramMin) || (argCount > func.paramMax))
-      this.raiseError("Wrong number of arguments for function '" + func.ident + "'.");
+      this.endWithError("Wrong number of arguments for function '" + func.ident + "'.");
 
     args = this.stack.splice(this.stack.length - argCount, argCount);
     this.stack.pop();
@@ -600,7 +605,7 @@ class Runtime
   //Load a new call frame for the given user function
   {
     if(argCount != func.paramCount)
-      this.raiseError("Wrong number of arguments for function '" + func.ident + "'.");
+      this.endWithError("Wrong number of arguments for function '" + func.ident + "'.");
 
     this.callFrames.push(new CallFrame(func, stackIndex));
 
@@ -608,6 +613,24 @@ class Runtime
       this.stack.push(0);
 
     this.currCallFrame = this.callFrames[this.callFrames.length - 1];
+  }
+
+  endWithError(message)
+  //
+  {
+    this.setError(message);
+    this.status = RUNTIME_STATUS_DONE;
+
+    throw this.error;
+  }
+
+  setError(message)
+  //
+  {
+    var lineNum = this.getSourceLine();
+
+    message = "Runtime error on line " + lineNum + ": "  + message;
+    this.error = {message: message, lineNum: lineNum};
   }
 
   getSourceLine()
@@ -623,16 +646,12 @@ class Runtime
     }
   }
 
-  raiseError(message)
+  cleanup()
   //
   {
-    var lineNum = this.getSourceLine();
-
-    message = "Runtime error on line " + lineNum + ": "  + message;
-
-    this.status = RUNTIME_STATUS_DONE;
-
-    throw {message: message, lineNum: lineNum};
+    this.stack.splice(0);
+    this.callFrames.splice(0);
+    this.onDoneJsFunc(this);
   }
 }
 

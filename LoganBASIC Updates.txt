@@ -1,3 +1,14 @@
+(December 15, 2021)
+	- Added setError() and cleanup() methods to Runtime class.
+	- Changed raiseError() method to endWithError() in Runtime class.
+	- Added endRuntime() method to CallbackContext class.
+	- Modified native function handlers in sound_funcs module to wait for response from the UI thread.
+
+(December 12, 2021)
+	- Renamed cleanupImages() to cleanupCanvas().
+	- Added removal of canvas event handlers in cleanupCanvas().
+	- Moved runtime, compiler, scanner, object, bytecode, and token source files into new /core directory.
+
 (December 9, 2021)
 	- Renamed the call grammar rules to postfix and merged it with the arrayItem rule.
 

@@ -1,4 +1,4 @@
-- Remove canvas event handlers when program ends.
+- Modify sound_ui module to hold sound objects in a map with sound names as keys.
 - Set focus to the canvas when showing it.
 - Add trig functions sin(), cos(), and tan().
 - Add debugger.

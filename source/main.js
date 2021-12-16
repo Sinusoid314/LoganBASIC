@@ -1,13 +1,13 @@
 importScripts('worker_msg.js',
-              'object.js',
+              'core/object.js',
               'std_funcs.js',
               'canvas_funcs.js',
               'sound_funcs.js',
-              'token.js',
-              'bytecode.js',
-              'scanner.js',
-              'compiler.js',
-              'runtime.js');
+              'core/token.js',
+              'core/bytecode.js',
+              'core/scanner.js',
+              'core/compiler.js',
+              'core/runtime.js');
 
 var mainCompiler;
 var mainBytecode;
@@ -49,12 +49,8 @@ function progWorker_onMessage(message)
       onDrawCanvasBufferDone();
       break;
 
-    case MSGID_LOAD_SOUND_RESULT:
-      onLoadSoundResult(message.data.msgData);
-      break;
-
-    case MSGID_GET_SOUND_POS_RESULT:
-      onGetSoundPosResult(message.data.msgData);
+    case MSGID_SOUND_REQUEST_RESULT:
+      onSoundRequestResult(message.data.msgData);
       break;
   }
 }

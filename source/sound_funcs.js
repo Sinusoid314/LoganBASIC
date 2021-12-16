@@ -10,41 +10,33 @@ var soundNativeFuncs = [
                   new ObjNativeFunc("loopsound", 2, 2, funcLoopSound)
                  ];
 
-var soundNames = [];
-var soundLengths = [];
 var soundResultCallback = null;
 
-function onLoadSoundResult(resultData)
+function onSoundRequestResult(result)
 //
 {
-  if(!resultData[0])
-    soundNames.pop();
-  else
-    soundLengths.push(resultData[1]);
-
-  soundResultCallback.runtime.stack[soundResultCallback.runtime.stack.length - 1] = resultData[0];
-  soundResultCallback.runFunc();
-}
-
-function onGetSoundPosResult(resultData)
-//
-{
-  soundResultCallback.runtime.stack[soundResultCallback.runtime.stack.length - 1] = resultData;
-  soundResultCallback.runFunc();
-}
-
-function getSoundIndex(soundName)
-//Return the index of the given sound item
-{
-  soundName = soundName.toLowerCase();
-
-  for(var soundIndex = 0; soundIndex < soundNames.length; soundIndex++)
+  if(result[0] != "")
   {
-    if(soundNames[soundIndex].toLowerCase() == soundName)
-      return soundIndex;
+    soundResultCallback.endRuntime(result[0]);
   }
+  else
+  {
+    soundResultCallback.runtime.stack[soundResultCallback.runtime.stack.length - 1] = resultData[1];
+    soundResultCallback.runFunc();
+  }
+}
 
-  return -1;
+function sendSoundRequest(runtime, msgId, msgData)
+//
+{
+  if(soundResultCallback == null)
+    soundResultCallback = new CallbackContext(runtime);
+  else
+    soundResultCallback.runtime = runtime;
+
+  postMessage({msgId: msgId, msgData: msgData});
+
+  runtime.status = RUNTIME_STATUS_PAUSED;
 }
 
 function funcLoadSound(runtime, args)
@@ -53,19 +45,7 @@ function funcLoadSound(runtime, args)
   var soundName = args[0];
   var soundSource = args[1];
 
-  if(getSoundIndex(soundName) != -1)
-    runtime.raiseError("Sound '" + soundName + "' is already loaded.");
-
-  soundNames.push(soundName);
-
-  if(soundResultCallback == null)
-    soundResultCallback = new CallbackContext(runtime);
-  else
-    soundResultCallback.runtime = runtime;
-
-  postMessage({msgId: MSGID_LOAD_SOUND_REQUEST, msgData: soundSource});
-
-  runtime.status = RUNTIME_STATUS_PAUSED;
+  sendSoundRequest(runtime, MSGID_LOAD_SOUND_REQUEST, [soundName, soundSource]);
 
   return false;
 }
@@ -74,14 +54,8 @@ function funcUnloadSound(runtime, args)
 //Send a message to the UI thread to unload a sound
 {
   var soundName = args[0];
-  var soundIndex = getSoundIndex(soundName);
 
-  if(soundIndex == -1)
-    runtime.raiseError("Sound '" + soundName + "' does not exist.");
-
-  soundNames.splice(soundIndex, 1);
-
-  postMessage({msgId: MSGID_UNLOAD_SOUND, msgData: soundIndex});
+  sendSoundRequest(runtime, MSGID_UNLOAD_SOUND_REQUEST, soundName);
 
   return 0;
 }
@@ -90,12 +64,8 @@ function funcPlaySound(runtime, args)
 //
 {
   var soundName = args[0];
-  var soundIndex = getSoundIndex(soundName);
 
-  if(soundIndex == -1)
-    runtime.raiseError("Sound '" + soundName + "' does not exist.");
-
-  postMessage({msgId: MSGID_PLAY_SOUND, msgData: soundIndex});
+  sendSoundRequest(runtime, MSGID_PLAY_SOUND_REQUEST, soundName);
 
   return 0;
 }
@@ -104,12 +74,8 @@ function funcPauseSound(runtime, args)
 //
 {
   var soundName = args[0];
-  var soundIndex = getSoundIndex(soundName);
 
-  if(soundIndex == -1)
-    runtime.raiseError("Sound '" + soundName + "' does not exist.");
-
-  postMessage({msgId: MSGID_PAUSE_SOUND, msgData: soundIndex});
+  sendSoundRequest(runtime, MSGID_PAUSE_SOUND_REQUEST, soundName);
 
   return 0;
 }
@@ -118,12 +84,8 @@ function funcStopSound(runtime, args)
 //
 {
   var soundName = args[0];
-  var soundIndex = getSoundIndex(soundName);
 
-  if(soundIndex == -1)
-    runtime.raiseError("Sound '" + soundName + "' does not exist.");
-
-  postMessage({msgId: MSGID_STOP_SOUND, msgData: soundIndex});
+  sendSoundRequest(runtime, MSGID_STOP_SOUND_REQUEST, soundName);
 
   return 0;
 }
@@ -132,31 +94,18 @@ function funcGetSoundLen(runtime, args)
 //
 {
   var soundName = args[0];
-  var soundIndex = getSoundIndex(soundName);
 
-  if(soundIndex == -1)
-    runtime.raiseError("Sound '" + soundName + "' does not exist.");
+  sendSoundRequest(runtime, MSGID_GET_SOUND_LEN_REQUEST, soundName);
 
-  return soundLengths[soundIndex];
+  return 0;
 }
 
 function funcGetSoundPos(runtime, args)
 //
 {
   var soundName = args[0];
-  var soundIndex = getSoundIndex(soundName);
 
-  if(soundIndex == -1)
-    runtime.raiseError("Sound '" + soundName + "' does not exist.");
-
-  if(soundResultCallback == null)
-    soundResultCallback = new CallbackContext(runtime);
-  else
-    soundResultCallback.runtime = runtime;
-
-  postMessage({msgId: MSGID_GET_SOUND_POS, msgData: soundIndex});
-
-  runtime.status = RUNTIME_STATUS_PAUSED;
+  sendSoundRequest(runtime, MSGID_GET_SOUND_POS_REQUEST, soundName);
 
   return 0;
 }
@@ -166,12 +115,8 @@ function funcSetSoundPos(runtime, args)
 {
   var soundName = args[0];
   var soundPos = args[1];
-  var soundIndex = getSoundIndex(soundName);
 
-  if(soundIndex == -1)
-    runtime.raiseError("Sound '" + soundName + "' does not exist.");
-
-  postMessage({msgId: MSGID_SET_SOUND_POS, msgData: [soundIndex, soundPos]});
+  sendSoundRequest(runtime, MSGID_SET_SOUND_POS_REQUEST, [soundName, soundPos]);
 
   return 0;
 }
@@ -181,12 +126,8 @@ function funcLoopSound(runtime, args)
 {
   var soundName = args[0];
   var isLooped = args[1];
-  var soundIndex = getSoundIndex(soundName);
 
-  if(soundIndex == -1)
-    runtime.raiseError("Sound '" + soundName + "' does not exist.");
-
-  postMessage({msgId: MSGID_LOOP_SOUND, msgData: [soundIndex, isLooped]});
+  sendSoundRequest(runtime, MSGID_LOOP_SOUND_REQUEST, [soundName, isLooped]);
 
   return 0;
 }

@@ -20,11 +20,17 @@ function resetCanvas()
   setCanvasHeight(300);
 }
 
-function cleanupImages()
-//Unload all images
+function cleanupCanvas()
+//Unload all images and clear event listeners
 {
   if(canvasImages.length > 0)
     canvasImages.splice(0);
+
+  progCanvas.removeEventListener("pointerdown", canvas_onEvent);
+  progCanvas.removeEventListener("pointerup", canvas_onEvent);
+  progCanvas.removeEventListener("pointermove", canvas_onEvent);
+  progCanvas.removeEventListener("keydown", canvas_onEvent);
+  progCanvas.removeEventListener("keyup", canvas_onEvent);
 }
 
 function image_onLoad(event)

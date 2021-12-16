@@ -137,7 +137,7 @@ function funcLoadImage(runtime, args)
   var imageSource = args[1];
 
   if(getCanvasImageIndex(imageName) != -1)
-    runtime.raiseError("Image '" + imageName + "' is already loaded.");
+    runtime.endWithError("Image '" + imageName + "' is already loaded.");
 
   canvasImageNames.push(imageName);
 
@@ -160,7 +160,7 @@ function funcUnloadImage(runtime, args)
   var imageIndex = getCanvasImageIndex(imageName);
 
   if(imageIndex == -1)
-    runtime.raiseError("Image '" + imageName + "' does not exist.");
+    runtime.endWithError("Image '" + imageName + "' does not exist.");
 
   canvasImageNames.splice(imageIndex, 1);
 
@@ -186,7 +186,7 @@ function funcDrawImage(runtime, args)
     drawHeight = args[4];
 
   if(imageIndex == -1)
-    runtime.raiseError("Image '" + imageName + "' does not exist.");
+    runtime.endWithError("Image '" + imageName + "' does not exist.");
 
   postMessage({msgId: MSGID_DRAW_IMAGE, msgData: [imageIndex, drawX, drawY, drawWidth, drawHeight]});
 
@@ -214,7 +214,7 @@ function funcDrawImageClip(runtime, args)
     drawHeight = args[8];
 
   if(imageIndex == -1)
-    runtime.raiseError("Image '" + imageName + "' does not exist.");
+    runtime.endWithError("Image '" + imageName + "' does not exist.");
 
   postMessage({msgId: MSGID_DRAW_IMAGE_CLIP, msgData: [imageIndex, clipX, clipY, clipWidth, clipHeight, drawX, drawY, drawWidth, drawHeight]});
 
@@ -250,10 +250,10 @@ function funcDrawCanvasBuffer(runtime, args)
     callbackUserFunc = args[0];
 
     if(!(callbackUserFunc instanceof ObjUserFunc))
-      runtime.raiseError("Argument of DrawCanvasBuffer() must be a function.");
+      runtime.endWithError("Argument of DrawCanvasBuffer() must be a function.");
 
     if(callbackUserFunc.paramCount != 0)
-      runtime.raiseError("Callback function for DrawCanvasBuffer() must have zero parameters.");
+      runtime.endWithError("Callback function for DrawCanvasBuffer() must have zero parameters.");
 
     if(drawBufferCallback == null)
     {
@@ -279,17 +279,17 @@ function funcSetCanvasEvent(runtime, args)
   var eventUserFunc;
 
   if(eventIndex == -1)
-    runtime.raiseError("SetCanvasEvent() does not recognize event named '" + eventName + "'.");
+    runtime.endWithError("SetCanvasEvent() does not recognize event named '" + eventName + "'.");
 
   if(args.length == 2)
   {
     eventUserFunc = args[1];
 
     if(!(eventUserFunc instanceof ObjUserFunc))
-      runtime.raiseError("Second argument of SetCanvasEvent() must be a function.");
+      runtime.endWithError("Second argument of SetCanvasEvent() must be a function.");
 
     if(eventUserFunc.paramCount != canvasEvents[eventIndex].paramCount)
-      runtime.raiseError("Handler function " + eventUserFunc.ident + "() for event '" + eventName + "' must have " + canvasEvents[eventIndex].paramCount + " parameters.");
+      runtime.endWithError("Handler function " + eventUserFunc.ident + "() for event '" + eventName + "' must have " + canvasEvents[eventIndex].paramCount + " parameters.");
 
     if(canvasEvents[eventIndex].callback == null)
     {
@@ -335,7 +335,7 @@ function funcGetImageWidth(runtime, args)
   var imageIndex = getCanvasImageIndex(imageName);
 
   if(imageIndex == -1)
-    runtime.raiseError("Image '" + imageName + "' does not exist.");
+    runtime.endWithError("Image '" + imageName + "' does not exist.");
 
   return canvasImageSizes[imageIndex].width;
 }
@@ -347,7 +347,7 @@ function funcGetImageHeight(runtime, args)
   var imageIndex = getCanvasImageIndex(imageName);
 
   if(imageIndex == -1)
-    runtime.raiseError("Image '" + imageName + "' does not exist.");
+    runtime.endWithError("Image '" + imageName + "' does not exist.");
 
   return canvasImageSizes[imageIndex].height;
 }

@@ -250,10 +250,10 @@ function funcStartTimer(runtime, args)
   var callbackUserFunc = args[1];
 
   if(!(callbackUserFunc instanceof ObjUserFunc))
-    runtime.raiseError("Second argument of startTimer() must be a function.");
+    runtime.endWithError("Second argument of startTimer() must be a function.");
 
   if(callbackUserFunc.paramCount != 0)
-    runtime.raiseError("Callback function for startTimer() must have zero parameters.");
+    runtime.endWithError("Callback function for startTimer() must have zero parameters.");
 
   if(timerID != 0)
     clearInterval(timerID);
@@ -297,12 +297,12 @@ function funcAddArrayItem(runtime, args)
     beforeIndex = args[2];
 
   if(!(array instanceof ObjArray))
-    runtime.raiseError("First argument of addArrayItem() must be an array.");
+    runtime.endWithError("First argument of addArrayItem() must be an array.");
 
   errorMsg = array.addItem(newVal, beforeIndex);
 
   if(errorMsg != "")
-    runtime.raiseError(errorMsg);
+    runtime.endWithError(errorMsg);
 
   return 0;
 }
@@ -315,12 +315,12 @@ function funcRemoveArrayItem(runtime, args)
   var errorMsg = "";
 
   if(!(array instanceof ObjArray))
-    runtime.raiseError("First argument of removeArrayItem() must be an array.");
+    runtime.endWithError("First argument of removeArrayItem() must be an array.");
 
   errorMsg = array.removeItem(itemIndex);
 
   if(errorMsg != "")
-    runtime.raiseError(errorMsg);
+    runtime.endWithError(errorMsg);
 
   return 0;
 }
