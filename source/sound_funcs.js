@@ -21,7 +21,7 @@ function onSoundRequestResult(result)
   }
   else
   {
-    soundResultCallback.runtime.stack[soundResultCallback.runtime.stack.length - 1] = resultData[1];
+    soundResultCallback.runtime.stack[soundResultCallback.runtime.stack.length - 1] = result[1];
     soundResultCallback.runFunc();
   }
 }

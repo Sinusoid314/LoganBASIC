@@ -1,4 +1,6 @@
-- Modify sound_ui module to hold sound objects in a map with sound names as keys.
+- Modify canvas_ui and canvas_funcs modules to hold image objects in a map with image names as keys.
+- Split function help pages into Standard, Canvas, and Sound catagories.
+- Add sprite functions.
 - Set focus to the canvas when showing it.
 - Add trig functions sin(), cos(), and tan().
 - Add debugger.

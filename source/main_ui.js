@@ -26,7 +26,6 @@ function stopProg(exitStatus)
     return;
 
   progWorker.terminate();
-  progWorker = null;
 
   closeConsoleInput();
   cleanupCanvas();
@@ -45,6 +44,7 @@ function runBtn_onClick(event)
     return;
 
   editorStr = progEditor.value;
+  progWorker = null;
   progWorker = new Worker('main.js');
   progWorker.onmessage = progUI_onMessage;
   clearConsoleOutput();
@@ -201,7 +201,7 @@ function progUI_onMessage(message)
       break;
 
     case MSGID_LOAD_SOUND_REQUEST:
-      loadSound(message.data.msgData);
+      loadSound(message.data.msgData[0], message.data.msgData[1]);
       break;
 
     case MSGID_UNLOAD_SOUND_REQUEST:
@@ -218,6 +218,10 @@ function progUI_onMessage(message)
 
     case MSGID_STOP_SOUND_REQUEST:
       stopSound(message.data.msgData);
+      break;
+
+    case MSGID_GET_SOUND_LEN_REQUEST:
+      getSoundLen(message.data.msgData);
       break;
 
     case MSGID_GET_SOUND_POS_REQUEST:

@@ -1,10 +1,9 @@
-var sounds = [];
+var sounds = new Map();
 
 function cleanupSounds()
 //Unload all sounds
 {
-  if(sounds.length > 0)
-    sounds.splice(0);
+  sounds.clear();
 }
 
 function sound_onLoad(event)
@@ -13,9 +12,9 @@ function sound_onLoad(event)
   this.removeEventListener("canplaythrough", sound_onLoad);
   this.removeEventListener("error", sound_onError);
 
-  sounds.push(this);
+  sounds.set(this.id, this);
 
-  progWorker.postMessage({msgId: MSGID_LOAD_SOUND_RESULT, msgData: [true, this.duration]});
+  sendSoundRequestResult(["", true])
 }
 
 function sound_onError(event)
@@ -24,62 +23,128 @@ function sound_onError(event)
   this.removeEventListener("canplaythrough", sound_onLoad);
   this.removeEventListener("error", sound_onError);
 
-  progWorker.postMessage({msgId: MSGID_LOAD_SOUND_RESULT, msgData: [false]});
+  sendSoundRequestResult(["", false])
 }
 
-function loadSound(soundSource)
+function sendSoundRequestResult(msgData)
+//
+{
+  progWorker.postMessage({msgId: MSGID_SOUND_REQUEST_RESULT, msgData: msgData});
+}
+
+function loadSound(soundName, soundSource)
 //Load an audio element
 {
-  var newSound = new Audio();
+  var newSound;
 
-  newSound.addEventListener("canplaythrough", sound_onLoad);
-  newSound.addEventListener("error", sound_onError);
+  if(!sounds.has(soundName))
+  {
+    newSound = new Audio();
 
-  newSound.src = soundSource;
+    newSound.addEventListener("canplaythrough", sound_onLoad);
+    newSound.addEventListener("error", sound_onError);
+
+    newSound.id = soundName;
+    newSound.src = soundSource;
+  }
+  else
+    sendSoundRequestResult(["Sound '" + soundName + "' has already been loaded."]);
 }
 
-function unloadSound(soundIndex)
+function unloadSound(soundName)
 //Unload an audio element
 {
-  sounds[soundIndex].pause();
-  sounds[soundIndex].currentTime = sounds[soundIndex].duration;
-  sounds.splice(soundIndex, 1);
+  var sound;
+
+  if(sounds.has(soundName))
+  {
+	sound = sounds.get(soundName)
+    sound.pause();
+    sound.currentTime = sound.duration;
+    sounds.delete(soundName);
+
+    sendSoundRequestResult(["", 0]);
+  }
+  else
+    sendSoundRequestResult(["Sound '" + soundName + "' has not been loaded."]);
 }
 
-function playSound(soundIndex)
+function playSound(soundName)
 //
 {
-  sounds[soundIndex].play();
+  if(sounds.has(soundName))
+  {
+    sounds.get(soundName).play();
+    sendSoundRequestResult(["", 0]);
+  }
+  else
+    sendSoundRequestResult(["Sound '" + soundName + "' has not been loaded."]);
 }
 
-function pauseSound(soundIndex)
+function pauseSound(soundName)
 //
 {
-  sounds[soundIndex].pause();
+  if(sounds.has(soundName))
+  {
+    sounds.get(soundName).pause();
+    sendSoundRequestResult(["", 0]);
+  }
+  else
+    sendSoundRequestResult(["Sound '" + soundName + "' has not been loaded."]);
 }
 
-function stopSound(soundIndex)
+function stopSound(soundName)
 //
 {
-  sounds[soundIndex].pause();
-  sounds[soundIndex].currentTime = 0;
+  if(sounds.has(soundName))
+  {
+    sounds.get(soundName).pause();
+    sounds.get(soundName).currentTime = 0;
+    sendSoundRequestResult(["", 0]);
+  }
+  else
+    sendSoundRequestResult(["Sound '" + soundName + "' has not been loaded."]);
 }
 
-function getSoundPos(soundIndex)
+function getSoundLen(soundName)
 //
 {
-  progWorker.postMessage({msgId: MSGID_GET_SOUND_POS_RESULT, msgData: sounds[soundIndex].currentTime});
+  if(sounds.has(soundName))
+    sendSoundRequestResult(["", sounds.get(soundName).duration]);
+  else
+    sendSoundRequestResult(["Sound '" + soundName + "' has not been loaded."]);
 }
 
-function setSoundPos(soundIndex, newPos)
+function getSoundPos(soundName)
 //
 {
-  sounds[soundIndex].currentTime = newPos;
+  if(sounds.has(soundName))
+    sendSoundRequestResult(["", sounds.get(soundName).currentTime]);
+  else
+    sendSoundRequestResult(["Sound '" + soundName + "' has not been loaded."]);
 }
 
-function loopSound(soundIndex, isLooped)
+function setSoundPos(soundName, soundPos)
 //
 {
-  sounds[soundIndex].loop = isLooped;
+  if(sounds.has(soundName))
+  {
+    sounds.get(soundName).currentTime = soundPos;
+    sendSoundRequestResult(["", 0]);
+  }
+  else
+    sendSoundRequestResult(["Sound '" + soundName + "' has not been loaded."]);
+}
+
+function loopSound(soundName, isLooped)
+//
+{
+  if(sounds.has(soundName))
+  {
+    sounds.get(soundName).loop = isLooped;
+    sendSoundRequestResult(["", 0]);
+  }
+  else
+    sendSoundRequestResult(["Sound '" + soundName + "' has not been loaded."]);
 }
 

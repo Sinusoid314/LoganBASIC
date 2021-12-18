@@ -54,9 +54,9 @@ function setup()
     currSprite.width = getImageWidth("ship1")
     currSprite.height = getImageHeight("ship1") 
     currSprite.scale = rnd()*2 + 1
-    currSprite.velX = int(rnd()*50) + 1
-    currSprite.velY = int(rnd()*50) + 1
-    currSprite.updatesPerFrame = int(rnd()*10) + 1
+    currSprite.velX = int(rnd()*100) + 1
+    currSprite.velY = int(rnd()*100) + 1
+    currSprite.updatesPerFrame = int(rnd()*50) + 1
     currSprite.frameImages = new array[2]
     currSprite.frameImages[0] = "ship1"
     currSprite.frameImages[1] = "ship2"

@@ -1,3 +1,6 @@
+(December 17, 2021)
+	- Modified sound_funcs and sound_ui modules to keep the audio objects in a Map on the UI thread.
+
 (December 15, 2021)
 	- Added setError() and cleanup() methods to Runtime class.
 	- Changed raiseError() method to endWithError() in Runtime class.
