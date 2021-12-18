@@ -20,7 +20,7 @@ var length
 
 print "Loading sound file..."
 
-if not loadSound("mac_intro", "../examples/mac_intro.wav") then
+if not loadSound("mac", "../examples/mac.wav") then
   print "Sound failed to load."
   end
 end if
@@ -28,10 +28,10 @@ end if
 print "Sound loaded."
 print ""
 
-length = <b>getSoundLen("mac_intro")</b>
+length = <b>getSoundLen("mac")</b>
 print "Sound length: " + length
 
-unloadSound("mac_intro")
+unloadSound("mac")
 </code>
 
 </body>

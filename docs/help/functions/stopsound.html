@@ -20,7 +20,7 @@ var choice
 
 print "Loading sound file..."
 
-if not loadSound("mac_intro", "../examples/mac_intro.wav") then
+if not loadSound("mac", "../examples/mac.wav") then
   print "Sound failed to load."
   end
 end if
@@ -32,12 +32,12 @@ do
   print "Enter 'play', 'pause', 'stop', or 'q' to quit."
   choice = input(": ")
 
-  if choice = "play" then playSound("mac_intro")
-  if choice = "pause" then pauseSound("mac_intro")
-  if choice = "stop" then <b>stopSound("mac_intro")</b>
+  if choice = "play" then playSound("mac")
+  if choice = "pause" then pauseSound("mac")
+  if choice = "stop" then <b>stopSound("mac")</b>
 loop while choice <> "q"
 
-unloadSound("mac_intro")
+unloadSound("mac")
 
 print ""
 print "Done."

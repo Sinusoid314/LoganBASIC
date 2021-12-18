@@ -21,7 +21,7 @@ var position
 
 print "Loading sound file..."
 
-if not loadSound("mac_intro", "../examples/mac_intro.wav") then
+if not loadSound("mac", "../examples/mac.wav") then
   print "Sound failed to load."
   end
 end if
@@ -29,15 +29,15 @@ end if
 print "Sound loaded."
 print ""
 
-playSound("mac_intro")
+playSound("mac")
 
 position = input("Enter a position to jump to: ")
 
-<b>setSoundPos("mac_intro", position)</b>
+<b>setSoundPos("mac", position)</b>
 
 input("Press enter to quit...")
 
-unloadSound("mac_intro")
+unloadSound("mac")
 </code>
 
 </body>

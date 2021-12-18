@@ -20,7 +20,7 @@ var position
 
 print "Loading sound file..."
 
-if not loadSound("mac_intro", "../examples/mac_intro.wav") then
+if not loadSound("mac", "../examples/mac.wav") then
   print "Sound failed to load."
   end
 end if
@@ -28,14 +28,14 @@ end if
 print "Sound loaded."
 print ""
 
-playSound("mac_intro")
+playSound("mac")
 
 input("Press enter to get the sound's current position...")
 
-position = <b>getSoundPos("mac_intro")</b>
+position = <b>getSoundPos("mac")</b>
 print "Sound position: " + position
 
-unloadSound("mac_intro")
+unloadSound("mac")
 </code>
 
 </body>
