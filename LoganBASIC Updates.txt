@@ -1,3 +1,6 @@
+(December 19, 2021)
+	- Added a background image and sound effects to "Bouncing Sprites" example.
+
 (December 18, 2021)
 	- Modified canvas_onAnimationFrame() in canvas_ui module to use drawImage() to draw the canvas buffer.
 

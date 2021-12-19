@@ -50,6 +50,15 @@ function setup()
   
   print "Images loaded."
   
+  print "Loading sound file..."
+  
+  if not loadSound("25c", "../examples/25c.wav") then
+    print "Failed to load sound '25c.wav'."
+    end
+  end if
+  
+  print "Sound loaded."
+  
   for spriteIndex = 0 to len(sprites) - 1
     sprites[spriteIndex] = new Sprite
     currSprite = sprites[spriteIndex]
@@ -113,18 +122,30 @@ function checkCollisions()
     currSprite = sprites[spriteIndex]
     
     if currSprite.x <= 0 then
-      if currSprite.velX < 0 then currSprite.velX = -currSprite.velX
+      if currSprite.velX < 0 then
+        currSprite.velX = -currSprite.velX
+        playSound("25c")
+      end if
     else
       if (currSprite.x + (currSprite.width * currSprite.scale)) >= canvasWidth then
-        if currSprite.velX > 0 then currSprite.velX = -currSprite.velX
+        if currSprite.velX > 0 then
+          currSprite.velX = -currSprite.velX
+          playSound("25c")
+        end if
       end if
     end if
     
     if currSprite.y <= 0 then
-      if currSprite.velY < 0 then currSprite.velY = -currSprite.velY
+      if currSprite.velY < 0 then
+        currSprite.velY = -currSprite.velY
+        playSound("25c")
+      end if
     else
       if (currSprite.y + (currSprite.height * currSprite.scale)) >= canvasHeight then
-        if currSprite.velY > 0 then currSprite.velY = -currSprite.velY
+        if currSprite.velY > 0 then
+          currSprite.velY = -currSprite.velY
+          playSound("25c")
+        end if
       end if
     end if
   next spriteIndex
