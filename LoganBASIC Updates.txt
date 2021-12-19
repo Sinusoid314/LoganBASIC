@@ -1,3 +1,6 @@
+(December 18, 2021)
+	- Modified canvas_onAnimationFrame() in canvas_ui module to use drawImage() to draw the canvas buffer.
+
 (December 17, 2021)
 	- Modified sound_funcs and sound_ui modules to keep the audio objects in a Map on the UI thread.
 

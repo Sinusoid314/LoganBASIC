@@ -56,8 +56,11 @@ function image_onError(event)
 function canvas_onAnimationFrame()
 //
 {
-  var imageData = bufferCanvasContext.getImageData(0, 0, bufferCanvas.width, bufferCanvas.height);
-  progCanvasContext.putImageData(imageData, 0, 0);
+  //var imageData = bufferCanvasContext.getImageData(0, 0, bufferCanvas.width, bufferCanvas.height);
+  //progCanvasContext.putImageData(imageData, 0, 0);
+
+  progCanvasContext.clearRect(0, 0, progCanvas.width, progCanvas.height);
+  progCanvasContext.drawImage(bufferCanvas, 0, 0);
 
   progWorker.postMessage({msgId: MSGID_DRAW_CANVAS_BUFFER_DONE});
 }

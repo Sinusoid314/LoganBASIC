@@ -19,8 +19,8 @@ end structure
 array sprites[3]
 var prevTime
 var deltaTime
-var canvasWidth = 500
-var canvasHeight = 400
+var canvasWidth = 600
+var canvasHeight = 450
 
 setup()
 mainLoop()
@@ -32,6 +32,11 @@ function setup()
   var currSprite
 
   print "Loading images..."
+
+  if not loadImage("bg", "../examples/bg.bmp") then
+    print "Failed to load image 'bg.bmp'."
+    end
+  end if
   
   if not loadImage("ship1", "../examples/ship1.png") then
     print "Failed to load image 'ship1.png'."
@@ -131,6 +136,8 @@ function drawSprites()
   var drawWidth, drawHeight
   
   clearCanvas()
+  
+  drawImage("bg", 0, 0, canvasWidth, canvasHeight)
   
   for spriteIndex = 0 to len(sprites) - 1
     currSprite = sprites[spriteIndex]
