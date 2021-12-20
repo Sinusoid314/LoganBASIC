@@ -16,9 +16,7 @@ function onSoundRequestResult(result)
 //
 {
   if(result[0] != "")
-  {
     soundResultCallback.endRuntime(result[0]);
-  }
   else
   {
     soundResultCallback.runtime.stack[soundResultCallback.runtime.stack.length - 1] = result[1];

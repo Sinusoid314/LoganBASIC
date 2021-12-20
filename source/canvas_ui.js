@@ -3,7 +3,7 @@ var progCanvasContext = progCanvas.getContext("2d");
 var bufferCanvas = document.createElement("canvas");
 var bufferCanvasContext = bufferCanvas.getContext("2d");
 var activeContext = progCanvasContext;
-var canvasImages = [];
+var images = new Map();
 
 bufferCanvas.width = progCanvas.width;
 bufferCanvas.width = progCanvas.height;
@@ -23,8 +23,7 @@ function resetCanvas()
 function cleanupCanvas()
 //Unload all images and clear event listeners
 {
-  if(canvasImages.length > 0)
-    canvasImages.splice(0);
+  images.clear();
 
   progCanvas.removeEventListener("pointerdown", canvas_onEvent);
   progCanvas.removeEventListener("pointerup", canvas_onEvent);
@@ -39,9 +38,9 @@ function image_onLoad(event)
   this.removeEventListener("load", image_onLoad);
   this.removeEventListener("error", image_onError);
 
-  canvasImages.push(this);
+  images.set(this.id, this);
 
-  progWorker.postMessage({msgId: MSGID_LOAD_IMAGE_RESULT, msgData: [true, this.width, this.height]});
+  sendImageRequestResult(["", true])
 }
 
 function image_onError(event)
@@ -50,8 +49,15 @@ function image_onError(event)
   this.removeEventListener("load", image_onLoad);
   this.removeEventListener("error", image_onError);
 
-  progWorker.postMessage({msgId: MSGID_LOAD_IMAGE_RESULT, msgData: [false]});
+  sendImageRequestResult(["", false])
 }
+
+function sendImageRequestResult(msgData)
+//
+{
+  progWorker.postMessage({msgId: MSGID_IMAGE_REQUEST_RESULT, msgData: msgData});
+}
+
 
 function canvas_onAnimationFrame()
 //
@@ -145,45 +151,99 @@ function clearCanvas()
   activeContext.clearRect(0, 0, activeContext.canvas.width, activeContext.canvas.height);
 }
 
-function loadImage(imageSource)
+function loadImage(imageName, imageSource)
 //Load an image for drawing on the canvas
 {
-  var newImage = new Image();
+  var newImage;
 
-  newImage.addEventListener("load", image_onLoad);
-  newImage.addEventListener("error", image_onError);
+  if(!images.has(imageName))
+  {
+    newImage = new Image();
 
-  newImage.src = imageSource;
+    newImage.addEventListener("load", image_onLoad);
+    newImage.addEventListener("error", image_onError);
+
+    newImage.id = imageName;
+    newImage.src = imageSource;
+  }
+  else
+    sendImageRequestResult(["Image '" + imageName + "' has already been loaded."]);
 }
 
-function unloadImage(imageIndex)
+function unloadImage(imageName)
 //Unload a canvas image
 {
-  canvasImages.splice(imageIndex, 1);
+  if(images.has(imageName))
+  {
+    images.delete(imageName);
+    sendImageRequestResult(["", 0]);
+  }
+  else
+    sendImageRequestResult(["Image '" + imageName + "' has not been loaded."]);
 }
 
-function drawImage(imageIndex, drawX, drawY, drawWidth, drawHeight)
+function drawImage(imageName, drawX, drawY, drawWidth, drawHeight)
 //Draw the given image to the active canvas
 {
-  if(drawWidth == null)
-    drawWidth = canvasImages[imageIndex].width;
+  var image;
 
-  if(drawHeight == null)
-    drawHeight = canvasImages[imageIndex].height;
+  if(images.has(imageName))
+  {
+    image = images.get(imageName);
 
-  activeContext.drawImage(canvasImages[imageIndex], drawX, drawY, drawWidth, drawHeight);
+    if(drawWidth == null)
+      drawWidth = image.width;
+
+    if(drawHeight == null)
+      drawHeight = image.height;
+
+    activeContext.drawImage(image, drawX, drawY, drawWidth, drawHeight);
+
+    sendImageRequestResult(["", 0]);
+  }
+  else
+    sendImageRequestResult(["Image '" + imageName + "' has not been loaded."]);
 }
 
-function drawImageClip(imageIndex, clipX, clipY, clipWidth, clipHeight, drawX, drawY, drawWidth, drawHeight)
+function drawImageClip(imageName, clipX, clipY, clipWidth, clipHeight, drawX, drawY, drawWidth, drawHeight)
 //Draw the given image to the active canvas
 {
-  if(drawWidth == null)
-    drawWidth = canvasImages[imageIndex].width;
+  var image;
 
-  if(drawHeight == null)
-    drawHeight = canvasImages[imageIndex].height;
+  if(images.has(imageName))
+  {
+    image = images.get(imageName);
 
-  activeContext.drawImage(canvasImages[imageIndex], clipX, clipY, clipWidth, clipHeight, drawX, drawY, drawWidth, drawHeight);
+    if(drawWidth == null)
+      drawWidth = clipWidth;
+
+    if(drawHeight == null)
+      drawHeight = clipHeight;
+
+    activeContext.drawImage(image, clipX, clipY, clipWidth, clipHeight, drawX, drawY, drawWidth, drawHeight);
+
+    sendImageRequestResult(["", 0]);
+  }
+  else
+    sendImageRequestResult(["Image '" + imageName + "' has not been loaded."]);
+}
+
+function getImageWidth(imageName)
+//
+{
+  if(images.has(imageName))
+    sendImageRequestResult(["", images.get(imageName).width]);
+  else
+    sendImageRequestResult(["Image '" + imageName + "' has not been loaded."]);
+}
+
+function getImageHeight(imageName)
+//
+{
+  if(images.has(imageName))
+    sendImageRequestResult(["", images.get(imageName).height]);
+  else
+    sendImageRequestResult(["Image '" + imageName + "' has not been loaded."]);
 }
 
 function enableCanvasBuffer()

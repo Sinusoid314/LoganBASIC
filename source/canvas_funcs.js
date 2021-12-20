@@ -18,13 +18,13 @@ var canvasNativeFuncs = [
                   new ObjNativeFunc("unloadimage", 1, 1, funcUnloadImage),
                   new ObjNativeFunc("drawimage", 3, 5, funcDrawImage),
                   new ObjNativeFunc("drawimageclip", 7, 9, funcDrawImageClip),
+                  new ObjNativeFunc("getimagewidth", 1, 1, funcGetImageWidth),
+                  new ObjNativeFunc("getimageheight", 1, 1, funcGetImageHeight),
                   new ObjNativeFunc("enablecanvasbuffer", 0, 0, funcEnableCanvasBuffer),
                   new ObjNativeFunc("disablecanvasbuffer", 0, 0, funcDisableCanvasBuffer),
                   new ObjNativeFunc("drawcanvasbuffer", 0, 1, funcDrawCanvasBuffer),
                   new ObjNativeFunc("setcanvasevent", 1, 2, funcSetCanvasEvent),
                   new ObjNativeFunc("drawtext", 3, 4, funcDrawText),
-                  new ObjNativeFunc("getimagewidth", 1, 1, funcGetImageWidth),
-                  new ObjNativeFunc("getimageheight", 1, 1, funcGetImageHeight),
                   new ObjNativeFunc("drawrect", 4, 5, funcDrawRect),
                   new ObjNativeFunc("drawcircle", 3, 4, funcDrawCircle),
                   new ObjNativeFunc("drawline", 4, 5, funcDrawLine),
@@ -42,21 +42,32 @@ var canvasEvents = [
                   new CanvasEvent("keyup", 1, null)
                  ];
 
-var canvasImageNames = [];
-var canvasImageSizes = [];
-var loadImageCallback = null;
+var imageResultCallback = null;
 var drawBufferCallback = null;
 
-function onLoadImageResult(resultData)
+function onImageRequestResult(result)
 //
 {
-  if(!resultData[0])
-    canvasImageNames.pop();
+  if(result[0] != "")
+    imageResultCallback.endRuntime(result[0]);
   else
-    canvasImageSizes.push({width: resultData[1], height: resultData[2]});
+  {
+    imageResultCallback.runtime.stack[imageResultCallback.runtime.stack.length - 1] = result[1];
+    imageResultCallback.runFunc();
+  }
+}
 
-  loadImageCallback.runtime.stack[loadImageCallback.runtime.stack.length - 1] = resultData[0];
-  loadImageCallback.runFunc();
+function sendImageRequest(runtime, msgId, msgData)
+//
+{
+  if(imageResultCallback == null)
+    imageResultCallback = new CallbackContext(runtime);
+  else
+    imageResultCallback.runtime = runtime;
+
+  postMessage({msgId: msgId, msgData: msgData});
+
+  runtime.status = RUNTIME_STATUS_PAUSED;
 }
 
 function onCanvasEvent(eventData)
@@ -75,20 +86,6 @@ function onDrawCanvasBufferDone()
     return;
 
   drawBufferCallback.runFunc();
-}
-
-function getCanvasImageIndex(imageName)
-//Return the index of the given image item
-{
-  imageName = imageName.toLowerCase();
-
-  for(var imageIndex = 0; imageIndex < canvasImageNames.length; imageIndex++)
-  {
-    if(canvasImageNames[imageIndex].toLowerCase() == imageName)
-      return imageIndex;
-  }
-
-  return -1;
 }
 
 function funcShowCanvas(runtime, args)
@@ -136,19 +133,7 @@ function funcLoadImage(runtime, args)
   var imageName = args[0];
   var imageSource = args[1];
 
-  if(getCanvasImageIndex(imageName) != -1)
-    runtime.endWithError("Image '" + imageName + "' is already loaded.");
-
-  canvasImageNames.push(imageName);
-
-  if(loadImageCallback == null)
-    loadImageCallback = new CallbackContext(runtime);
-  else
-    loadImageCallback.runtime = runtime;
-
-  postMessage({msgId: MSGID_LOAD_IMAGE_REQUEST, msgData: imageSource});
-
-  runtime.status = RUNTIME_STATUS_PAUSED;
+  sendImageRequest(runtime, MSGID_LOAD_IMAGE_REQUEST, [imageName, imageSource]);
 
   return false;
 }
@@ -157,23 +142,16 @@ function funcUnloadImage(runtime, args)
 //Send a message to the canvas to unload an image
 {
   var imageName = args[0];
-  var imageIndex = getCanvasImageIndex(imageName);
 
-  if(imageIndex == -1)
-    runtime.endWithError("Image '" + imageName + "' does not exist.");
-
-  canvasImageNames.splice(imageIndex, 1);
-
-  postMessage({msgId: MSGID_UNLOAD_IMAGE, msgData: imageIndex});
+  sendImageRequest(runtime, MSGID_UNLOAD_IMAGE_REQUEST, imageName);
 
   return 0;
 }
 
 function funcDrawImage(runtime, args)
-//Send an image to the canvas to draw an image
+//Send a message to the canvas to draw an image
 {
   var imageName = args[0];
-  var imageIndex = getCanvasImageIndex(imageName);
   var drawX = args[1];
   var drawY = args[2];
   var drawWidth = null;
@@ -185,10 +163,7 @@ function funcDrawImage(runtime, args)
   if(args.length == 5)
     drawHeight = args[4];
 
-  if(imageIndex == -1)
-    runtime.endWithError("Image '" + imageName + "' does not exist.");
-
-  postMessage({msgId: MSGID_DRAW_IMAGE, msgData: [imageIndex, drawX, drawY, drawWidth, drawHeight]});
+  sendImageRequest(runtime, MSGID_DRAW_IMAGE_REQUEST, [imageName, drawX, drawY, drawWidth, drawHeight]);
 
   return 0;
 }
@@ -197,7 +172,6 @@ function funcDrawImageClip(runtime, args)
 //Send an image to the canvas to draw an image
 {
   var imageName = args[0];
-  var imageIndex = getCanvasImageIndex(imageName);
   var clipX = args[1];
   var clipY = args[2];
   var clipWidth = args[3];
@@ -213,10 +187,27 @@ function funcDrawImageClip(runtime, args)
   if(args.length == 9)
     drawHeight = args[8];
 
-  if(imageIndex == -1)
-    runtime.endWithError("Image '" + imageName + "' does not exist.");
+  sendImageRequest(runtime, MSGID_DRAW_IMAGE_CLIP_REQUEST, [imageIndex, clipX, clipY, clipWidth, clipHeight, drawX, drawY, drawWidth, drawHeight]);
 
-  postMessage({msgId: MSGID_DRAW_IMAGE_CLIP, msgData: [imageIndex, clipX, clipY, clipWidth, clipHeight, drawX, drawY, drawWidth, drawHeight]});
+  return 0;
+}
+
+function funcGetImageWidth(runtime, args)
+//
+{
+  var imageName = args[0];
+
+  sendImageRequest(runtime, MSGID_GET_IMAGE_WIDTH_REQUEST, imageName);
+
+  return 0;
+}
+
+function funcGetImageHeight(runtime, args)
+//
+{
+  var imageName = args[0];
+
+  sendImageRequest(runtime, MSGID_GET_IMAGE_HEIGHT_REQUEST, imageName);
 
   return 0;
 }
@@ -326,30 +317,6 @@ function funcDrawText(runtime, args)
   postMessage({msgId: MSGID_DRAW_TEXT, msgData: [text, drawX, drawY, isFilled]});
 
   return 0;
-}
-
-function funcGetImageWidth(runtime, args)
-//
-{
-  var imageName = args[0];
-  var imageIndex = getCanvasImageIndex(imageName);
-
-  if(imageIndex == -1)
-    runtime.endWithError("Image '" + imageName + "' does not exist.");
-
-  return canvasImageSizes[imageIndex].width;
-}
-
-function funcGetImageHeight(runtime, args)
-//
-{
-  var imageName = args[0];
-  var imageIndex = getCanvasImageIndex(imageName);
-
-  if(imageIndex == -1)
-    runtime.endWithError("Image '" + imageName + "' does not exist.");
-
-  return canvasImageSizes[imageIndex].height;
 }
 
 function funcDrawRect(runtime, args)

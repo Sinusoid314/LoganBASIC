@@ -1,4 +1,5 @@
 (December 19, 2021)
+	- Modified canvas_funcs and canvas_ui modules to keep the image objects in a Map on the UI thread.
 	- Added a background image and sound effects to "Bouncing Sprites" example.
 
 (December 18, 2021)

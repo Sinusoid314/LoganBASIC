@@ -22,10 +22,25 @@ var deltaTime
 var canvasWidth = 600
 var canvasHeight = 450
 
+var timeSum = 0
+var loopCount = 0
+
 setup()
 mainLoop()
 
 wait
+
+
+function logTime()
+  if loopCount = 1000 then return
+  
+  timeSum = timeSum + (deltaTime * 1000)
+  loopCount = loopCount + 1
+  
+  if loopCount = 1000 then
+    print "Average delta time (ms) = " + (timeSum / loopCount)
+  end if
+end function
 
 function setup()
   var spriteIndex
@@ -76,7 +91,7 @@ function setup()
     currSprite.frameImages[1] = "ship2"
   next spriteIndex
 
-  hideConsole()
+  'hideConsole()
   
   setCanvasWidth(canvasWidth)
   setCanvasHeight(canvasHeight)
@@ -99,6 +114,8 @@ function updateSprites()
   
   deltaTime = (time() - prevTime) / 1000
   prevTime = time()
+  
+  logTime()
   
   for spriteIndex = 0 to len(sprites) - 1
     currSprite = sprites[spriteIndex]

@@ -37,8 +37,8 @@ function progWorker_onMessage(message)
       onInputResult(message.data.msgData);
       break;
 
-    case MSGID_LOAD_IMAGE_RESULT:
-      onLoadImageResult(message.data.msgData);
+    case MSGID_IMAGE_REQUEST_RESULT:
+      onImageRequestResult(message.data.msgData);
       break;
 
     case MSGID_CANVAS_EVENT:

@@ -132,20 +132,28 @@ function progUI_onMessage(message)
       break;
 
     case MSGID_LOAD_IMAGE_REQUEST:
-      loadImage(message.data.msgData);
+      loadImage(message.data.msgData[0], message.data.msgData[1]);
       break;
 
-    case MSGID_UNLOAD_IMAGE:
+    case MSGID_UNLOAD_IMAGE_REQUEST:
       unloadImage(message.data.msgData);
       break;
 
-    case MSGID_DRAW_IMAGE:
+    case MSGID_DRAW_IMAGE_REQUEST:
       drawImage(message.data.msgData[0], message.data.msgData[1], message.data.msgData[2], message.data.msgData[3], message.data.msgData[4]);
       break;
 
-    case MSGID_DRAW_IMAGE_CLIP:
+    case MSGID_DRAW_IMAGE_CLIP_REQUEST:
       drawImageClip(message.data.msgData[0], message.data.msgData[1], message.data.msgData[2], message.data.msgData[3], message.data.msgData[4],
                     message.data.msgData[5], message.data.msgData[6], message.data.msgData[7], message.data.msgData[8]);
+      break;
+
+    case MSGID_GET_IMAGE_WIDTH_REQUEST:
+      getImageWidth(message.data.msgData);
+      break;
+
+    case MSGID_GET_IMAGE_HEIGHT_REQUEST:
+      getImageHeight(message.data.msgData);
       break;
 
     case MSGID_ENABLE_CANVAS_BUFFER:
