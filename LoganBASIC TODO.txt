@@ -1,5 +1,3 @@
-- Split function help pages into Standard, Canvas, and Sound catagories.
 - Add sprite functions.
-- Set focus to the canvas when showing it.
 - Add trig functions sin(), cos(), and tan().
 - Add debugger.

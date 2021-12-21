@@ -96,11 +96,12 @@ function showCanvas()
   var toggle = document.getElementById("canvasToggle");
   var pane = document.getElementById("canvasPane");
 
+  progCanvas.focus()
+
   if(toggle.classList.contains("toggle-closed"))
   {
     toggle.classList.toggle("toggle-closed");
     pane.classList.toggle("pane-closed");
-    progCanvas.focus()
   }
 }
 

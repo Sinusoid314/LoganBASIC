@@ -1,3 +1,8 @@
+(December 20, 2021)
+	- Split function help pages into Standard, Canvas, and Sound catagories.
+	- Added sprite_funcs and sprite_ui modules.
+	- Modified showCanvas() in canvas_ui modules to set focus to the canvas.
+
 (December 19, 2021)
 	- Modified canvas_funcs and canvas_ui modules to keep the image objects in a Map on the UI thread.
 	- Added a background image and sound effects to "Bouncing Sprites" example.
