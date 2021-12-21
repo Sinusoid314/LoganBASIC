@@ -1,0 +1,39 @@
+<html>
+
+<head>
+  <title></title>
+  <link rel="stylesheet" type="text/css" href="../../reference_doc.css"></link>
+</head>
+
+<body>
+
+<h3>drawCanvasBuffer([ functionName ])</h3>
+
+<h4>Description</h4>
+<p id="description">
+Transers all graphics from the offscreen buffer to the visible canvas. If <i>functionName</i>
+is specified, then that function will be called after the buffer has been drawn.
+</p>
+
+<h4>Usage</h4>
+<code id="usage">
+loadImage("ship", "../examples/ship1.png")
+enableCanvasBuffer()
+
+input("Press enter to draw image to buffer...")
+drawImage("ship", 10, 10)
+
+input("Press enter to draw image to canvas...")
+disableCanvasBuffer()
+drawImage("ship", 50, 50)
+
+input("Press enter to draw buffer to canvas...")
+<b>drawCanvasBuffer()</b>
+
+unloadImage("ship")
+
+print "Done."
+</code>
+
+</body>
+</html>

@@ -1,0 +1,35 @@
+<html>
+
+<head>
+  <title></title>
+  <link rel="stylesheet" type="text/css" href="../../reference_doc.css"></link>
+</head>
+
+<body>
+
+<h3>drawImage(imageName, drawX, drawY [ ,drawWidth ] [ ,drawHeight ])</h3>
+
+<h4>Description</h4>
+<p id="description">
+Draws an image specified by <i>imageName</i> to the canvas, or the canvas
+buffer if it is enabled, at the position <i>(drawX, drawY)</i>. If
+<i>drawWidth</i> or <i>drawHeight</i> are specified, the image is stretched or
+shrunk to that size.
+</p>
+
+<h4>Usage</h4>
+<code id="usage">
+loadImage("ship", "../examples/ship1.png")
+
+input("Press enter to draw image...")
+<b>drawImage("ship", 10, 10)</b>
+<b>drawImage("ship", 100, 100, 100, 100)</b>
+
+input("Press enter to unload image...")
+unloadImage("ship")
+
+print "Done."
+</code>
+
+</body>
+</html>

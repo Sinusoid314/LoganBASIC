@@ -28,7 +28,7 @@ statement      ->  ( varStmt
 
 varStmt        ->  "var" IDENTIFIER ( "=" expression )? ( "," IDENTIFIER ( "=" expression )? )*;
 arrayStmt      ->  "array" IDENTIFIER "[" arguments "]" ;
-exprStmt       ->  ( ( call "." )? IDENTIFIER ( "[" arguments "]" )* "=" )? expression ;
+exprStmt       ->  ( ( ( postfix ( "[" arguments "]" | "." IDENTIFIER ) ) | IDENTIFIER ) "=" )? expression ;
 printStmt      ->  "print" expression ;
 ifStmt         ->  "if" expression "then" 
                    ( statement | ( terminator statement* ( "else" terminator statement* )? "end" "if" ) ) ;
@@ -54,8 +54,7 @@ term           ->  factor ( ( "-" | "+" ) factor )* ;
 factor         ->  power ( ( "/" | "*" | "%" ) power )* ;
 power          ->  unary ( "^" unary )* ;
 unary          ->  ( "-" | "not" ) unary | call ;
-call           ->  arrayItem ( "(" arguments? ")" | "." IDENTIFIER )* ;
-arrayItem      ->  new ( "[" arguments "]" )* ;
+postfix        ->  new ( "[" arguments "]" | "(" arguments? ")" | "." IDENTIFIER )* ;
 new            ->  "new" ( IDENTIFIER | "array" "[" arguments "]" ) | primary ;
 primary        ->  "true" | "false" | NUMBER_LIT | STRING_LIT | IDENTIFIER
                    | ( "(" expression ")" ) ;
