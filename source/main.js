@@ -3,6 +3,7 @@ importScripts('worker_msg.js',
               'std_funcs.js',
               'canvas_funcs.js',
               'sound_funcs.js',
+              'sprite_funcs.js',
               'core/token.js',
               'core/bytecode.js',
               'core/scanner.js',
@@ -52,6 +53,10 @@ function progWorker_onMessage(message)
     case MSGID_SOUND_REQUEST_RESULT:
       onSoundRequestResult(message.data.msgData);
       break;
+
+    case MSGID_SPRITE_SHEET_REQUEST_RESULT:
+      onSpriteSheetRequestResult(message.data.msgData);
+      break;
   }
 }
 
@@ -59,7 +64,7 @@ function onStartProg(source)
 //Compile and run the program
 {
   postMessage({msgId: MSGID_STATUS_CHANGE, msgData: "Compiling..."});
-  mainCompiler = new Compiler(source, [].concat(stdNativeFuncs, canvasNativeFuncs, soundNativeFuncs));
+  mainCompiler = new Compiler(source, [].concat(stdNativeFuncs, canvasNativeFuncs, soundNativeFuncs, spriteNativeFuncs));
   mainBytecode = mainCompiler.compile();
 
   //console.log(mainBytecode.toString());

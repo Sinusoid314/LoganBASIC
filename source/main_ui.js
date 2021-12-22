@@ -30,6 +30,7 @@ function stopProg(exitStatus)
   closeConsoleInput();
   cleanupCanvas();
   cleanupSounds();
+  cleanupSpriteSheets();
   statusBar.innerHTML = exitStatus;
 
   switchMode();
@@ -242,6 +243,26 @@ function progUI_onMessage(message)
 
     case MSGID_LOOP_SOUND_REQUEST:
       loopSound(message.data.msgData[0], message.data.msgData[1]);
+      break;
+
+    case MSGID_LOAD_SPRITE_SHEET_REQUEST:
+      loadSpriteSheet(message.data.msgData[0], message.data.msgData[1]);
+      break;
+
+    case MSGID_UNLOAD_SPRITE_SHEET_REQUEST:
+      unloadSpriteSheet(message.data.msgData);
+      break;
+
+    case MSGID_DRAW_SPRITE_SHEET_FRAMES_REQUEST:
+      drawSpriteSheetFrames(message.data.msgData);
+      break;
+
+    case MSGID_GET_SPRITE_SHEET_FRAME_WIDTH_REQUEST:
+      getSpriteSheetFrameWidth(message.data.msgData);
+      break;
+
+    case MSGID_GET_SPRITE_SHEET_FRAME_HEIGHT_REQUEST:
+      getSpriteSheetFrameHeight(message.data.msgData);
       break;
   }
 }
