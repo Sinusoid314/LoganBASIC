@@ -54,6 +54,10 @@ function progWorker_onMessage(message)
       onSoundRequestResult(message.data.msgData);
       break;
 
+    case MSGID_SPRITE_SHEET_REF_REQUEST_RESULT:
+      onSpriteSheetRefRequestResult(message.data.msgData);
+      break;
+
     case MSGID_SPRITE_SHEET_REQUEST_RESULT:
       onSpriteSheetRequestResult(message.data.msgData);
       break;

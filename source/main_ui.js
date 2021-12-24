@@ -245,6 +245,10 @@ function progUI_onMessage(message)
       loopSound(message.data.msgData[0], message.data.msgData[1]);
       break;
 
+    case MSGID_SPRITE_SHEET_REF_REQUEST:
+      spriteSheetRefRequest(message.data.msgData[0], message.data.msgData[1]);
+      break;
+
     case MSGID_LOAD_SPRITE_SHEET_REQUEST:
       loadSpriteSheet(message.data.msgData[0], message.data.msgData[1]);
       break;

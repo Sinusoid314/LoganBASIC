@@ -1,9 +1,25 @@
 class SpriteSheet
 {
-  constructor(sheetImage)
+  constructor(sheetImage, columnCount, rowCount)
   {
-    this.frameWidth = sheetImage.width;
-    this.frameHeight = sheetImage.height;
+    var offsetX, offsetY;
+
+    this.sheetImage = sheetImage;
+    this.frameWidth = parseInt(sheetImage.width / columnCount);
+    this.frameHeight = parseInt(sheetImage.height / rowCount);
+    this.frameOffsets = [];
+
+    for(var row = 0; row < rowCount; row++)
+    {
+      offsetY = row * this.frameHeight;
+
+      for(var column = 0; column < columnCount; coulumn++)
+      {
+        offsetX = column * this.frameWidth;
+
+        this.frameOffsets.push( {x: offsetX, y: offsetY} );
+      }
+    }
   }
 }
 
@@ -41,6 +57,22 @@ function sendSpriteSheetRequestResult(msgData)
   progWorker.postMessage({msgId: MSGID_SPRITE_SHEET_REQUEST_RESULT, msgData: msgData});
 }
 
+function spriteSheetRefRequest(sheetName, spriteName)
+//
+{
+  var sheet;
+
+  if(spriteSheets.has(sheetName))
+  {
+    sheet = spriteSheets.get(sheetName);
+    progWorker.postMessage({msgId: MSGID_SPRITE_SHEET_REF_REQUEST_RESULT,
+                            msgData: ["", spriteName, sheet.frameWidth, sheet.frameHeight, sheet.frameOffsets.length]});
+  }
+  else
+    progWorker.postMessage({msgId: MSGID_SPRITE_SHEET_REF_REQUEST_RESULT,
+                            msgData: ["Sprite sheet '" + sheetName + "' has not been loaded."]});
+}
+
 function loadSpriteSheet(sheetName, sheetSource)
 //Load a sprite sheet image
 {
@@ -72,10 +104,22 @@ function unloadSpriteSheet(sheetName)
     sendSpriteSheetRequestResult(["Sprite sheet '" + sheetName + "' has not been loaded."]);
 }
 
-function drawSpriteSheetFrames()
+function drawSpriteSheetFrames(drawData)
 //
 {
+  var sheet;
 
+  for(const drawItem of drawData)
+  {
+    if(spriteSheets.has(drawItem[0]))
+    {
+      sheet = spriteSheets.get(drawItem[0]);
+      //activeContext.drawImage(sheet.sheetImage, clipX, clipY, clipWidth, clipHeight, drawX, drawY, drawWidth, drawHeight);
+      //[sheetName, frameIndex, drawX, drawY, scaleX, scaleY]
+    }
+    else
+      sendSpriteSheetRequestResult(["Sprite sheet '" + sheetName + "' has not been loaded."]);
+  }
 }
 
 function getSpriteSheetFrameWidth(sheetName)
@@ -95,3 +139,4 @@ function getSpriteSheetFrameHeight(sheetName)
   else
     sendSpriteSheetRequestResult(["Sprite sheet '" + sheetName + "' has not been loaded."]);
 }
+
