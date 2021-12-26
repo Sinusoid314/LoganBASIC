@@ -1,3 +1,9 @@
+(December 25, 2021)
+	- Added drawSprites(), getSpriteX(), setSpriteX(), getSpriteY(), setSpriteY(), getSpriteDrawWidth(), setSpriteDrawWidth(),
+	  getSpriteDrawHeight(), setSpriteDrawHeight(), getSpriteVelocityX(), setSpriteVelocityX(), getSpriteVelocityY(), setSpriteVelocityY(),
+	  getSpriteFrameRate(), setSpriteFrameRate(), getSpriteFrameIndex(), setSpriteFrameIndex(), getSpriteVisible(), setSpriteVisible(),
+	  getSpritePlaying(), and setSpritePlaying() native function.
+
 (December 24, 2021)
 	- Added addSprite(), removeSprite(), and updateSprites() native functions.
 

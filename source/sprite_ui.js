@@ -16,7 +16,6 @@ class SpriteSheet
       for(var column = 0; column < columnCount; coulumn++)
       {
         offsetX = column * this.frameWidth;
-
         this.frameOffsets.push( {x: offsetX, y: offsetY} );
       }
     }
@@ -107,18 +106,40 @@ function unloadSpriteSheet(sheetName)
 function drawSpriteSheetFrames(drawData)
 //
 {
-  var sheet;
+  var sheetName, sheet, frameIndex;
+  var drawX, drawY, drawWidth, drawHeight;
+  var clipX, clipY, clipWidth, clipHeight;
 
   for(const drawItem of drawData)
   {
-    if(spriteSheets.has(drawItem[0]))
+    sheetName = drawItem[0];
+    frameIndex = drawItem[1];
+    drawX = drawItem[2];
+    drawY = drawItem[3];
+    drawWidth = drawItem[4];
+    drawHeight = drawItem[5];
+
+    if(spriteSheets.has(sheetName))
     {
-      sheet = spriteSheets.get(drawItem[0]);
-      //activeContext.drawImage(sheet.sheetImage, clipX, clipY, clipWidth, clipHeight, drawX, drawY, drawWidth, drawHeight);
-      //[sheetName, frameIndex, drawX, drawY, scaleX, scaleY]
+      sheet = spriteSheets.get(sheetName);
+
+      if(frameIndex < 0)
+        frameIndex = 0;
+
+      if(frameIndex >= sheet.frameOffsets.length)
+        frameIndex = sheet.frameOffsets.length - 1;
+
+      clipX = sheet.frameOffsets[frameIndex].x;
+      clipY = sheet.frameOffsets[frameIndex].y;
+      clipWidth = sheet.frameWidth;
+      clipHeight = sheet.frameHeight;
+
+      activeContext.drawImage(sheet.sheetImage, clipX, clipY, clipWidth, clipHeight, drawX, drawY, drawWidth, drawHeight);
     }
     else
       sendSpriteSheetRequestResult(["Sprite sheet '" + sheetName + "' has not been loaded."]);
+
+    sendSpriteSheetRequestResult(["", 0]);
   }
 }
 
