@@ -3,19 +3,23 @@ class Sprite
   constructor(sheetName, x, y)
   {
     this.sheetName = sheetName;
+    this.frameCount = 0;
     this.x = x;
     this.y = y;
     this.drawWidth = 0;
     this.drawHeight = 0;
     this.velocityX = 0;
     this.velocityY = 0;
-    this.updatesPerFrame = 0;
-    this.currFrameIndex = 0;
     this.isVisible = true;
     this.isPlaying = true;
+    this.updatesPerFrame = 1;
+    this.firstFrameIndex = 0;
+    this.lastFrameIndex = 0;
+    this.currFrameIndex = 0;
+    this.maxCycles = 0;
 
-    this.frameCount = 0;
     this.frameUpdateCount = 0;
+    this.currCycle = 0;
   }
 }
 
@@ -28,6 +32,7 @@ var spriteNativeFuncs = [
                   new ObjNativeFunc("addsprite", 4, 4, funcAddSprite),
                   new ObjNativeFunc("removesprite", 1, 1, funcRemoveSprite),
                   new ObjNativeFunc("updatesprites", 1, 1, funcUpdateSprites),
+                  new ObjNativeFunc("getspriteframecount", 1, 1, funcGetSpriteFrameCount),
                   new ObjNativeFunc("getspritex", 1, 1, funcGetSpriteX),
                   new ObjNativeFunc("setspritex", 2, 2, funcSetSpriteX),
                   new ObjNativeFunc("getspritey", 1, 1, funcGetSpriteY),
@@ -40,14 +45,17 @@ var spriteNativeFuncs = [
                   new ObjNativeFunc("setspritevelocityx", 2, 2, funcSetSpriteVelocityX),
                   new ObjNativeFunc("getspritevelocityy", 1, 1, funcGetSpriteVelocityY),
                   new ObjNativeFunc("setspritevelocityy", 2, 2, funcSetSpriteVelocityY),
-                  new ObjNativeFunc("getspriteframerate", 1, 1, funcGetSpriteFrameRate),
-                  new ObjNativeFunc("setspriteframerate", 2, 2, funcSetSpriteFrameRate),
-                  new ObjNativeFunc("getspriteframeindex", 1, 1, funcGetSpriteFrameIndex),
-                  new ObjNativeFunc("setspriteframeindex", 2, 2, funcSetSpriteFrameIndex),
                   new ObjNativeFunc("getspritevisible", 1, 1, funcGetSpriteVisible),
                   new ObjNativeFunc("setspritevisible", 2, 2, funcSetSpriteVisible),
                   new ObjNativeFunc("getspriteplaying", 1, 1, funcGetSpritePlaying),
-                  new ObjNativeFunc("setspriteplaying", 2, 2, funcSetSpritePlaying)
+                  new ObjNativeFunc("setspriteplaying", 2, 2, funcSetSpritePlaying),
+                  new ObjNativeFunc("getspriteframerate", 1, 1, funcGetSpriteFrameRate),
+                  new ObjNativeFunc("setspriteframerate", 2, 2, funcSetSpriteFrameRate),
+                  new ObjNativeFunc("setspriteframerange", 3, 3, funcSetSpriteFrameRange),
+                  new ObjNativeFunc("getspriteframe", 1, 1, funcGetSpriteFrame),
+                  new ObjNativeFunc("setspriteframe", 2, 2, funcSetSpriteFrame),
+                  new ObjNativeFunc("getspritecycles", 1, 1, funcGetSpriteCycles),
+                  new ObjNativeFunc("setspritecycles", 2, 2, funcSetSpriteCycles)
                  ];
 
 var sprites = new Map();
@@ -66,6 +74,7 @@ function onSpriteSheetRefRequestResult(result)
     sprite.drawWidth = result[2];
     sprite.drawHeight = result[3];
     sprite.frameCount = result[4];
+    sprite.lastFrameIndex = sprite.frameCount - 1;
 
     spriteSheetResultCallback.runtime.stack[spriteSheetResultCallback.runtime.stack.length - 1] = result[1];
     spriteSheetResultCallback.runFunc();
@@ -102,8 +111,10 @@ function funcLoadSpriteSheet(runtime, args)
 {
   var sheetName = args[0];
   var sheetSource = args[1];
+  var columnCount = args[2];
+  var rowCount = args[3];
 
-  sendSpriteSheetRequest(runtime, MSGID_LOAD_SPRITE_SHEET_REQUEST, [sheetName, sheetSource]);
+  sendSpriteSheetRequest(runtime, MSGID_LOAD_SPRITE_SHEET_REQUEST, [sheetName, sheetSource, columnCount, rowCount]);
 
   return false;
 }
@@ -208,13 +219,40 @@ function funcUpdateSprites(runtime, args)
 
       if(sprite.frameUpdateCount >= sprite.updatesPerFrame)
       {
-        sprite.currFrameIndex = (sprite.currFrameIndex + 1) % sprite.frameCount;
         sprite.frameUpdateCount = 0;
+        sprite.currFrameIndex++;
+
+        if(sprite.currFrameIndex > sprite.lastFrameIndex)
+        {
+	      sprite.currFrameIndex = sprite.firstFrameIndex;
+
+          if(sprite.maxCycles > 0)
+          {
+            sprite.currCycle++;
+
+            if(sprite.currCycle >= sprite.maxCycles)
+            {
+              sprite.currCycle = 0;
+              sprite.isPlaying = false;
+            }
+          }
+        }
       }
     }
   }
 
   return 0;
+}
+
+function funcGetSpriteFrameCount(runtime, args)
+//
+{
+  var spriteName = args[0];
+
+  if(sprites.has(spriteName))
+    return sprites.get(spriteName).frameCount;
+  else
+    runtime.endWithError("Sprite '" + spriteName + "' does not exist.");
 }
 
 function funcGetSpriteX(runtime, args)
@@ -373,58 +411,6 @@ function funcSetSpriteVelocityY(runtime, args)
     runtime.endWithError("Sprite '" + spriteName + "' does not exist.");
 }
 
-function funcGetSpriteFrameRate(runtime, args)
-//
-{
-  var spriteName = args[0];
-
-  if(sprites.has(spriteName))
-    return sprites.get(spriteName).updatesPerFrame;
-  else
-    runtime.endWithError("Sprite '" + spriteName + "' does not exist.");
-}
-
-function funcSetSpriteFrameRate(runtime, args)
-//
-{
-  var spriteName = args[0];
-  var frameRate = args[1];
-
-  if(sprites.has(spriteName))
-  {
-    sprites.get(spriteName).updatesPerFrame = frameRate;
-    return 0;
-  }
-  else
-    runtime.endWithError("Sprite '" + spriteName + "' does not exist.");
-}
-
-function funcGetSpriteFrameIndex(runtime, args)
-//
-{
-  var spriteName = args[0];
-
-  if(sprites.has(spriteName))
-    return sprites.get(spriteName).currFrameIndex;
-  else
-    runtime.endWithError("Sprite '" + spriteName + "' does not exist.");
-}
-
-function funcSetSpriteFrameIndex(runtime, args)
-//
-{
-  var spriteName = args[0];
-  var frameIndex = args[1];
-
-  if(sprites.has(spriteName))
-  {
-    sprites.get(spriteName).currFrameIndex = frameIndex;
-    return 0;
-  }
-  else
-    runtime.endWithError("Sprite '" + spriteName + "' does not exist.");
-}
-
 function funcGetSpriteVisible(runtime, args)
 //
 {
@@ -471,6 +457,117 @@ function funcSetSpritePlaying(runtime, args)
   if(sprites.has(spriteName))
   {
     sprites.get(spriteName).isPlaying = isPlaying;
+    return 0;
+  }
+  else
+    runtime.endWithError("Sprite '" + spriteName + "' does not exist.");
+}
+
+function funcGetSpriteFrameRate(runtime, args)
+//
+{
+  var spriteName = args[0];
+
+  if(sprites.has(spriteName))
+    return sprites.get(spriteName).updatesPerFrame;
+  else
+    runtime.endWithError("Sprite '" + spriteName + "' does not exist.");
+}
+
+function funcSetSpriteFrameRate(runtime, args)
+//
+{
+  var spriteName = args[0];
+  var frameRate = args[1];
+
+  if(sprites.has(spriteName))
+  {
+    sprites.get(spriteName).updatesPerFrame = frameRate;
+    return 0;
+  }
+  else
+    runtime.endWithError("Sprite '" + spriteName + "' does not exist.");
+}
+
+function funcSetSpriteFrameRange(runtime, args)
+//
+{
+  var sprite;
+  var spriteName = args[0];
+  var firstFrameIndex = args[1];
+  var lastFrameIndex = args[2];
+
+  if(sprites.has(spriteName))
+  {
+    sprite = sprites.get(spriteName);
+
+    firstFrameIndex = Math.max(0, Math.min(firstFrameIndex, sprite.frameCount - 1));
+    lastFrameIndex = Math.max(0, Math.min(lastFrameIndex, sprite.frameCount - 1));
+
+    sprite.firstFrameIndex = Math.min(firstFrameIndex, lastFrameIndex);
+    sprite.lastFrameIndex = Math.max(firstFrameIndex, lastFrameIndex);
+    sprite.currFrameIndex = sprite.firstFrameIndex;
+
+    return 0;
+  }
+  else
+    runtime.endWithError("Sprite '" + spriteName + "' does not exist.");
+}
+
+function funcGetSpriteFrame(runtime, args)
+//
+{
+  var spriteName = args[0];
+
+  if(sprites.has(spriteName))
+    return sprites.get(spriteName).currFrameIndex;
+  else
+    runtime.endWithError("Sprite '" + spriteName + "' does not exist.");
+}
+
+function funcSetSpriteFrame(runtime, args)
+//
+{
+  var sprite;
+  var spriteName = args[0];
+  var frameIndex = args[1];
+
+  if(sprites.has(spriteName))
+  {
+    sprite = sprites.get(spriteName);
+    sprite.currFrameIndex = Math.max(sprite.firstFrameIndex, Math.min(frameIndex, sprite.lastFrameIndex));;
+
+    return 0;
+  }
+  else
+    runtime.endWithError("Sprite '" + spriteName + "' does not exist.");
+}
+
+function funcGetSpriteCycles(runtime, args)
+//
+{
+  var spriteName = args[0];
+
+  if(sprites.has(spriteName))
+  {
+    return sprites.get(spriteName).maxCycles;
+  }
+  else
+    runtime.endWithError("Sprite '" + spriteName + "' does not exist.");
+}
+
+function funcSetSpriteCycles(runtime, args)
+//
+{
+  var spriteName = args[0];
+  var cycles = args[1];
+
+  if(sprites.has(spriteName))
+  {
+    if(cycles < 0)
+      cycles = 0;
+
+    sprites.get(spriteName).maxCycles = cycles;
     return 0;
   }
   else

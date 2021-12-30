@@ -1,3 +1,8 @@
+(December 29, 2021)
+	- Renamed getSpriteFrameIndex() and setSpriteFrameIndex() to getSpriteFrame() and setSpriteFrame().
+	- Added getSpriteFrameCount(), setSpriteFrameRange(), getSpriteCycles(), and setSpriteCycles() native funcitons.
+	- Modified funcUpdateSprites() in sprite_funcs module to keep track of sprite frame range and cycles.
+
 (December 25, 2021)
 	- Added drawSprites(), getSpriteX(), setSpriteX(), getSpriteY(), setSpriteY(), getSpriteDrawWidth(), setSpriteDrawWidth(),
 	  getSpriteDrawHeight(), setSpriteDrawHeight(), getSpriteVelocityX(), setSpriteVelocityX(), getSpriteVelocityY(), setSpriteVelocityY(),

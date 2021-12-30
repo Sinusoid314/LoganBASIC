@@ -36,7 +36,7 @@ function spriteSheet_onLoad(event)
   this.removeEventListener("load", spriteSheet_onLoad);
   this.removeEventListener("error", spriteSheet_onError);
 
-  spriteSheets.set(this.id, new SpriteSheet(this));
+  spriteSheets.set(this.id, new SpriteSheet(this, this.columnCount, this.rowCount));
 
   sendSpriteSheetRequestResult(["", true])
 }
@@ -72,7 +72,7 @@ function spriteSheetRefRequest(sheetName, spriteName)
                             msgData: ["Sprite sheet '" + sheetName + "' has not been loaded."]});
 }
 
-function loadSpriteSheet(sheetName, sheetSource)
+function loadSpriteSheet(sheetName, sheetSource, columnCount, rowCount)
 //Load a sprite sheet image
 {
   var newSheetImage;
@@ -85,6 +85,8 @@ function loadSpriteSheet(sheetName, sheetSource)
     newSheetImage.addEventListener("error", spriteSheet_onError);
 
     newSheetImage.id = sheetName;
+    newSheetImage.columnCount = columnCount;
+    newSheetImage.rowCount = rowCount;
     newSheetImage.src = sheetSource;
   }
   else

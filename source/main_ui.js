@@ -250,7 +250,7 @@ function progUI_onMessage(message)
       break;
 
     case MSGID_LOAD_SPRITE_SHEET_REQUEST:
-      loadSpriteSheet(message.data.msgData[0], message.data.msgData[1]);
+      loadSpriteSheet(message.data.msgData[0], message.data.msgData[1], message.data.msgData[2], message.data.msgData[3]);
       break;
 
     case MSGID_UNLOAD_SPRITE_SHEET_REQUEST:
