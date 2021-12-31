@@ -13,7 +13,7 @@ class SpriteSheet
     {
       offsetY = row * this.frameHeight;
 
-      for(var column = 0; column < columnCount; coulumn++)
+      for(var column = 0; column < columnCount; column++)
       {
         offsetX = column * this.frameWidth;
         this.frameOffsets.push( {x: offsetX, y: offsetY} );
@@ -36,7 +36,7 @@ function spriteSheet_onLoad(event)
   this.removeEventListener("load", spriteSheet_onLoad);
   this.removeEventListener("error", spriteSheet_onError);
 
-  spriteSheets.set(this.id, new SpriteSheet(this, this.columnCount, this.rowCount));
+  spriteSheets.set(this.id, new SpriteSheet(this, this.dataset.columnCount, this.dataset.rowCount));
 
   sendSpriteSheetRequestResult(["", true])
 }
@@ -85,8 +85,8 @@ function loadSpriteSheet(sheetName, sheetSource, columnCount, rowCount)
     newSheetImage.addEventListener("error", spriteSheet_onError);
 
     newSheetImage.id = sheetName;
-    newSheetImage.columnCount = columnCount;
-    newSheetImage.rowCount = rowCount;
+    newSheetImage.dataset.columnCount = columnCount;
+    newSheetImage.dataset.rowCount = rowCount;
     newSheetImage.src = sheetSource;
   }
   else

@@ -1,4 +1,4 @@
+- Fix bug with sprite draw sizes not scaling.
 - Add help pages for sprite functions.
-- Modify "Bounding Sprites" example to use sprite native functions.
 - Add trig functions sin(), cos(), and tan().
 - Add debugger.

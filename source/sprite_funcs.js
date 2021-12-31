@@ -24,7 +24,7 @@ class Sprite
 }
 
 var spriteNativeFuncs = [
-                  new ObjNativeFunc("loadspritesheet", 2, 2, funcLoadSpriteSheet),
+                  new ObjNativeFunc("loadspritesheet", 4, 4, funcLoadSpriteSheet),
                   new ObjNativeFunc("unloadspritesheet", 1, 1, funcUnloadSpriteSheet),
                   new ObjNativeFunc("drawsprites", 0, 0, funcDrawSprites),
                   new ObjNativeFunc("getspriteframewidth", 1, 1, funcGetSpriteFrameWidth),

@@ -2,21 +2,7 @@
 '
 '
 
-structure Sprite
-  x
-  y
-  width
-  height
-  scale
-  velX
-  velY
-  updatesPerFrame
-  frameImages
-  currFrameIndex
-  frameUpdateCount
-end structure
-
-array sprites[3]
+array spriteNames[3]
 var prevTime
 var deltaTime
 var canvasWidth = 600
@@ -42,9 +28,12 @@ function logTime()
   end if
 end function
 
+
 function setup()
-  var spriteIndex
-  var currSprite
+  var index
+  var name
+  var initX, initY
+  var scaleWidth, scaleHeight
 
   print "Loading images..."
 
@@ -53,13 +42,8 @@ function setup()
     end
   end if
   
-  if not loadImage("ship1", "../examples/ship1.png") then
-    print "Failed to load image 'ship1.png'."
-    end
-  end if
-  
-  if not loadImage("ship2", "../examples/ship2.png") then
-    print "Failed to load image 'ship2.png'."
+  if not loadSpriteSheet("ship-sheet", "../examples/ship-sheet.png", 2, 1) then
+    print "Failed to load image 'ship-sheet.png'."
     end
   end if
   
@@ -74,22 +58,26 @@ function setup()
   
   print "Sound loaded."
   
-  for spriteIndex = 0 to len(sprites) - 1
-    sprites[spriteIndex] = new Sprite
-    currSprite = sprites[spriteIndex]
+  for index = 0 to len(spriteNames) - 1    
+    spriteNames[index] = "ship" + str(index)
+    name = spriteNames[index]
     
-    currSprite.x = int(rnd()*100) + 1
-    currSprite.y = int(rnd()*100) + 1
-    currSprite.width = getImageWidth("ship1")
-    currSprite.height = getImageHeight("ship1") 
-    currSprite.scale = rnd()*2 + 1
-    currSprite.velX = int(rnd()*100) + 1
-    currSprite.velY = int(rnd()*100) + 1
-    currSprite.updatesPerFrame = int(rnd()*50) + 1
-    currSprite.frameImages = new array[2]
-    currSprite.frameImages[0] = "ship1"
-    currSprite.frameImages[1] = "ship2"
-  next spriteIndex
+    initX = int(rnd()*100) + 1
+    initY = int(rnd()*100) + 1
+    
+    addSprite(name, "ship-sheet", initX, initY)
+    
+    scaleWidth = getSpriteDrawWidth(name) * (rnd()*2 + 1)
+    scaleHeight = getSpriteDrawHeight(name) * (rnd()*2 + 1)
+    
+    setSpriteDrawWidth(name, scaleWidth)
+    setSpriteDrawHeight(name, scaleHeight)
+    
+    setSpriteVelocityX(name, int(rnd()*100) + 1)
+    setSpriteVelocityY(name, int(rnd()*100) + 1)
+    
+    setSpriteFrameRate(name, int(rnd()*50) + 1)
+  next index
 
   'hideConsole()
   
@@ -101,88 +89,64 @@ function setup()
   prevTime = time()
 end function
 
-function mainLoop()
-  updateSprites()
-  checkCollisions()
-  drawSprites()
-  drawCanvasBuffer(mainLoop)
-end function
 
-function updateSprites()
-  var spriteIndex
-  var currSprite
-  
+function mainLoop()
   deltaTime = (time() - prevTime) / 1000
   prevTime = time()
   
   logTime()
   
-  for spriteIndex = 0 to len(sprites) - 1
-    currSprite = sprites[spriteIndex]
-    
-    currSprite.x = currSprite.x + (currSprite.velX * deltaTime)
-    currSprite.y = currSprite.y + (currSprite.velY * deltaTime)
-
-    currSprite.frameUpdateCount = currSprite.frameUpdateCount + 1
-    if currSprite.frameUpdateCount = currSprite.updatesPerFrame then
-      currSprite.currFrameIndex = (currSprite.currFrameIndex + 1) % len(currSprite.frameImages)
-      currSprite.frameUpdateCount = 0
-    end if
-  next spriteIndex
-end function
-
-function checkCollisions()
-  var spriteIndex
-  var currSprite
+  updateSprites(deltaTime)
   
-  for spriteIndex = 0 to len(sprites) - 1
-    currSprite = sprites[spriteIndex]
-    
-    if currSprite.x <= 0 then
-      if currSprite.velX < 0 then
-        currSprite.velX = -currSprite.velX
-        playSound("25c")
-      end if
-    else
-      if (currSprite.x + (currSprite.width * currSprite.scale)) >= canvasWidth then
-        if currSprite.velX > 0 then
-          currSprite.velX = -currSprite.velX
-          playSound("25c")
-        end if
-      end if
-    end if
-    
-    if currSprite.y <= 0 then
-      if currSprite.velY < 0 then
-        currSprite.velY = -currSprite.velY
-        playSound("25c")
-      end if
-    else
-      if (currSprite.y + (currSprite.height * currSprite.scale)) >= canvasHeight then
-        if currSprite.velY > 0 then
-          currSprite.velY = -currSprite.velY
-          playSound("25c")
-        end if
-      end if
-    end if
-  next spriteIndex
-end function
-
-function drawSprites()
-  var spriteIndex
-  var currSprite
-  var drawWidth, drawHeight
+  checkCollisions()
   
   clearCanvas()
-  
   drawImage("bg", 0, 0, canvasWidth, canvasHeight)
+  drawSprites()
   
-  for spriteIndex = 0 to len(sprites) - 1
-    currSprite = sprites[spriteIndex]
+  drawCanvasBuffer(mainLoop)
+end function
+
+
+function checkCollisions()
+  var index
+  var name
+  var x, y
+  var velX, velY
+
+  for index = 0 to len(spriteNames) - 1
+    name = spriteNames[index]
+    x = getSpriteX(name)
+    y = getSpriteY(name)
+    velX = getSpriteVelocityX(name)
+    velY = getSpriteVelocityY(name)
+  
+    if x <= 0 then
+      if velX < 0 then
+        setSpriteVelocityX(name, -velX)
+        playSound("25c")
+      end if
+    else
+      if (x + getSpriteDrawWidth(name)) >= canvasWidth then
+        if velX > 0 then
+          setSpriteVelocityX(name, -velX)
+          playSound("25c")
+        end if
+      end if
+    end if
     
-    drawWidth = currSprite.width * currSprite.scale
-    drawHeight = currSprite.height * currSprite.scale
-    
-    drawImage(currSprite.frameImages[currSprite.currFrameIndex], currSprite.x, currSprite.y, drawWidth, drawHeight)
-  next spriteIndex
+    if y <= 0 then
+      if velY < 0 then
+        setSpriteVelocityY(name, -velY)
+        playSound("25c")
+      end if
+    else
+      if (y + getSpriteDrawHeight(name)) >= canvasHeight then
+        if velY > 0 then
+          setSpriteVelocityY(name, -velY)
+          playSound("25c")
+        end if
+      end if
+    end if
+  next index
 end function
