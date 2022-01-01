@@ -76,7 +76,6 @@ function onSpriteSheetRefRequestResult(result)
     sprite.frameCount = result[4];
     sprite.lastFrameIndex = sprite.frameCount - 1;
 
-    spriteSheetResultCallback.runtime.stack[spriteSheetResultCallback.runtime.stack.length - 1] = result[1];
     spriteSheetResultCallback.runFunc();
   }
 }
@@ -182,7 +181,7 @@ function funcAddSprite(runtime, args)
   if(!sprites.has(spriteName))
   {
     sprites.set(spriteName, new Sprite(sheetName, x, y));
-    postMessage({msgId: MSGID_SPRITE_SHEET_REF_REQUEST, msgData: [sheetName, spriteName]});
+    sendSpriteSheetRequest(runtime, MSGID_SPRITE_SHEET_REF_REQUEST, [sheetName, spriteName]);
   }
   else
     runtime.endWithError("Sprite '" + spriteName + "' already exists.");

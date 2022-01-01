@@ -1,3 +1,6 @@
+(December 31, 2021)
+	- Fixed bug with sprite draw sizes not scaling.
+
 (December 30, 2021)
 	- Modified loadSpriteSheet() and spriteSheet_onLoad() in sprite_ui module to use the dataset attribute to store
 	  the sprite sheet's row and column count.
