@@ -29,7 +29,12 @@ var stdNativeFuncs = [
                   new ObjNativeFunc("stoptimer", 0, 0, funcStopTimer),
                   new ObjNativeFunc("addarrayitem", 2, 3, funcAddArrayItem),
                   new ObjNativeFunc("removearrayitem", 2, 2, funcRemoveArrayItem),
-                  new ObjNativeFunc("clamp", 3, 3, funcClamp)
+                  new ObjNativeFunc("clamp", 3, 3, funcClamp),
+                  new ObjNativeFunc("pointinrect", 6, 6, funcPointInRect),
+                  new ObjNativeFunc("pointincircle", 5, 5, funcPointInCircle),
+                  new ObjNativeFunc("rectsoverlap", 8, 8, funcRectsOverlap),
+                  new ObjNativeFunc("circlesoverlap", 6, 6, funcCirclesOverlap),
+                  new ObjNativeFunc("rectoverlapscircle", 7, 7, funcRectOverlapsCircle)
                  ];
 
 var inputCallback = null;
@@ -333,5 +338,90 @@ function funcClamp(runtime, args)
   var max = args[2];
 
   return Math.max(min, Math.min(val, max));
+}
+
+function funcPointInRect(runtime, args)
+//
+{
+  var pointX = args[0];
+  var pointY = args[1];
+  var rectX = args[2];
+  var rectY = args[3];
+  var rectWidth = args[4];
+  var rectHeight = args[5];
+
+  if((pointX <= rectX) || (pointX >= (rectX + rectWidth)))
+    return false;
+
+  if((pointY <= rectY) || (pointY >= (rectY + rectHeight)))
+    return false;
+
+  return true;
+}
+
+function funcPointInCircle(runtime, args)
+//
+{
+  var pointX = args[0];
+  var pointY = args[1];
+  var circleX = args[2];
+  var circleY = args[3];
+  var circleRadius = args[4];
+  var distance = ((circleX - pointX) ^ 2) + ((circleY - pointY) ^ 2);
+
+  return distance < (circleRadius ^ 2);
+}
+
+function funcRectsOverlap(runtime, args)
+//
+{
+  var rectX1 = args[0];
+  var rectY1 = args[1];
+  var rectWidth1 = args[2];
+  var rectHeight1 = args[3];
+  var rectX2 = args[4];
+  var rectY2 = args[5];
+  var rectWidth2 = args[6];
+  var rectHeight2 = args[7];
+
+  if(((rectX1 + rectWidth1) <= rectX2) || (rectX1 >= (rectX2 + rectWidth2)))
+    return false;
+
+  if(((rectY1 + rectHeight1) <= rectY2) || (rectY1 >= (rectY2 + rectHeight2)))
+    return false;
+
+  return true;
+}
+
+function funcCirclesOverlap(runtime, args)
+//
+{
+  var circleX1 = args[0];
+  var circleY1 = args[1];
+  var circleRadius1 = args[2];
+  var circleX2 = args[3];
+  var circleY2 = args[4];
+  var circleRadius2 = args[5];
+  var distance = ((circleX1 - circleX2) ^ 2) + ((circleY1 - circleY2) ^ 2);
+
+  return distance < ((circleRadius1 + circleRadius2) ^ 2);
+
+}
+
+function funcRectOverlapsCircle(runtime, args)
+//
+{
+  var rectX = args[0];
+  var rectY = args[1];
+  var rectWidth = args[3];
+  var rectHeight = args[4];
+  var circleX = args[5];
+  var circleY = args[6];
+  var circleRadius = args[7];
+  var closestX = Math.max(rectX, Math.min(circleX, rectX + rectWidth));
+  var closestY = Math.max(rectY, Math.min(circleY, rectY + rectHeight));
+  var distance = ((circleX - closestX) ^ 2) + ((circleY - closestY) ^ 2);
+
+  return distance < (circleRadius ^ 2);
 }
 

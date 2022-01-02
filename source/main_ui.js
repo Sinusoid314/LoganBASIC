@@ -149,6 +149,11 @@ function progUI_onMessage(message)
                     message.data.msgData[5], message.data.msgData[6], message.data.msgData[7], message.data.msgData[8]);
       break;
 
+    case MSGID_DRAW_IMAGE_TILED_REQUEST:
+      drawImageTiled(message.data.msgData[0], message.data.msgData[1], message.data.msgData[2], message.data.msgData[3], message.data.msgData[4],
+                    message.data.msgData[5], message.data.msgData[6]);
+      break;
+
     case MSGID_GET_IMAGE_WIDTH_REQUEST:
       getImageWidth(message.data.msgData);
       break;

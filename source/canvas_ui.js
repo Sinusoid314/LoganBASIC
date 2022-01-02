@@ -215,13 +215,24 @@ function drawImageClip(imageName, clipX, clipY, clipWidth, clipHeight, drawX, dr
   {
     image = images.get(imageName);
 
-    if(drawWidth == null)
-      drawWidth = clipWidth;
-
-    if(drawHeight == null)
-      drawHeight = clipHeight;
-
     activeContext.drawImage(image, clipX, clipY, clipWidth, clipHeight, drawX, drawY, drawWidth, drawHeight);
+
+    sendImageRequestResult(["", 0]);
+  }
+  else
+    sendImageRequestResult(["Image '" + imageName + "' has not been loaded."]);
+}
+
+function drawImageTiled(imageName, drawX, drawY, drawWidth, drawHeight, clipX, clipY)
+//
+{
+  var image;
+
+  if(images.has(imageName))
+  {
+    image = images.get(imageName);
+
+    //activeContext.drawImage();
 
     sendImageRequestResult(["", 0]);
   }

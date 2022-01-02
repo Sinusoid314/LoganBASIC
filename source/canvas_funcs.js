@@ -18,6 +18,7 @@ var canvasNativeFuncs = [
                   new ObjNativeFunc("unloadimage", 1, 1, funcUnloadImage),
                   new ObjNativeFunc("drawimage", 3, 5, funcDrawImage),
                   new ObjNativeFunc("drawimageclip", 7, 9, funcDrawImageClip),
+                  new ObjNativeFunc("drawimagetiled", 5, 7, funcDrawImageTiled),
                   new ObjNativeFunc("getimagewidth", 1, 1, funcGetImageWidth),
                   new ObjNativeFunc("getimageheight", 1, 1, funcGetImageHeight),
                   new ObjNativeFunc("enablecanvasbuffer", 0, 0, funcEnableCanvasBuffer),
@@ -178,8 +179,8 @@ function funcDrawImageClip(runtime, args)
   var clipHeight = args[4];
   var drawX = args[5];
   var drawY = args[6];
-  var drawWidth = null;
-  var drawHeight = null;
+  var drawWidth = clipWidth;
+  var drawHeight = clipHeight;
 
   if(args.length >= 8)
     drawWidth = args[7];
@@ -187,7 +188,29 @@ function funcDrawImageClip(runtime, args)
   if(args.length == 9)
     drawHeight = args[8];
 
-  sendImageRequest(runtime, MSGID_DRAW_IMAGE_CLIP_REQUEST, [imageIndex, clipX, clipY, clipWidth, clipHeight, drawX, drawY, drawWidth, drawHeight]);
+  sendImageRequest(runtime, MSGID_DRAW_IMAGE_CLIP_REQUEST, [imageName, clipX, clipY, clipWidth, clipHeight, drawX, drawY, drawWidth, drawHeight]);
+
+  return 0;
+}
+
+function funcDrawImageTiled(runtime, args)
+//
+{
+  var imageName = args[0];
+  var drawX = args[1];
+  var drawY = args[2];
+  var drawWidth = args[3];
+  var drawHeight = args[4];
+  var clipX = 0;
+  var clipY = 0;
+
+  if(args.length >= 6)
+    clipX = args[5];
+
+  if(args.length == 7)
+    clipY = args[6];
+
+  sendImageRequest(runtime, MSGID_DRAW_IMAGE_TILED_REQUEST, [imageName, drawX, drawY, drawWidth, drawHeight, clipX, clipY]);
 
   return 0;
 }
