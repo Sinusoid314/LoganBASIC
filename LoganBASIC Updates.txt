@@ -1,3 +1,6 @@
+(January 4, 2022)
+	- Implemented drawImageTiled() native function.
+
 (January 1, 2022)
 	- Added spritesOverlap(), pointInSprite(), spriteOverlapsRect(), and spriteOverlapsCircle() native functions.
 	- Added pointInRect(), pointInCircle(), rectsOverlap(), circlesOverlap(), and rectOverlapsCircle() native functions.

@@ -223,7 +223,7 @@ function drawImageClip(imageName, clipX, clipY, clipWidth, clipHeight, drawX, dr
     sendImageRequestResult(["Image '" + imageName + "' has not been loaded."]);
 }
 
-function drawImageTiled(imageName, drawX, drawY, drawWidth, drawHeight, clipX, clipY)
+function drawImageTiled(imageName, drawX, drawY, drawWidth, drawHeight, offsetX, offsetY)
 //
 {
   var image;
@@ -232,7 +232,12 @@ function drawImageTiled(imageName, drawX, drawY, drawWidth, drawHeight, clipX, c
   {
     image = images.get(imageName);
 
-    //activeContext.drawImage();
+    activeContext.save();
+    activeContext.fillStyle = activeContext.createPattern(image, "repeat");
+    activeContext.rect(drawX, drawY, drawWidth, drawHeight);
+    activeContext.translate(drawX + offsetX, drawY + offsetY);
+    activeContext.fill();
+    activeContext.restore();
 
     sendImageRequestResult(["", 0]);
   }

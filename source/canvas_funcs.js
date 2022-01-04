@@ -201,16 +201,16 @@ function funcDrawImageTiled(runtime, args)
   var drawY = args[2];
   var drawWidth = args[3];
   var drawHeight = args[4];
-  var clipX = 0;
-  var clipY = 0;
+  var offsetX = 0;
+  var offsetY = 0;
 
   if(args.length >= 6)
-    clipX = args[5];
+    offsetX = args[5];
 
   if(args.length == 7)
-    clipY = args[6];
+    offsetY = args[6];
 
-  sendImageRequest(runtime, MSGID_DRAW_IMAGE_TILED_REQUEST, [imageName, drawX, drawY, drawWidth, drawHeight, clipX, clipY]);
+  sendImageRequest(runtime, MSGID_DRAW_IMAGE_TILED_REQUEST, [imageName, drawX, drawY, drawWidth, drawHeight, offsetX, offsetY]);
 
   return 0;
 }

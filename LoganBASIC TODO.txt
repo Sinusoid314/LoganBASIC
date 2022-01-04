@@ -1,4 +1,3 @@
-- Impliment drawImageTiled() native function.
 - Add help pages for drawImageTiled(), pointInRect(), pointInCircle(), rectsOverlap(), circlesOverlap(), and rectOverlapsCircle() native functions.
 - Add help pages for sprite functions.
 - Add trig functions sin(), cos(), and tan().
