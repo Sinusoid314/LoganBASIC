@@ -518,9 +518,9 @@ function funcGetSpriteFrame(runtime, args)
 function funcSetSpriteFrame(runtime, args)
 //
 {
-  var sprite;
   var spriteName = args[0];
   var frameIndex = args[1];
+  var sprite;
 
   if(!sprites.has(spriteName))
     runtime.endWithError("Sprite '" + spriteName + "' does not exist.");
