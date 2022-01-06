@@ -7,16 +7,46 @@
 
 <body>
 
-<h3></h3>
+<h3>drawImageTiled(imageName, drawX, drawY, drawWidth, drawHeight [ ,offsetX ] [ ,offsetY ])</h3>
 
 <h4>Description</h4>
 <p id="description">
-
+Draws an image specified by <i>imageName</i> to the canvas, or the canvas
+buffer if it is enabled, in a repeating pattern within the rectangle
+<i>(drawX, drawY, drawWidth, drawHeight)</i>. If <i>offsetX</i> or <i>offsetY</i>
+are specified, the pattern is shifted by those values.
 </p>
 
 <h4>Usage</h4>
 <code id="usage">
+var offsetX = 0
+var imageWidth, imageHeight
 
+hideConsole()
+
+loadImage("space", "../examples/images/space.bmp")
+imageWidth = getImageWidth("space")
+imageHeight = getImageHeight("space")
+
+setCanvasWidth(imageWidth)
+setCanvasHeight(imageHeight)
+enableCanvasBuffer()
+
+mainLoop()
+
+wait
+
+function mainLoop()
+  clearCanvas()
+
+  <b>drawImageTiled("space", 0, 0, imageWidth, imageHeight, -offsetX, 0)</b>
+
+  if offsetX >= imageWidth then offsetX = offsetX % imageWidth
+
+  offsetX = offsetX + 5
+
+  drawCanvasBuffer(mainLoop)
+end function
 </code>
 
 </body>
