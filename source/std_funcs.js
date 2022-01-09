@@ -367,9 +367,9 @@ function funcPointInCircle(runtime, args)
   var circleX = args[2];
   var circleY = args[3];
   var circleRadius = args[4];
-  var distance = ((circleX - pointX) ^ 2) + ((circleY - pointY) ^ 2);
+  var distance = Math.pow(circleX - pointX, 2) + Math.pow(circleY - pointY, 2);
 
-  return distance < (circleRadius ^ 2);
+  return distance < Math.pow(circleRadius, 2);
 }
 
 function funcRectsOverlap(runtime, args)
@@ -402,9 +402,9 @@ function funcCirclesOverlap(runtime, args)
   var circleX2 = args[3];
   var circleY2 = args[4];
   var circleRadius2 = args[5];
-  var distance = ((circleX1 - circleX2) ^ 2) + ((circleY1 - circleY2) ^ 2);
+  var distance = Math.pow(circleX1 - circleX2, 2) + Math.pow(circleY1 - circleY2, 2);
 
-  return distance < ((circleRadius1 + circleRadius2) ^ 2);
+  return distance < Math.pow(circleRadius1 + circleRadius2, 2);
 
 }
 
@@ -413,15 +413,15 @@ function funcRectOverlapsCircle(runtime, args)
 {
   var rectX = args[0];
   var rectY = args[1];
-  var rectWidth = args[3];
-  var rectHeight = args[4];
-  var circleX = args[5];
-  var circleY = args[6];
-  var circleRadius = args[7];
+  var rectWidth = args[2];
+  var rectHeight = args[3];
+  var circleX = args[4];
+  var circleY = args[5];
+  var circleRadius = args[6];
   var closestX = Math.max(rectX, Math.min(circleX, rectX + rectWidth));
   var closestY = Math.max(rectY, Math.min(circleY, rectY + rectHeight));
-  var distance = ((circleX - closestX) ^ 2) + ((circleY - closestY) ^ 2);
+  var distance = Math.pow(circleX - closestX, 2) + Math.pow(circleY - closestY, 2);
 
-  return distance < (circleRadius ^ 2);
+  return distance < Math.pow(circleRadius, 2);
 }
 
