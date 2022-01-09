@@ -11,12 +11,36 @@
 
 <h4>Description</h4>
 <p id="description">
-
+Returns true if the point <i>(pointX, pointY)</i> is within the rectangle
+<i>(rectX, rectY, rectWidth, rectHeight)</i>, and false otherwise.
 </p>
 
 <h4>Usage</h4>
 <code id="usage">
+var rectX = 100
+var rectY = 100
+var rectWidth = 100
+var rectHeight = 100
 
+hideConsole()
+
+setFillColor("red")
+setLineSize(2)
+drawRect(rectX, rectY, rectWidth, rectHeight, false)
+
+setCanvasEvent("pointerup", onPointerUp)
+
+wait
+
+function onPointerUp(pointerX, pointerY)
+  clearCanvas()
+
+  if <b>pointInRect(pointerX, pointerY, rectX, rectY, rectWidth, rectHeight)</b> then
+    drawRect(rectX, rectY, rectWidth, rectHeight, true)
+  else
+    drawRect(rectX, rectY, rectWidth, rectHeight, false)
+  end if
+end function
 </code>
 
 </body>
