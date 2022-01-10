@@ -1,3 +1,6 @@
+(January 10, 2022)
+	- Added descriptions to the help pages for sprite functions.
+
 (January 8, 2022)
 	- Added help page for pointInRect(), pointInCircle(), rectsOverlap(), circlesOverlap(), and rectOverlapsCircle() native functions.
 
