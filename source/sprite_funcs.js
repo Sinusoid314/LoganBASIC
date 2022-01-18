@@ -31,6 +31,7 @@ var spriteNativeFuncs = [
                   new ObjNativeFunc("getspriteframeheight", 1, 1, funcGetSpriteFrameHeight),
                   new ObjNativeFunc("addsprite", 4, 4, funcAddSprite),
                   new ObjNativeFunc("removesprite", 1, 1, funcRemoveSprite),
+                  new ObjNativeFunc("setspritesheet", 2, 2, funcSetSpriteSheet),
                   new ObjNativeFunc("updatesprites", 1, 1, funcUpdateSprites),
                   new ObjNativeFunc("getspriteframecount", 1, 1, funcGetSpriteFrameCount),
                   new ObjNativeFunc("getspritex", 1, 1, funcGetSpriteX),
@@ -200,6 +201,27 @@ function funcRemoveSprite(runtime, args)
     runtime.endWithError("Sprite '" + spriteName + "' does not exist.");
 
   sprites.delete(spriteName);
+
+  return 0;
+}
+
+function funcSetSpriteSheet(runtime, args)
+//
+{
+  var spriteName = args[0];
+  var sheetName = args[1];
+  var sprite;
+
+  if(!sprites.has(spriteName))
+    runtime.endWithError("Sprite '" + spriteName + "' does not exist.");
+
+  sprite = sprites.get(spriteName);
+
+  sprite.sheetName = sheetName;
+  sprite.firstFrameIndex = 0;
+  sprite.currFrameIndex = 0;
+
+  sendSpriteSheetRequest(runtime, MSGID_SPRITE_SHEET_REF_REQUEST, [sheetName, spriteName]);
 
   return 0;
 }
