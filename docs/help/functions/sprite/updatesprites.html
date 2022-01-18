@@ -22,7 +22,42 @@ formulas:
 
 <h4>Usage</h4>
 <code id="usage">
+var deltaTime, prevTime
 
+hideConsole()
+enableCanvasBuffer()
+
+loadSpriteSheet("bubba-sheet", "../examples/images/bubba.png", 5, 2)
+
+addSprite("bubba", "bubba-sheet", 10, 100)
+setSpriteFrameRange("bubba", 0, 3)
+setSpriteVelocityX("bubba", 60)
+setSpriteFrameRate("bubba", 8)
+
+prevTime = time()
+
+mainLoop()
+
+wait
+
+function mainLoop()
+  deltaTime = (time() - prevTime) / 1000
+  prevTime = time()
+
+  if getSpriteX("bubba") >= 300 then
+    removeSprite("bubba")
+    unloadSpriteSheet("bubba-sheet")
+    end
+  end if
+
+  <b>updateSprites(deltaTime)</b>
+
+  clearCanvas()
+
+  drawSprites()
+
+  drawCanvasBuffer(mainLoop)
+end function
 </code>
 
 </body>

@@ -17,7 +17,42 @@ number is, the slower the sprite's animation will be.
 
 <h4>Usage</h4>
 <code id="usage">
+var deltaTime, prevTime
 
+hideConsole()
+enableCanvasBuffer()
+
+loadSpriteSheet("bubba-sheet", "../examples/images/bubba.png", 5, 2)
+
+addSprite("bubba", "bubba-sheet", 10, 100)
+setSpriteFrameRange("bubba", 0, 3)
+setSpriteVelocityX("bubba", 60)
+<b>setSpriteFrameRate("bubba", 8)</b>
+
+prevTime = time()
+
+mainLoop()
+
+wait
+
+function mainLoop()
+  deltaTime = (time() - prevTime) / 1000
+  prevTime = time()
+
+  if getSpriteX("bubba") >= 300 then
+    removeSprite("bubba")
+    unloadSpriteSheet("bubba-sheet")
+    end
+  end if
+
+  updateSprites(deltaTime)
+
+  clearCanvas()
+
+  drawSprites()
+
+  drawCanvasBuffer(mainLoop)
+end function
 </code>
 
 </body>

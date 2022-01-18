@@ -23,7 +23,42 @@ by an index number which maps to its grid location, as shown in the image below:
 
 <h4>Usage</h4>
 <code id="usage">
+var deltaTime, prevTime
 
+hideConsole()
+enableCanvasBuffer()
+
+<b>loadSpriteSheet("bubba-sheet", "../examples/images/bubba.png", 5, 2)</b>
+
+addSprite("bubba", "bubba-sheet", 10, 100)
+setSpriteFrameRange("bubba", 0, 3)
+setSpriteVelocityX("bubba", 60)
+setSpriteFrameRate("bubba", 8)
+
+prevTime = time()
+
+mainLoop()
+
+wait
+
+function mainLoop()
+  deltaTime = (time() - prevTime) / 1000
+  prevTime = time()
+
+  if getSpriteX("bubba") >= 300 then
+    removeSprite("bubba")
+    unloadSpriteSheet("bubba-sheet")
+    end
+  end if
+
+  updateSprites(deltaTime)
+
+  clearCanvas()
+
+  drawSprites()
+
+  drawCanvasBuffer(mainLoop)
+end function
 </code>
 
 </body>
