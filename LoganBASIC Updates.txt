@@ -1,3 +1,7 @@
+(January 20, 2022)
+	- Added usage sections to the help pages for getSpriteVelocityY(), setSpriteVelocityY(), and getSpriteVelocityX() native functions.
+	- Added a frame rate display to "Bouncing Sprites" example.
+
 (January 18, 2022)
 	- Added setSpriteSheet() native function.
 	- Added usage sections to the help pages for loadSpriteSheet(), unloadSpriteSheet(), drawSprites(), addSprite(),

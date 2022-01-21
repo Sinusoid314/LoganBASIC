@@ -1,3 +1,4 @@
+- Fix bug with drawImageTiled() slowing down when called continuously.
 - Add usage sections to the help pages for sprite functions.
 - Add trig functions sin(), cos(), and tan().
 - Add debugger.

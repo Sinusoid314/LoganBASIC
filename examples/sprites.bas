@@ -8,25 +8,10 @@ var deltaTime
 var canvasWidth = 600
 var canvasHeight = 450
 
-var timeSum = 0
-var loopCount = 0
-
 setup()
 mainLoop()
 
 wait
-
-
-function logTime()
-  if loopCount = 1000 then return
-  
-  timeSum = timeSum + (deltaTime * 1000)
-  loopCount = loopCount + 1
-  
-  if loopCount = 1000 then
-    print "Average delta time (ms) = " + (timeSum / loopCount)
-  end if
-end function
 
 
 function setup()
@@ -79,12 +64,14 @@ function setup()
     setSpriteFrameRate(name, int(rnd()*50) + 1)
   next index
 
-  'hideConsole()
+  hideConsole()
   
   setCanvasWidth(canvasWidth)
   setCanvasHeight(canvasHeight)
   
   enableCanvasBuffer()
+  
+  setFillColor("white")
   
   prevTime = time()
 end function
@@ -94,8 +81,6 @@ function mainLoop()
   deltaTime = (time() - prevTime) / 1000
   prevTime = time()
   
-  logTime()
-  
   updateSprites(deltaTime)
   
   checkCollisions()
@@ -103,6 +88,7 @@ function mainLoop()
   clearCanvas()
   drawImage("bg", 0, 0, canvasWidth, canvasHeight)
   drawSprites()
+  drawText(str(deltaTime * 1000) + " ms", 10, 10)
   
   drawCanvasBuffer(mainLoop)
 end function
