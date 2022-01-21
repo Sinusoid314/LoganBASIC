@@ -16,7 +16,48 @@ Returns the horizontal part of the velocity of <i>spriteName</i>.
 
 <h4>Usage</h4>
 <code id="usage">
+var deltaTime, prevTime
+var accelX = -100
+var accelY = 100
 
+hideConsole()
+enableCanvasBuffer()
+
+loadSpriteSheet("bubba-sheet", "../examples/images/bubba.png", 5, 2)
+
+addSprite("bubba", "bubba-sheet", 10, 100)
+
+setSpriteFrameRange("bubba", 4, 4)
+setSpriteVelocityX("bubba", 100)
+setSpriteVelocityY("bubba", -100)
+
+prevTime = time()
+
+mainLoop()
+
+wait
+
+function mainLoop()
+  deltaTime = (time() - prevTime) / 1000
+  prevTime = time()
+
+  setSpriteVelocityX("bubba", <b>getSpriteVelocityX("bubba")</b> + (accelX * deltaTime))
+  setSpriteVelocityY("bubba", getSpriteVelocityY("bubba") + (accelY * deltaTime))
+
+  updateSprites(deltaTime)
+
+  if getSpriteY("bubba") > 100 then
+    removeSprite("bubba")
+    unloadSpriteSheet("bubba-sheet")
+    end
+  end if
+
+  clearCanvas()
+
+  drawSprites()
+
+  drawCanvasBuffer(mainLoop)
+end function
 </code>
 
 </body>
