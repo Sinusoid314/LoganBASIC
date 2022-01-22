@@ -23,7 +23,7 @@ enableCanvasBuffer()
 
 loadSpriteSheet("bubba-sheet", "../examples/images/bubba.png", 5, 2)
 
-addSprite("bubba", "bubba-sheet", 10, 100)
+addSprite("bubba", "bubba-sheet", 10, 10)
 setSpriteFrameRange("bubba", 0, 3)
 setSpriteVelocityX("bubba", 60)
 setSpriteFrameRate("bubba", 8)
@@ -38,13 +38,17 @@ function mainLoop()
   deltaTime = (time() - prevTime) / 1000
   prevTime = time()
 
-  if <b>getSpriteX("bubba")</b> >= 300 then
+  if <b>getSpriteX("bubba")</b> = 200 then
     removeSprite("bubba")
     unloadSpriteSheet("bubba-sheet")
     end
   end if
 
   updateSprites(deltaTime)
+
+  if <b>getSpriteX("bubba")</b> > 100 then
+    setSpriteX("bubba", 200)
+  end if
 
   clearCanvas()
 

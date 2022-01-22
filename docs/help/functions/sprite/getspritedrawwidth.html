@@ -16,7 +16,33 @@ Returns the display width of <i>spriteName</i>.
 
 <h4>Usage</h4>
 <code id="usage">
+hideConsole()
+enableCanvasBuffer()
 
+loadSpriteSheet("bubba-sheet", "../examples/images/bubba.png", 5, 2)
+
+addSprite("bubba", "bubba-sheet", 10, 10)
+setSpriteFrameRange("bubba", 0, 0)
+
+mainLoop()
+
+wait
+
+function mainLoop()
+  if <b>getSpriteDrawWidth("bubba")</b> >= 150 then
+    removeSprite("bubba")
+    unloadSpriteSheet("bubba-sheet")
+    end
+  end if
+
+  setSpriteDrawWidth("bubba", <b>getSpriteDrawWidth("bubba")</b> + 1)
+
+  clearCanvas()
+
+  drawSprites()
+
+  drawCanvasBuffer(mainLoop)
+end function
 </code>
 
 </body>
