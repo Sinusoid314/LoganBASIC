@@ -4,6 +4,7 @@ var openURLBtn = document.getElementById("openURLBtn");
 var saveBtn = document.getElementById("saveBtn");
 var examplesBtn = document.getElementById("examplesBtn");
 var helpBtn = document.getElementById("helpBtn");
+var aboutBtn = document.getElementById("aboutBtn");
 var progEditor = document.getElementById("progEditor");
 
 window.addEventListener("load", window_onLoad);
@@ -13,6 +14,7 @@ openURLBtn.addEventListener("click", openURLBtn_onClick);
 saveBtn.addEventListener("click", saveBtn_onClick);
 examplesBtn.addEventListener("click", examplesBtn_onClick);
 helpBtn.addEventListener("click", helpBtn_onClick);
+aboutBtn.addEventListener("click", aboutBtn_onClick);
 
 function showEditor()
 //Show the program editor pane
@@ -161,4 +163,10 @@ function helpBtn_onClick(event)
 //Open the help files page
 {
   window.open("../docs/help/help.html", "_blank");
+}
+
+function aboutBtn_onClick(event)
+//Open the About page
+{
+  window.open("about.html", "_blank");
 }
