@@ -17,7 +17,40 @@ Returns true if the point <i>(pointX, pointY)</i> is within the sprite
 
 <h4>Usage</h4>
 <code id="usage">
+var isDone = false
 
+hideConsole()
+enableCanvasBuffer()
+
+loadSpriteSheet("bubba-sheet", "../examples/images/bubba.png", 5, 2)
+
+addSprite("bubba", "bubba-sheet", 50, 50)
+setSpriteFrameRange("bubba", 0, 0)
+setSpriteFrameRate("bubba", 8)
+
+setCanvasEvent("pointerup", onPointerUp)
+
+mainLoop()
+
+wait
+
+function mainLoop()
+  if isDone then
+    removeSprite("bubba")
+    unloadSpriteSheet("bubba-sheet")
+    end
+  end if
+
+  clearCanvas()
+
+  drawSprites()
+
+  drawCanvasBuffer(mainLoop)
+end function
+
+function onPointerUp(pointerX, pointerY)
+  if <b>pointInSprite("bubba", pointerX, pointerY)</b> then isDone = true
+end function
 </code>
 
 </body>

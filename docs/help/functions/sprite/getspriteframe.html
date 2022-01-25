@@ -16,7 +16,49 @@ Returns the index of <i>spriteName</i>'s currently displayed animation frame.
 
 <h4>Usage</h4>
 <code id="usage">
+var isDone = false
 
+hideConsole()
+enableCanvasBuffer()
+
+loadSpriteSheet("bubba-sheet", "../examples/images/bubba.png", 5, 2)
+
+addSprite("bubba", "bubba-sheet", 50, 50)
+setSpritePlaying("bubba", false)
+
+setCanvasEvent("pointerup", onPointerUp)
+
+mainLoop()
+
+wait
+
+function mainLoop()
+  if isDone then
+    removeSprite("bubba")
+    unloadSpriteSheet("bubba-sheet")
+    end
+  end if
+
+  updateSprites()
+
+  clearCanvas()
+
+  drawSprites()
+
+  drawCanvasBuffer(mainLoop)
+end function
+
+function onPointerUp(pointerX, pointerY)
+  if pointInSprite("bubba", pointerX, pointerY) then
+    if <b>getSpriteFrame("bubba")</b> = getSpriteFrameCount("bubba") - 1 then
+      setSpriteFrame("bubba", 0)
+    else
+      setSpriteFrame("bubba", <b>getSpriteFrame("bubba")</b> + 1)
+    end if
+  else
+    isDone = true
+  end if
+end function
 </code>
 
 </body>

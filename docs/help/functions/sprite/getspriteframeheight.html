@@ -16,7 +16,37 @@ Returns the height of <i>spriteName</i>'s animation frames.
 
 <h4>Usage</h4>
 <code id="usage">
+var scale = 0
 
+hideConsole()
+enableCanvasBuffer()
+
+loadSpriteSheet("bubba-sheet", "../examples/images/bubba.png", 5, 2)
+
+addSprite("bubba", "bubba-sheet", 10, 10)
+setSpriteFrameRange("bubba", 0, 0)
+
+mainLoop()
+
+wait
+
+function mainLoop()
+  if getSpriteDrawHeight("bubba") >= 270 then
+    removeSprite("bubba")
+    unloadSpriteSheet("bubba-sheet")
+    end
+  end if
+
+  scale = scale + 0.1
+
+  setSpriteDrawHeight("bubba", <b>getSpriteFrameHeight("bubba")</b> * scale)
+
+  clearCanvas()
+
+  drawSprites()
+
+  drawCanvasBuffer(mainLoop)
+end function
 </code>
 
 </body>

@@ -16,7 +16,37 @@ Returns the width of <i>spriteName</i>'s animation frames.
 
 <h4>Usage</h4>
 <code id="usage">
+var scale = 0
 
+hideConsole()
+enableCanvasBuffer()
+
+loadSpriteSheet("bubba-sheet", "../examples/images/bubba.png", 5, 2)
+
+addSprite("bubba", "bubba-sheet", 10, 10)
+setSpriteFrameRange("bubba", 0, 0)
+
+mainLoop()
+
+wait
+
+function mainLoop()
+  if getSpriteDrawWidth("bubba") >= 150 then
+    removeSprite("bubba")
+    unloadSpriteSheet("bubba-sheet")
+    end
+  end if
+
+  scale = scale + 0.1
+
+  setSpriteDrawWidth("bubba", <b>getSpriteFrameWidth("bubba")</b> * scale)
+
+  clearCanvas()
+
+  drawSprites()
+
+  drawCanvasBuffer(mainLoop)
+end function
 </code>
 
 </body>

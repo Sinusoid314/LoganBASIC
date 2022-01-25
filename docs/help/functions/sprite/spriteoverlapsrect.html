@@ -17,7 +17,55 @@ overlap, and false otherwise.
 
 <h4>Usage</h4>
 <code id="usage">
+var deltaTime, prevTime
+var rectX = 200
+var rectY = 50
+var rectWidth = 100
+var rectHeight = 100
+var isDone = false
 
+hideConsole()
+enableCanvasBuffer()
+
+loadSpriteSheet("bubba-sheet", "../examples/images/bubba.png", 5, 2)
+
+addSprite("bubba", "bubba-sheet", 10, 20)
+setSpriteFrameRange("bubba", 0, 3)
+setSpriteVelocityX("bubba", 60)
+setSpriteFrameRate("bubba", 8)
+
+prevTime = time()
+
+mainLoop()
+
+wait
+
+function mainLoop()
+  if isDone then
+    removeSprite("bubba")
+    unloadSpriteSheet("bubba-sheet")
+    end
+  end if
+
+  deltaTime = (time() - prevTime) / 1000
+  prevTime = time()
+
+  updateSprites(deltaTime)
+
+  if <b>spriteOverlapsRect("bubba", rectX, rectY, rectWidth, rectHeight)</b> then
+    setSpriteX("bubba", rectX - getSpriteDrawWidth("bubba"))
+    setSpriteFrameRange("bubba", 0, 0)
+    isDone = true
+  end if
+
+  clearCanvas()
+
+  drawRect(rectX, rectY, rectWidth, rectHeight)
+
+  drawSprites()
+
+  drawCanvasBuffer(mainLoop)
+end function
 </code>
 
 </body>
