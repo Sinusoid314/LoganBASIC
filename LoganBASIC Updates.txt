@@ -1,3 +1,8 @@
+(January 25, 2022)
+	- Modified updateSprites() native function to make the deltaTime argument optional.
+	- Fix bug with sprites not being hidden when using setSpriteVisible().
+	- Finished adding usage sections to the help pages for sprite functions.
+
 (January 21, 2022)
 	- Added usage sections to the help pages for setSpriteX(), getSpriteY(), setSpriteY(), getSpriteDrawWidth(),
 	  setSpriteDrawWidth(), getSpriteDrawHeight(), and setSpriteDrawHeight() native functions.

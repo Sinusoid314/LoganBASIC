@@ -232,6 +232,19 @@ function drawImageTiled(imageName, drawX, drawY, drawWidth, drawHeight, offsetX,
   {
     image = images.get(imageName);
 
+/*
+    imgOffsetLeft = -((-imgOffsetLeft) % backImagePtr->imgWidth);
+    imgOffsetTop = -((-imgOffsetTop) % backImagePtr->imgHeight);
+
+    for(imgTop = imgOffsetTop; imgTop < viewSize.y; imgTop += backImagePtr->imgHeight)
+    {
+      for(imgLeft = imgOffsetLeft; imgLeft < viewSize.x; imgLeft += backImagePtr->imgWidth)
+      {
+        gameView.DrawImage(backImagePtr, imgLeft, imgTop);
+      }
+    }
+*/
+
     activeContext.save();
     activeContext.fillStyle = activeContext.createPattern(image, "repeat");
     activeContext.rect(drawX, drawY, drawWidth, drawHeight);

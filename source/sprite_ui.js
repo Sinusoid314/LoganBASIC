@@ -139,10 +139,13 @@ function drawSpriteSheetFrames(drawData)
       activeContext.drawImage(sheet.sheetImage, clipX, clipY, clipWidth, clipHeight, drawX, drawY, drawWidth, drawHeight);
     }
     else
+    {
       sendSpriteSheetRequestResult(["Sprite sheet '" + sheetName + "' has not been loaded."]);
-
-    sendSpriteSheetRequestResult(["", 0]);
+      return;
+    }
   }
+
+  sendSpriteSheetRequestResult(["", 0]);
 }
 
 function getSpriteSheetFrameWidth(sheetName)

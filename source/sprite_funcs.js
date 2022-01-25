@@ -32,7 +32,7 @@ var spriteNativeFuncs = [
                   new ObjNativeFunc("addsprite", 4, 4, funcAddSprite),
                   new ObjNativeFunc("removesprite", 1, 1, funcRemoveSprite),
                   new ObjNativeFunc("setspritesheet", 2, 2, funcSetSpriteSheet),
-                  new ObjNativeFunc("updatesprites", 1, 1, funcUpdateSprites),
+                  new ObjNativeFunc("updatesprites", 0, 1, funcUpdateSprites),
                   new ObjNativeFunc("getspriteframecount", 1, 1, funcGetSpriteFrameCount),
                   new ObjNativeFunc("getspritex", 1, 1, funcGetSpriteX),
                   new ObjNativeFunc("setspritex", 2, 2, funcSetSpriteX),
@@ -229,7 +229,10 @@ function funcSetSpriteSheet(runtime, args)
 function funcUpdateSprites(runtime, args)
 //
 {
-  var deltaTime = args[0];
+  var deltaTime = 0;
+
+  if(args.length == 1)
+    deltaTime = args[0];
 
   for(const [spriteName, sprite] of sprites)
   {
