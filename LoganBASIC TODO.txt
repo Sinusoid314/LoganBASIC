@@ -1,4 +1,2 @@
-- Fix bug with drawImageTiled() slowing down when called continuously.
-
 - Add trig functions sin(), cos(), and tan().
 - Add debugger.

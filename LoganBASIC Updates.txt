@@ -1,3 +1,6 @@
+(February 8, 2022)
+	- Fixed bug with drawImageTiled() slowing down when called continuously.
+
 (January 25, 2022)
 	- Modified updateSprites() native function to make the deltaTime argument optional.
 	- Fix bug with sprites not being hidden when using setSpriteVisible().

@@ -227,35 +227,51 @@ function drawImageTiled(imageName, drawX, drawY, drawWidth, drawHeight, offsetX,
 //
 {
   var image;
+  var initX, initY, destX, destY;
 
-  if(images.has(imageName))
+  if(!images.has(imageName))
   {
-    image = images.get(imageName);
-
-/*
-    imgOffsetLeft = -((-imgOffsetLeft) % backImagePtr->imgWidth);
-    imgOffsetTop = -((-imgOffsetTop) % backImagePtr->imgHeight);
-
-    for(imgTop = imgOffsetTop; imgTop < viewSize.y; imgTop += backImagePtr->imgHeight)
-    {
-      for(imgLeft = imgOffsetLeft; imgLeft < viewSize.x; imgLeft += backImagePtr->imgWidth)
-      {
-        gameView.DrawImage(backImagePtr, imgLeft, imgTop);
-      }
-    }
-*/
-
-    activeContext.save();
-    activeContext.fillStyle = activeContext.createPattern(image, "repeat");
-    activeContext.rect(drawX, drawY, drawWidth, drawHeight);
-    activeContext.translate(drawX + offsetX, drawY + offsetY);
-    activeContext.fill();
-    activeContext.restore();
-
-    sendImageRequestResult(["", 0]);
-  }
-  else
     sendImageRequestResult(["Image '" + imageName + "' has not been loaded."]);
+    return;
+  }
+
+  image = images.get(imageName);
+
+  offsetX = offsetX % image.width;
+  offsetY = offsetY % image.height;
+
+  initX = drawX + offsetX - (offsetX > 0 ? image.width : 0);
+  initY = drawY + offsetY - (offsetY > 0 ? image.height : 0);
+
+  activeContext.save();
+  activeContext.beginPath();
+  activeContext.rect(drawX, drawY, drawWidth, drawHeight);
+  activeContext.clip();
+
+  for(destY = initY; destY < (drawY + drawHeight); destY += image.height)
+  {
+    for(destX = initX; destX < (drawX + drawWidth); destX += image.width)
+    {
+      activeContext.drawImage(image, destX, destY);
+    }
+  }
+
+  activeContext.beginPath();
+  activeContext.restore();
+
+  sendImageRequestResult(["", 0]);
+
+//Alternate algorithm
+/*
+  activeContext.save();
+  activeContext.beginPath();
+  activeContext.fillStyle = activeContext.createPattern(image, "repeat");
+  activeContext.rect(drawX, drawY, drawWidth, drawHeight);
+  activeContext.translate(drawX + offsetX, drawY + offsetY);
+  activeContext.fill();
+  activeContext.beginPath();
+  activeContext.restore();
+*/
 }
 
 function getImageWidth(imageName)
