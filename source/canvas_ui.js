@@ -260,18 +260,6 @@ function drawImageTiled(imageName, drawX, drawY, drawWidth, drawHeight, offsetX,
   activeContext.restore();
 
   sendImageRequestResult(["", 0]);
-
-//Alternate algorithm
-/*
-  activeContext.save();
-  activeContext.beginPath();
-  activeContext.fillStyle = activeContext.createPattern(image, "repeat");
-  activeContext.rect(drawX, drawY, drawWidth, drawHeight);
-  activeContext.translate(drawX + offsetX, drawY + offsetY);
-  activeContext.fill();
-  activeContext.beginPath();
-  activeContext.restore();
-*/
 }
 
 function getImageWidth(imageName)
