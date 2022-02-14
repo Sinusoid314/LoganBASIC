@@ -1,6 +1,7 @@
 'Breakout
 '
-'
+'A version of the classic game where the objective is to
+'knock out all the bricks with a ball and paddle.
 
 structure Position
   x
@@ -53,6 +54,8 @@ draw()
 
 wait
 
+
+'Create the bricks
 function setupBricks()
   var column, row, index
   
@@ -66,12 +69,16 @@ function setupBricks()
   next column
 end function
 
+
+'Main update & draw loop
 function mainLoop()
   update()
   checkCollisions()
   draw()
 end function
 
+
+'Update the ball and paddle positions based of their velocities
 function update()
   var deltaTime = (time() - prevTime) / 1000
   prevTime = time()
@@ -82,6 +89,8 @@ function update()
   paddleX = paddleX + (paddleVelX * deltaTime)
 end function
 
+
+'Check all the possible collisions
 function checkCollisions()
   if ballHitPaddle() then return
   if ballHitBrick() then return
@@ -90,6 +99,8 @@ function checkCollisions()
   ballHitBottom()
 end function
 
+
+'Draw the bricks, paddle, and ball to the canvas
 function draw()
   var brickIndex
   
@@ -109,6 +120,8 @@ function draw()
   drawCanvasBuffer(mainLoop)
 end function
 
+
+'Move the paddle when either the left or right arrows keys are pressed down
 function onKeyDown(key)
   if key = "ArrowLeft" then
     paddleVelX = -paddleVelXMax
@@ -121,10 +134,14 @@ function onKeyDown(key)
   end if
 end function
 
+
+'Stop moving the paddle when the arrow key is released
 function onKeyUp(key)
   paddleVelX = 0
 end function
 
+
+'Return true if the ball is touching the paddle
 function ballHitPaddle()
   if ballHitRect(paddleX, paddleY, paddleWidth, paddleHeight) then
     if ballVelY > 0 then
@@ -137,6 +154,8 @@ function ballHitPaddle()
   end if
 end function
 
+
+'Return true if the ball is touching one of the bricks
 function ballHitBrick()
   var brickIndex
 
@@ -151,6 +170,8 @@ function ballHitBrick()
   return false
 end function
 
+
+'Return true if the ball is touching either the left or right edge of the canvas
 function ballHitSide()
   if ballX - ballRadius <= 0 then
     if ballVelX < 0 then ballVelX = -ballVelX
@@ -165,6 +186,8 @@ function ballHitSide()
   return false
 end function
 
+
+'Return true if the ball is touching the top edge of the canvas
 function ballHitTop()
   if ballY - ballRadius <= 0 then
     if ballVelY < 0 then ballVelY = -ballVelY
@@ -174,12 +197,16 @@ function ballHitTop()
   end if
 end function
 
+
+'Return true if the ball is touching the bottom edge of the canvas
 function ballHitBottom()
   if ballY + ballRadius >= canvasHeight then
     gameOver("LOSER!!!")
   end if
 end function
 
+
+'Return true if the ball is touching the given rectangle
 function ballHitRect(x, y, width, height)
   var closestX = clamp(ballX, x, x + width)
   var closestY = clamp(ballY, y, y + height)
@@ -190,6 +217,8 @@ function ballHitRect(x, y, width, height)
   return distance < (ballRadius ^ 2)
 end function
 
+
+'Either all the bricks are gone (win) or the ball hit the bottom (lose)
 function gameOver(message)
   disableCanvasBuffer()
   drawText(message, canvasWidth / 2, canvasHeight / 2)

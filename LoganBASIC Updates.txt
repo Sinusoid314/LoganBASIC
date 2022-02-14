@@ -1,3 +1,6 @@
+(February 14, 2022)
+	- Finished commenting the example programs.
+
 (February 8, 2022)
 	- Fixed bug with drawImageTiled() slowing down when called continuously.
 

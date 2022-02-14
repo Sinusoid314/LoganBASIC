@@ -1,6 +1,12 @@
 'Conway's Game of Life
 '
+'A cellular automaton consisting of a grid of cells, each of which is either
+'alive or dead, which change over time. An initial grid is randomly generated,
+'and each subsequent generation of cells is generated based on the following rules:
 '
+'- Any live cell with two or three live neighbors survives.
+'- Any dead cell with three live neighbors becomes a live cell.
+'- All other live cells die in the next generation, and all other dead cells stay dead.
 
 var cellCountX = 50
 var cellCountY = 30
@@ -21,6 +27,8 @@ drawCanvasBuffer(mainLoop)
 
 wait
 
+
+'Generate the initial cells
 function setupCells()
   var cellX, cellY
 
@@ -34,6 +42,8 @@ function setupCells()
   next cellY
 end function
 
+
+'Main update & draw loop
 function mainLoop()
   var deltaTime = time() - prevTime
 
@@ -46,6 +56,8 @@ function mainLoop()
   drawCanvasBuffer(mainLoop)
 end function
 
+
+'Draw the cells on the canvas
 function drawCells()
   var cellX, cellY
 
@@ -64,6 +76,8 @@ function drawCells()
   next cellY
 end function
 
+
+'Update the state (alive or dead) of each cell
 function updateCells()
   var cellX, cellY
   var aliveCount
@@ -90,6 +104,8 @@ function updateCells()
   nextCells = tempArray
 end function
 
+
+'Return the number of alive cells surrounding the given cell
 function getAliveNeighborCount(cellX, cellY)
   var neighborX, neighborY
   var aliveCount = 0
@@ -105,6 +121,8 @@ function getAliveNeighborCount(cellX, cellY)
   return aliveCount
 end function
 
+
+'Return the state of the given cell, or return false if the cell is out of the grid bounds
 function neighborIsAlive(x, y)
   if (x < 0) or (x >= cellCountX) or (y < 0) or (y >= cellCountY) then
     return false

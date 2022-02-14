@@ -1,6 +1,6 @@
 'Bouncing Sprites
 '
-'
+'Draws multiple sprites that move around the canvas.
 
 array spriteNames[3]
 var prevTime
@@ -14,6 +14,7 @@ mainLoop()
 wait
 
 
+'Load the images and sounds, and create the sprites with random velocities and sizes
 function setup()
   var index
   var name
@@ -77,6 +78,7 @@ function setup()
 end function
 
 
+'Main update & draw loop
 function mainLoop()
   deltaTime = (time() - prevTime) / 1000
   prevTime = time()
@@ -94,6 +96,7 @@ function mainLoop()
 end function
 
 
+'Make the sprites bounce back if they hit the edge of the canvas
 function checkCollisions()
   var index
   var name
