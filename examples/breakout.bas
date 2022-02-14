@@ -2,12 +2,14 @@
 '
 'A version of the classic game where the objective is to
 'knock out all the bricks with a ball and paddle.
+'Use the left and right arrow keys to move the paddle.
 
 structure Position
   x
   y
 end structure
 
+var gameOver = false
 var gapHeight = 200
 var brickColumns = 4
 var brickRows = 4
@@ -72,6 +74,12 @@ end function
 
 'Main update & draw loop
 function mainLoop()
+  if gameOver then
+    disableCanvasBuffer()
+    drawText("GAME OVER", canvasWidth / 2, canvasHeight / 2)
+    end
+  end if
+  
   update()
   checkCollisions()
   draw()
@@ -137,7 +145,9 @@ end function
 
 'Stop moving the paddle when the arrow key is released
 function onKeyUp(key)
-  paddleVelX = 0
+  if (key = "ArrowLeft") or (key = "ArrowRight") then
+    paddleVelX = 0
+  end if
 end function
 
 
@@ -162,7 +172,11 @@ function ballHitBrick()
   for brickIndex = 0 to len(brickPositions) - 1
     if ballHitRect(brickPositions[brickIndex].x, brickPositions[brickIndex].y, brickWidth, brickHeight) then
       removeArrayItem(brickPositions, brickIndex)
+      
+      if len(brickPositions) = 0 then gameOver = true
+      
       ballVelY = -ballVelY
+      
       return true
     end if
   next brickIndex
@@ -200,9 +214,7 @@ end function
 
 'Return true if the ball is touching the bottom edge of the canvas
 function ballHitBottom()
-  if ballY + ballRadius >= canvasHeight then
-    gameOver("LOSER!!!")
-  end if
+  if ballY + ballRadius >= canvasHeight then gameOver = true
 end function
 
 
@@ -215,12 +227,4 @@ function ballHitRect(x, y, width, height)
   var distance = (distanceX ^ 2) + (distanceY ^ 2)
   
   return distance < (ballRadius ^ 2)
-end function
-
-
-'Either all the bricks are gone (win) or the ball hit the bottom (lose)
-function gameOver(message)
-  disableCanvasBuffer()
-  drawText(message, canvasWidth / 2, canvasHeight / 2)
-  end
 end function
