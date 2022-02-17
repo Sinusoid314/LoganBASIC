@@ -168,5 +168,5 @@ function helpBtn_onClick(event)
 function aboutBtn_onClick(event)
 //Open the About page
 {
-  window.open("about.html", "_blank");
+  window.open("../about.html", "_blank");
 }
