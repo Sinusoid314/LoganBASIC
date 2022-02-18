@@ -1,2 +1,4 @@
+- Add a scrolling platformer example.
+
 - Add trig functions sin(), cos(), and tan().
 - Add debugger.
