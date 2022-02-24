@@ -129,7 +129,6 @@ function applyGravity()
   var newVelocityY
   
   newVelocityY = getSpriteVelocityY("bubba") + (gravityVal * deltaTime)
-  
   setSpriteVelocityY("bubba", newVelocityY)
 end function
 
@@ -144,5 +143,6 @@ end function
 function bubbaHitCurb()
   if spritesOverlap("bubba", "curb1") or spritesOverlap("bubba", "curb2") then
     setSpriteY("bubba", getSpriteY("curb1") - getSpriteDrawHeight("bubba"))
+    setSpriteVelocityY("bubba", 0)
   end if
 end function

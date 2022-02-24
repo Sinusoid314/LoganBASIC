@@ -19,6 +19,7 @@ var keywordList = {
                    "next": TOKEN_NEXT,
                    "redim": TOKEN_REDIM,
                    "cls": TOKEN_CLS,
+                   "whterbtobj": TOKEN_WHTERBTOBJ,
                    "do": TOKEN_DO,
                    "loop": TOKEN_LOOP,
                    "exit": TOKEN_EXIT,

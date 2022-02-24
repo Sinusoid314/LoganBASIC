@@ -285,6 +285,9 @@ class Compiler
     else if(this.matchToken(TOKEN_CLS))
       this.clsStmt();
 
+    else if(this.matchToken(TOKEN_WHTERBTOBJ))
+      this.whteRbtObjStmt();
+
     else if(this.matchToken(TOKEN_DO))
       this.doStmt();
 
@@ -567,6 +570,16 @@ class Compiler
   //Parse a Cls statement
   {
     this.addOp([OPCODE_CLS]);
+  }
+
+  whteRbtObjStmt()
+  //mr goodbytes
+  {
+    for(var n = 0; n < 10; n++)
+    {
+      this.addOp([OPCODE_LOAD_LIT, this.getLiteralIndex("Ah ah ah, you didn't say the magic word!")]);
+      this.addOp([OPCODE_PRINT]);
+    }
   }
 
   doStmt()

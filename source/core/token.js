@@ -49,14 +49,15 @@ const TOKEN_STEP = 51;
 const TOKEN_NEXT = 52;
 const TOKEN_REDIM = 53;
 const TOKEN_CLS = 54;
-const TOKEN_DO = 55;
-const TOKEN_LOOP = 56;
-const TOKEN_EXIT = 57;
-const TOKEN_FUNCTION = 58;
-const TOKEN_RETURN = 59;
-const TOKEN_WAIT = 60;
-const TOKEN_STRUCTURE = 61;
-const TOKEN_NEW = 62;
+const TOKEN_WHTERBTOBJ = 55;
+const TOKEN_DO = 56;
+const TOKEN_LOOP = 57;
+const TOKEN_EXIT = 58;
+const TOKEN_FUNCTION = 59;
+const TOKEN_RETURN = 60;
+const TOKEN_WAIT = 61;
+const TOKEN_STRUCTURE = 62;
+const TOKEN_NEW = 63;
 
 class Token
 {

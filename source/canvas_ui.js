@@ -88,6 +88,8 @@ function canvas_onEvent(event)
   {
     progWorker.postMessage({msgId: MSGID_CANVAS_EVENT, msgData: [event.type, event.key]});
   }
+
+  event.preventDefault();
 }
 
 function showCanvas()
