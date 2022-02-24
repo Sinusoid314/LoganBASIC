@@ -8,6 +8,8 @@ var canvasWidth = 600
 var canvasHeight = 400
 var bgOffsetX = 0
 var gravityVal = 100
+var jumping = false
+var facingDir = "right"
 var leftKeyDown = false
 var rightKeyDown = false
 
@@ -86,22 +88,35 @@ function mainLoop()
 end function
 
 
-'Move Bubba when either the left or right arrows keys are pressed down
+'Make Bubba either walk or jump when the appropriate key is pressed down
 function onKeyDown(key)
-  if leftKeyDown or rightKeyDown then return
-
-  if key = "ArrowLeft" then
-    leftKeyDown = true
-    setSpriteFrameRange("bubba", 6, 8)
-    setSpriteVelocityX("bubba", -100)
-    return
+  if (key = " ") and (not jumping) then
+    if facingDir = "right" then
+      setSpriteFrameRange("bubba", 4, 4)
+    else
+      setSpriteFrameRange("bubba", 9, 9)
+    end if
+    
+    setSpriteVelocityY("bubba", -200)
+    jumping = true
   end if
+
+  if not (leftKeyDown or rightKeyDown) then
+    if key = "ArrowLeft" then
+      leftKeyDown = true
+      facingDir = "left"
+      setSpriteFrameRange("bubba", 6, 8)
+      setSpriteVelocityX("bubba", -100)
+      return
+    end if
   
-  if key = "ArrowRight" then
-    rightKeyDown = true
-    setSpriteFrameRange("bubba", 1, 3)
-    setSpriteVelocityX("bubba", 100)
-    return
+    if key = "ArrowRight" then
+      rightKeyDown = true
+      facingDir = "right"
+      setSpriteFrameRange("bubba", 1, 3)
+      setSpriteVelocityX("bubba", 100)
+      return
+    end if
   end if
 end function
 
@@ -136,13 +151,29 @@ end function
 'React to any sprites that are touching
 function checkCollisions()
   bubbaHitCurb()
+  bubbaHitEdge()
 end function
 
 
 'React if Bubba is touching either of the curbs
 function bubbaHitCurb()
-  if spritesOverlap("bubba", "curb1") or spritesOverlap("bubba", "curb2") then
-    setSpriteY("bubba", getSpriteY("curb1") - getSpriteDrawHeight("bubba"))
-    setSpriteVelocityY("bubba", 0)
+  if not (spritesOverlap("bubba", "curb1") or spritesOverlap("bubba", "curb2")) then return
+    
+  setSpriteY("bubba", getSpriteY("curb1") - getSpriteDrawHeight("bubba"))
+  setSpriteVelocityY("bubba", 0)
+  
+  if jumping then
+    if facingDir = "right" then
+      setSpriteFrameRange("bubba", 0, 0)
+    else
+      setSpriteFrameRange("bubba", 5, 5)
+    end if
+    
+    jumping = false
   end if
+end function
+
+
+function bubbaHitEdge()
+  if getSpriteX("bubba") <= 0 then setSpriteX("bubba", 0)
 end function
