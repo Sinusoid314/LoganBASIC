@@ -1,4 +1,6 @@
 - Finish "Scrolling Platformer" example.
+- Add help pages for getScrollX(), setScrollX(), getScrollY(), setScrollY(), shiftScrollX(), shiftScrollY(),
+  getSpriteScroll(), and setSpriteScroll() native functions.
 
 - Add trig functions sin(), cos(), and tan().
 - Add debugger.

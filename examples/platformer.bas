@@ -91,10 +91,10 @@ end function
 'Make Bubba either walk or jump when the appropriate key is pressed down
 function onKeyDown(key)
   if (key = " ") and (not jumping) then
-    if facingDir = "right" then
-      setSpriteFrameRange("bubba", 4, 4)
-    else
+    if facingDir = "left" then
       setSpriteFrameRange("bubba", 9, 9)
+    else
+      setSpriteFrameRange("bubba", 4, 4)
     end if
     
     setSpriteVelocityY("bubba", -200)
@@ -105,7 +105,13 @@ function onKeyDown(key)
     if key = "ArrowLeft" then
       leftKeyDown = true
       facingDir = "left"
-      setSpriteFrameRange("bubba", 6, 8)
+      
+      if jumping then
+        setSpriteFrameRange("bubba", 9, 9)
+      else
+        setSpriteFrameRange("bubba", 6, 8)
+      end if
+      
       setSpriteVelocityX("bubba", -100)
       return
     end if
@@ -113,7 +119,13 @@ function onKeyDown(key)
     if key = "ArrowRight" then
       rightKeyDown = true
       facingDir = "right"
-      setSpriteFrameRange("bubba", 1, 3)
+      
+      if jumping then
+        setSpriteFrameRange("bubba", 4, 4)
+      else
+        setSpriteFrameRange("bubba", 1, 3)
+      end if
+      
       setSpriteVelocityX("bubba", 100)
       return
     end if
@@ -125,15 +137,23 @@ end function
 function onKeyUp(key)
   if (key = "ArrowLeft") and leftKeyDown then
     leftKeyDown = false
-    setSpriteFrameRange("bubba", 5, 5)
-    setSpriteVelocityX("bubba", 0)
+    
+    if not jumping then
+      setSpriteFrameRange("bubba", 5, 5)
+      setSpriteVelocityX("bubba", 0)
+    end if
+    
     return
   end if
   
   if (key = "ArrowRight") and rightKeyDown then
     rightKeyDown = false
-    setSpriteFrameRange("bubba", 0, 0)
-    setSpriteVelocityX("bubba", 0)
+    
+    if not jumping then
+      setSpriteFrameRange("bubba", 0, 0)
+      setSpriteVelocityX("bubba", 0)
+    end if
+    
     return
   end if
 end function
@@ -162,13 +182,23 @@ function bubbaHitCurb()
   setSpriteY("bubba", getSpriteY("curb1") - getSpriteDrawHeight("bubba"))
   setSpriteVelocityY("bubba", 0)
   
-  if jumping then
-    if facingDir = "right" then
-      setSpriteFrameRange("bubba", 0, 0)
+  if jumping then    
+    if facingDir = "left" then
+      if leftKeyDown then
+        setSpriteFrameRange("bubba", 6, 8)
+      else
+        setSpriteFrameRange("bubba", 5, 5)
+        setSpriteVelocityX("bubba", 0)
+      end if
     else
-      setSpriteFrameRange("bubba", 5, 5)
+      if rightKeyDown then
+        setSpriteFrameRange("bubba", 1, 3)
+      else
+        setSpriteFrameRange("bubba", 0, 0)
+        setSpriteVelocityX("bubba", 0)
+      end if
     end if
-    
+
     jumping = false
   end if
 end function

@@ -1,3 +1,9 @@
+(February 26, 2022)
+[v1.6.27]
+	- Added getScrollX(), setScrollX(), getScrollY(), setScrollY(), shiftScrollX(), shiftScrollY(), getSpriteScroll(),
+	  and setSpriteScroll() native functions.
+	- Updated "Scrolling Platformer" example.
+
 (February 23, 2022)
 [v1.6.26]
 	- Updated "Scrolling Platformer" example.

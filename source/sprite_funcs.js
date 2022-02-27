@@ -17,6 +17,7 @@ class Sprite
     this.lastFrameIndex = 0;
     this.currFrameIndex = 0;
     this.maxCycles = 0;
+    this.scroll = true;
 
     this.frameUpdateCount = 0;
     this.currCycle = 0;
@@ -60,10 +61,20 @@ var spriteNativeFuncs = [
                   new ObjNativeFunc("spritesoverlap", 2, 2, funcSpritesOverlap),
                   new ObjNativeFunc("pointinsprite", 3, 3, funcPointInSprite),
                   new ObjNativeFunc("spriteoverlapsrect", 5, 5, funcSpriteOverlapsRect),
-                  new ObjNativeFunc("spriteoverlapscircle", 4, 4, funcSpriteOverlapsCircle)
+                  new ObjNativeFunc("spriteoverlapscircle", 4, 4, funcSpriteOverlapsCircle),
+                  new ObjNativeFunc("getscrollx", 0, 0, funcGetScrollX),
+                  new ObjNativeFunc("setscrollx", 1, 1, funcSetScrollX),
+                  new ObjNativeFunc("getscrolly", 0, 0, funcGetScrollY),
+                  new ObjNativeFunc("setscrolly", 1, 1, funcSetScrollY),
+                  new ObjNativeFunc("shiftscrollx", 1, 1, funcShiftScrollX),
+                  new ObjNativeFunc("shiftscrolly", 1, 1, funcShiftScrollY),
+                  new ObjNativeFunc("getspritescroll", 1, 1, funcGetSpriteScroll),
+                  new ObjNativeFunc("setspritescroll", 2, 2, funcSetSpriteScroll)
                  ];
 
 var sprites = new Map();
+var scrollX = 0;
+var scrollY = 0;
 var spriteSheetResultCallback = null;
 
 function onSpriteSheetRefRequestResult(result)
@@ -137,11 +148,15 @@ function funcDrawSprites(runtime, args)
 //
 {
   var drawData = [];
+  var drawX, drawY;
 
   for(const [spriteName, sprite] of sprites)
   {
+    drawX = sprite.x - (sprite.scroll ? scrollX : 0);
+    drawY = sprite.y - (sprite.scroll ? scrollY : 0);
+
     if(sprite.isVisible)
-      drawData.push([sprite.sheetName, sprite.currFrameIndex, sprite.x, sprite.y, sprite.drawWidth, sprite.drawHeight]);
+      drawData.push([sprite.sheetName, sprite.currFrameIndex, drawX, drawY, sprite.drawWidth, sprite.drawHeight]);
   }
 
   sendSpriteSheetRequest(runtime, MSGID_DRAW_SPRITE_SHEET_FRAMES_REQUEST, drawData);
@@ -677,3 +692,67 @@ function funcSpriteOverlapsCircle(runtime, args)
   return distance < (circleRadius ^ 2);
 }
 
+function funcGetScrollX(runtime, args)
+//
+{
+  return scrollX;
+}
+
+function funcSetScrollX(runtime, args)
+//
+{
+  scrollX = args[0];
+  return 0;
+}
+
+function funcGetScrollY(runtime, args)
+//
+{
+  return scrollY;
+}
+
+function funcSetScrollY(runtime, args)
+//
+{
+  scrollY = args[0];
+  return 0;
+}
+
+function funcShiftScrollX(runtime, args)
+//
+{
+  scrollX += args[0];
+  return 0;
+}
+
+function funcShiftScrollY(runtime, args)
+//
+{
+  scrollY += args[0];
+  return 0;
+}
+
+function funcGetSpriteScroll(runtime, args)
+//
+{
+  var spriteName = args[0];
+
+  if(!sprites.has(spriteName))
+    runtime.endWithError("Sprite '" + spriteName + "' does not exist.");
+
+  return sprites.get(spriteName).scroll;
+}
+
+function funcSetSpriteScroll(runtime, args)
+//
+{
+  var spriteName = args[0];
+  var scroll = args[1];
+
+  if(!sprites.has(spriteName))
+    runtime.endWithError("Sprite '" + spriteName + "' does not exist.");
+
+  sprites.get(spriteName).scroll = scroll;
+
+  return 0;
+}
