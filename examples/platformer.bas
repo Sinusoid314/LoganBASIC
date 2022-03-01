@@ -4,10 +4,11 @@
 
 var prevTime
 var deltaTime
-var canvasWidth = 600
-var canvasHeight = 400
-var bgOffsetX = 0
-var gravityVal = 100
+var canvasWidth, canvasHeight
+var levelWidth
+var scrollViewX = 0
+var gravityForce = 100
+var jumpForce = -100
 var jumping = false
 var facingDir = "right"
 var leftKeyDown = false
@@ -39,14 +40,26 @@ function setup()
     end
   end if
   
+  if not loadSpriteSheet("car-sheet", "../examples/images/car.png", 1, 1) then
+    print "Failed to load image 'car.png'."
+    end
+  end if
+  
   print "Images loaded."
-    
+  
+  canvasWidth = getImageWidth("bg")
+  canvasHeight = getImageHeight("bg")
+  levelWidth = canvasWidth * 2
+  
   addSprite("bubba", "bubba-sheet", 200, 10)
   setSpriteFrameRange("bubba", 0, 0)
   setSpriteFrameRate("bubba", 5)
   
   addSprite("curb1", "curb-sheet", 0, 375)
   addSprite("curb2", "curb-sheet", 700, 375)
+  
+  addSprite("car", "car-sheet", 800, 0)
+  setSpriteY("car", getSpriteY("curb1") - getSpriteDrawHeight("car"))
     
   hideConsole()
   showCanvas()
@@ -76,9 +89,11 @@ function mainLoop()
   
   checkCollisions()
   
+  moveScrollView()
+  
   clearCanvas()
   
-  drawImageTiled("bg", 0, 0, canvasWidth, canvasHeight, -bgOffsetX, 0)
+  drawImageTiled("bg", 0, 0, canvasWidth, canvasHeight, -scrollViewX, 0)
   
   drawSprites()
   
@@ -97,7 +112,7 @@ function onKeyDown(key)
       setSpriteFrameRange("bubba", 4, 4)
     end if
     
-    setSpriteVelocityY("bubba", -200)
+    setSpriteVelocityY("bubba", jumpForce)
     jumping = true
   end if
 
@@ -159,11 +174,19 @@ function onKeyUp(key)
 end function
 
 
+'Move the scroll view along with Bubba, while keeping it within the level's bounds
+function moveScrollView()
+  scrollViewX = getSpriteX("bubba") - int(canvasWidth / 2)
+  scrollViewX = clamp(scrollViewX, 0, levelWidth - canvasWidth)
+  setScrollX(scrollViewX)
+end function
+
+
 'Apply the gravity acceleration value to Bubba's y-velocity
 function applyGravity()
   var newVelocityY
   
-  newVelocityY = getSpriteVelocityY("bubba") + (gravityVal * deltaTime)
+  newVelocityY = getSpriteVelocityY("bubba") + (gravityForce * deltaTime)
   setSpriteVelocityY("bubba", newVelocityY)
 end function
 
@@ -204,6 +227,8 @@ function bubbaHitCurb()
 end function
 
 
+'Make sure Bubba stays within the level's bounds
 function bubbaHitEdge()
-  if getSpriteX("bubba") <= 0 then setSpriteX("bubba", 0)
+  var newX = clamp(getSpriteX("bubba"), 0, levelWidth - getSpriteDrawWidth("bubba"))
+  setSpriteX("bubba", newX)
 end function

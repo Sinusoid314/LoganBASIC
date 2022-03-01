@@ -1,3 +1,7 @@
+(February 28, 2022)
+[v1.6.28]
+	- Added scrolling view to "Scrolling Platformer" example.
+
 (February 26, 2022)
 [v1.6.27]
 	- Added getScrollX(), setScrollX(), getScrollY(), setScrollY(), shiftScrollX(), shiftScrollY(), getSpriteScroll(),
