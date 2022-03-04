@@ -11,12 +11,51 @@
 
 <h4>Description</h4>
 <p id="description">
-
+Returns the horzontal position of the <a href="scrollview">scroll view</a>.
 </p>
 
 <h4>Usage</h4>
 <code id="usage">
+hideConsole()
+enableCanvasBuffer()
 
+loadSpriteSheet("ship-sheet", "../examples/images/ship-sheet.png", 2, 1)
+loadImage("bg", "../examples/images/space.bmp")
+
+addSprite("ship1", "ship-sheet", 50, 50)
+setSpriteFrameRate("ship1", 2)
+
+addSprite("ship2", "ship-sheet", 400, 400)
+setSpriteFrameRate("ship2", 4)
+
+mainLoop()
+
+wait
+
+function mainLoop()
+  if <b>getScrollX()</b> < 0 then
+    removeSprite("ship1")
+    removeSprite("ship2")
+    unloadSpriteSheet("ship-sheet")
+    end
+  end if
+
+  shiftScrollX(5)
+  shiftScrollY(5)
+
+  if <b>getScrollX()</b> > 500 then
+    setScrollX(-10)
+    setScrollY(-10)
+  end if
+
+  clearCanvas()
+
+  drawImageTiled("bg", 0, 0, getImageWidth("bg"), getImageHeight("bg"), -<b>getScrollX()</b>, -getScrollY())
+
+  drawSprites()
+
+  drawCanvasBuffer(mainLoop)
+end function
 </code>
 
 </body>
