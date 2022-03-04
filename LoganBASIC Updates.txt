@@ -1,3 +1,8 @@
+(March 3, 2022)
+[v1.6.29]
+	- Added help pages for getScrollX(), setScrollX(), getScrollY(), setScrollY(), shiftScrollX(), and shiftScrollY() native functions.
+	- Seperated the description of sprite sheets from the loadSpriteSheet() help page.
+
 (February 28, 2022)
 [v1.6.28]
 	- Added scrolling view to "Scrolling Platformer" example.
