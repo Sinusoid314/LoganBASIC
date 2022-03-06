@@ -17,7 +17,40 @@ If <i>scroll</i> is true, the <a href="scrollview">scroll view</a>'s position is
 
 <h4>Usage</h4>
 <code id="usage">
+hideConsole()
+enableCanvasBuffer()
 
+loadSpriteSheet("ship-sheet", "../examples/images/ship-sheet.png", 2, 1)
+
+addSprite("ship", "ship-sheet", 0, 0)
+
+setScrollX(-100)
+setScrollY(-100)
+
+setCanvasEvent("pointerup", onPointerUp)
+setCanvasEvent("keyup", onKeyUp)
+
+mainLoop()
+
+wait
+
+function mainLoop()
+  clearCanvas()
+
+  drawSprites()
+
+  drawCanvasBuffer(mainLoop)
+end function
+
+function onPointerUp(pointerX, pointerY)
+  <b>setSpriteScroll("ship", not getSpriteScroll("ship"))</b>
+end function
+
+function onKeyUp(key)
+  removeSprite("ship")
+  unloadSpriteSheet("ship-sheet")
+  end
+end function
 </code>
 
 </body>
