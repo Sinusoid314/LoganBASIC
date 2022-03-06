@@ -1,3 +1,7 @@
+(March 6, 2022)
+[v1.6.30]
+	- Added Usage sections to help pages for getSpriteScroll() and setSpriteScroll() native functions.
+
 (March 3, 2022)
 [v1.6.29]
 	- Added help pages for getScrollX(), setScrollX(), getScrollY(), setScrollY(), shiftScrollX(), and shiftScrollY() native functions.

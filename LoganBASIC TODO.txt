@@ -1,5 +1,4 @@
 - Finish "Scrolling Platformer" example.
-- Add Usage sections to help pages for getSpriteScroll() and setSpriteScroll() native functions.
 - Add help page for Scroll View description.
 
 - Add trig functions sin(), cos(), and tan().
