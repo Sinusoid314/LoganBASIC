@@ -1,3 +1,8 @@
+(March 8, 2022)
+[v1.6.31]
+	- Added help page for Scroll Offset description.
+	- Added a platform sprite to "Scrolling Platformer" example.
+
 (March 6, 2022)
 [v1.6.30]
 	- Added Usage sections to help pages for getSpriteScroll() and setSpriteScroll() native functions.

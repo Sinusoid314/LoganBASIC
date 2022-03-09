@@ -40,6 +40,11 @@ function setup()
     end
   end if
   
+  if not loadSpriteSheet("platform-sheet", "../examples/images/platform.png", 1, 1) then
+    print "Failed to load image 'platform.png'."
+    end
+  end if
+  
   if not loadSpriteSheet("car-sheet", "../examples/images/car.png", 1, 1) then
     print "Failed to load image 'car.png'."
     end
@@ -58,7 +63,9 @@ function setup()
   addSprite("curb1", "curb-sheet", 0, 375)
   addSprite("curb2", "curb-sheet", 700, 375)
   
-  addSprite("car", "car-sheet", 800, 0)
+  addSprite("platform", "platform-sheet", 600, 200)
+  
+  addSprite("car", "car-sheet", 1000, 0)
   setSpriteY("car", getSpriteY("curb1") - getSpriteDrawHeight("car"))
     
   hideConsole()
@@ -75,6 +82,22 @@ function setup()
   setCanvasEvent("keyup", onKeyUp)
   
   prevTime = time()
+end function
+
+
+function cleanup()
+  removeSprite("car")
+  removeSprite("platform")
+  removeSprite("curb1")
+  removeSprite("curb2")
+  removeSprite("bubba")
+  
+  unloadSpriteSheet("car-sheet")
+  unloadSpriteSheet("platform-sheet")
+  unloadSpriteSheet("curb-sheet")
+  unloadSpriteSheet("bubba-sheet")
+  
+  unloadImage("bg")
 end function
 
 
@@ -150,6 +173,11 @@ end function
 
 'Stop moving Bubba when the arrow key is released
 function onKeyUp(key)
+  if key = "q" then
+    cleanup()
+    end
+  end if
+  
   if (key = "ArrowLeft") and leftKeyDown then
     leftKeyDown = false
     
