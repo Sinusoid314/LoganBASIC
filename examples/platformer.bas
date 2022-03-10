@@ -7,8 +7,8 @@ var deltaTime
 var canvasWidth, canvasHeight
 var levelWidth
 var scrollViewX = 0
-var gravityForce = 100
-var jumpForce = -100
+var gravityForce = 300
+var jumpForce = -350
 var jumping = false
 var facingDir = "right"
 var leftKeyDown = false
@@ -56,14 +56,14 @@ function setup()
   canvasHeight = getImageHeight("bg")
   levelWidth = canvasWidth * 2
   
-  addSprite("bubba", "bubba-sheet", 200, 10)
-  setSpriteFrameRange("bubba", 0, 0)
-  setSpriteFrameRate("bubba", 5)
-  
   addSprite("curb1", "curb-sheet", 0, 375)
   addSprite("curb2", "curb-sheet", 700, 375)
   
   addSprite("platform", "platform-sheet", 600, 200)
+
+  addSprite("bubba", "bubba-sheet", 200, 10)
+  setSpriteFrameRange("bubba", 0, 0)
+  setSpriteFrameRate("bubba", 5)
   
   addSprite("car", "car-sheet", 1000, 0)
   setSpriteY("car", getSpriteY("curb1") - getSpriteDrawHeight("car"))
@@ -87,10 +87,10 @@ end function
 
 function cleanup()
   removeSprite("car")
+  removeSprite("bubba")
   removeSprite("platform")
   removeSprite("curb1")
   removeSprite("curb2")
-  removeSprite("bubba")
   
   unloadSpriteSheet("car-sheet")
   unloadSpriteSheet("platform-sheet")
@@ -222,14 +222,15 @@ end function
 'React to any sprites that are touching
 function checkCollisions()
   bubbaHitCurb()
+  bubbaHitPlatform()
   bubbaHitEdge()
 end function
 
 
-'React if Bubba is touching either of the curbs
+'If Bubba is touching either of the curbs, keep him on top of them
 function bubbaHitCurb()
   if not (spritesOverlap("bubba", "curb1") or spritesOverlap("bubba", "curb2")) then return
-    
+
   setSpriteY("bubba", getSpriteY("curb1") - getSpriteDrawHeight("bubba"))
   setSpriteVelocityY("bubba", 0)
   
@@ -252,6 +253,15 @@ function bubbaHitCurb()
 
     jumping = false
   end if
+end function
+
+
+'If Bubba lands on top of the platform, keep him on it
+function bubbaHitPlatform()
+  if not spritesOverlap("bubba", "platform") then return
+  if getSpriteVelocityY("bubba") < 0 then return
+  
+  
 end function
 
 

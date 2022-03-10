@@ -1,3 +1,7 @@
+(March 9, 2022)
+[v1.6.32]
+	- Modified "Scrolling Platformer" example.
+
 (March 8, 2022)
 [v1.6.31]
 	- Added help page for Scroll Offset description.
