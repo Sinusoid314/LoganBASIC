@@ -2,6 +2,12 @@
 '
 'A small, simple demo of a scrolling platformer game.
 
+structure SpriteContact
+  time
+  normalX
+  normalY
+end structure
+
 var prevTime
 var deltaTime
 var canvasWidth, canvasHeight
@@ -13,6 +19,7 @@ var jumping = false
 var facingDir = "right"
 var leftKeyDown = false
 var rightKeyDown = false
+var contact = new SpriteContact
 
 setup()
 
@@ -269,4 +276,52 @@ end function
 function bubbaHitEdge()
   var newX = clamp(getSpriteX("bubba"), 0, levelWidth - getSpriteDrawWidth("bubba"))
   setSpriteX("bubba", newX)
+end function
+
+
+function getSpriteContact(spriteName1, spriteName2, totalTime, contactRef)
+  var contactTimeX = 0
+  var contactTimeY = 0
+  var contactNormalX = 0
+  var contactNormalY = 0
+  var relativeVelocityX = getSpriteVelocityX(spriteName2) - getSpriteVelocityX(spriteName1)
+  var relativeVelocityY = getSpriteVelocityY(spriteName2) - getSpriteVelocityY(spriteName1)
+  
+  if relativeVelocityY <> 0 then
+    contactTimeY = totalTime + (((getSpriteY(spriteName1) + getSpriteDrawHeight(spriteName1)) - getSpriteY(spriteName2)) / relativeVelocityY)
+    if Math.abs(contactTimeY) < 0.001 then contactTimeY = 0
+    if (contactTimeY >= 0) and (contactTimeY < totalTime) then
+      'Bottom-top alignment
+      contactNormalY = 1
+    else
+      contactTimeY = totalTime + ((getSpriteY(spriteName1) - (getSpriteY(spriteName2) + getSpriteDrawHeight(spriteName2))) / relativeVelocityY)
+      if Math.abs(contactTimeY) < 0.001 then contactTimeY = 0
+      if (contactTimeY >= 0) and (contactTimeY < totalTime) then
+        'Top-bottom alignment
+        contactNormalY = -1
+      end if
+    end if
+  end if
+  
+  if relativeVelocityX <> 0 then
+    contactTimeX = totalTime + (((getSpriteX(spriteName1) + getSpriteDrawWidth(spriteName1)) - getSpriteX(spriteName2)) / relativeVelocityX)
+    if Math.abs(contactTimeX) < 0.001 then contactTimeX = 0
+    if (contactTimeX >= 0) and (contactTimeX < totalTime) then
+      'Right-left alignment
+      contactNormalX = 1
+    else
+      contactTimeX = totalTime + ((getSpriteX(spriteName1) - (getSpriteX(spriteName2) + getSpriteDrawWidth(spriteName2))) / relativeVelocityX)
+      if Math.abs(contactTimeX) < 0.001 then contactTimeX = 0
+      if (contactTimeX >= 0) and (contactTimeX < totalTime) then
+        'Left-right alignment
+        contactNormalX = -1
+      end if
+    end if
+  end if
+  
+  if contactTimeY >= contactTimeX then
+    'Contact happened on the Y-axis alignment
+  else
+    Contact happened on the X-axis alignment
+  end if
 end function
