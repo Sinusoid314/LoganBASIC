@@ -1,4 +1,6 @@
 (March 12, 2022)
+[v1.6.34]
+	- Modified "Scrolling Platformer" example.
 [v1.6.33]
 	- Modified "Scrolling Platformer" example.
 
