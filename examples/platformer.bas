@@ -14,6 +14,7 @@ var maxDeltaTime = 0.03
 var canvasWidth, canvasHeight
 var levelWidth
 var scrollViewX = 0
+var isDone = false
 var gravityForce = 300
 var jumpForce = -350
 var isGrounded = false
@@ -21,6 +22,8 @@ var facingDir = "right"
 var leftKeyDown = false
 var rightKeyDown = false
 var contact = new SpriteContact
+var prevHitCurb = false
+var prevHitPlatform = false
 
 setup()
 
@@ -93,6 +96,7 @@ function setup()
 end function
 
 
+'Unload all the sprites and images
 function cleanup()
   removeSprite("car")
   removeSprite("bubba")
@@ -111,6 +115,11 @@ end function
 
 'Main update & draw loop
 function mainLoop()
+  if isDone then
+    cleanup()
+    end
+  end if
+  
   deltaTime = min(((time() - prevTime) / 1000), maxDeltaTime)
   prevTime = time()
   
@@ -138,7 +147,6 @@ end function
 function onKeyDown(key)
   if (key = " ") and isGrounded then
     setSpriteVelocityY("bubba", jumpForce)
-    ungroundBubba()
   end if
 
   if not (leftKeyDown or rightKeyDown) then
@@ -149,7 +157,7 @@ function onKeyDown(key)
       if not isGrounded then
         setSpriteFrameRange("bubba", 9, 9)
       else
-        setSpriteFrameRange("bubba", 6, 8)
+        setSpriteFrameRange("bubba", 5, 8)
       end if
       
       setSpriteVelocityX("bubba", -100)
@@ -163,7 +171,7 @@ function onKeyDown(key)
       if not isGrounded then
         setSpriteFrameRange("bubba", 4, 4)
       else
-        setSpriteFrameRange("bubba", 1, 3)
+        setSpriteFrameRange("bubba", 0, 3)
       end if
       
       setSpriteVelocityX("bubba", 100)
@@ -175,10 +183,7 @@ end function
 
 'Stop moving Bubba when the arrow key is released
 function onKeyUp(key)
-  if key = "q" then
-    cleanup()
-    end
-  end if
+  if key = "q" then isDone = true
   
   if (key = "ArrowLeft") and leftKeyDown then
     leftKeyDown = false
@@ -223,49 +228,66 @@ end function
 
 'React to any sprites that are touching
 function checkCollisions()
-  bubbaHitCurb()
-  bubbaHitPlatform()
-  bubbaHitEdge()
+  checkHitCurb()
+  checkHitPlatform()
+  checkHitEdge()
 end function
 
 
 'If Bubba is touching either of the curbs, keep him on top of them
-function bubbaHitCurb()
-  if not (spritesOverlap("bubba", "curb1") or spritesOverlap("bubba", "curb2")) then return
-
-  setSpriteY("bubba", getSpriteY("curb1") - getSpriteDrawHeight("bubba"))
-  setSpriteVelocityY("bubba", 0)
-  
-  if not isGrounded then groundBubba()
+function checkHitCurb()
+  if spritesOverlap("bubba", "curb1") or spritesOverlap("bubba", "curb2") then
+    setSpriteY("bubba", getSpriteY("curb1") - getSpriteDrawHeight("bubba"))
+    setSpriteVelocityY("bubba", 0)
+    
+    if not prevHitCurb then
+      groundBubba()
+      prevHitCurb = true
+    end if
+  else
+    if prevHitCurb then
+      ungroundBubba()
+      prevHitCurb = false
+    end if
+  end if
 end function
 
 
 'If Bubba lands on top of the platform, keep him on it
-function bubbaHitPlatform()
-  if not spritesOverlap("bubba", "platform") then return
-  if getSpriteVelocityY("bubba") < 0 then return
+function checkHitPlatform()
+  if spritesOverlap("bubba", "platform") then
+    if getSpriteVelocityY("bubba") < 0 then return
+    getSpriteContact("bubba", "platform", deltaTime, contact)
+    if contact.normalY <> 1 then return
+    
+    setSpriteY("bubba", getSpriteY("platform") - getSpriteDrawHeight("bubba"))
+    setSpriteVelocityY("bubba", 0)
   
-  getSpriteContact("bubba", "platform", deltaTime, contact)
-  if contact.normalY <> 1 then return
-  
-  setSpriteY("bubba", getSpriteY("platform") - getSpriteDrawHeight("bubba"))
-  setSpriteVelocityY("bubba", 0)
-  
-  if not isGrounded then groundBubba()
+    if not prevHitPlatform then
+      groundBubba()
+      prevHitPlatform = true
+    end if
+  else
+    if prevHitPlatform then
+      ungroundBubba()
+      prevHitPlatform = false
+    end if
+  end if
 end function
 
 
+'Set the appropriate sprite frames, velocity, and flag for Bubba landing on a curb or platform
 function groundBubba()
   if facingDir = "left" then
     if leftKeyDown then
-      setSpriteFrameRange("bubba", 6, 8)
+      setSpriteFrameRange("bubba", 5, 8)
     else
       setSpriteFrameRange("bubba", 5, 5)
       setSpriteVelocityX("bubba", 0)
     end if
   else
     if rightKeyDown then
-      setSpriteFrameRange("bubba", 1, 3)
+      setSpriteFrameRange("bubba", 0, 3)
     else
       setSpriteFrameRange("bubba", 0, 0)
       setSpriteVelocityX("bubba", 0)
@@ -276,6 +298,7 @@ function groundBubba()
 end function
 
 
+'Set the appropriate sprite frames, velocity, and flag for Bubba falling or jumping
 function ungroundBubba()
   if facingDir = "left" then
     setSpriteFrameRange("bubba", 9, 9)
@@ -288,7 +311,7 @@ end function
 
 
 'Make sure Bubba stays within the level's bounds
-function bubbaHitEdge()
+function checkHitEdge()
   var newX = clamp(getSpriteX("bubba"), 0, levelWidth - getSpriteDrawWidth("bubba"))
   setSpriteX("bubba", newX)
 end function
