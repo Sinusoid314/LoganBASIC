@@ -15,12 +15,21 @@ var canvasWidth, canvasHeight
 var levelWidth
 var scrollViewX = 0
 var isDone = false
-var gravityForce = 300
-var jumpForce = -350
+
+var walkForce = 950
+var jumpForce = -420
+var gravityForce = 450
+var frictionFactor = 0.9
+var minVelocityX = -120
+var minVelocityY = -420
+var maxVelocityX = 120
+var maxVelocityY = 250
+
 var isGrounded = false
 var facingDir = "right"
 var leftKeyDown = false
 var rightKeyDown = false
+var spaceKeyDown = false
 var contact = new SpriteContact
 var prevHitCurb = false
 var prevHitPlatform = false
@@ -120,12 +129,7 @@ function mainLoop()
     end
   end if
   
-  deltaTime = min(((time() - prevTime) / 1000), maxDeltaTime)
-  prevTime = time()
-  
-  applyGravity()
-  
-  updateSprites(deltaTime)
+  updatePhysics()
   
   checkCollisions()
   
@@ -138,6 +142,7 @@ function mainLoop()
   drawSprites()
   
   drawText(str(deltaTime * 1000) + " ms", 10, 10)
+  drawText(str(getSpriteVelocityX("bubba")) + ", " + str(getSpriteVelocityY("bubba")), 10, 20)
   
   drawCanvasBuffer(mainLoop)
 end function
@@ -145,9 +150,7 @@ end function
 
 'Make Bubba either walk or jump when the appropriate key is pressed down
 function onKeyDown(key)
-  if (key = " ") and isGrounded then
-    setSpriteVelocityY("bubba", jumpForce)
-  end if
+  if (key = " ") and (not spaceKeyDown) then spaceKeyDown = true
 
   if not (leftKeyDown or rightKeyDown) then
     if key = "ArrowLeft" then
@@ -160,7 +163,6 @@ function onKeyDown(key)
         setSpriteFrameRange("bubba", 5, 8)
       end if
       
-      setSpriteVelocityX("bubba", -100)
       return
     end if
   
@@ -174,7 +176,6 @@ function onKeyDown(key)
         setSpriteFrameRange("bubba", 0, 3)
       end if
       
-      setSpriteVelocityX("bubba", 100)
       return
     end if
   end if
@@ -185,25 +186,21 @@ end function
 function onKeyUp(key)
   if key = "q" then isDone = true
   
+  if (key = " ") and spaceKeyDown then spaceKeyDown = false
+  
   if (key = "ArrowLeft") and leftKeyDown then
     leftKeyDown = false
-    
     if isGrounded then
       setSpriteFrameRange("bubba", 5, 5)
-      setSpriteVelocityX("bubba", 0)
     end if
-    
     return
   end if
   
   if (key = "ArrowRight") and rightKeyDown then
     rightKeyDown = false
-    
     if isGrounded then
       setSpriteFrameRange("bubba", 0, 0)
-      setSpriteVelocityX("bubba", 0)
     end if
-    
     return
   end if
 end function
@@ -217,12 +214,45 @@ function moveScrollView()
 end function
 
 
-'Apply the gravity acceleration value to Bubba's y-velocity
-function applyGravity()
-  var newVelocityY
+'Apply all forces to Bubba's motion
+function updatePhysics()
+  var newVelocityX, newVelocityY
   
+  deltaTime = min(((time() - prevTime) / 1000), maxDeltaTime)
+  prevTime = time()
+
+  'Apply gravity
   newVelocityY = getSpriteVelocityY("bubba") + (gravityForce * deltaTime)
   setSpriteVelocityY("bubba", newVelocityY)
+  
+  'Apply friction if Bubba is grounded
+  if isGrounded then
+    newVelocityX = getSpriteVelocityX("bubba") * frictionFactor
+    if abs(newVelocityX) < 1 then newVelocityX = 0
+    setSpriteVelocityX("bubba", newVelocityX)
+  end if
+
+  if spaceKeyDown and isGrounded then
+    newVelocityY = getSpriteVelocityY("bubba") + jumpForce
+    setSpriteVelocityY("bubba", newVelocityY)
+  end if
+  
+  'Apply walk force if left or right walk buttons are down
+  if leftKeyDown then
+    newVelocityX = getSpriteVelocityX("bubba") + (-walkForce * deltaTime)
+    setSpriteVelocityX("bubba", newVelocityX)
+  end if
+  if rightKeyDown then
+    newVelocityX = getSpriteVelocityX("bubba") + (walkForce * deltaTime)
+    setSpriteVelocityX("bubba", newVelocityX)
+  end if
+  
+  'Clamp velocity
+  setSpriteVelocityX("bubba", clamp(getSpriteVelocityX("bubba"), minVelocityX, maxVelocityX))
+  setSpriteVelocityY("bubba", clamp(getSpriteVelocityY("bubba"), minVelocityY, maxVelocityY))
+  
+  'Apply velocity to position
+  updateSprites(deltaTime)
 end function
 
 
@@ -283,14 +313,12 @@ function groundBubba()
       setSpriteFrameRange("bubba", 5, 8)
     else
       setSpriteFrameRange("bubba", 5, 5)
-      setSpriteVelocityX("bubba", 0)
     end if
   else
     if rightKeyDown then
       setSpriteFrameRange("bubba", 0, 3)
     else
       setSpriteFrameRange("bubba", 0, 0)
-      setSpriteVelocityX("bubba", 0)
     end if
   end if
 
