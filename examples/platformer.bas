@@ -1,6 +1,10 @@
 'Scrolling Platformer
 '
 'A small, simple demo of a scrolling platformer game.
+'Left arrow key => Walk left
+'Right arrow key => Walk right
+'Space bar (tap) => Short jump
+'Space bar (hold down) => High jump
 
 structure SpriteContact
   time
