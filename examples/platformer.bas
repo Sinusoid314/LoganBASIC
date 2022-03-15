@@ -17,7 +17,8 @@ var scrollViewX = 0
 var isDone = false
 
 var walkForce = 950
-var jumpForce = -420
+var maxJumpForce = -420
+var minJumpForce = -260
 var gravityForce = 450
 var frictionFactor = 0.9
 var minVelocityX = -120
@@ -232,9 +233,14 @@ function updatePhysics()
     setSpriteVelocityX("bubba", newVelocityX)
   end if
 
+  'Apply jump force if jump key is down and Bubba is grounded
   if spaceKeyDown and isGrounded then
-    newVelocityY = getSpriteVelocityY("bubba") + jumpForce
+    newVelocityY = getSpriteVelocityY("bubba") + maxJumpForce
     setSpriteVelocityY("bubba", newVelocityY)
+  else
+    if (not spaceKeyDown) and (getSpriteVelocityY("bubba") < minJumpForce) then
+      setSpriteVelocityY("bubba", minJumpForce)
+    end if
   end if
   
   'Apply walk force if left or right walk buttons are down
