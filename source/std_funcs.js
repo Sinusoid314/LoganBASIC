@@ -34,7 +34,10 @@ var stdNativeFuncs = [
                   new ObjNativeFunc("pointincircle", 5, 5, funcPointInCircle),
                   new ObjNativeFunc("rectsoverlap", 8, 8, funcRectsOverlap),
                   new ObjNativeFunc("circlesoverlap", 6, 6, funcCirclesOverlap),
-                  new ObjNativeFunc("rectoverlapscircle", 7, 7, funcRectOverlapsCircle)
+                  new ObjNativeFunc("rectoverlapscircle", 7, 7, funcRectOverlapsCircle),
+                  new ObjNativeFunc("cos", 1, 1, funcCos),
+                  new ObjNativeFunc("sin", 1, 1, funcSin),
+                  new ObjNativeFunc("tan", 1, 1, funcTan)
                  ];
 
 var inputCallback = null;
@@ -423,5 +426,26 @@ function funcRectOverlapsCircle(runtime, args)
   var distance = Math.pow(circleX - closestX, 2) + Math.pow(circleY - closestY, 2);
 
   return distance < Math.pow(circleRadius, 2);
+}
+
+function funcCos(runtime, args)
+//Return the sine of an angle specified in radians
+{
+  var rads = args[0];
+  return Math.cos(rads);
+}
+
+function funcSin(runtime, args)
+//Return the cosine of an angle specified in radians
+{
+  var rads = args[0];
+  return Math.sin(rads);
+}
+
+function funcTan(runtime, args)
+//Return the tangent of an angle specified in radians
+{
+  var rads = args[0];
+  return Math.tan(rads);
 }
 

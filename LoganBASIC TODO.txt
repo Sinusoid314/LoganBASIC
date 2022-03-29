@@ -1,2 +1,2 @@
-- Add trig functions sin(), cos(), and tan().
+- Add round() native function.
 - Add debugger.

@@ -1,3 +1,8 @@
+(March 28, 2022)
+[v1.7.0]
+	- Disabled default touch actions for the canvas.
+	- Added trigonometry functions sin(), cos(), and tan().
+
 (March 15, 2022)
 [v1.6.37]
 	- Added variable jump force to "Scrolling Platformer" example.
