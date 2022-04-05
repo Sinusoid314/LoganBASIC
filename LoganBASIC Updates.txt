@@ -1,3 +1,7 @@
+(April 4, 2022)
+[v1.7.1]
+	- Added round() native function.
+
 (March 28, 2022)
 [v1.7.0]
 	- Disabled default touch actions for the canvas.

@@ -37,7 +37,8 @@ var stdNativeFuncs = [
                   new ObjNativeFunc("rectoverlapscircle", 7, 7, funcRectOverlapsCircle),
                   new ObjNativeFunc("cos", 1, 1, funcCos),
                   new ObjNativeFunc("sin", 1, 1, funcSin),
-                  new ObjNativeFunc("tan", 1, 1, funcTan)
+                  new ObjNativeFunc("tan", 1, 1, funcTan),
+                  new ObjNativeFunc("round", 1, 2, funcRound)
                  ];
 
 var inputCallback = null;
@@ -447,5 +448,20 @@ function funcTan(runtime, args)
 {
   var rads = args[0];
   return Math.tan(rads);
+}
+
+function funcRound(runtime, args)
+//Return a number rounded to either the nearest integer or given decimal place
+{
+  var num = args[0];
+  var places;
+
+  if(args.length == 1)
+    return Math.round(num);
+  else
+  {
+    places = args[1];
+    return parseFloat(parseFloat(num).toFixed(places));
+  }
 }
 

@@ -1,2 +1,3 @@
-- Add round() native function.
+- Add help page for round() native function.
+- Add sprite z-order functions.
 - Add debugger.
