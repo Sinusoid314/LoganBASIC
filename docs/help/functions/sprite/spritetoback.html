@@ -1,0 +1,55 @@
+<html>
+
+<head>
+  <title></title>
+  <link rel="stylesheet" type="text/css" href="../../reference_doc.css"></link>
+</head>
+
+<body>
+
+<h3>spriteToBack(spriteName)</h3>
+
+<h4>Description</h4>
+<p id="description">
+Brings <i>spriteName</i> to the bottom of the z-order, so it is displayed under all other sprites.
+</p>
+
+<h4>Usage</h4>
+<code id="usage">
+hideConsole()
+enableCanvasBuffer()
+
+loadSpriteSheet("ship-sheet", "../examples/images/ship-sheet.png", 2, 1)
+loadSpriteSheet("bubba-sheet", "../examples/images/bubba.png", 5, 2)
+
+addSprite("ship", "ship-sheet", 30, 60)
+addSprite("bubba", "bubba-sheet", 30, 30)
+
+setCanvasEvent("pointerup", onPointerUp)
+setCanvasEvent("keyup", onKeyUp)
+
+mainLoop()
+
+wait
+
+function mainLoop()
+  clearCanvas()
+  drawSprites()
+  drawCanvasBuffer(mainLoop)
+end function
+
+function onPointerUp(pointerX, pointerY)
+  <b>spriteToBack("bubba")</b>
+end function
+
+function onKeyUp(key)
+  removeSprite("ship")
+  removeSprite("bubba")
+  unloadSpriteSheet("ship-sheet")
+  unloadSpriteSheet("bubba-sheet")
+  end
+end function
+</code>
+
+</body>
+</html>
