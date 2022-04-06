@@ -69,10 +69,13 @@ var spriteNativeFuncs = [
                   new ObjNativeFunc("shiftscrollx", 1, 1, funcShiftScrollX),
                   new ObjNativeFunc("shiftscrolly", 1, 1, funcShiftScrollY),
                   new ObjNativeFunc("getspritescroll", 1, 1, funcGetSpriteScroll),
-                  new ObjNativeFunc("setspritescroll", 2, 2, funcSetSpriteScroll)
+                  new ObjNativeFunc("setspritescroll", 2, 2, funcSetSpriteScroll),
+                  new ObjNativeFunc("spritetoback", 1, 1, funcSpriteToBack),
+                  new ObjNativeFunc("spritetofront", 1, 1, funcSpriteToFront)
                  ];
 
 var sprites = new Map();
+var zOrderedSprites = [];
 var scrollX = 0;
 var scrollY = 0;
 var spriteSheetResultCallback = null;
@@ -150,7 +153,7 @@ function funcDrawSprites(runtime, args)
   var drawData = [];
   var drawX, drawY;
 
-  for(const [spriteName, sprite] of sprites)
+  for(const sprite of zOrderedSprites)
   {
     drawX = sprite.x - (sprite.scroll ? scrollX : 0);
     drawY = sprite.y - (sprite.scroll ? scrollY : 0);
@@ -197,11 +200,15 @@ function funcAddSprite(runtime, args)
   var sheetName = args[1];
   var x = args[2];
   var y = args[3];
+  var sprite;
 
   if(sprites.has(spriteName))
     runtime.endWithError("Sprite '" + spriteName + "' already exists.");
 
-  sprites.set(spriteName, new Sprite(sheetName, x, y));
+  sprite = new Sprite(sheetName, x, y);
+  sprites.set(spriteName, sprite);
+  zOrderedSprites.push(sprite);
+
   sendSpriteSheetRequest(runtime, MSGID_SPRITE_SHEET_REF_REQUEST, [sheetName, spriteName]);
 
   return 0;
@@ -211,10 +218,16 @@ function funcRemoveSprite(runtime, args)
 //
 {
   var spriteName = args[0];
+  var sprite;
+  var spriteIndex;
 
   if(!sprites.has(spriteName))
     runtime.endWithError("Sprite '" + spriteName + "' does not exist.");
 
+  sprite = sprites.get(spriteName);
+  spriteIndex = zOrderedSprites.indexOf(sprite);
+
+  zOrderedSprites.splice(spriteIndex, 1)
   sprites.delete(spriteName);
 
   return 0;
@@ -756,3 +769,40 @@ function funcSetSpriteScroll(runtime, args)
 
   return 0;
 }
+
+function funcSpriteToBack(runtime, args)
+//Bring the given sprite to the bottom of the z-order
+{
+  var spriteName = args[0];
+  var sprite;
+  var spriteIndex;
+
+  if(!sprites.has(spriteName))
+    runtime.endWithError("Sprite '" + spriteName + "' does not exist.");
+
+  sprite = sprites.get(spriteName);
+  spriteIndex = zOrderedSprites.indexOf(sprite);
+
+  zOrderedSprites.unshift(zOrderedSprites.splice(spriteIndex, 1)[0]);
+
+  return 0;
+}
+
+function funcSpriteToFront(runtime, args)
+//Bring the given sprite to the top of the z-order
+{
+  var spriteName = args[0];
+  var sprite;
+  var spriteIndex;
+
+  if(!sprites.has(spriteName))
+    runtime.endWithError("Sprite '" + spriteName + "' does not exist.");
+
+  sprite = sprites.get(spriteName);
+  spriteIndex = zOrderedSprites.indexOf(sprite);
+
+  zOrderedSprites.push(zOrderedSprites.splice(spriteIndex, 1)[0]);
+
+  return 0;
+}
+
