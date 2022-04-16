@@ -1,11 +1,15 @@
+(April 15, 2022)
+[v1.7.3]
+	- Modified the help pages for the round(), sin(), cos(), and tan() native functions.
+
 (April 5, 2022)
 [v1.7.2]
-	- Added sprite z-order functions.
+	- Added sprite z-order functions spriteToBack() and spriteToFront().
 	- Added help page for round() native function.
 
 (April 4, 2022)
 [v1.7.1]
-	- Added round() native function.
+	- Added round() function.
 
 (March 28, 2022)
 [v1.7.0]
