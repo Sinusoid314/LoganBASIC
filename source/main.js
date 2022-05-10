@@ -1,5 +1,11 @@
-importScripts('./core/lbcore.js',
-              'worker_msg.js',
+importScripts('./core/object.js',
+              './core/token.js',
+              './core/bytecode.js',
+              './core/scanner.js',
+              './core/compiler.js',
+              './core/runtime.js');
+
+importScripts('worker_msg.js',
               'std_funcs.js',
               'console_funcs.js',
               'canvas_funcs.js',
