@@ -64,6 +64,7 @@ class Runtime
     this.stack = [];
     this.currOp = null;
     this.opFuncs = [null];
+    this.onPrintJsFunc = null;
     this.onDoneJsFunc = null;
     this.status = RUNTIME_STATUS_RUNNING;
     this.error = null;
@@ -329,7 +330,9 @@ class Runtime
   {
 	var val = this.stack.pop();
 	val += '\n';
-    postMessage({msgId: MSGID_PRINT, msgData: val});
+
+	if(this.onPrintJsFunc != null)
+	  this.onPrintJsFunc(this, val, false);
   }
 
   opJump()
@@ -485,7 +488,8 @@ class Runtime
   opCls()
   //Clear the console window
   {
-    postMessage({msgId: MSGID_CLEAR_CONSOLE});
+    if(this.onPrintJsFunc != null)
+      this.onPrintJsFunc(this, "", true);
   }
 
   opCheckCounter()

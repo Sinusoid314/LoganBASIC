@@ -1,14 +1,10 @@
-importScripts('worker_msg.js',
-              'core/object.js',
+importScripts('./core/lbcore.js',
+              'worker_msg.js',
               'std_funcs.js',
+              'console_funcs.js',
               'canvas_funcs.js',
               'sound_funcs.js',
-              'sprite_funcs.js',
-              'core/token.js',
-              'core/bytecode.js',
-              'core/scanner.js',
-              'core/compiler.js',
-              'core/runtime.js');
+              'sprite_funcs.js');
 
 var mainCompiler;
 var mainBytecode;
@@ -68,7 +64,7 @@ function onStartProg(source)
 //Compile and run the program
 {
   postMessage({msgId: MSGID_STATUS_CHANGE, msgData: "Compiling..."});
-  mainCompiler = new Compiler(source, [].concat(stdNativeFuncs, canvasNativeFuncs, soundNativeFuncs, spriteNativeFuncs));
+  mainCompiler = new Compiler(source, [].concat(stdNativeFuncs, consoleNativeFuncs, canvasNativeFuncs, soundNativeFuncs, spriteNativeFuncs));
   mainBytecode = mainCompiler.compile();
 
   //console.log(mainBytecode.toString());
@@ -77,6 +73,7 @@ function onStartProg(source)
   {
     postMessage({msgId: MSGID_STATUS_CHANGE, msgData: "Running..."});
     mainRuntime = new Runtime(mainBytecode);
+    mainRuntime.onPrintJsFunc = onRuntimePrint;
     mainRuntime.onDoneJsFunc = onRuntimeDone;
     mainRuntime.run();
   }

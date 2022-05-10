@@ -1,3 +1,9 @@
+(May 10, 2022)
+[v1.8.1]
+	- Decoupled opPrint() and opCls() methods of Runtime from the worker messages defined in worker_msg module.
+	- Decoupled console native functions from std_funcs module and placed them in new console_funcs module.
+	- Combined importScripts() call for all core source files into lbcore module.
+
 (April 15, 2022)
 [v1.7.3]
 	- Modified the help pages for the round(), sin(), cos(), and tan() native functions.
