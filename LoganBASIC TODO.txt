@@ -1,1 +1,3 @@
+- Fix bug where referencing native function names without call parenthesis does not raise a compile error.
+- Add help page for version() native function.
 - Add debugger.

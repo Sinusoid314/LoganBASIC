@@ -8,7 +8,7 @@ class CanvasEvent
   }
 }
 
-var canvasNativeFuncs = [
+const canvasNativeFuncs = [
                   new ObjNativeFunc("showcanvas", 0, 0, funcShowCanvas),
                   new ObjNativeFunc("hidecanvas", 0, 0, funcHideCanvas),
                   new ObjNativeFunc("setcanvaswidth", 1, 1, funcSetCanvasWidth),

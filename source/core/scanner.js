@@ -1,4 +1,4 @@
-var keywordList = {
+const keywordList = {
                    "true": TOKEN_TRUE,
                    "false": TOKEN_FALSE,
                    "not": TOKEN_NOT,

@@ -9,12 +9,12 @@ class VariableReference
 
 class Compiler
 {
-  constructor(source, nativeFuncs)
+  constructor(source, nativeFuncs = [])
   {
 	this.source = source;
 	this.scanner = new Scanner(source);
     this.bytecode = new Bytecode();
-    this.bytecode.nativeFuncs = nativeFuncs;
+    this.bytecode.nativeFuncs = stdNativeFuncs.concat(nativeFuncs);
     this.mainUserFunc = null;
     this.currUserFunc = null;
     this.currTokens = null;

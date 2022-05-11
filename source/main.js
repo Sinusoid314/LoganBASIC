@@ -1,12 +1,12 @@
 importScripts('./core/object.js',
               './core/token.js',
               './core/bytecode.js',
+              './core/std_funcs.js',
               './core/scanner.js',
               './core/compiler.js',
               './core/runtime.js');
 
 importScripts('worker_msg.js',
-              'std_funcs.js',
               'console_funcs.js',
               'canvas_funcs.js',
               'sound_funcs.js',
@@ -70,7 +70,7 @@ function onStartProg(source)
 //Compile and run the program
 {
   postMessage({msgId: MSGID_STATUS_CHANGE, msgData: "Compiling..."});
-  mainCompiler = new Compiler(source, [].concat(stdNativeFuncs, consoleNativeFuncs, canvasNativeFuncs, soundNativeFuncs, spriteNativeFuncs));
+  mainCompiler = new Compiler(source, [].concat(consoleNativeFuncs, canvasNativeFuncs, soundNativeFuncs, spriteNativeFuncs));
   mainBytecode = mainCompiler.compile();
 
   //console.log(mainBytecode.toString());

@@ -1,4 +1,6 @@
-var stdNativeFuncs = [
+const lbVersion = "1.8";
+
+const stdNativeFuncs = [
                   new ObjNativeFunc("rnd", 0, 0, funcRnd),
                   new ObjNativeFunc("time", 0, 0, funcTime),
                   new ObjNativeFunc("int", 1, 1, funcInt),
@@ -33,7 +35,8 @@ var stdNativeFuncs = [
                   new ObjNativeFunc("cos", 1, 1, funcCos),
                   new ObjNativeFunc("sin", 1, 1, funcSin),
                   new ObjNativeFunc("tan", 1, 1, funcTan),
-                  new ObjNativeFunc("round", 1, 2, funcRound)
+                  new ObjNativeFunc("round", 1, 2, funcRound),
+                  new ObjNativeFunc("version", 0, 0, funcVersion)
                  ];
 
 var timerID = 0;
@@ -408,3 +411,8 @@ function funcRound(runtime, args)
   }
 }
 
+function funcVersion(runtime, args)
+//Return the current Logan BASIC version
+{
+  return lbVersion;
+}

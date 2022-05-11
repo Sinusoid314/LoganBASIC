@@ -1,4 +1,4 @@
-var consoleNativeFuncs = [
+const consoleNativeFuncs = [
                   new ObjNativeFunc("showeditor", 0, 0, funcShowEditor),
                   new ObjNativeFunc("hideeditor", 0, 0, funcHideEditor),
                   new ObjNativeFunc("showconsole", 0, 0, funcShowConsole),

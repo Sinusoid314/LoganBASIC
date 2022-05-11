@@ -1,4 +1,4 @@
-var soundNativeFuncs = [
+const soundNativeFuncs = [
                   new ObjNativeFunc("loadsound", 2, 2, funcLoadSound),
                   new ObjNativeFunc("unloadsound", 1, 1, funcUnloadSound),
                   new ObjNativeFunc("playsound", 1, 1, funcPlaySound),
