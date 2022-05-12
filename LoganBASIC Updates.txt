@@ -1,3 +1,9 @@
+(May 12, 2022)
+[v1.8.5]
+	- Added help page for version() native function.
+	- Added word() native function.
+	- Added splitStr() native function.
+
 (May 11, 2022)
 [v1.8.4]
 	- Added a minified source file that bundles all the core source files.

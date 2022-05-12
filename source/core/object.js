@@ -96,7 +96,7 @@ class ObjArray
     return linearIndex;
   }
 
-  addItem(newVal, beforeIndex)
+  addItem(newVal, beforeIndex = -1)
   //Add an item to the array
   {
     if(this.dimSizes.length != 1)

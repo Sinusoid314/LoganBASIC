@@ -1,4 +1,4 @@
-const lbVersion = "1.8";
+const lbVersion = "1.8.5";
 
 const stdNativeFuncs = [
                   new ObjNativeFunc("rnd", 0, 0, funcRnd),
@@ -36,7 +36,9 @@ const stdNativeFuncs = [
                   new ObjNativeFunc("sin", 1, 1, funcSin),
                   new ObjNativeFunc("tan", 1, 1, funcTan),
                   new ObjNativeFunc("round", 1, 2, funcRound),
-                  new ObjNativeFunc("version", 0, 0, funcVersion)
+                  new ObjNativeFunc("version", 0, 0, funcVersion),
+                  new ObjNativeFunc("word", 2, 3, funcWord),
+                  new ObjNativeFunc("splitstr", 2, 2, funcSplitStr)
                  ];
 
 var timerID = 0;
@@ -415,4 +417,41 @@ function funcVersion(runtime, args)
 //Return the current Logan BASIC version
 {
   return lbVersion;
+}
+
+function funcWord(runtime, args)
+//Returns the word at the given position within the given string
+{
+  var string = args[0];
+  var wordIndex = args[1] - 1;
+  var delimiter = " ";
+  var words;
+
+  if(args.length == 3)
+    delimiter = args[2];
+
+  words = string.split(delimiter);
+
+  if((wordIndex < 0) || (wordIndex >= words.length))
+    return "";
+  else
+    return words[wordIndex];
+}
+
+function funcSplitStr(runtime, args)
+//Split a string into an array of sub strings
+{
+  var string = args[0];
+  var delimiter = args[1];
+  var words;
+  var wordArray;
+
+  words = string.split(delimiter);
+
+  wordArray = new ObjArray();
+  wordArray.reDim([words.length]);
+
+  words.forEach((word, index) => wordArray.items[index] = word);
+
+  return wordArray;
 }
