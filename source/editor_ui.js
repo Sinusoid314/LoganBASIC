@@ -89,7 +89,7 @@ function window_onLoad(event)
     }
     else
     {
-	  statusBar.innerHTML = "Failed to open file.";
+      statusBar.innerHTML = "Failed to open file.";
     }
   }
   else
@@ -98,7 +98,7 @@ function window_onLoad(event)
 
     httpReq.onload = function()
     {
-	  progEditor.value = this.responseText;
+      progEditor.value = this.responseText;
       statusBar.innerHTML = "Ready.";
     };
 

@@ -147,13 +147,13 @@ class Scanner
   skipWhitespace()
   //Skip over any valid characters that do not belong in a token
   {
-	var tmpChar;
+    var tmpChar;
 
     while(true)
     {
       tmpChar = this.peekChar();
-	  switch(tmpChar)
-	  {
+      switch(tmpChar)
+      {
         case ' ':
         case '\r':
         case '\t':
@@ -254,10 +254,10 @@ class Scanner
   //Return true and advance to the next character if the current character matches the given one
   {
     if(this.endOfSource())
-	  return false;
+      return false;
 
     if(this.source.charAt(this.currCharIndex) != expectedChar)
-	  return false;
+      return false;
 
     this.currCharIndex++;
     return true;

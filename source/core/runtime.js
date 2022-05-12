@@ -36,7 +36,7 @@ class CallbackContext
   endRuntime(errorMessage)
   //Stop the runtime, clean it up, and set it's error object (if applicable)
   {
-	if(errorMessage != "")
+    if(errorMessage != "")
       this.runtime.setError(errorMessage);
 
     this.runtime.status = RUNTIME_STATUS_DONE;
@@ -120,13 +120,13 @@ class Runtime
   run()
   //Execute the bytecode ops
   {
-	try
-	{
+    try
+    {
       while(this.status == RUNTIME_STATUS_RUNNING)
       {
         this.currOp = this.currCallFrame.func.ops[this.currCallFrame.nextOpIndex];
         this.currCallFrame.nextOpIndex++;
-		this.opFuncs[this.currOp[0]]();
+        this.opFuncs[this.currOp[0]]();
       }
     }
     catch(error)
@@ -328,11 +328,11 @@ class Runtime
   opPrint()
   //Print a value to the console
   {
-	var val = this.stack.pop();
-	val += '\n';
+    var val = this.stack.pop();
+    val += '\n';
 
-	if(this.onPrintJsFunc != null)
-	  this.onPrintJsFunc(this, val, false);
+    if(this.onPrintJsFunc != null)
+      this.onPrintJsFunc(this, val, false);
   }
 
   opJump()

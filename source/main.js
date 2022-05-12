@@ -22,9 +22,9 @@ function onRuntimeDone(runtime)
 //
 {
   if(runtime.error == null)
-	postMessage({msgId: MSGID_PROG_DONE_SUCCESS});
+    postMessage({msgId: MSGID_PROG_DONE_SUCCESS});
   else
-	postMessage({msgId: MSGID_PROG_DONE_ERROR, msgData: runtime.error});
+    postMessage({msgId: MSGID_PROG_DONE_ERROR, msgData: runtime.error});
 }
 
 function progWorker_onMessage(message)

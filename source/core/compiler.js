@@ -11,10 +11,10 @@ class Compiler
 {
   constructor(source, nativeFuncs = [])
   {
-	this.source = source;
-	this.scanner = new Scanner(source);
+    this.source = source;
+    this.scanner = new Scanner(source);
     this.bytecode = new Bytecode();
-    this.bytecode.nativeFuncs = stdNativeFuncs.concat(nativeFuncs);
+    this.bytecode.nativeFuncs = [].concat(stdNativeFuncs, nativeFuncs);
     this.mainUserFunc = null;
     this.currUserFunc = null;
     this.currTokens = null;
@@ -28,8 +28,8 @@ class Compiler
   compile()
   //Compile the source code string to a series of bytecode ops
   {
-	try
-	{
+    try
+    {
       this.scanTokens();
 
       this.parseStructDefs();
@@ -214,7 +214,7 @@ class Compiler
 
         this.bytecode.structDefs[structDefIndex].fieldIdents.push(this.prevToken().lexeme);
 
-		if(!this.matchTerminator())
+        if(!this.matchTerminator())
           this.raiseError("Expected terminator after identifier.");
       }
 
@@ -421,14 +421,14 @@ class Compiler
     }
     else if(this.matchToken(TOKEN_ELSE))
     {
-		if(!this.matchTerminator())
+        if(!this.matchTerminator())
           this.raiseError("Expected terminator after 'else'.");
 
         elseJumpOpIndex = this.addOp([OPCODE_JUMP, 0]);
-		this.patchJumpOp(thenJumpOpIndex);
+        this.patchJumpOp(thenJumpOpIndex);
 
         while(!this.checkTokenPair(TOKEN_END, TOKEN_IF) && !this.endOfTokens())
-	      this.parseStatement();
+          this.parseStatement();
 
         if(!this.matchTokenPair(TOKEN_END, TOKEN_IF))
           this.raiseError("Expected 'end if' at the end of 'else' block.");
@@ -441,7 +441,7 @@ class Compiler
   //Parse a While...Wend statement
   {
     var jumpOpIndex;
-	var startOpIndex = this.opsCount();
+    var startOpIndex = this.opsCount();
 
     this.parseExpression();
 
@@ -481,7 +481,7 @@ class Compiler
     if(!this.matchToken(TOKEN_EQUAL))
       this.raiseError("Expected '=' after identifier.");
 
- 	this.parseExpression();
+    this.parseExpression();
     this.addOp([OPCODE_STORE_VAR, varRef.scope, varRef.index]);
 
     if(!this.matchToken(TOKEN_TO))
@@ -1262,9 +1262,9 @@ class Compiler
   {
     if(this.checkTokenPair(tokenType1, tokenType2))
     {
-	  this.consumeToken();
-	  this.consumeToken();
-	  return true;
+      this.consumeToken();
+      this.consumeToken();
+      return true;
     }
 
     return false;
@@ -1296,7 +1296,7 @@ class Compiler
   //Return true if the current and next token's types match the given types
   {
     if(this.checkToken(tokenType1) && this.checkNextToken(tokenType2))
-	  return true;
+      return true;
 
     return false;
   }
@@ -1322,7 +1322,7 @@ class Compiler
   peekNextToken()
   //Return the token after the current token
   {
-	if(!this.endOfTokens())
+    if(!this.endOfTokens())
       return this.currTokens[this.currTokenIndex + 1];
     else
       return this.peekToken();

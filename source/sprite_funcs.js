@@ -278,7 +278,7 @@ function funcUpdateSprites(runtime, args)
 
         if(sprite.currFrameIndex > sprite.lastFrameIndex)
         {
-	      sprite.currFrameIndex = sprite.firstFrameIndex;
+          sprite.currFrameIndex = sprite.firstFrameIndex;
 
           if(sprite.maxCycles > 0)
           {

@@ -58,7 +58,7 @@ function unloadSound(soundName)
 
   if(sounds.has(soundName))
   {
-	sound = sounds.get(soundName)
+    sound = sounds.get(soundName)
     sound.pause();
     sound.currentTime = sound.duration;
     sounds.delete(soundName);
