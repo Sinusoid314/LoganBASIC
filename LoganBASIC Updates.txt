@@ -1,4 +1,7 @@
 (May 11, 2022)
+[v1.8.4]
+	- Added a minified source file that bundles all the core source files.
+
 [v1.8.3]
 	- Moved std_funcs module into /source/core directory.
 	- Modified Compiler constructor to make stdNativeFuncs a default part of the nativeFuncs member.
