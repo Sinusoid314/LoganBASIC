@@ -655,7 +655,9 @@ class Runtime
   {
     this.stack.splice(0);
     this.callFrames.splice(0);
-    this.onDoneJsFunc(this);
+
+    if(this.onDoneJsFunc != null)
+      this.onDoneJsFunc(this);
   }
 }
 

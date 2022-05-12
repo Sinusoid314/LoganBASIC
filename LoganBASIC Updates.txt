@@ -1,4 +1,6 @@
 (May 12, 2022)
+[v1.8.6]
+	- Fixed bug with Runtime object crashing when onDoneJsFunc is not set.
 [v1.8.5]
 	- Added help page for version() native function.
 	- Added word() native function.
