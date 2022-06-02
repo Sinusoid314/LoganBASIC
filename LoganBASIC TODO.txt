@@ -1,1 +1,2 @@
+- Add a help section for using the core source file library.
 - Add debugger.

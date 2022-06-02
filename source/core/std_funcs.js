@@ -1,4 +1,4 @@
-const lbVersion = "1.8.6";
+const lbVersion = "1.8.7";
 
 const stdNativeFuncs = [
                   new ObjNativeFunc("rnd", 0, 0, funcRnd),
@@ -38,11 +38,14 @@ const stdNativeFuncs = [
                   new ObjNativeFunc("round", 1, 2, funcRound),
                   new ObjNativeFunc("version", 0, 0, funcVersion),
                   new ObjNativeFunc("word", 2, 3, funcWord),
-                  new ObjNativeFunc("splitstr", 2, 2, funcSplitStr)
+                  new ObjNativeFunc("splitstr", 2, 2, funcSplitStr),
+                  new ObjNativeFunc("pausefor", 1, 1, funcPauseFor)
                  ];
 
 var timerID = 0;
 var timerCallback = null;
+
+var pauseForCallback = null;
 
 function timer_onTick()
 //
@@ -51,6 +54,12 @@ function timer_onTick()
     return;
 
   timerCallback.runFunc();
+}
+
+function pauseFor_onTimeout()
+//Continue program execution
+{
+  pauseForCallback.runFunc();
 }
 
 function funcRnd(runtime, args)
@@ -454,4 +463,21 @@ function funcSplitStr(runtime, args)
   words.forEach((word, index) => wordArray.items[index] = word);
 
   return wordArray;
+}
+
+function funcPauseFor(runtime, args)
+//Pause program execution for the given amount of milliseconds
+{
+  var timeout = args[0];
+
+  if(pauseForCallback == null)
+    pauseForCallback = new CallbackContext(runtime);
+  else
+    pauseForCallback.runtime = runtime;
+
+  runtime.status = RUNTIME_STATUS_PAUSED;
+
+  setTimeout(pauseFor_onTimeout, timeout);
+
+  return 0;
 }

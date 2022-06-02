@@ -1,3 +1,7 @@
+(June 1, 2022)
+[v1.8.7]
+	- Added pauseFor() native function.
+
 (May 12, 2022)
 [v1.8.6]
 	- Fixed bug with Runtime object crashing when onDoneJsFunc is not set.
@@ -8,7 +12,7 @@
 
 (May 11, 2022)
 [v1.8.4]
-	- Added a minified source file that bundles all the core source files.
+	- Added a minified library file that bundles all the core source files.
 
 [v1.8.3]
 	- Moved std_funcs module into /source/core directory.
