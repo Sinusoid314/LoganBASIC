@@ -9,12 +9,11 @@ class VariableReference
 
 class Compiler
 {
-  constructor(source, nativeFuncs = [])
+  constructor()
   {
-    this.source = source;
-    this.scanner = new Scanner(source);
-    this.bytecode = new Bytecode();
-    this.bytecode.nativeFuncs = [].concat(stdNativeFuncs, nativeFuncs);
+    this.source = "";
+    this.scanner = null;
+    this.bytecode = null;
     this.mainUserFunc = null;
     this.currUserFunc = null;
     this.currTokens = null;
@@ -25,9 +24,13 @@ class Compiler
     this.error = null;
   }
 
-  compile()
+  compile(source, bytecode)
   //Compile the source code string to a series of bytecode ops
   {
+    this.source = source;
+    this.scanner = new Scanner(source);
+    this.bytecode = bytecode;
+
     try
     {
       this.scanTokens();

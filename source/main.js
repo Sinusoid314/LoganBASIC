@@ -12,9 +12,9 @@ importScripts('worker_msg.js',
               'sound_funcs.js',
               'sprite_funcs.js');
 
-var mainCompiler;
-var mainBytecode;
-var mainRuntime;
+var mainCompiler = new Compiler();
+var mainBytecode = new Bytecode();
+var mainRuntime = new Runtime();
 
 onmessage = progWorker_onMessage;
 
@@ -70,18 +70,17 @@ function onStartProg(source)
 //Compile and run the program
 {
   postMessage({msgId: MSGID_STATUS_CHANGE, msgData: "Compiling..."});
-  mainCompiler = new Compiler(source, [].concat(consoleNativeFuncs, canvasNativeFuncs, soundNativeFuncs, spriteNativeFuncs));
-  mainBytecode = mainCompiler.compile();
+  mainBytecode.nativeFuncs = [].concat(stdNativeFuncs, consoleNativeFuncs, canvasNativeFuncs, soundNativeFuncs, spriteNativeFuncs);
+  mainCompiler.compile(source, mainBytecode);
 
   //console.log(mainBytecode.toString());
 
   if(mainCompiler.error == null)
   {
     postMessage({msgId: MSGID_STATUS_CHANGE, msgData: "Running..."});
-    mainRuntime = new Runtime(mainBytecode);
     mainRuntime.onPrintJsFunc = onRuntimePrint;
     mainRuntime.onDoneJsFunc = onRuntimeDone;
-    mainRuntime.run();
+    mainRuntime.run(mainBytecode);
   }
   else
   {

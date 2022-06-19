@@ -1,6 +1,7 @@
-const RUNTIME_STATUS_RUNNING = 1;
-const RUNTIME_STATUS_PAUSED = 2;
-const RUNTIME_STATUS_DONE = 3;
+const RUNTIME_STATUS_INITIALIZED = 1;
+const RUNTIME_STATUS_RUNNING = 2;
+const RUNTIME_STATUS_PAUSED = 3;
+const RUNTIME_STATUS_DONE = 4;
 
 class CallbackContext
 {
@@ -56,9 +57,9 @@ class CallFrame
 
 class Runtime
 {
-  constructor(bytecode)
+  constructor()
   {
-    this.bytecode = bytecode;
+    this.bytecode = null;
     this.callFrames = [];
     this.currCallFrame = null;
     this.stack = [];
@@ -66,7 +67,7 @@ class Runtime
     this.opFuncs = [null];
     this.onPrintJsFunc = null;
     this.onDoneJsFunc = null;
-    this.status = RUNTIME_STATUS_RUNNING;
+    this.status = RUNTIME_STATUS_INITIALIZED;
     this.error = null;
 
     //Allow the op methods to be called by indexing into a function array using the opcode constants
@@ -111,15 +112,14 @@ class Runtime
     this.opFuncs[OPCODE_CREATE_STRUCT] = this.opCreateStruct.bind(this);
     this.opFuncs[OPCODE_LOAD_STRUCT_FIELD] = this.opLoadStructField.bind(this);
     this.opFuncs[OPCODE_STORE_STRUCT_FIELD_PERSIST] = this.opStoreStructFieldPersist.bind(this);
-
-    //Load and call the main user function
-    this.stack.push(this.bytecode.userFuncs[0]);
-    this.callUserFunc(this.bytecode.userFuncs[0], 0, 0);
   }
 
-  run()
+  run(bytecode = null)
   //Execute the bytecode ops
   {
+    if(bytecode != null)
+      this.setup(bytecode);
+
     try
     {
       while(this.status == RUNTIME_STATUS_RUNNING)
@@ -650,8 +650,19 @@ class Runtime
     }
   }
 
+  setup(bytecode)
+  //Prepare the runtime for bytecode execution
+  {
+    this.stack.push(bytecode.userFuncs[0]);
+    this.callUserFunc(bytecode.userFuncs[0], 0, 0);
+
+    this.bytecode = bytecode;
+
+    this.status = RUNTIME_STATUS_RUNNING;
+  }
+
   cleanup()
-  //
+  //Clear runtime stacks and call the completion hook function (if set)
   {
     this.stack.splice(0);
     this.callFrames.splice(0);

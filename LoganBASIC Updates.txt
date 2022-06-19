@@ -1,3 +1,8 @@
+(June 18, 2022)
+[v1.8.8]
+	- Modified Runtime class to take a Bytecode object as an argument to the run() method instead of the constructor.
+	- Modified Compiler class to take a source string and Bytecode object as arguments to the compile() method instead of the constructor.
+
 (June 1, 2022)
 [v1.8.7]
 	- Added pauseFor() native function.
