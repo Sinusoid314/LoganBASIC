@@ -30,6 +30,7 @@ class Compiler
     this.source = source;
     this.scanner = new Scanner(source);
     this.bytecode = bytecode;
+    this.bytecode.init();
 
     try
     {
@@ -43,8 +44,6 @@ class Compiler
     {
       this.error = error;
     }
-
-    return this.bytecode;
   }
 
   scanTokens()

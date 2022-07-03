@@ -114,11 +114,25 @@ class Runtime
     this.opFuncs[OPCODE_STORE_STRUCT_FIELD_PERSIST] = this.opStoreStructFieldPersist.bind(this);
   }
 
+  init(bytecode)
+  //Clear and prepare the runtime for bytecode execution
+  {
+    this.stack.splice(0);
+    this.callFrames.splice(0);
+
+    this.stack.push(bytecode.userFuncs[0]);
+    this.callUserFunc(bytecode.userFuncs[0], 0, 0);
+
+    this.bytecode = bytecode;
+
+    this.status = RUNTIME_STATUS_RUNNING;
+  }
+
   run(bytecode = null)
   //Execute the bytecode ops
   {
     if(bytecode != null)
-      this.setup(bytecode);
+      this.init(bytecode);
 
     try
     {
@@ -134,7 +148,10 @@ class Runtime
     }
 
     if(this.status == RUNTIME_STATUS_DONE)
-      this.cleanup();
+    {
+      if(this.onDoneJsFunc != null)
+        this.onDoneJsFunc(this);
+    }
   }
 
   opLoadTrue()
@@ -648,27 +665,6 @@ class Runtime
       if((opIndex >= indexRange.startOpIndex) && (opIndex <= indexRange.endOpIndex))
         return lineNum;
     }
-  }
-
-  setup(bytecode)
-  //Prepare the runtime for bytecode execution
-  {
-    this.stack.push(bytecode.userFuncs[0]);
-    this.callUserFunc(bytecode.userFuncs[0], 0, 0);
-
-    this.bytecode = bytecode;
-
-    this.status = RUNTIME_STATUS_RUNNING;
-  }
-
-  cleanup()
-  //Clear runtime stacks and call the completion hook function (if set)
-  {
-    this.stack.splice(0);
-    this.callFrames.splice(0);
-
-    if(this.onDoneJsFunc != null)
-      this.onDoneJsFunc(this);
   }
 }
 

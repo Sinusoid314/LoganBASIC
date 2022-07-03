@@ -1,3 +1,10 @@
+(July 2, 2022)
+[v1.9.1]
+	- Added init() method to Bytecode class.
+	- Renamed setup() method in Runtime class to init() and moved the functionality of cleanup() method to it.
+	- Modified compile() method of Compiler class to call init() on the given Bytecode object before compiling.
+	- Added an Interpreter class and module that wraps a native function array along with Bytecode, Compiler, and Runtime objects.
+
 (June 18, 2022)
 [v1.8.8]
 	- Modified Runtime class to take a Bytecode object as an argument to the run() method instead of the constructor.
