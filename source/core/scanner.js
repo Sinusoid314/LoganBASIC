@@ -32,7 +32,13 @@ const keywordList = {
 
 class Scanner
 {
-  constructor(source)
+  constructor()
+  {
+    this.reset("");
+  }
+
+  reset(source)
+  //
   {
     this.source = source;
     this.startCharIndex = 0;

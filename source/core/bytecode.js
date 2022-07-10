@@ -120,18 +120,16 @@ class Bytecode
 {
   constructor()
   {
-    this.nativeFuncs = [];
-    this.literals = [];
-    this.structDefs = [];
-    this.userFuncs = [];    
+    this.nativeFuncs = null;
+    this.reset();
   }
 
-  init()
-  //Clear all bytecode data, except the native functions array
+  reset()
+  //
   {
-    this.userFuncs.splice(0);
-    this.structDefs.splice(0);
-    this.literals.splice(0);
+    this.literals = [];
+    this.structDefs = [];
+    this.userFuncs = [];
   }
 
   toString()

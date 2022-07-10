@@ -59,18 +59,12 @@ class Runtime
 {
   constructor()
   {
-    this.bytecode = null;
-    this.callFrames = [];
-    this.currCallFrame = null;
-    this.stack = [];
-    this.currOp = null;
-    this.opFuncs = [null];
     this.onPrintJsFunc = null;
     this.onDoneJsFunc = null;
-    this.status = RUNTIME_STATUS_INITIALIZED;
-    this.error = null;
-
+    this.reset(null, RUNTIME_STATUS_INITIALIZED);
+    
     //Allow the op methods to be called by indexing into a function array using the opcode constants
+    this.opFuncs = [null];
     this.opFuncs[OPCODE_LOAD_TRUE] = this.opLoadTrue.bind(this);
     this.opFuncs[OPCODE_LOAD_FALSE] = this.opLoadFalse.bind(this);
     this.opFuncs[OPCODE_LOAD_INT] = this.opLoadInt.bind(this);
@@ -114,25 +108,32 @@ class Runtime
     this.opFuncs[OPCODE_STORE_STRUCT_FIELD_PERSIST] = this.opStoreStructFieldPersist.bind(this);
   }
 
-  init(bytecode)
-  //Clear and prepare the runtime for bytecode execution
+  reset(bytecode, status)
+  //
   {
-    this.stack.splice(0);
-    this.callFrames.splice(0);
-
-    this.stack.push(bytecode.userFuncs[0]);
-    this.callUserFunc(bytecode.userFuncs[0], 0, 0);
-
     this.bytecode = bytecode;
+    this.status = status;
+    this.currCallFrame = null;
+    this.currOp = null;
+    this.error = null;
+    this.stack = [];
+    this.callFrames = [];
+  }
 
-    this.status = RUNTIME_STATUS_RUNNING;
+  setup(bytecode)
+  //
+  {
+    this.reset(bytecode, RUNTIME_STATUS_RUNNING);
+
+    this.stack.push(this.bytecode.userFuncs[0]);
+    this.callUserFunc(this.bytecode.userFuncs[0], 0, 0);
   }
 
   run(bytecode = null)
   //Execute the bytecode ops
   {
     if(bytecode != null)
-      this.init(bytecode);
+      this.setup(bytecode);
 
     try
     {

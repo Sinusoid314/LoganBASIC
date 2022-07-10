@@ -11,26 +11,38 @@ class Compiler
 {
   constructor()
   {
-    this.source = "";
-    this.scanner = null;
-    this.bytecode = null;
+    this.scanner = new Scanner();
+    this.reset(null, null);
+  }
+
+  reset(source, bytecode)
+  //
+  {
+    this.source = source;
+    this.bytecode = bytecode;
     this.mainUserFunc = null;
     this.currUserFunc = null;
     this.currTokens = null;
     this.currTokenIndex = 0;
+    this.error = null;
     this.exitWhileOpIndexes = [];
     this.exitForOpIndexes = [];
     this.exitDoOpIndexes = [];
-    this.error = null;
+  }
+
+  setup(source, bytecode)
+  //
+  {
+    this.reset(source, bytecode);
+
+    this.bytecode.reset();
+    this.scanner.reset(this.source);
   }
 
   compile(source, bytecode)
   //Compile the source code string to a series of bytecode ops
   {
-    this.source = source;
-    this.scanner = new Scanner(source);
-    this.bytecode = bytecode;
-    this.bytecode.init();
+    this.setup(source, bytecode);
 
     try
     {
@@ -1120,6 +1132,9 @@ class Compiler
   getNativeFuncIndex(funcIdent)
   //Return the index of the given native function identifier
   {
+    if(!this.bytecode.nativeFuncs)
+      return -1;
+
     funcIdent = funcIdent.toLowerCase();
 
     for(var funcIndex = 0; funcIndex < this.bytecode.nativeFuncs.length; funcIndex++)

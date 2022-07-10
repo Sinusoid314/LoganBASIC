@@ -1,3 +1,12 @@
+(July 10, 2022)
+[v1.9.2]
+	- Modified getNativeFuncIndex() method in Compiler class to check the that the Bytecode's nativeFuncs
+	  is a valid reference.
+	- Renamed init() method in Bytecode class to reset().
+	- Added reset() method to Scanner class.
+	- Added reset() and setup() methods to both Compiler and Runtime classes to allow their objects to reinitialize
+	  their properties and be reused.
+
 (July 2, 2022)
 [v1.9.1]
 	- Added init() method to Bytecode class.
