@@ -1,4 +1,8 @@
 (July 10, 2022)
+[v1.9.3]
+	- Added a status property to Compiler class.
+	- Updated LBCore library file.
+	- Moved LBCore library to /lib directory in /core.
 [v1.9.2]
 	- Modified getNativeFuncIndex() method in Compiler class to check the that the Bytecode's nativeFuncs
 	  is a valid reference.

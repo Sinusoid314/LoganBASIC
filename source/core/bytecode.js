@@ -125,7 +125,7 @@ class Bytecode
   }
 
   reset()
-  //
+  //(Re)initialize all non-persistent Bytecode state
   {
     this.literals = [];
     this.structDefs = [];

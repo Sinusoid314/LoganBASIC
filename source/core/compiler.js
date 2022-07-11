@@ -1,3 +1,7 @@
+const COMPILER_STATUS_INITIALIZED = 1;
+const COMPILER_STATUS_COMPILING = 2;
+const COMPILER_STATUS_DONE = 3;
+
 class VariableReference
 {
   constructor(scope, index)
@@ -12,14 +16,15 @@ class Compiler
   constructor()
   {
     this.scanner = new Scanner();
-    this.reset(null, null);
+    this.reset(null, null, COMPILER_STATUS_INITIALIZED);
   }
 
-  reset(source, bytecode)
-  //
+  reset(source, bytecode, status)
+  //(Re)initialize all non-persistent Compiler state
   {
     this.source = source;
     this.bytecode = bytecode;
+    this.status = status
     this.mainUserFunc = null;
     this.currUserFunc = null;
     this.currTokens = null;
@@ -31,9 +36,9 @@ class Compiler
   }
 
   setup(source, bytecode)
-  //
+  //Set up the Compiler state for program compilation
   {
-    this.reset(source, bytecode);
+    this.reset(source, bytecode, COMPILER_STATUS_COMPILING);
 
     this.bytecode.reset();
     this.scanner.reset(this.source);

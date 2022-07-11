@@ -38,7 +38,7 @@ class Scanner
   }
 
   reset(source)
-  //
+  //(Re)initialize all Scanner state
   {
     this.source = source;
     this.startCharIndex = 0;

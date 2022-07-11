@@ -109,7 +109,7 @@ class Runtime
   }
 
   reset(bytecode, status)
-  //
+  //(Re)initialize all non-persistent Runtime state
   {
     this.bytecode = bytecode;
     this.status = status;
@@ -121,7 +121,7 @@ class Runtime
   }
 
   setup(bytecode)
-  //
+  //Set up the Runtime state for program execution
   {
     this.reset(bytecode, RUNTIME_STATUS_RUNNING);
 
