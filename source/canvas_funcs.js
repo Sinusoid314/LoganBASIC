@@ -50,25 +50,25 @@ function onImageRequestResult(result)
 //
 {
   if(result[0] != "")
-    imageResultCallback.endRuntime(result[0]);
+    imageResultCallback.endVM(result[0]);
   else
   {
-    imageResultCallback.runtime.stack[imageResultCallback.runtime.stack.length - 1] = result[1];
+    imageResultCallback.vm.stack[imageResultCallback.vm.stack.length - 1] = result[1];
     imageResultCallback.runFunc();
   }
 }
 
-function sendImageRequest(runtime, msgId, msgData)
+function sendImageRequest(vm, msgId, msgData)
 //
 {
   if(imageResultCallback == null)
-    imageResultCallback = new CallbackContext(runtime);
+    imageResultCallback = new CallbackContext(vm);
   else
-    imageResultCallback.runtime = runtime;
+    imageResultCallback.vm = vm;
 
   postMessage({msgId: msgId, msgData: msgData});
 
-  runtime.status = RUNTIME_STATUS_PAUSED;
+  vm.status = VM_STATUS_PAUSED;
 }
 
 function onCanvasEvent(eventData)
@@ -89,19 +89,19 @@ function onDrawCanvasBufferDone()
   drawBufferCallback.runFunc();
 }
 
-function funcShowCanvas(runtime, args)
+function funcShowCanvas(vm, args)
 //Tell the UI thread to show the canvas pane
 {
   postMessage({msgId: MSGID_SHOW_CANVAS});
 }
 
-function funcHideCanvas(runtime, args)
+function funcHideCanvas(vm, args)
 //Tell the UI thread to hide the canvas pane
 {
   postMessage({msgId: MSGID_HIDE_CANVAS});
 }
 
-function funcSetCanvasWidth(runtime, args)
+function funcSetCanvasWidth(vm, args)
 //
 {
   var newWidth = args[0];
@@ -111,7 +111,7 @@ function funcSetCanvasWidth(runtime, args)
   return 0;
 }
 
-function funcSetCanvasHeight(runtime, args)
+function funcSetCanvasHeight(vm, args)
 //
 {
   var newHeight = args[0];
@@ -121,35 +121,35 @@ function funcSetCanvasHeight(runtime, args)
   return 0;
 }
 
-function funcClearCanvas(runtime, args)
+function funcClearCanvas(vm, args)
 //Send a message to the canvas to clear it
 {
   postMessage({msgId: MSGID_CLEAR_CANVAS});
   return 0;
 }
 
-function funcLoadImage(runtime, args)
+function funcLoadImage(vm, args)
 //Send a message to the canvas to load an image
 {
   var imageName = args[0];
   var imageSource = args[1];
 
-  sendImageRequest(runtime, MSGID_LOAD_IMAGE_REQUEST, [imageName, imageSource]);
+  sendImageRequest(vm, MSGID_LOAD_IMAGE_REQUEST, [imageName, imageSource]);
 
   return false;
 }
 
-function funcUnloadImage(runtime, args)
+function funcUnloadImage(vm, args)
 //Send a message to the canvas to unload an image
 {
   var imageName = args[0];
 
-  sendImageRequest(runtime, MSGID_UNLOAD_IMAGE_REQUEST, imageName);
+  sendImageRequest(vm, MSGID_UNLOAD_IMAGE_REQUEST, imageName);
 
   return 0;
 }
 
-function funcDrawImage(runtime, args)
+function funcDrawImage(vm, args)
 //Send a message to the canvas to draw an image
 {
   var imageName = args[0];
@@ -164,12 +164,12 @@ function funcDrawImage(runtime, args)
   if(args.length == 5)
     drawHeight = args[4];
 
-  sendImageRequest(runtime, MSGID_DRAW_IMAGE_REQUEST, [imageName, drawX, drawY, drawWidth, drawHeight]);
+  sendImageRequest(vm, MSGID_DRAW_IMAGE_REQUEST, [imageName, drawX, drawY, drawWidth, drawHeight]);
 
   return 0;
 }
 
-function funcDrawImageClip(runtime, args)
+function funcDrawImageClip(vm, args)
 //Send an image to the canvas to draw an image
 {
   var imageName = args[0];
@@ -188,12 +188,12 @@ function funcDrawImageClip(runtime, args)
   if(args.length == 9)
     drawHeight = args[8];
 
-  sendImageRequest(runtime, MSGID_DRAW_IMAGE_CLIP_REQUEST, [imageName, clipX, clipY, clipWidth, clipHeight, drawX, drawY, drawWidth, drawHeight]);
+  sendImageRequest(vm, MSGID_DRAW_IMAGE_CLIP_REQUEST, [imageName, clipX, clipY, clipWidth, clipHeight, drawX, drawY, drawWidth, drawHeight]);
 
   return 0;
 }
 
-function funcDrawImageTiled(runtime, args)
+function funcDrawImageTiled(vm, args)
 //
 {
   var imageName = args[0];
@@ -210,46 +210,46 @@ function funcDrawImageTiled(runtime, args)
   if(args.length == 7)
     offsetY = args[6];
 
-  sendImageRequest(runtime, MSGID_DRAW_IMAGE_TILED_REQUEST, [imageName, drawX, drawY, drawWidth, drawHeight, offsetX, offsetY]);
+  sendImageRequest(vm, MSGID_DRAW_IMAGE_TILED_REQUEST, [imageName, drawX, drawY, drawWidth, drawHeight, offsetX, offsetY]);
 
   return 0;
 }
 
-function funcGetImageWidth(runtime, args)
+function funcGetImageWidth(vm, args)
 //
 {
   var imageName = args[0];
 
-  sendImageRequest(runtime, MSGID_GET_IMAGE_WIDTH_REQUEST, imageName);
+  sendImageRequest(vm, MSGID_GET_IMAGE_WIDTH_REQUEST, imageName);
 
   return 0;
 }
 
-function funcGetImageHeight(runtime, args)
+function funcGetImageHeight(vm, args)
 //
 {
   var imageName = args[0];
 
-  sendImageRequest(runtime, MSGID_GET_IMAGE_HEIGHT_REQUEST, imageName);
+  sendImageRequest(vm, MSGID_GET_IMAGE_HEIGHT_REQUEST, imageName);
 
   return 0;
 }
 
-function funcEnableCanvasBuffer(runtime, args)
+function funcEnableCanvasBuffer(vm, args)
 //
 {
   postMessage({msgId: MSGID_ENABLE_CANVAS_BUFFER});
   return 0;
 }
 
-function funcDisableCanvasBuffer(runtime, args)
+function funcDisableCanvasBuffer(vm, args)
 //
 {
   postMessage({msgId: MSGID_DISABLE_CANVAS_BUFFER});
   return 0;
 }
 
-function funcDrawCanvasBuffer(runtime, args)
+function funcDrawCanvasBuffer(vm, args)
 //
 {
   var callbackUserFunc;
@@ -264,18 +264,18 @@ function funcDrawCanvasBuffer(runtime, args)
     callbackUserFunc = args[0];
 
     if(!(callbackUserFunc instanceof ObjUserFunc))
-      runtime.endWithError("Argument of DrawCanvasBuffer() must be a function.");
+      vm.endWithError("Argument of DrawCanvasBuffer() must be a function.");
 
     if(callbackUserFunc.paramCount != 0)
-      runtime.endWithError("Callback function for DrawCanvasBuffer() must have zero parameters.");
+      vm.endWithError("Callback function for DrawCanvasBuffer() must have zero parameters.");
 
     if(drawBufferCallback == null)
     {
-      drawBufferCallback = new CallbackContext(runtime, callbackUserFunc);
+      drawBufferCallback = new CallbackContext(vm, callbackUserFunc);
     }
     else
     {
-      drawBufferCallback.runtime = runtime;
+      drawBufferCallback.vm = vm;
       drawBufferCallback.userFunc = callbackUserFunc;
     }
   }
@@ -285,7 +285,7 @@ function funcDrawCanvasBuffer(runtime, args)
   return 0;
 }
 
-function funcSetCanvasEvent(runtime, args)
+function funcSetCanvasEvent(vm, args)
 //
 {
   var eventName = args[0];
@@ -293,25 +293,25 @@ function funcSetCanvasEvent(runtime, args)
   var eventUserFunc;
 
   if(eventIndex == -1)
-    runtime.endWithError("SetCanvasEvent() does not recognize event named '" + eventName + "'.");
+    vm.endWithError("SetCanvasEvent() does not recognize event named '" + eventName + "'.");
 
   if(args.length == 2)
   {
     eventUserFunc = args[1];
 
     if(!(eventUserFunc instanceof ObjUserFunc))
-      runtime.endWithError("Second argument of SetCanvasEvent() must be a function.");
+      vm.endWithError("Second argument of SetCanvasEvent() must be a function.");
 
     if(eventUserFunc.paramCount != canvasEvents[eventIndex].paramCount)
-      runtime.endWithError("Handler function " + eventUserFunc.ident + "() for event '" + eventName + "' must have " + canvasEvents[eventIndex].paramCount + " parameters.");
+      vm.endWithError("Handler function " + eventUserFunc.ident + "() for event '" + eventName + "' must have " + canvasEvents[eventIndex].paramCount + " parameters.");
 
     if(canvasEvents[eventIndex].callback == null)
     {
-      canvasEvents[eventIndex].callback = new CallbackContext(runtime, eventUserFunc);
+      canvasEvents[eventIndex].callback = new CallbackContext(vm, eventUserFunc);
     }
     else
     {
-      canvasEvents[eventIndex].callback.runtime = runtime;
+      canvasEvents[eventIndex].callback.vm = vm;
       canvasEvents[eventIndex].callback.userFunc = eventUserFunc;
     }
 
@@ -326,7 +326,7 @@ function funcSetCanvasEvent(runtime, args)
   return 0;
 }
 
-function funcDrawText(runtime, args)
+function funcDrawText(vm, args)
 //
 {
   var text = args[0];
@@ -342,7 +342,7 @@ function funcDrawText(runtime, args)
   return 0;
 }
 
-function funcDrawRect(runtime, args)
+function funcDrawRect(vm, args)
 //
 {
   var drawX = args[0];
@@ -359,7 +359,7 @@ function funcDrawRect(runtime, args)
   return 0;
 }
 
-function funcDrawCircle(runtime, args)
+function funcDrawCircle(vm, args)
 //
 {
   var centerX = args[0];
@@ -375,7 +375,7 @@ function funcDrawCircle(runtime, args)
   return 0;
 }
 
-function funcDrawLine(runtime, args)
+function funcDrawLine(vm, args)
 //
 {
   var startX = args[0];
@@ -388,7 +388,7 @@ function funcDrawLine(runtime, args)
   return 0;
 }
 
-function funcSetTextFont(runtime, args)
+function funcSetTextFont(vm, args)
 //
 {
   var font = args[0];
@@ -398,7 +398,7 @@ function funcSetTextFont(runtime, args)
   return 0;
 }
 
-function funcSetFillColor(runtime, args)
+function funcSetFillColor(vm, args)
 //
 {
   var color = args[0];
@@ -408,7 +408,7 @@ function funcSetFillColor(runtime, args)
   return 0;
 }
 
-function funcSetLineColor(runtime, args)
+function funcSetLineColor(vm, args)
 //
 {
   var color = args[0];
@@ -418,7 +418,7 @@ function funcSetLineColor(runtime, args)
   return 0;
 }
 
-function funcSetLineSize(runtime, args)
+function funcSetLineSize(vm, args)
 {
   var size = args[0];
 

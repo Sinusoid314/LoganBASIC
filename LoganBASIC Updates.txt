@@ -1,3 +1,19 @@
+(July 15, 2022)
+[v1.9.5]
+	- Modified structure field access to use the literal index of the field identifier
+	  directly in the opcode operands.
+	- Renamed varIdents in ObjUserFunc class to localIdents.
+	- Moved StructureDef class to object module and renamed it to ObjStructureDef.
+	- Added typeToString() method to all object classes.
+	- Moved literals from Bytecode class to ObjUserFunc class.
+	- Moved nativeFuncs, userFuncs, and structDefs from Bytecode class
+	  to Runtime class and removed Bytecode class.
+	- Renamed Runtime class to VM.
+
+(July 12, 2022)
+[v1.9.4]
+	- Modified nativeFuncs list in Bytecode class to be owned by its Bytecode object.
+
 (July 10, 2022)
 [v1.9.3]
 	- Added a status property to Compiler class.

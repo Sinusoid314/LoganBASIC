@@ -19,11 +19,11 @@ class Compiler
     this.reset(null, null, COMPILER_STATUS_INITIALIZED);
   }
 
-  reset(source, bytecode, status)
+  reset(source, vm, status)
   //(Re)initialize all non-persistent Compiler state
   {
     this.source = source;
-    this.bytecode = bytecode;
+    this.vm = vm;
     this.status = status
     this.mainUserFunc = null;
     this.currUserFunc = null;
@@ -35,19 +35,19 @@ class Compiler
     this.exitDoOpIndexes = [];
   }
 
-  setup(source, bytecode)
+  setup(source, vm)
   //Set up the Compiler state for program compilation
   {
-    this.reset(source, bytecode, COMPILER_STATUS_COMPILING);
+    this.reset(source, vm, COMPILER_STATUS_COMPILING);
 
-    this.bytecode.reset();
+    this.vm.reset(VM_STATUS_INITIALIZED);
     this.scanner.reset(this.source);
   }
 
-  compile(source, bytecode)
+  compile(source, vm)
   //Compile the source code string to a series of bytecode ops
   {
-    this.setup(source, bytecode);
+    this.setup(source, vm);
 
     try
     {
@@ -71,7 +71,7 @@ class Compiler
     var inStructDef = false;
 
     this.mainUserFunc = new ObjUserFunc("<main>");
-    this.bytecode.userFuncs.push(this.mainUserFunc);
+    this.vm.userFuncs.push(this.mainUserFunc);
     tokens = this.mainUserFunc.tokens;
 
     do
@@ -142,8 +142,8 @@ class Compiler
           if(this.getStructDefIndex(currToken.lexeme) != -1)
             this.raiseError("'" + currToken.lexeme + "' is already a structure.", currToken);
 
-          this.bytecode.userFuncs.push(new ObjUserFunc(currToken.lexeme));
-          tokens = this.bytecode.userFuncs[this.bytecode.userFuncs.length - 1].tokens;
+          this.vm.userFuncs.push(new ObjUserFunc(currToken.lexeme));
+          tokens = this.vm.userFuncs[this.vm.userFuncs.length - 1].tokens;
           inFunc = true;
           break;
 
@@ -168,8 +168,8 @@ class Compiler
           if(this.getStructDefIndex(currToken.lexeme) != -1)
             this.raiseError("'" + currToken.lexeme + "' is already a structure.", currToken);
 
-          this.bytecode.structDefs.push(new StructureDef(currToken.lexeme));
-          tokens = this.bytecode.structDefs[this.bytecode.structDefs.length - 1].tokens;
+          this.vm.structDefs.push(new ObjStructureDef(currToken.lexeme));
+          tokens = this.vm.structDefs[this.vm.structDefs.length - 1].tokens;
           inStructDef = true;
           break;
 
@@ -219,9 +219,9 @@ class Compiler
   parseStructDefs()
   //
   {
-    for(var structDefIndex = 0; structDefIndex < this.bytecode.structDefs.length; structDefIndex++)
+    for(var structDefIndex = 0; structDefIndex < this.vm.structDefs.length; structDefIndex++)
     {
-      this.currTokens = this.bytecode.structDefs[structDefIndex].tokens;
+      this.currTokens = this.vm.structDefs[structDefIndex].tokens;
 
       if(!this.matchTerminator())
         this.raiseError("Expected terminator.");
@@ -231,7 +231,7 @@ class Compiler
         if(!this.matchToken(TOKEN_IDENTIFIER))
           this.raiseError("Expected identifier.");
 
-        this.bytecode.structDefs[structDefIndex].fieldIdents.push(this.prevToken().lexeme);
+        this.vm.structDefs[structDefIndex].fieldIdents.push(this.prevToken().lexeme);
 
         if(!this.matchTerminator())
           this.raiseError("Expected terminator after identifier.");
@@ -245,9 +245,9 @@ class Compiler
   parseUserFuncs()
   //
   {
-    for(var funcIndex = 0; funcIndex < this.bytecode.userFuncs.length; funcIndex++)
+    for(var funcIndex = 0; funcIndex < this.vm.userFuncs.length; funcIndex++)
     {
-      this.currUserFunc = this.bytecode.userFuncs[funcIndex];
+      this.currUserFunc = this.vm.userFuncs[funcIndex];
       this.currTokens = this.currUserFunc.tokens;
 
       if(this.currUserFunc != this.mainUserFunc)
@@ -874,6 +874,7 @@ class Compiler
   {
     var argCount;
     var fieldIdent;
+    var fieldLitIndex;
 
     this.newExpr(isStmt);
 
@@ -896,17 +897,16 @@ class Compiler
           this.raiseError("Expected identifier after '.'.");
 
         fieldIdent = this.prevToken().lexeme;
-
-        this.addOp([OPCODE_LOAD_LIT, this.getLiteralIndex(fieldIdent)]);
+        fieldLitIndex = this.getLiteralIndex(fieldIdent);
 
         if(isStmt && this.matchToken(TOKEN_EQUAL))
         {
           this.parseExpression();
-          this.addOp([OPCODE_STORE_STRUCT_FIELD_PERSIST]);
+          this.addOp([OPCODE_STORE_STRUCT_FIELD_PERSIST, fieldLitIndex]);
         }
         else
         {
-          this.addOp([OPCODE_LOAD_STRUCT_FIELD]);
+          this.addOp([OPCODE_LOAD_STRUCT_FIELD, fieldLitIndex]);
         }
       }
       //Array item
@@ -1100,7 +1100,7 @@ class Compiler
     if(!this.matchTerminator())
       this.raiseError("Expected terminator after ')'.");
 
-    this.currUserFunc.paramCount = this.currUserFunc.varIdents.length;
+    this.currUserFunc.paramCount = this.currUserFunc.localIdents.length;
   }
 
   addVariable(varIdent)
@@ -1117,15 +1117,15 @@ class Compiler
     if(this.getStructDefIndex(varIdent) != -1)
       this.raiseError("'" + varIdent + "' is already a structure.");
 
-    for(varIndex = 0; varIndex < this.currUserFunc.varIdents.length; varIndex++)
+    for(varIndex = 0; varIndex < this.currUserFunc.localIdents.length; varIndex++)
     {
-      if(this.currUserFunc.varIdents[varIndex].toLowerCase() == varIdent.toLowerCase())
+      if(this.currUserFunc.localIdents[varIndex].toLowerCase() == varIdent.toLowerCase())
         this.raiseError("Variable or array '" + varIdent + "' already declared.");
     }
 
-    this.currUserFunc.varIdents.push(varIdent);
+    this.currUserFunc.localIdents.push(varIdent);
 
-    varIndex = this.currUserFunc.varIdents.length - 1;
+    varIndex = this.currUserFunc.localIdents.length - 1;
     if(this.currUserFunc == this.mainUserFunc)
       varScope = SCOPE_GLOBAL;
     else
@@ -1137,14 +1137,11 @@ class Compiler
   getNativeFuncIndex(funcIdent)
   //Return the index of the given native function identifier
   {
-    if(!this.bytecode.nativeFuncs)
-      return -1;
-
     funcIdent = funcIdent.toLowerCase();
 
-    for(var funcIndex = 0; funcIndex < this.bytecode.nativeFuncs.length; funcIndex++)
+    for(var funcIndex = 0; funcIndex < this.vm.nativeFuncs.length; funcIndex++)
     {
-      if(this.bytecode.nativeFuncs[funcIndex].ident.toLowerCase() == funcIdent)
+      if(this.vm.nativeFuncs[funcIndex].ident.toLowerCase() == funcIdent)
         return funcIndex;
     }
 
@@ -1156,9 +1153,9 @@ class Compiler
   {
     funcIdent = funcIdent.toLowerCase();
 
-    for(var funcIndex = 0; funcIndex < this.bytecode.userFuncs.length; funcIndex++)
+    for(var funcIndex = 0; funcIndex < this.vm.userFuncs.length; funcIndex++)
     {
-      if(this.bytecode.userFuncs[funcIndex].ident.toLowerCase() == funcIdent)
+      if(this.vm.userFuncs[funcIndex].ident.toLowerCase() == funcIdent)
         return funcIndex;
     }
 
@@ -1170,9 +1167,9 @@ class Compiler
   {
     structDefIdent = structDefIdent.toLowerCase();
 
-    for(var structDefIndex = 0; structDefIndex < this.bytecode.structDefs.length; structDefIndex++)
+    for(var structDefIndex = 0; structDefIndex < this.vm.structDefs.length; structDefIndex++)
     {
-      if(this.bytecode.structDefs[structDefIndex].ident.toLowerCase() == structDefIdent)
+      if(this.vm.structDefs[structDefIndex].ident.toLowerCase() == structDefIdent)
         return structDefIndex;
     }
 
@@ -1182,12 +1179,12 @@ class Compiler
   getLiteralIndex(litVal)
   //Return the index of the given literal value
   {
-    var litIndex = this.bytecode.literals.indexOf(litVal);
+    var litIndex = this.currUserFunc.literals.indexOf(litVal);
 
     if(litIndex == -1)
     {
-      this.bytecode.literals.push(litVal);
-      litIndex = this.bytecode.literals.length - 1;
+      this.currUserFunc.literals.push(litVal);
+      litIndex = this.currUserFunc.literals.length - 1;
     }
 
     return litIndex;
@@ -1200,16 +1197,16 @@ class Compiler
 
     if(this.currUserFunc != this.mainUserFunc)
     {
-      for(varIndex = 0; varIndex < this.currUserFunc.varIdents.length; varIndex++)
+      for(varIndex = 0; varIndex < this.currUserFunc.localIdents.length; varIndex++)
       {
-        if(this.currUserFunc.varIdents[varIndex].toLowerCase() == varIdent.toLowerCase())
+        if(this.currUserFunc.localIdents[varIndex].toLowerCase() == varIdent.toLowerCase())
           return new VariableReference(SCOPE_LOCAL, varIndex);
       }
     }
 
-    for(varIndex = 0; varIndex < this.mainUserFunc.varIdents.length; varIndex++)
+    for(varIndex = 0; varIndex < this.mainUserFunc.localIdents.length; varIndex++)
     {
-      if(this.mainUserFunc.varIdents[varIndex].toLowerCase() == varIdent.toLowerCase())
+      if(this.mainUserFunc.localIdents[varIndex].toLowerCase() == varIdent.toLowerCase())
         return new VariableReference(SCOPE_GLOBAL, varIndex);
     }
 

@@ -6,25 +6,23 @@ class Interpreter
 {
   constructor()
   {
-    this.nativeFuncs = [].concat(stdNativeFuncs);
-    this.bytecode = new Bytecode();
     this.compiler = new Compiler();
-    this.runtime = new Runtime();
+    this.vm = new VM();
 
-    this.bytecode.nativeFuncs = this.nativeFuncs;
+    this.vm.nativeFuncs.concat(stdNativeFuncs);
   }
 
   interpret(source)
   //Compile and run the given source code
   {
-    this.compiler.compile(source, this.bytecode);
+    this.compiler.compile(source, this.vm);
 
     if(this.compiler.error != null)
       return INTERPRETER_COMPILE_ERROR;
 
-    this.runtime.run(this.bytecode);
+    this.vm.run();
 
-    if(this.runtime.error != null)
+    if(this.vm.error != null)
       return INTERPRETER_RUNTIME_ERROR;
 
     return INTERPRETER_SUCCESS;

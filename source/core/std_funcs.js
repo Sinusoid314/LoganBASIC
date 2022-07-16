@@ -1,4 +1,4 @@
-const lbVersion = "1.9.3";
+const lbVersion = "1.9.5";
 
 const stdNativeFuncs = [
                   new ObjNativeFunc("rnd", 0, 0, funcRnd),
@@ -62,25 +62,25 @@ function pauseFor_onTimeout()
   pauseForCallback.runFunc();
 }
 
-function funcRnd(runtime, args)
+function funcRnd(vm, args)
 //Return a pseudo-random number between 0 and 1
 {
   return Math.random();
 }
 
-function funcTime(runtime, args)
+function funcTime(vm, args)
 //Return the number of milliseconds elapsed since January 1, 1970
 {
   return Date.now();
 }
 
-function funcInt(runtime, args)
+function funcInt(vm, args)
 //Return the integer portion of a number
 {
   return parseInt(args[0]);
 }
 
-function funcLen(runtime, args)
+function funcLen(vm, args)
 //Return the number of characters in a string, or the linear size of an array
 {
   var len;
@@ -93,31 +93,31 @@ function funcLen(runtime, args)
   return len;
 }
 
-function funcUpper(runtime, args)
+function funcUpper(vm, args)
 //Return a string with all letters converted to uppercase
 {
   return args[0].toUpperCase();
 }
 
-function funcLower(runtime, args)
+function funcLower(vm, args)
 //Return a string with all letters converted to lowercase
 {
   return args[0].toLowerCase();
 }
 
-function funcLeft(runtime, args)
+function funcLeft(vm, args)
 //Return a string containing a specified number of characters from the left side of a string
 {
   return args[0].slice(0, args[1]);
 }
 
-function funcRight(runtime, args)
+function funcRight(vm, args)
 //Return a string containing a specified number of characters from the right side of a string
 {
   return args[0].slice(-args[1]);
 }
 
-function funcMid(runtime, args)
+function funcMid(vm, args)
 //Return a string containing a specified number of characters from a string
 {
   if(args.length == 2)
@@ -130,25 +130,25 @@ function funcMid(runtime, args)
   }
 }
 
-function funcTrim(runtime, args)
+function funcTrim(vm, args)
 //Return a string with the whitespace removed from both ends
 {
   return args[0].trim();
 }
 
-function funcLTrim(runtime, args)
+function funcLTrim(vm, args)
 //Return a string with the whitespace removed from its left side.
 {
   return args[0].trimStart();
 }
 
-function funcRTrim(runtime, args)
+function funcRTrim(vm, args)
 //Return a string with the whitespace removed from its right side
 {
   return args[0].trimEnd();
 }
 
-function funcInstr(runtime, args)
+function funcInstr(vm, args)
 //Return the position of the first occurence of one string within another
 {
   if(args.length == 2)
@@ -161,76 +161,76 @@ function funcInstr(runtime, args)
   }
 }
 
-function funcAbs(runtime, args)
+function funcAbs(vm, args)
 //Return the absolute value of a number
 {
   return Math.abs(args[0]);
 }
 
-function funcAsc(runtime, args)
+function funcAsc(vm, args)
 //Return the ASCII value of the first character in a string
 {
   return args[0].charCodeAt(0);
 }
 
-function funcChr(runtime, args)
+function funcChr(vm, args)
 //Return the character of an ASCII number
 {
   return String.fromCharCode(args[0]);
 }
 
-function funcMin(runtime, args)
+function funcMin(vm, args)
 //Return the minimum of two numbers
 {
   return Math.min(args[0], args[1]);
 }
 
-function funcMax(runtime, args)
+function funcMax(vm, args)
 //Return the maximun of two numbers
 {
   return Math.max(args[0], args[1]);
 }
 
-function funcSqr(runtime, args)
+function funcSqr(vm, args)
 //Return the square root of a number
 {
   return Math.sqrt(args[0]);
 }
 
-function funcStr(runtime, args)
+function funcStr(vm, args)
 //Return the string representation of a number
 {
   return args[0].toString();
 }
 
-function funcVal(runtime, args)
+function funcVal(vm, args)
 //Return the number contained in a string
 {
   return parseFloat(args[0]);
 }
 
-function funcStartTimer(runtime, args)
+function funcStartTimer(vm, args)
 //Set the timer to call the given user function at the interval
 {
   var timeout = args[0];
   var callbackUserFunc = args[1];
 
   if(!(callbackUserFunc instanceof ObjUserFunc))
-    runtime.endWithError("Second argument of startTimer() must be a function.");
+    vm.endWithError("Second argument of startTimer() must be a function.");
 
   if(callbackUserFunc.paramCount != 0)
-    runtime.endWithError("Callback function for startTimer() must have zero parameters.");
+    vm.endWithError("Callback function for startTimer() must have zero parameters.");
 
   if(timerID != 0)
     clearInterval(timerID);
 
   if(timerCallback == null)
   {
-    timerCallback = new CallbackContext(runtime, callbackUserFunc);
+    timerCallback = new CallbackContext(vm, callbackUserFunc);
   }
   else
   {
-    timerCallback.runtime = runtime;
+    timerCallback.vm = vm;
     timerCallback.userFunc = callbackUserFunc;
   }
 
@@ -239,7 +239,7 @@ function funcStartTimer(runtime, args)
   return 0;
 }
 
-function funcStopTimer(runtime, args)
+function funcStopTimer(vm, args)
 //Stop the timer
 {
   if(timerID == 0)
@@ -251,7 +251,7 @@ function funcStopTimer(runtime, args)
   return 0;
 }
 
-function funcAddArrayItem(runtime, args)
+function funcAddArrayItem(vm, args)
 //
 {
   var array = args[0];
@@ -263,17 +263,17 @@ function funcAddArrayItem(runtime, args)
     beforeIndex = args[2];
 
   if(!(array instanceof ObjArray))
-    runtime.endWithError("First argument of addArrayItem() must be an array.");
+    vm.endWithError("First argument of addArrayItem() must be an array.");
 
   errorMsg = array.addItem(newVal, beforeIndex);
 
   if(errorMsg != "")
-    runtime.endWithError(errorMsg);
+    vm.endWithError(errorMsg);
 
   return 0;
 }
 
-function funcRemoveArrayItem(runtime, args)
+function funcRemoveArrayItem(vm, args)
 //
 {
   var array = args[0];
@@ -281,17 +281,17 @@ function funcRemoveArrayItem(runtime, args)
   var errorMsg = "";
 
   if(!(array instanceof ObjArray))
-    runtime.endWithError("First argument of removeArrayItem() must be an array.");
+    vm.endWithError("First argument of removeArrayItem() must be an array.");
 
   errorMsg = array.removeItem(itemIndex);
 
   if(errorMsg != "")
-    runtime.endWithError(errorMsg);
+    vm.endWithError(errorMsg);
 
   return 0;
 }
 
-function funcClamp(runtime, args)
+function funcClamp(vm, args)
 //
 {
   var val = args[0];
@@ -301,7 +301,7 @@ function funcClamp(runtime, args)
   return Math.max(min, Math.min(val, max));
 }
 
-function funcPointInRect(runtime, args)
+function funcPointInRect(vm, args)
 //
 {
   var pointX = args[0];
@@ -320,7 +320,7 @@ function funcPointInRect(runtime, args)
   return true;
 }
 
-function funcPointInCircle(runtime, args)
+function funcPointInCircle(vm, args)
 //
 {
   var pointX = args[0];
@@ -333,7 +333,7 @@ function funcPointInCircle(runtime, args)
   return distance < Math.pow(circleRadius, 2);
 }
 
-function funcRectsOverlap(runtime, args)
+function funcRectsOverlap(vm, args)
 //
 {
   var rectX1 = args[0];
@@ -354,7 +354,7 @@ function funcRectsOverlap(runtime, args)
   return true;
 }
 
-function funcCirclesOverlap(runtime, args)
+function funcCirclesOverlap(vm, args)
 //
 {
   var circleX1 = args[0];
@@ -369,7 +369,7 @@ function funcCirclesOverlap(runtime, args)
 
 }
 
-function funcRectOverlapsCircle(runtime, args)
+function funcRectOverlapsCircle(vm, args)
 //
 {
   var rectX = args[0];
@@ -386,28 +386,28 @@ function funcRectOverlapsCircle(runtime, args)
   return distance < Math.pow(circleRadius, 2);
 }
 
-function funcCos(runtime, args)
+function funcCos(vm, args)
 //Return the sine of an angle specified in radians
 {
   var rads = args[0];
   return Math.cos(rads);
 }
 
-function funcSin(runtime, args)
+function funcSin(vm, args)
 //Return the cosine of an angle specified in radians
 {
   var rads = args[0];
   return Math.sin(rads);
 }
 
-function funcTan(runtime, args)
+function funcTan(vm, args)
 //Return the tangent of an angle specified in radians
 {
   var rads = args[0];
   return Math.tan(rads);
 }
 
-function funcRound(runtime, args)
+function funcRound(vm, args)
 //Return a number rounded to either the nearest integer or given decimal place
 {
   var num = args[0];
@@ -422,13 +422,13 @@ function funcRound(runtime, args)
   }
 }
 
-function funcVersion(runtime, args)
+function funcVersion(vm, args)
 //Return the current Logan BASIC version
 {
   return lbVersion;
 }
 
-function funcWord(runtime, args)
+function funcWord(vm, args)
 //Returns the word at the given position within the given string
 {
   var string = args[0];
@@ -447,7 +447,7 @@ function funcWord(runtime, args)
     return words[wordIndex];
 }
 
-function funcSplitStr(runtime, args)
+function funcSplitStr(vm, args)
 //Split a string into an array of sub strings
 {
   var string = args[0];
@@ -465,17 +465,17 @@ function funcSplitStr(runtime, args)
   return wordArray;
 }
 
-function funcPauseFor(runtime, args)
+function funcPauseFor(vm, args)
 //Pause program execution for the given amount of milliseconds
 {
   var timeout = args[0];
 
   if(pauseForCallback == null)
-    pauseForCallback = new CallbackContext(runtime);
+    pauseForCallback = new CallbackContext(vm);
   else
-    pauseForCallback.runtime = runtime;
+    pauseForCallback.vm = vm;
 
-  runtime.status = RUNTIME_STATUS_PAUSED;
+  vm.status = VM_STATUS_PAUSED;
 
   setTimeout(pauseFor_onTimeout, timeout);
 

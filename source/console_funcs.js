@@ -11,11 +11,11 @@ var inputCallback = null;
 function onInputResult(inputStr)
 //Process input sent from the console
 {
-  inputCallback.runtime.stack[inputCallback.runtime.stack.length - 1] = inputStr;
+  inputCallback.vm.stack[inputCallback.vm.stack.length - 1] = inputStr;
   inputCallback.runFunc();
 }
 
-function onRuntimePrint(runtime, printVal, replaceAll)
+function onVMPrint(vm, printVal, replaceAll)
 //
 {
   if(replaceAll)
@@ -24,46 +24,46 @@ function onRuntimePrint(runtime, printVal, replaceAll)
     postMessage({msgId: MSGID_PRINT, msgData: printVal});
 }
 
-function funcShowEditor(runtime, args)
+function funcShowEditor(vm, args)
 //Tell the UI thread to show the program editor pane
 {
   postMessage({msgId: MSGID_SHOW_EDITOR});
   return 0;
 }
 
-function funcHideEditor(runtime, args)
+function funcHideEditor(vm, args)
 //Tell the UI thread to hide the program editor pane
 {
   postMessage({msgId: MSGID_HIDE_EDITOR});
   return 0;
 }
 
-function funcShowConsole(runtime, args)
+function funcShowConsole(vm, args)
 //Tell the UI thread to show the console pane
 {
   postMessage({msgId: MSGID_SHOW_CONSOLE});
   return 0;
 }
 
-function funcHideConsole(runtime, args)
+function funcHideConsole(vm, args)
 //Tell the UI thread to hide the console pane
 {
   postMessage({msgId: MSGID_HIDE_CONSOLE});
   return 0;
 }
 
-function funcInput(runtime, args)
+function funcInput(vm, args)
 //Prompt user for input from the consol
 {
   if(inputCallback == null)
-    inputCallback = new CallbackContext(runtime);
+    inputCallback = new CallbackContext(vm);
   else
-    inputCallback.runtime = runtime;
+    inputCallback.vm = vm;
 
   postMessage({msgId: MSGID_PRINT, msgData: args[0]});
   postMessage({msgId: MSGID_INPUT_REQUEST});
 
-  runtime.status = RUNTIME_STATUS_PAUSED;
+  vm.status = VM_STATUS_PAUSED;
 
   return "";
 }

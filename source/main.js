@@ -4,7 +4,7 @@ importScripts('./core/object.js',
               './core/std_funcs.js',
               './core/scanner.js',
               './core/compiler.js',
-              './core/runtime.js');
+              './core/vm.js');
 
 importScripts('worker_msg.js',
               'console_funcs.js',
@@ -12,20 +12,18 @@ importScripts('worker_msg.js',
               'sound_funcs.js',
               'sprite_funcs.js');
 
-var mainNativeFuncs = [].concat(stdNativeFuncs, consoleNativeFuncs, canvasNativeFuncs, soundNativeFuncs, spriteNativeFuncs);
-var mainBytecode = new Bytecode();
 var mainCompiler = new Compiler();
-var mainRuntime = new Runtime();
+var mainVM = new VM();
 
 onmessage = progWorker_onMessage;
 
-function onRuntimeDone(runtime)
+function onVMDone(vm)
 //
 {
-  if(runtime.error == null)
+  if(vm.error == null)
     postMessage({msgId: MSGID_PROG_DONE_SUCCESS});
   else
-    postMessage({msgId: MSGID_PROG_DONE_ERROR, msgData: runtime.error});
+    postMessage({msgId: MSGID_PROG_DONE_ERROR, msgData: vm.error});
 }
 
 function progWorker_onMessage(message)
@@ -71,17 +69,17 @@ function onStartProg(source)
 //Compile and run the program
 {
   postMessage({msgId: MSGID_STATUS_CHANGE, msgData: "Compiling..."});
-  mainBytecode.nativeFuncs = mainNativeFuncs;
-  mainCompiler.compile(source, mainBytecode);
+  mainVM.nativeFuncs.concat(stdNativeFuncs, consoleNativeFuncs, canvasNativeFuncs, soundNativeFuncs, spriteNativeFuncs);
+  mainCompiler.compile(source, mainVM);
 
   //console.log(mainBytecode.toString());
 
   if(mainCompiler.error == null)
   {
     postMessage({msgId: MSGID_STATUS_CHANGE, msgData: "Running..."});
-    mainRuntime.onPrintJsFunc = onRuntimePrint;
-    mainRuntime.onDoneJsFunc = onRuntimeDone;
-    mainRuntime.run(mainBytecode);
+    mainVM.onPrintJsFunc = onVMPrint;
+    mainVM.onDoneJsFunc = onVMDone;
+    mainVM.run();
   }
   else
   {

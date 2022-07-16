@@ -4,10 +4,17 @@ class ObjUserFunc
   {
     this.ident = ident;
     this.paramCount = 0;
-    this.varIdents = [];
+    this.localIdents = [];
+    this.literals = [];
     this.ops = [];
     this.tokens = [];
     this.sourceLineMap = new Map();
+  }
+
+  typeToString()
+  //
+  {
+    return "a Function";
   }
 
   toString()
@@ -19,9 +26,14 @@ class ObjUserFunc
     retStr += "Parameter #: " + this.paramCount + "\n\n";
 
     retStr += "Variables:\n------------\n";
-    for(var varIndex = 0; varIndex < this.varIdents.length; varIndex++)
-      retStr += varIndex + ":  " + this.varIdents[varIndex] + "\n";
+    for(var varIndex = 0; varIndex < this.localIdents.length; varIndex++)
+      retStr += varIndex + ":  " + this.localIdents[varIndex] + "\n";
     retStr += '\n';
+
+    retStr += "Literals:\n-----------\n";
+    for(var litIndex = 0; litIndex < this.literals.length; litIndex++)
+      retStr += litIndex + ":  " + this.literals[litIndex] + "\n";
+    retStr += '\n\n';
 
     retStr += "Ops:\n------\n";
     for(var opIndex = 0; opIndex < this.ops.length; opIndex++)
@@ -46,6 +58,12 @@ class ObjNativeFunc
     this.paramMax = paramMax;
     this.jsFunc = jsFunc;
   }
+
+  typeToString()
+  //
+  {
+    return "a Native Function";
+  }
 }
 
 class ObjArray
@@ -54,6 +72,12 @@ class ObjArray
   {
     this.items = [];
     this.dimSizes = [];
+  }
+
+  typeToString()
+  //
+  {
+    return "an Array";
   }
 
   reDim(newDimSizeList)
@@ -130,6 +154,37 @@ class ObjArray
   }
 }
 
+class ObjStructureDef
+{
+  constructor(ident)
+  {
+    this.ident = ident;
+    this.fieldIdents = [];
+    this.tokens = [];
+  }
+
+  typeToString()
+  //
+  {
+    return "a Structure Definition";
+  }
+
+  toString()
+  //Return the structure definition as a string
+  {
+    var retStr = "";
+
+    retStr += "Name: " + this.ident + "\n";
+
+    retStr += "Fields:\n------------\n";
+    for(var fieldIndex = 0; fieldIndex < this.fieldIdents.length; fieldIndex++)
+      retStr += fieldIndex + ":  " + this.fieldIdents[fieldIndex] + "\n";
+    retStr += '\n';
+
+    return retStr;
+  }
+}
+
 class ObjStructure
 {
   constructor(def)
@@ -139,5 +194,11 @@ class ObjStructure
 
     for(var fieldIndex = 0; fieldIndex < def.fieldIdents.length; fieldIndex++)
       this.fieldMap.set(def.fieldIdents[fieldIndex], 0);
+  }
+
+  typeToString()
+  //
+  {
+    return "a Structure Instance";
   }
 }
