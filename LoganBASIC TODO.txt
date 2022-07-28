@@ -1,12 +1,12 @@
 - Core Restructure:
-    - Store global variables in a 'gloabl' hash map, in Runtime class, whose
-      keys are the variables' identifiers.
-    - Store structDefs in the global hash map in Runtime.
-    - Store userFuncs in the global hash map in Runtime, leaving the main
-      user function as a property of Runtime.
-    - Store nativeFuncs in the global hash map in Runtime.
-    - Give VM class its own instance of Compiler class.
-    - Split scanTokens() method in Compiler class into multiple smaller methods.
+    - Modify global variables to store them in a 'gloabl' hash map in VM class.
+    - Modify userFuncs and structDefs to be stored in the global hash map in VM.
+    - Modify VM to own Compiler instance.
+    - Modify consumeToken() method in Compiler to read in tokens from Scanner on-demand.
+    - Modify LOAD_NATIVE_FUNC opcode to reference a native function by name.
+    - Possibly modify VM code that deals with ending a running program (Return from main function,
+      END statement, runtime error, through a CallbackContext instance).
+- Add debugging hooks to VM.
+- Add debugging interface.
 - Add a help section for using the core source file library.
-- Add debugger.
 - Add ability to import source files

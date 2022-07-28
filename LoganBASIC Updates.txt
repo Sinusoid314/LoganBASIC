@@ -1,3 +1,15 @@
+(July 27, 2022)
+[v2.0.0]
+	- Modified the grammar to have 'var' and 'array' be declarations, and added a
+	  globalDeclaration rule that includes 'function' and 'structure'.
+	- Added prevToken, currToken, and nextToken members to Compiler and modified
+	  the token helper methods to use them.
+	- Modified the VM status values to IDLE, COMPILING, and RUNNING.
+	- Added onStatusChangeHook member to VM.
+	- Added changeStatus() method to VM.
+	- Removed setup() and reset() methods from VM.
+	- Removed onDoneJsFunc member from VM.
+
 (July 15, 2022)
 [v1.9.5]
 	- Modified structure field access to use the literal index of the field identifier
