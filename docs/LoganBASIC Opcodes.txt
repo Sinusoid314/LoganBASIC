@@ -27,19 +27,28 @@ LOAD_LIT
   Push the value of the given literal onto the stack.
 
 LOAD_VAR
-  operands: variableScope, variableIndex
+  operands: variableScope, ( localIndex | literalIndex )
   stack: [] -> [value]
   Push the value of the given variable onto the stack.
+  If variableScope is SCOPE_GLOBAL, literalIndex is used to reference the
+  variable's identifier in the globals tablel; if SCOPE_LOCAL, localIndex
+  is used to directly reference the variable in the current call frame.
 
 STORE_VAR
-  operands: variableScope, variableIndex
+  operands: variableScope, ( localIndex | literalIndex )
   stack: [value] -> []
   Pop value from the stack and store it in the given variable.
+  If variableScope is SCOPE_GLOBAL, literalIndex is used to reference the
+  variable's identifier in the globals tablel; if SCOPE_LOCAL, localIndex
+  is used to directly reference the variable in the current call frame.
 
 STORE_VAR_PERSIST
-  operands: variableScope, variableIndex
+  operands: variableScope, ( localIndex | literalIndex )
   stack: [value] -> no change
   Store value from top of the stack in the given variable, keeping value on the stack.
+  If variableScope is SCOPE_GLOBAL, literalIndex is used to reference the
+  variable's identifier in the globals tablel; if SCOPE_LOCAL, localIndex
+  is used to directly reference the variable in the current call frame.
 
 POP
   stack: [value] -> []
@@ -92,10 +101,6 @@ POW
 PRINT
   stack: [value] -> []
   Print a value to the console.
-
-INPUT
-  stack: [value] -> [result]
-  Prints a prompt value, waits for user input, then pushes the input result onto the stack.
 
 JUMP
   operands: opIndex
@@ -172,11 +177,13 @@ CREATE_STRUCT
   operands: structureDefIndex
   stack: [] -> [structureReference]
   Create an instance of the given structure definition.
-  
+
 LOAD_STRUCT_FIELD
-  stack: [structureReference, fieldIdentifier] -> [fieldValue]
+  operands: fieldLiteralIndex
+  stack: [structureReference] -> [fieldValue]
   Push the value of the given structure field onto the stack.
-  
+
 STORE_STRUCT_FIELD_PERSIST
-  stack: [structureReference, fieldIdentifier, fieldValue] -> [fieldValue]
+  operands: fieldLiteralIndex
+  stack: [structureReference, fieldValue] -> [fieldValue]
   Set the given structure field to the given value, keeping value on the stack.
