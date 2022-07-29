@@ -2,6 +2,10 @@ const VM_STATUS_IDLE = 1;
 const VM_STATUS_COMPILING = 2;
 const VM_STATUS_RUNNING = 3;
 
+const DOSTUFF_COMPILE_ERROR = 1;
+const DOSTUFF_RUNTIME_ERROR = 2;
+const DOSTUFF_SUCCESS = 3;
+
 class CallbackContext
 {
   constructor(vm, userFunc = null)
@@ -29,17 +33,7 @@ class CallbackContext
       this.vm.callUserFunc(this.userFunc, argCount, stackIndex);
     }
 
-    this.vm.changeStatus(VM_STATUS_RUNNING);
     this.vm.run();
-  }
-
-  endVM(errorMessage)
-  //Stop the VM and set it's error object (if applicable)
-  {
-    if(errorMessage != "")
-      this.vm.setError(errorMessage);
-
-    this.vm.changeStatus(VM_STATUS_IDLE);
   }
 }
 
@@ -58,7 +52,8 @@ class VM
   constructor()
   {
     this.onStatusChangeHook = null;
-    this.onPrintJsFunc = null;
+    this.onErrorHook = null;
+    this.onPrintHook = null;
     this.status = VM_STATUS_IDLE;
     this.error = null;
     this.nativeFuncs = [];
@@ -115,9 +110,30 @@ class VM
     this.opFuncs[OPCODE_STORE_STRUCT_FIELD_PERSIST] = this.opStoreStructFieldPersist.bind(this);
   }
 
+  doStuff(source)
+  //Compile and run the given source code
+  {
+    var rootUserFunc = new ObjUserFunc("<root>");;
+    var compiler = new Compiler(this, source, rootUserFunc);
+
+    compiler.compile();
+    if(this.error != null)
+      return DOSTUFF_COMPILE_ERROR;
+
+    this.stack.push(rootUserFunc);
+    this.callUserFunc(rootUserFunc, 0, 0);
+
+    this.run();
+    if(this.error != null)
+      return DOSTUFF_RUNTIME_ERROR;
+
+    return DOSTUFF_SUCCESS;
+  }
+
   run()
   //Execute the bytecode ops
   {
+    this.error = null;
     this.changeStatus(VM_STATUS_RUNNING);
 
     try
@@ -351,8 +367,8 @@ class VM
     var val = this.stack.pop();
     val += '\n';
 
-    if(this.onPrintJsFunc != null)
-      this.onPrintJsFunc(this, val, false);
+    if(this.onPrintHook != null)
+      this.onPrintHook(this, val, false);
   }
 
   opJump()
@@ -405,9 +421,7 @@ class VM
   opEnd()
   //Trigger the program to end
   {
-    this.stack = [];
-    this.callFrames = [];
-    this.currCallFrame = null;
+    this.clearStacks();
     this.changeStatus(VM_STATUS_IDLE);
   }
 
@@ -511,8 +525,8 @@ class VM
   opCls()
   //Clear the console window
   {
-    if(this.onPrintJsFunc != null)
-      this.onPrintJsFunc(this, "", true);
+    if(this.onPrintHook != null)
+      this.onPrintHook(this, "", true);
   }
 
   opCheckCounter()
@@ -652,22 +666,31 @@ class VM
     this.currCallFrame = this.callFrames[this.callFrames.length - 1];
   }
 
-  endWithError(message)
+  endWithError(message, calledFromVM = true)
   //
   {
-    this.setError(message);
-    this.changeStatus(VM_STATUS_IDLE);
-
-    throw this.error;
-  }
-
-  setError(message)
-  //
-  {
+    var hookResult;
     var lineNum = this.getSourceLine();
 
     message = "Runtime error on line " + lineNum + ": "  + message;
     this.error = {message: message, lineNum: lineNum};
+
+    if(this.onErrorHook)
+    {
+      hookResult = this.onErrorHook(this);
+      if(hookResult)
+      {
+        this.error = null;
+        return;
+      }
+    }
+
+    this.changeStatus(VM_STATUS_IDLE);
+
+    this.clearStacks();
+
+    if(calledFromVM)
+      throw this.error;
   }
 
   getSourceLine()
@@ -687,11 +710,22 @@ class VM
   //Change the VM status and run the status-change hook, if present
   {
     var oldStatus = this.status;
+    
+    if(oldStatus == newStatus)
+      return;
 
     this.status = newStatus;
 
     if(this.onStatusChangeHook)
       this.onStatusChangeHook(this, oldStatus);
+  }
+
+  clearStacks()
+  //Clear the value and call stacks
+  {
+    this.stack = [];
+    this.callFrames = [];
+    this.currCallFrame = null;
   }
 }
 

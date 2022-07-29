@@ -1,3 +1,19 @@
+(July 28, 2022)
+[v2.0.1]
+	- Added clearStacks() method to VM and modified opEnd() method to call it.
+	- Renamed onPrintJsFunc member of VM to onPrintHook.
+	- Modified compile() method in Compiler to clear the VM error and set the VM
+	  state to COMPILING at the begining, and set the VM state to IDLE at the end.
+	- Modified run() method in VM to clear the VM error and set the VM state to
+	  RUNNING at the beginning.
+	- Added onErrorHook to VM and modified endWithError() method to call it.
+	- Added calledFromVM parameter to endWithError() method of VM to decide if the
+	  method can throw an exception.
+	- Moved code from setError() method of VM into endWithError() method.
+	- Removed endVM() method of CallbackContext and replaced calls to it with calls to
+	  endWithError() method of VM with the calledFromVM parameter set to false.
+	- Added doStuff() method to VM that compiles and runs a source string.
+
 (July 27, 2022)
 [v2.0.0]
 	- Modified the grammar to have 'var' and 'array' be declarations, and added a

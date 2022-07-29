@@ -77,7 +77,7 @@ function onStartProg(source)
   if(mainCompiler.error == null)
   {
     postMessage({msgId: MSGID_STATUS_CHANGE, msgData: "Running..."});
-    mainVM.onPrintJsFunc = onVMPrint;
+    mainVM.onPrintHook = onVMPrint;
     mainVM.onDoneJsFunc = onVMDone;
     mainVM.run();
   }

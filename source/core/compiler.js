@@ -13,7 +13,7 @@ class Compiler
   {
     this.vm = vm;
     this.scanner = new Scanner(source);
-    this.mainUserFunc = userFunc;
+    this.rootUserFunc = userFunc;
     this.currUserFunc = userFunc;
     this.prevToken = null;
     this.currToken = null;
@@ -26,18 +26,19 @@ class Compiler
   compile()
   //Compile the source code string to a series of bytecode ops
   {
+    this.vm.error = null;
+    this.vm.changeStatus(VM_STATUS_COMPILING);
+
     try
     {
-      this.scanTokens();
-
-      this.parseStructDefs();
-
-      this.parseUserFuncs();
+      
     }
     catch(error)
     {
       this.vm.error = error;
     }
+
+    this.vm.changeStatus(VM_STATUS_IDLE);
   }
 
   scanTokens()
@@ -47,9 +48,9 @@ class Compiler
     var inFunc = false;
     var inStructDef = false;
 
-    this.mainUserFunc = new ObjUserFunc("<main>");
-    this.vm.userFuncs.push(this.mainUserFunc);
-    tokens = this.mainUserFunc.tokens;
+    this.rootUserFunc = new ObjUserFunc("<root>");
+    this.vm.userFuncs.push(this.rootUserFunc);
+    tokens = this.rootUserFunc.tokens;
 
     do
     {
@@ -122,7 +123,7 @@ class Compiler
               this.raiseError("'end function' without 'function'.", currToken);
 
             tokens.push(this.scanner.makeEOFToken());
-            tokens = this.mainUserFunc.tokens;
+            tokens = this.rootUserFunc.tokens;
             inFunc = false;
           }
           else if(currToken.type == TOKEN_STRUCTURE)
@@ -131,7 +132,7 @@ class Compiler
               this.raiseError("'end structure' without 'structure'.", currToken);
 
             tokens.push(this.scanner.makeEOFToken());
-            tokens = this.mainUserFunc.tokens;
+            tokens = this.rootUserFunc.tokens;
             inStructDef = false;
           }
           else
@@ -188,7 +189,7 @@ class Compiler
       this.currUserFunc = this.vm.userFuncs[funcIndex];
       this.currTokens = this.currUserFunc.tokens;
 
-      if(this.currUserFunc != this.mainUserFunc)
+      if(this.currUserFunc != this.rootUserFunc)
         this.parseParameters();
 
       while(!this.endOfTokens())
@@ -605,7 +606,7 @@ class Compiler
   returnStmt()
   //Parse a Return statement
   {
-    if(this.currUserFunc == this.mainUserFunc)
+    if(this.currUserFunc == this.rootUserFunc)
       this.raiseError("'return' only allowed within a function.");
 
     if(this.checkTerminator())
@@ -1064,7 +1065,7 @@ class Compiler
     this.currUserFunc.localIdents.push(varIdent);
 
     varIndex = this.currUserFunc.localIdents.length - 1;
-    if(this.currUserFunc == this.mainUserFunc)
+    if(this.currUserFunc == this.rootUserFunc)
       varScope = SCOPE_GLOBAL;
     else
       varScope = SCOPE_LOCAL;
@@ -1133,7 +1134,7 @@ class Compiler
   {
     var varIndex;
 
-    if(this.currUserFunc != this.mainUserFunc)
+    if(this.currUserFunc != this.rootUserFunc)
     {
       for(varIndex = 0; varIndex < this.currUserFunc.localIdents.length; varIndex++)
       {
@@ -1142,9 +1143,9 @@ class Compiler
       }
     }
 
-    for(varIndex = 0; varIndex < this.mainUserFunc.localIdents.length; varIndex++)
+    for(varIndex = 0; varIndex < this.rootUserFunc.localIdents.length; varIndex++)
     {
-      if(this.mainUserFunc.localIdents[varIndex].toLowerCase() == varIdent.toLowerCase())
+      if(this.rootUserFunc.localIdents[varIndex].toLowerCase() == varIdent.toLowerCase())
         return new VariableReference(SCOPE_GLOBAL, varIndex);
     }
 
@@ -1204,6 +1205,12 @@ class Compiler
   //Return true if the current token is one of the statement terminators
   {
     return this.checkTokenList([TOKEN_NEWLINE, TOKEN_COLON, TOKEN_EOF]);
+  }
+
+  initTokens()
+  //
+  {
+    
   }
 
   consumeToken()

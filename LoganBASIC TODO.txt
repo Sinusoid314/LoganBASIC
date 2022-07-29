@@ -1,11 +1,11 @@
 - Core Restructure:
+    - Modify Compiler to be single-pass and reflect the new grammar for declarations.
     - Modify global variables to store them in a 'gloabl' hash map in VM class.
     - Modify userFuncs and structDefs to be stored in the global hash map in VM.
-    - Modify VM to own Compiler instance.
-    - Modify consumeToken() method in Compiler to read in tokens from Scanner on-demand.
+    - Modify consumeToken() method, and add initTokens() method, in Compiler to read in
+      tokens from Scanner on-demand.
     - Modify LOAD_NATIVE_FUNC opcode to reference a native function by name.
-    - Possibly modify VM code that deals with ending a running program (Return from main function,
-      END statement, runtime error, through a CallbackContext instance).
+    - Add addNativeFunc() and addNativeFuncArray() methods to VM.
 - Add debugging hooks to VM.
 - Add debugging interface.
 - Add a help section for using the core source file library.
