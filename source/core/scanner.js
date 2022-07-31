@@ -46,6 +46,10 @@ class Scanner
     var firstChar, token;
 
     this.skipWhitespace();
+
+    if(!this.skipLineJoiner)
+      return this.makeErrorToken("Expected new line after '_'");
+
     this.startCharIndex = this.currCharIndex;
 
     if(this.endOfSource())
@@ -56,9 +60,7 @@ class Scanner
     switch(firstChar)
     {
       case '\n':
-        token = this.makeToken(TOKEN_NEWLINE);
-        this.currLineNum++;
-        return token;
+        return this.consumeNewLines();
 
       case ':':
         return this.makeToken(TOKEN_COLON);
@@ -169,6 +171,36 @@ class Scanner
           return;
       }
     }
+  }
+
+  skipLineJoiner()
+  //
+  {
+    if(!this.matchChar('_'))
+      return true;
+
+    this.skipWhitespace();
+
+    if(!this.matchChar('\n'))
+      return false;
+
+    this.currLineNum++;
+    return true;
+  }
+
+  consumeNewLines()
+  //
+  {
+    var token = new Token(TOKEN_NEWLINE);
+
+    do
+    {
+      this.currLineNum++;
+      this.skipWhitespace();
+    }
+    while(this.matchChar('\n'))
+
+    return token;
   }
 
   consumeStringLiteral()

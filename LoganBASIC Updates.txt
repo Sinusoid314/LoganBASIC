@@ -1,3 +1,12 @@
+(July 30, 2022)
+[v2.0.2]
+	- Modified compile() method in Compiler.
+	- Modified consumeToken() method in Compiler.
+	- Modified scanToken() method in Scanner.
+	- Added consumeNewLines() method to Scanner.
+	- Added skipLineJoiner() method to Scanner.
+	- Added initTokens() method to Compiler.
+
 (July 28, 2022)
 [v2.0.1]
 	- Added clearStacks() method to VM and modified opEnd() method to call it.

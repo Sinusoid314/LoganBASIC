@@ -31,7 +31,12 @@ class Compiler
 
     try
     {
-      
+      this.initTokens();
+
+      while(!this.endOfTokens())
+      {
+        this.parseGlobalDeclaration();
+      }
     }
     catch(error)
     {
@@ -1210,16 +1215,30 @@ class Compiler
   initTokens()
   //
   {
-    
+    do
+    {
+      this.currToken = this.scanner.scanToken();
+    }
+    while(this.currToken.type == TOKEN_NEWLINE)
+
+    if(this.currToken.type == TOKEN_ERROR)
+      this.raiseError(this.currToken.lexeme);
+
+    this.nextToken = this.scanner.scanToken();
   }
 
   consumeToken()
   //Return the current token and advance to the next token
   {
-    if(!this.endOfTokens())
-      this.currTokenIndex++;
+    this.prevToken = this.currToken;
+    this.currToken = this.nextToken;
 
-    return this.peekPrevToken();
+    if(this.currToken.type == TOKEN_ERROR)
+      this.raiseError(this.currToken.lexeme);
+
+    this.nextToken = this.scanner.scanToken();
+
+    return this.prevToken;
   }
 
   matchTokenList(tokenTypeList)
