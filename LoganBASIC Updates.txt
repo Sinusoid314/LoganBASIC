@@ -1,3 +1,11 @@
+(July 31, 2022)
+[v2.0.3]
+	- Renamed varStmt() and arrayStmt() methods in Compiler to varDecl() and arrayDecl().
+	- Added parseDeclaration() method to Compiler.
+	- Added parseGlobalDeclaration() method to Compiler.
+	- Added the literal value 'nothing'.
+	- Added DEFINE_GLOBAL_VAR opcode.
+
 (July 30, 2022)
 [v2.0.2]
 	- Modified compile() method in Compiler.

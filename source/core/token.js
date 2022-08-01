@@ -28,11 +28,12 @@ const TOKEN_OR = 23;
 const TOKEN_AND = 24;
 const TOKEN_CARET = 25;
 
-const TOKEN_TRUE = 30;
-const TOKEN_FALSE = 31;
-const TOKEN_STRING_LIT = 32;
-const TOKEN_NUMBER_LIT = 33;
-const TOKEN_IDENTIFIER = 34;
+const TOKEN_NOTHING = 30;
+const TOKEN_TRUE = 31;
+const TOKEN_FALSE = 32;
+const TOKEN_STRING_LIT = 33;
+const TOKEN_NUMBER_LIT = 34;
+const TOKEN_IDENTIFIER = 35;
 
 const TOKEN_VAR = 40;
 const TOKEN_ARRAY = 41;

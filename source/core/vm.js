@@ -57,9 +57,9 @@ class VM
     this.status = VM_STATUS_IDLE;
     this.error = null;
     this.nativeFuncs = [];
-    this.globals = new Map()
     this.structDefs = [];
     this.userFuncs = [];
+    this.globals = new Map()
     this.stack = [];
     this.callFrames = [];
     this.currCallFrame = null;
@@ -67,6 +67,7 @@ class VM
     
     //Allow the op methods to be called by indexing into a function array using the opcode constants
     this.opFuncs = [null];
+    this.opFuncs[OPCODE_LOAD_NOTHING] = this.opLoadNothing.bind(this);
     this.opFuncs[OPCODE_LOAD_TRUE] = this.opLoadTrue.bind(this);
     this.opFuncs[OPCODE_LOAD_FALSE] = this.opLoadFalse.bind(this);
     this.opFuncs[OPCODE_LOAD_INT] = this.opLoadInt.bind(this);
@@ -77,6 +78,7 @@ class VM
     this.opFuncs[OPCODE_STORE_VAR] = this.opStoreVar.bind(this);
     this.opFuncs[OPCODE_STORE_VAR_PERSIST] = this.opStoreVarPersist.bind(this);
     this.opFuncs[OPCODE_POP] = this.opPop.bind(this);
+    this.opFuncs[OPCODE_DEFINE_GLOBAL_VAR] = this.opDefineGlobalVar.bind(this);
     this.opFuncs[OPCODE_SUB] = this.opSub.bind(this);
     this.opFuncs[OPCODE_ADD] = this.opAdd.bind(this);
     this.opFuncs[OPCODE_DIV] = this.opDiv.bind(this);
@@ -148,6 +150,12 @@ class VM
     catch(error)
     {
     }
+  }
+
+  opLoadNothing()
+  //Push 'null' onto the stack.
+  {
+    this.stack.push(null);
   }
 
   opLoadTrue()
@@ -262,6 +270,16 @@ class VM
   //Pop value from the stack and discard it
   {
     this.stack.pop();
+  }
+
+  opDefineGlobalVar()
+  //Add an entry to the globals table
+  {
+    var litIndex = this.currOp[1];
+    var ident = this.currCallFrame.func.literals[litIndex];
+    var initVal = this.stack.pop();
+
+    this.globals.set(ident, initVal)
   }
 
   opSub()

@@ -1,4 +1,5 @@
 const keywordList = {
+                   "nothing": TOKEN_NOTHING,
                    "true": TOKEN_TRUE,
                    "false": TOKEN_FALSE,
                    "not": TOKEN_NOT,

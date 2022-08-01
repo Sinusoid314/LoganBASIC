@@ -2,8 +2,6 @@
     - Modify Compiler to be single-pass and reflect the new grammar for declarations.
     - Modify global variables to store them in a 'gloabl' hash map in VM class.
     - Modify userFuncs and structDefs to be stored in the global hash map in VM.
-    - Modify consumeToken() method, and add initTokens() method, in Compiler to read in
-      tokens from Scanner on-demand.
     - Modify LOAD_NATIVE_FUNC opcode to reference a native function by name.
     - Add addNativeFunc() and addNativeFuncArray() methods to VM.
 - Add debugging hooks to VM.
