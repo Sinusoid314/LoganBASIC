@@ -1,3 +1,12 @@
+(August 3, 2022)
+[v2.0.4]
+	- Modified addVariable(), varDecl(), arrayDecl(), and getVariableReference() methods in
+	  Compiler to store global variables in a 'global' hash map in VM.
+	- Modified addVariable() and getVariableReference() methods in Compiler to make
+	  variable identifiers case-sensitive.
+	- Modified Compiler and VM to reference a native functions by name.
+	- Added addNativeFunc() and addNativeFuncArray() methods to VM.
+
 (July 31, 2022)
 [v2.0.3]
 	- Renamed varStmt() and arrayStmt() methods in Compiler to varDecl() and arrayDecl().

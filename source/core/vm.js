@@ -56,10 +56,10 @@ class VM
     this.onPrintHook = null;
     this.status = VM_STATUS_IDLE;
     this.error = null;
-    this.nativeFuncs = [];
+    this.nativeFuncs = new Map();
     this.structDefs = [];
     this.userFuncs = [];
-    this.globals = new Map()
+    this.globals = new Map();
     this.stack = [];
     this.callFrames = [];
     this.currCallFrame = null;
@@ -179,8 +179,12 @@ class VM
   opLoadNativeFunc()
   //Push a reference to the given native function object onto the stack
   {
-    var funcIndex = this.currOp[1];
-    var func = this.nativeFuncs[funcIndex];
+    var litIndex = this.currOp[1];
+    var ident = this.currCallFrame.func.literals[litIndex];
+    var func = this.nativeFuncs.get(ident);
+
+    if(!func)
+      this.endWithError("Built-in function '" + ident + "' not defined.");
 
     this.stack.push(func);
   }
@@ -216,7 +220,7 @@ class VM
       val = this.globals.get(ident);
 
       if(!val)
-        this.endWithError("Variable or array '" + ident + "' not defined.");
+        this.endWithError("Variable '" + ident + "' not defined.");
     }
     else
       val = this.stack[this.currCallFrame.stackIndex + index + 1];
@@ -237,7 +241,7 @@ class VM
       ident = this.currCallFrame.func.literals[index];
 
       if(!this.globals.has(ident))
-        this.endWithError("Variable or array '" + ident + "' not defined.");
+        this.endWithError("Variable '" + ident + "' not defined.");
 
       this.globals.set(ident, val);
     }
@@ -258,7 +262,7 @@ class VM
       ident = this.currCallFrame.func.literals[index];
 
       if(!this.globals.has(ident))
-        this.endWithError("Variable or array '" + ident + "' not defined.");
+        this.endWithError("Variable '" + ident + "' not defined.");
 
       this.globals.set(ident, val);
     }
@@ -744,6 +748,18 @@ class VM
     this.stack = [];
     this.callFrames = [];
     this.currCallFrame = null;
+  }
+
+  addNativeFunc(ident, paramMin, paramMax, jsFunc)
+  //Add a new native function object to the VM
+  {
+    this.nativeFuncs.set(ident, new ObjNativeFunc(ident, paramMin, paramMax, jsFunc));
+  }
+
+  addNativeFuncArray(funcArray)
+  //Add multiple native function objects to the VM
+  {
+    funcArray.forEach((func) => this.nativeFuncs.set(func.ident, func))
   }
 }
 

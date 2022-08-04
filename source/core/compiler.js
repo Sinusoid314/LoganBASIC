@@ -87,25 +87,21 @@ class Compiler
   varDecl()
   //Parse a Var declaration
   {
-    var varIdent, varRef;
+    var varIdent;
 
     do
     {
       if(this.matchToken(TOKEN_IDENTIFIER))
-      {
         varIdent = this.peekPrevToken().lexeme;
-        varRef = this.addVariable(varIdent);
-      }
       else
-      {
         this.raiseError("Expected identifier.");
-      }
 
       if(this.matchToken(TOKEN_EQUAL))
-      {
         this.parseExpression();
-        this.addOp([OPCODE_STORE_VAR, varRef.scope, varRef.index]);
-      }
+      else
+        this.addOp([OPCODE_LOAD_NOTHING]);
+
+      this.addVariable(varIdent);
     }
     while(this.matchToken(TOKEN_COMMA));
   }
@@ -113,17 +109,12 @@ class Compiler
   arrayDecl()
   //Parse an Array declaration
   {
-    var varIdent, varRef, dimCount;
+    var varIdent, dimCount;
 
     if(this.matchToken(TOKEN_IDENTIFIER))
-    {
       varIdent = this.peekPrevToken().lexeme;
-      varRef = this.addVariable(varIdent);
-    }
     else
-    {
       this.raiseError("Expected identifier.");
-    }
 
     if(!this.matchToken(TOKEN_LEFT_BRACKET))
       this.raiseError("Expected '[' after identifier.");
@@ -136,7 +127,8 @@ class Compiler
       this.raiseError("Expected ']' after dimensions.");
 
     this.addOp([OPCODE_CREATE_ARRAY, dimCount]);
-    this.addOp([OPCODE_STORE_VAR, varRef.scope, varRef.index]);
+
+    varRef = this.addVariable(varIdent);
   }
 
   parseStatement(requireTerminator = true)
@@ -805,10 +797,10 @@ class Compiler
       ident = this.peekPrevToken().lexeme;
 
       //Native Function
-      funcIndex = this.getNativeFuncIndex(ident);
-      if(funcIndex != -1)
+      if(this.vm.nativeFuncs.has(ident))
       {
-        this.addOp([OPCODE_LOAD_NATIVE_FUNC, funcIndex]);
+        litIndex = this.getLiteralIndex(ident);
+        this.addOp([OPCODE_LOAD_NATIVE_FUNC, litIndex]);
         return;
       }
 
@@ -926,48 +918,28 @@ class Compiler
   }
 
   addVariable(varIdent)
-  //Add a variable identifier to the current user function
+  //Add a local variable identifier to the current user function, or a definition
+  //opcode if global variable
   {
-    var varScope, varIndex;
+    var litIndex;
 
-    if(this.getNativeFuncIndex(varIdent) != -1)
-      this.raiseError("'" + varIdent + "' is already a function.");
+    if(this.vm.nativeFuncs.has(varIdent))
+      this.raiseError("'" + varIdent + "' is already a built-in function.");
 
-    if(this.getUserFuncIndex(varIdent) != -1)
-      this.raiseError("'" + varIdent + "' is already a function.");
-
-    if(this.getStructDefIndex(varIdent) != -1)
-      this.raiseError("'" + varIdent + "' is already a structure.");
-
-    for(varIndex = 0; varIndex < this.currUserFunc.localIdents.length; varIndex++)
-    {
-      if(this.currUserFunc.localIdents[varIndex].toLowerCase() == varIdent.toLowerCase())
-        this.raiseError("Variable or array '" + varIdent + "' already declared.");
-    }
-
-    this.currUserFunc.localIdents.push(varIdent);
-
-    varIndex = this.currUserFunc.localIdents.length - 1;
     if(this.currUserFunc == this.rootUserFunc)
-      varScope = SCOPE_GLOBAL;
-    else
-      varScope = SCOPE_LOCAL;
-
-    return new VariableReference(varScope, varIndex);
-  }
-
-  getNativeFuncIndex(funcIdent)
-  //Return the index of the given native function identifier
-  {
-    funcIdent = funcIdent.toLowerCase();
-
-    for(var funcIndex = 0; funcIndex < this.vm.nativeFuncs.length; funcIndex++)
     {
-      if(this.vm.nativeFuncs[funcIndex].ident.toLowerCase() == funcIdent)
-        return funcIndex;
+      litIndex = this.getLiteralIndex(varIdent);
+      this.addOp([OPCODE_DEFINE_GLOBAL_VAR, litIndex]);
     }
-
-    return -1;
+    else
+    {
+      for(var varIndex = 0; varIndex < this.currUserFunc.localIdents.length; varIndex++)
+      {
+        if(this.currUserFunc.localIdents[varIndex] == varIdent)
+          this.raiseError("Variable '" + varIdent + "' already declared.");
+      }
+      this.currUserFunc.localIdents.push(varIdent);
+    }
   }
 
   getUserFuncIndex(funcIdent)
@@ -1015,24 +987,21 @@ class Compiler
   getVariableReference(varIdent)
   //Return a [scope,index] reference to the given variable identifier
   {
-    var varIndex;
+    var varIndex, litIndex;
 
+    //Look for local variable
     if(this.currUserFunc != this.rootUserFunc)
     {
       for(varIndex = 0; varIndex < this.currUserFunc.localIdents.length; varIndex++)
       {
-        if(this.currUserFunc.localIdents[varIndex].toLowerCase() == varIdent.toLowerCase())
+        if(this.currUserFunc.localIdents[varIndex] == varIdent)
           return new VariableReference(SCOPE_LOCAL, varIndex);
       }
     }
 
-    for(varIndex = 0; varIndex < this.rootUserFunc.localIdents.length; varIndex++)
-    {
-      if(this.rootUserFunc.localIdents[varIndex].toLowerCase() == varIdent.toLowerCase())
-        return new VariableReference(SCOPE_GLOBAL, varIndex);
-    }
-
-    this.raiseError("Variable or array '" + varIdent + "' not declared.");
+    //Assume global variable
+    litIndex = this.getLiteralIndex(varIdent);
+    return new VariableReference(SCOPE_GLOBAL, litIndex);
   }
 
   addOp(operandList)

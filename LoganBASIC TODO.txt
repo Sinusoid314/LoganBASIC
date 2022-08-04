@@ -1,10 +1,9 @@
 - Core Restructure:
-    - Modify Compiler to be single-pass and reflect the new grammar for declarations.
-    - Modify global variables to store them in a 'gloabl' hash map in VM class.
-    - Modify userFuncs and structDefs to be stored in the global hash map in VM.
-    - Modify LOAD_NATIVE_FUNC opcode to reference a native function by name.
-    - Add addNativeFunc() and addNativeFuncArray() methods to VM.
+    - Modify userFuncs to be stored in the global hash map in VM.
+    - Modify structDefs to be stored in the global hash map in VM.
+- Add a sourceName property to Scanner and ObjUserFunc.
+- Hoist function and structure declarations to the top of the ObjUserFunc's ops list.
 - Add debugging hooks to VM.
 - Add debugging interface.
-- Add a help section for using the core source file library.
 - Add ability to import source files
+- Add a help section for using the core source file library.
