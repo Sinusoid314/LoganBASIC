@@ -1,3 +1,7 @@
+(August 4, 2022)
+[v2.0.5]
+	- Modified structDefs to be stored in the global hash map in VM.
+
 (August 3, 2022)
 [v2.0.4]
 	- Modified addVariable(), varDecl(), arrayDecl(), and getVariableReference() methods in

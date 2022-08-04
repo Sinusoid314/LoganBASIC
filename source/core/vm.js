@@ -57,7 +57,6 @@ class VM
     this.status = VM_STATUS_IDLE;
     this.error = null;
     this.nativeFuncs = new Map();
-    this.structDefs = [];
     this.userFuncs = [];
     this.globals = new Map();
     this.stack = [];
@@ -610,11 +609,17 @@ class VM
   opCreateStruct()
   //Create an instance of the given structure definition
   {
-    var structDefIndex = this.currOp[1];
-    var structDef = this.structDefs[structDefIndex];
-    var struct = new ObjStructure(structDef);
+    var litIndex = this.currOp[1];
+    var ident = this.currCallFrame.func.literals[litIndex];
+    var structDef = this.globals.get(ident);
 
-    this.stack.push(struct);
+    if(!structDef)
+      this.endWithError("Structure definition '" + ident + "' not defined.");
+
+    if(!(structDef instanceof ObjStructureDef))
+      this.endWithError("'" + ident + "' is not a structure definition.");
+
+    this.stack.push(new ObjStructure(structDef));
   }
 
   opLoadStructField()

@@ -55,14 +55,53 @@ class Compiler
     else if(this.matchToken(TOKEN_FUNCTION))
       this.funcDecl();
 
+    else if(this.matchTokenPair(TOKEN_END, TOKEN_STRUCTURE))
+      this.raiseError("'end structure' without 'structure'.");
+
+    else if(this.matchTokenPair(TOKEN_END, TOKEN_FUNCTION))
+      this.raiseError("'end function' without 'function'.");
+
     else
       this.parseDeclaration();
+
+    if(!this.matchTerminator())
+      this.raiseError("Expected terminator after declaration.");
   }
 
   structDecl()
   //Parse a Structure declaration
   {
+    var structDef;
+    var ident;
+    var litIndex;
 
+    if(this.matchToken(TOKEN_IDENTIFIER))
+      ident = this.peekPrevToken().lexeme;
+    else
+      this.raiseError("Expected identifier.");
+
+    if(!this.matchTerminator())
+      this.raiseError("Expected terminator after identifier.");
+
+    structDef = new ObjStructureDef(ident);
+
+    while(!this.checkTokenPair(TOKEN_END, TOKEN_STRUCTURE) && !this.endOfTokens())
+    {
+      if(!this.matchToken(TOKEN_IDENTIFIER))
+        this.raiseError("Expected identifier.");
+
+      structDef.fieldIdents.push(this.peekPrevToken().lexeme);
+
+      if(!this.matchTerminator())
+        this.raiseError("Expected terminator after identifier.");
+    }
+
+    if(!this.matchTokenPair(TOKEN_END, TOKEN_STRUCTURE))
+      this.raiseError("'structure' without 'end structure'.");
+
+    litIndex = this.getLiteralIndex(structDef);
+    this.addOp([OPCODE_LOAD_LIT, litIndex]);
+    this.addVariable(ident);
   }
 
   funcDecl()
@@ -82,6 +121,9 @@ class Compiler
 
     else
       this.parseStatement();
+
+    if(!this.matchTerminator())
+      this.raiseError("Expected terminator after declaration.");
   }
 
   varDecl()
@@ -747,7 +789,7 @@ class Compiler
   {
     var dimCount;
     var structDefIdent;
-    var structDefIndex;
+    var litIndex;
 
     if(!this.matchToken(TOKEN_NEW))
     {
@@ -773,12 +815,9 @@ class Compiler
     else if(this.matchToken(TOKEN_IDENTIFIER))
     {
       structDefIdent = this.peekPrevToken().lexeme;
-      structDefIndex = this.getStructDefIndex(structDefIdent);
+      litIndex = this.getLiteralIndex(structDefIdent);
 
-      if(structDefIndex == -1)
-        this.raiseError("Structure '" + structDefIdent + "' not defined.");
-
-      this.addOp([OPCODE_CREATE_STRUCT, structDefIndex]);
+      this.addOp([OPCODE_CREATE_STRUCT, litIndex]);
     }
     else
     {
@@ -951,20 +990,6 @@ class Compiler
     {
       if(this.vm.userFuncs[funcIndex].ident.toLowerCase() == funcIdent)
         return funcIndex;
-    }
-
-    return -1;
-  }
-
-  getStructDefIndex(structDefIdent)
-  //Return the index of the given structure definition identifier
-  {
-    structDefIdent = structDefIdent.toLowerCase();
-
-    for(var structDefIndex = 0; structDefIndex < this.vm.structDefs.length; structDefIndex++)
-    {
-      if(this.vm.structDefs[structDefIndex].ident.toLowerCase() == structDefIdent)
-        return structDefIndex;
     }
 
     return -1;
