@@ -57,7 +57,6 @@ class VM
     this.status = VM_STATUS_IDLE;
     this.error = null;
     this.nativeFuncs = new Map();
-    this.userFuncs = [];
     this.globals = new Map();
     this.stack = [];
     this.callFrames = [];
@@ -71,7 +70,6 @@ class VM
     this.opFuncs[OPCODE_LOAD_FALSE] = this.opLoadFalse.bind(this);
     this.opFuncs[OPCODE_LOAD_INT] = this.opLoadInt.bind(this);
     this.opFuncs[OPCODE_LOAD_NATIVE_FUNC] = this.opLoadNativeFunc.bind(this);
-    this.opFuncs[OPCODE_LOAD_USER_FUNC] = this.opLoadUserFunc.bind(this);
     this.opFuncs[OPCODE_LOAD_LIT] = this.opLoadLit.bind(this);
     this.opFuncs[OPCODE_LOAD_VAR] = this.opLoadVar.bind(this);
     this.opFuncs[OPCODE_STORE_VAR] = this.opStoreVar.bind(this);
@@ -139,7 +137,7 @@ class VM
 
     try
     {
-      while(this.status == VM_STATUS_RUNNING)
+      while((this.status == VM_STATUS_RUNNING) && (!this.endOfOps()))
       {
         this.currOp = this.currCallFrame.func.ops[this.currCallFrame.nextOpIndex];
         this.currCallFrame.nextOpIndex++;
@@ -184,15 +182,6 @@ class VM
 
     if(!func)
       this.endWithError("Built-in function '" + ident + "' not defined.");
-
-    this.stack.push(func);
-  }
-
-  opLoadUserFunc()
-  //Push a reference to the given user function object onto the stack
-  {
-    var funcIndex = this.currOp[1];
-    var func = this.userFuncs[funcIndex];
 
     this.stack.push(func);
   }
@@ -753,6 +742,12 @@ class VM
     this.stack = [];
     this.callFrames = [];
     this.currCallFrame = null;
+  }
+
+  endOfOps()
+  //
+  {
+    return (this.currCallFrame.nextOpIndex >= this.currCallFrame.func.ops.length);
   }
 
   addNativeFunc(ident, paramMin, paramMax, jsFunc)

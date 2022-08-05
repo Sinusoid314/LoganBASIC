@@ -1,3 +1,9 @@
+(August 5, 2022)
+[v2.0.6]
+	- Added endOfOps() method to VM and modified run() method to add endOfOps() as 
+	  an exit condition.
+	- Modified userFuncs to be stored in the global hash map in VM.
+
 (August 4, 2022)
 [v2.0.5]
 	- Modified structDefs to be stored in the global hash map in VM.

@@ -34,9 +34,9 @@ class Compiler
       this.initTokens();
 
       while(!this.endOfTokens())
-      {
         this.parseGlobalDeclaration();
-      }
+
+      this.addReturnOps();
     }
     catch(error)
     {
@@ -107,7 +107,32 @@ class Compiler
   funcDecl()
   //Parse a Function declaration
   {
+    var func;
+    var ident;
+    var litIndex;
 
+    if(this.matchToken(TOKEN_IDENTIFIER))
+      ident = this.peekPrevToken().lexeme;
+    else
+      this.raiseError("Expected identifier.");
+
+    func = new ObjUserFunc(ident);
+    this.currUserFunc = func;
+
+    this.parseParameters();
+
+    while(!this.checkTokenPair(TOKEN_END, TOKEN_FUNCTION) && !this.endOfTokens())
+      this.parseDeclaration();
+
+    if(!this.matchTokenPair(TOKEN_END, TOKEN_FUNCTION))
+      this.raiseError("'function' without 'end function'.");
+
+    this.addReturnOps();
+    this.currUserFunc = this.rootUserFunc;
+
+    litIndex = this.getLiteralIndex(func);
+    this.addOp([OPCODE_LOAD_LIT, litIndex]);
+    this.addVariable(ident);
   }
 
   parseDeclaration()
@@ -843,14 +868,6 @@ class Compiler
         return;
       }
 
-      //User Function
-      funcIndex = this.getUserFuncIndex(ident);
-      if(funcIndex != -1)
-      {
-        this.addOp([OPCODE_LOAD_USER_FUNC, funcIndex]);
-        return;
-      }
-
       //Variable
       varRef = this.getVariableReference(ident);
       if(isStmt && this.matchToken(TOKEN_EQUAL))
@@ -979,20 +996,6 @@ class Compiler
       }
       this.currUserFunc.localIdents.push(varIdent);
     }
-  }
-
-  getUserFuncIndex(funcIdent)
-  //Return the index of the given user function identifier
-  {
-    funcIdent = funcIdent.toLowerCase();
-
-    for(var funcIndex = 0; funcIndex < this.vm.userFuncs.length; funcIndex++)
-    {
-      if(this.vm.userFuncs[funcIndex].ident.toLowerCase() == funcIdent)
-        return funcIndex;
-    }
-
-    return -1;
   }
 
   getLiteralIndex(litVal)
