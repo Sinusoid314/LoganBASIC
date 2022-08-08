@@ -33,9 +33,10 @@ const keywordList = {
 
 class Scanner
 {
-  constructor(source)
+  constructor(source, sourceName)
   {
     this.source = source;
+    this.sourceName = sourceName;
     this.startCharIndex = 0;
     this.currCharIndex = 0;
     this.currLineNum = 1;

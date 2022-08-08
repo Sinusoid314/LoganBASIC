@@ -1,6 +1,6 @@
 class ObjUserFunc
 {
-  constructor(ident)
+  constructor(ident, sourceName)
   {
     this.ident = ident;
     this.paramCount = 0;
@@ -8,6 +8,7 @@ class ObjUserFunc
     this.literals = [];
     this.ops = [];
     this.sourceLineMap = new Map();
+    this.sourceName = sourceName;
   }
 
   typeToString()

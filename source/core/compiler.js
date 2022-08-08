@@ -9,10 +9,10 @@ class VariableReference
 
 class Compiler
 {
-  constructor(vm, source, userFunc)
+  constructor(vm, source, sourceName, userFunc)
   {
     this.vm = vm;
-    this.scanner = new Scanner(source);
+    this.scanner = new Scanner(source, sourceName);
     this.rootUserFunc = userFunc;
     this.currUserFunc = userFunc;
     this.prevToken = null;
@@ -1217,12 +1217,11 @@ class Compiler
   raiseError(message)
   //
   {
-    var lineNum;
+    var sourceLineNum = this.peekCurrToken().lineNum;
+    var sourceName = this.scanner.sourceName;
 
-    lineNum = this.peekCurrToken().lineNum;
+    message = "Compile error on line " + sourceLineNum + ": " + message;
 
-    message = "Compile error on line " + lineNum + ": " + message;
-
-    throw {message: message, lineNum: lineNum};
+    throw new VMError(message, sourceLineNum, sourceName);
   }
 }

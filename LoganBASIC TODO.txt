@@ -1,6 +1,6 @@
-- Add a sourceName property to Scanner and ObjUserFunc.
 - Hoist function and structure declarations to the top of the ObjUserFunc's ops list.
 - Add debugging hooks to VM.
 - Add debugging interface.
 - Add ability to import source files
+- Add onError user function support.
 - Add a help section for using the core source file library.

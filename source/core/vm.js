@@ -6,6 +6,16 @@ const DOSTUFF_COMPILE_ERROR = 1;
 const DOSTUFF_RUNTIME_ERROR = 2;
 const DOSTUFF_SUCCESS = 3;
 
+class VMError
+{
+  constructor(message, sourceLineNum, sourceName)
+  {
+    this.message = message;
+    this.sourceLineNum = sourceLineNum;
+    this.sourceName = sourceName;
+  }
+}
+
 class CallbackContext
 {
   constructor(vm, userFunc = null)
@@ -109,11 +119,11 @@ class VM
     this.opFuncs[OPCODE_STORE_STRUCT_FIELD_PERSIST] = this.opStoreStructFieldPersist.bind(this);
   }
 
-  doStuff(source)
+  doStuff(source, sourceName = "")
   //Compile and run the given source code
   {
     var rootUserFunc = new ObjUserFunc("<root>");;
-    var compiler = new Compiler(this, source, rootUserFunc);
+    var compiler = new Compiler(this, source, sourceName, rootUserFunc);
 
     compiler.compile();
     if(this.error != null)
@@ -686,10 +696,11 @@ class VM
   //
   {
     var hookResult;
-    var lineNum = this.getSourceLine();
+    var sourceLineNum = this.getSourceLineNum();
+    var sourceName = this.currCallFrame.func.sourceName;
 
-    message = "Runtime error on line " + lineNum + ": "  + message;
-    this.error = {message: message, lineNum: lineNum};
+    message = "Runtime error on line " + sourceLineNum + ": "  + message;
+    this.error = new VMError(message, sourceLineNum, sourceName);
 
     if(this.onErrorHook)
     {
@@ -709,7 +720,7 @@ class VM
       throw this.error;
   }
 
-  getSourceLine()
+  getSourceLineNum()
   //
   {
     var opIndex = this.currCallFrame.nextOpIndex - 1;
