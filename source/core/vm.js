@@ -721,7 +721,8 @@ class VM
   }
 
   getSourceLineNum()
-  //
+  //Return the source line number that corresponds to the current op index;
+  //if the current op index does not have an associated source line number, return 0.
   {
     var opIndex = this.currCallFrame.nextOpIndex - 1;
     var map = this.currCallFrame.func.sourceLineMap;
@@ -731,6 +732,8 @@ class VM
       if((opIndex >= indexRange.startOpIndex) && (opIndex <= indexRange.endOpIndex))
         return lineNum;
     }
+
+    return 0;
   }
 
   changeStatus(newStatus)

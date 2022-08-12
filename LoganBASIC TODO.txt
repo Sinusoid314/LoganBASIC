@@ -1,4 +1,4 @@
-- Hoist function and structure declarations to the top of the ObjUserFunc's ops list.
+- Refactor updateSourceLineMap() in Compiler.
 - Add debugging hooks to VM.
 - Add debugging interface.
 - Add ability to import source files

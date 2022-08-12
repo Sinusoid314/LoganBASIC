@@ -1,8 +1,13 @@
+(August 11, 2022)
+[v2.0.8]
+	- Modified Compiler to hoist function and structure declarations to the top of the
+	  root user function's ops list.
+	- Modified getSourceLineNum() in VM to return 0 if a source line number is not found.
+
 (August 7, 2022)
 [v2.0.7]
 	- Added a sourceName property to Scanner and ObjUserFunc.
 	- Added VMError class to VM.
-	
 
 (August 5, 2022)
 [v2.0.6]

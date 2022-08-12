@@ -15,6 +15,7 @@ class Compiler
     this.scanner = new Scanner(source, sourceName);
     this.rootUserFunc = userFunc;
     this.currUserFunc = userFunc;
+    this.hoistedOps = [];
     this.prevToken = null;
     this.currToken = null;
     this.nextToken = null;
@@ -37,6 +38,7 @@ class Compiler
         this.parseGlobalDeclaration();
 
       this.addReturnOps();
+      this.insertHoistedOps();
     }
     catch(error)
     {
@@ -100,8 +102,8 @@ class Compiler
       this.raiseError("'structure' without 'end structure'.");
 
     litIndex = this.getLiteralIndex(structDef);
-    this.addOp([OPCODE_LOAD_LIT, litIndex]);
-    this.addVariable(ident);
+    this.addOp([OPCODE_LOAD_LIT, litIndex], true);
+    this.addVariable(ident, true);
   }
 
   funcDecl()
@@ -131,8 +133,8 @@ class Compiler
     this.currUserFunc = this.rootUserFunc;
 
     litIndex = this.getLiteralIndex(func);
-    this.addOp([OPCODE_LOAD_LIT, litIndex]);
-    this.addVariable(ident);
+    this.addOp([OPCODE_LOAD_LIT, litIndex], true);
+    this.addVariable(ident, true);
   }
 
   parseDeclaration()
@@ -721,7 +723,6 @@ class Compiler
     }
   }
 
-
   unaryExpr(isStmt)
   //Parse a unary expression
   {
@@ -876,9 +877,8 @@ class Compiler
         this.addOp([OPCODE_STORE_VAR_PERSIST, varRef.scope, varRef.index]);
       }
       else
-      {
         this.addOp([OPCODE_LOAD_VAR, varRef.scope, varRef.index]);
-      }
+
       return;
     }
 
@@ -973,7 +973,7 @@ class Compiler
     this.currUserFunc.paramCount = this.currUserFunc.localIdents.length;
   }
 
-  addVariable(varIdent)
+  addVariable(varIdent, hoistOp = false)
   //Add a local variable identifier to the current user function, or a definition
   //opcode if global variable
   {
@@ -985,7 +985,7 @@ class Compiler
     if(this.currUserFunc == this.rootUserFunc)
     {
       litIndex = this.getLiteralIndex(varIdent);
-      this.addOp([OPCODE_DEFINE_GLOBAL_VAR, litIndex]);
+      this.addOp([OPCODE_DEFINE_GLOBAL_VAR, litIndex], hoistOp);
     }
     else
     {
@@ -1032,9 +1032,16 @@ class Compiler
     return new VariableReference(SCOPE_GLOBAL, litIndex);
   }
 
-  addOp(operandList)
-  //Add a new bytecodce op
+  addOp(operandList, hoistOp = false)
+  //Add a new bytecodce op, either to the current user function,
+  //or the hoisted ops array
   {
+    if(hoistOp)
+    {
+      this.hoistedOps.push(operandList);
+      return this.hoistedOps.length;
+    }
+
     this.currUserFunc.ops.push(operandList);
     this.updateSourceLineMap();
     return this.opsCount() - 1;
@@ -1053,6 +1060,12 @@ class Compiler
     this.addOp([OPCODE_RETURN]);
   }
 
+  insertHoistedOps()
+  //Insert the hoisted ops into the front of the root user function's ops array
+  {
+    this.rootUserFunc.ops = this.hoistedOps.concat(this.rootUserFunc.ops);
+  }
+
   opsCount()
   //Return the number of ops in the current user function
   {
@@ -1060,19 +1073,20 @@ class Compiler
   }
 
   updateSourceLineMap()
-  //
+  //Include the current op index in the current source line number's index range;
+  //if a range for the current source line number doesn't exist, add it to the map
   {
-    var lineNum = this.peekCurrToken().lineNum;
+    var sourceLineNum = this.peekCurrToken().lineNum;
     var opIndex = this.opsCount() - 1;
     var map = this.currUserFunc.sourceLineMap;
     var indexRange;
 
-    if(map.has(lineNum))
-      indexRange = {startOpIndex: map.get(lineNum).startOpIndex, endOpIndex: opIndex};
+    if(map.has(sourceLineNum))
+      indexRange = {startOpIndex: map.get(sourceLineNum).startOpIndex, endOpIndex: opIndex};
     else
       indexRange = {startOpIndex: opIndex, endOpIndex: opIndex};
 
-    map.set(lineNum, indexRange);
+    map.set(sourceLineNum, indexRange);
   }
 
   matchTerminator()
