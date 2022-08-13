@@ -720,17 +720,16 @@ class VM
       throw this.error;
   }
 
-  getSourceLineNum()
-  //Return the source line number that corresponds to the current op index;
-  //if the current op index does not have an associated source line number, return 0.
+  getSourceLineNum(opIndex = this.currCallFrame.nextOpIndex - 1)
+  //Return the source line number that corresponds to the given op index;
+  //if the op index does not have an associated source line number, return 0
   {
-    var opIndex = this.currCallFrame.nextOpIndex - 1;
     var map = this.currCallFrame.func.sourceLineMap;
 
-    for(let [lineNum, indexRange] of map)
+    for(const [sourceLineNum, opIndexRange] of map)
     {
-      if((opIndex >= indexRange.startOpIndex) && (opIndex <= indexRange.endOpIndex))
-        return lineNum;
+      if(opIndexRange.isInRange(opIndex))
+        return sourceLineNum;
     }
 
     return 0;

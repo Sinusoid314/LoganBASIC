@@ -1,4 +1,10 @@
 (August 11, 2022)
+[v2.0.9]
+	- Refactored updateSourceLineMap() method in Compiler.
+	- Added IndexRange class to Bytecode.
+	- Refactored getSourceLineNum() method in VM.
+
+(August 11, 2022)
 [v2.0.8]
 	- Modified Compiler to hoist function and structure declarations to the top of the
 	  root user function's ops list.

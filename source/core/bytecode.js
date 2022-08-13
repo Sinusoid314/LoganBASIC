@@ -92,3 +92,18 @@ opNames[OPCODE_PAUSE] = "PAUSE";
 opNames[OPCODE_CREATE_STRUCT] = "CREATE_STRUCT";
 opNames[OPCODE_LOAD_STRUCT_FIELD] = "LOAD_STRUCT_FIELD";
 opNames[OPCODE_STORE_STRUCT_FIELD_PERSIST] = "STORE_STRUCT_FIELD_PERSIST";
+
+class IndexRange
+{
+  constructor(startIndex, endIndex = startIndex)
+  {
+    this.startIndex = startIndex;
+    this.endIndex = endIndex;
+  }
+
+  isInRange(index)
+  //Return true if the given index is within the index range, or false otherwise
+  {
+    return ((index >= this.startIndex) && (index <= this.endIndex));
+  }
+}

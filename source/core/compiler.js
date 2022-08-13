@@ -1062,8 +1062,17 @@ class Compiler
 
   insertHoistedOps()
   //Insert the hoisted ops into the front of the root user function's ops array
+  //and shift all of the indexes in sourceLineMap up by the hoisted ops length
   {
+    var map = this.rootUserFunc.sourceLineMap;
+
     this.rootUserFunc.ops = this.hoistedOps.concat(this.rootUserFunc.ops);
+
+    for(const opIndexRange of map.values())
+    {
+      opIndexRange.startIndex += this.hoistedOps.length;
+      opIndexRange.endIndex += this.hoistedOps.length;
+    }
   }
 
   opsCount()
@@ -1079,14 +1088,12 @@ class Compiler
     var sourceLineNum = this.peekCurrToken().lineNum;
     var opIndex = this.opsCount() - 1;
     var map = this.currUserFunc.sourceLineMap;
-    var indexRange;
+    var opIndexRange = map.get(sourceLineNum);
 
-    if(map.has(sourceLineNum))
-      indexRange = {startOpIndex: map.get(sourceLineNum).startOpIndex, endOpIndex: opIndex};
+    if(opIndexRange)
+      opIndexRange.endIndex = opIndex;
     else
-      indexRange = {startOpIndex: opIndex, endOpIndex: opIndex};
-
-    map.set(sourceLineNum, indexRange);
+      map.set(sourceLineNum, new IndexRange(opIndex));
   }
 
   matchTerminator()
