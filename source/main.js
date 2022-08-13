@@ -12,19 +12,9 @@ importScripts('worker_msg.js',
               'sound_funcs.js',
               'sprite_funcs.js');
 
-var mainCompiler = new Compiler();
 var mainVM = new VM();
 
 onmessage = progWorker_onMessage;
-
-function onVMDone(vm)
-//
-{
-  if(vm.error == null)
-    postMessage({msgId: MSGID_PROG_DONE_SUCCESS});
-  else
-    postMessage({msgId: MSGID_PROG_DONE_ERROR, msgData: vm.error});
-}
 
 function progWorker_onMessage(message)
 //Process messages sent from the UI thread
@@ -68,22 +58,42 @@ function progWorker_onMessage(message)
 function onStartProg(source)
 //Compile and run the program
 {
-  postMessage({msgId: MSGID_STATUS_CHANGE, msgData: "Compiling..."});
-  mainVM.nativeFuncs.concat(stdNativeFuncs, consoleNativeFuncs, canvasNativeFuncs, soundNativeFuncs, spriteNativeFuncs);
-  mainCompiler.compile(source, mainVM);
+  var result;
 
-  //console.log(mainBytecode.toString());
+  mainVM.addNativeFuncArray([].concat(stdNativeFuncs, consoleNativeFuncs, canvasNativeFuncs, soundNativeFuncs, spriteNativeFuncs));
+  mainVM.onPrintHook = onPrint;
+  mainVM.onStatusChangeHook = onStatusChange;
+  mainVM.onRuntimeErrorHook = onError;
 
-  if(mainCompiler.error == null)
+  result = mainVM.doStuff(source);
+
+  if(result != DOSTUFF_SUCCESS)
+    postMessage({msgId: MSGID_PROG_DONE_ERROR, msgData: vm.error});
+}
+
+function onStatusChange(vm, prevStatus)
+//
+{
+  switch(vm.status)
   {
-    postMessage({msgId: MSGID_STATUS_CHANGE, msgData: "Running..."});
-    mainVM.onPrintHook = onVMPrint;
-    mainVM.onDoneJsFunc = onVMDone;
-    mainVM.run();
-  }
-  else
-  {
-    postMessage({msgId: MSGID_PROG_DONE_ERROR, msgData: mainCompiler.error});
+    case VM_STATUS_IDLE:
+      if((prevState == VM_STATUS_RUNNING) && (vm.currCallFrame == null))
+        postMessage({msgId: MSGID_PROG_DONE_SUCCESS});
+      break;
+
+    case VM_STATUS_COMPILING:
+      postMessage({msgId: MSGID_STATUS_CHANGE, msgData: "Compiling..."});
+      break;
+
+    case VM_STATUS_RUNNING:
+      postMessage({msgId: MSGID_STATUS_CHANGE, msgData: "Running..."});
+      break;
   }
 }
 
+function onRuntimeError(vm)
+//
+{
+  postMessage({msgId: MSGID_PROG_DONE_ERROR, msgData: vm.error});
+  return false;
+}

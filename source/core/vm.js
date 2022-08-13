@@ -62,7 +62,7 @@ class VM
   constructor()
   {
     this.onStatusChangeHook = null;
-    this.onErrorHook = null;
+    this.onRuntimeErrorHook = null;
     this.onPrintHook = null;
     this.status = VM_STATUS_IDLE;
     this.error = null;
@@ -702,9 +702,9 @@ class VM
     message = "Runtime error on line " + sourceLineNum + ": "  + message;
     this.error = new VMError(message, sourceLineNum, sourceName);
 
-    if(this.onErrorHook)
+    if(this.onRuntimeErrorHook)
     {
-      hookResult = this.onErrorHook(this);
+      hookResult = this.onRuntimeErrorHook(this);
       if(hookResult)
       {
         this.error = null;
@@ -738,15 +738,15 @@ class VM
   changeStatus(newStatus)
   //Change the VM status and run the status-change hook, if present
   {
-    var oldStatus = this.status;
+    var prevStatus = this.status;
     
-    if(oldStatus == newStatus)
+    if(prevStatus == newStatus)
       return;
 
     this.status = newStatus;
 
     if(this.onStatusChangeHook)
-      this.onStatusChangeHook(this, oldStatus);
+      this.onStatusChangeHook(this, prevStatus);
   }
 
   clearStacks()

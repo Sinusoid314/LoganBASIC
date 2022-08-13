@@ -285,7 +285,7 @@ function onProgDoneSuccess()
 function onProgDoneError(error)
 //Stop the program with error (self-triggered)
 {
-  selectEditorLine(error.lineNum);
+  selectEditorLine(error.sourceLineNum);
   stopProg(error.message);
 }
 

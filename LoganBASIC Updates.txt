@@ -1,4 +1,9 @@
-(August 11, 2022)
+(August 13, 2022)
+[v2.0.10]
+	- Renamed onErrorHook to onRuntimeErrorHook in VM.
+	- Modified the main module to reflect the new VM structure.
+
+(August 12, 2022)
 [v2.0.9]
 	- Refactored updateSourceLineMap() method in Compiler.
 	- Added IndexRange class to Bytecode.

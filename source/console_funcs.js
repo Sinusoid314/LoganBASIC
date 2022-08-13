@@ -15,7 +15,7 @@ function onInputResult(inputStr)
   inputCallback.runFunc();
 }
 
-function onVMPrint(vm, printVal, replaceAll)
+function onPrint(vm, printVal, replaceAll)
 //
 {
   if(replaceAll)
