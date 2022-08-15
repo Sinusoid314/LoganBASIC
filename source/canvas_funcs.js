@@ -50,7 +50,7 @@ function onImageRequestResult(result)
 //
 {
   if(result[0] != "")
-    imageResultCallback.vm.endWithError(result[0], false);
+    imageResultCallback.vm.endWithError(result[0]);
   else
   {
     imageResultCallback.vm.stack[imageResultCallback.vm.stack.length - 1] = result[1];

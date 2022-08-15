@@ -157,6 +157,8 @@ class VM
     catch(error)
     {
     }
+
+    this.changeStatus(VM_STATUS_IDLE);
   }
 
   opLoadNothing()
@@ -692,7 +694,7 @@ class VM
     this.currCallFrame = this.callFrames[this.callFrames.length - 1];
   }
 
-  endWithError(message, calledFromVM = true)
+  endWithError(message)
   //
   {
     var hookResult;
@@ -712,11 +714,7 @@ class VM
       }
     }
 
-    this.changeStatus(VM_STATUS_IDLE);
-
-    this.clearStacks();
-
-    if(calledFromVM)
+    if(this.status == VM_STATUS_RUNNING)
       throw this.error;
   }
 
@@ -736,7 +734,8 @@ class VM
   }
 
   changeStatus(newStatus)
-  //Change the VM status and run the status-change hook, if present
+  //Change the VM status and run the status-change hook, if present;
+  //return the previous status
   {
     var prevStatus = this.status;
     
@@ -747,6 +746,8 @@ class VM
 
     if(this.onStatusChangeHook)
       this.onStatusChangeHook(this, prevStatus);
+  
+    return prevStatus;
   }
 
   clearStacks()
@@ -758,9 +759,11 @@ class VM
   }
 
   endOfOps()
-  //
+  //Return true if either the next op index is out of bounds, or there is
+  //no current call frame; return false otherwise
   {
-    return (this.currCallFrame.nextOpIndex >= this.currCallFrame.func.ops.length);
+    return (this.currCallFrame == null) ||
+           (this.currCallFrame.nextOpIndex >= this.currCallFrame.func.ops.length);
   }
 
   addNativeFunc(ident, paramMin, paramMax, jsFunc)

@@ -27,8 +27,10 @@ class Compiler
   compile()
   //Compile the source code string to a series of bytecode ops
   {
+    var prevStatus;
+    
     this.vm.error = null;
-    this.vm.changeStatus(VM_STATUS_COMPILING);
+    prevStatus = this.vm.changeStatus(VM_STATUS_COMPILING);
 
     try
     {
@@ -45,7 +47,7 @@ class Compiler
       this.vm.error = error;
     }
 
-    this.vm.changeStatus(VM_STATUS_IDLE);
+    this.vm.changeStatus(prevStatus);
   }
 
   parseGlobalDeclaration()

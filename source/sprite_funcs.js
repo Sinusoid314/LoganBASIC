@@ -86,7 +86,7 @@ function onSpriteSheetRefRequestResult(result)
   var sprite;
 
   if(result[0] != "")
-    spriteSheetResultCallback.vm.endWithError(result[0], false);
+    spriteSheetResultCallback.vm.endWithError(result[0]);
   else
   {
     sprite = sprites.get(result[1]);
@@ -103,7 +103,7 @@ function onSpriteSheetRequestResult(result)
 //
 {
   if(result[0] != "")
-    spriteSheetResultCallback.vm.endWithError(result[0], false);
+    spriteSheetResultCallback.vm.endWithError(result[0]);
   else
   {
     spriteSheetResultCallback.vm.stack[spriteSheetResultCallback.vm.stack.length - 1] = result[1];
