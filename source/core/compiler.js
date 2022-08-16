@@ -22,6 +22,9 @@ class Compiler
     this.exitWhileOpIndexes = [];
     this.exitForOpIndexes = [];
     this.exitDoOpIndexes = [];
+
+    this.rootUserFunc.ident = "<" + sourceName + ">";
+    this.rootUserFunc.sourceName = sourceName;
   }
 
   compile()
@@ -29,6 +32,9 @@ class Compiler
   {
     var prevStatus;
     
+    if(this.status == VM_STATUS_COMPILING)
+      return;
+
     this.vm.error = null;
     prevStatus = this.vm.changeStatus(VM_STATUS_COMPILING);
 
@@ -120,7 +126,7 @@ class Compiler
     else
       this.raiseError("Expected identifier.");
 
-    func = new ObjUserFunc(ident);
+    func = new ObjUserFunc(ident, this.scanner.sourceName);
     this.currUserFunc = func;
 
     this.parseParameters();

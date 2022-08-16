@@ -1,6 +1,6 @@
 class ObjUserFunc
 {
-  constructor(ident, sourceName)
+  constructor(ident = "", sourceName = "")
   {
     this.ident = ident;
     this.paramCount = 0;

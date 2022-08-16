@@ -1,3 +1,14 @@
+(August 15, 2022)
+[v2.0.12]
+	- Added call to clearStacks() back into endWithError() method in VM.
+	- Modified endWithError() method in VM to create a new VMError instance in error property
+	  only if there isn't an existing one.
+	- Modified run() method in VM to check the VM status to avoid re-entry.
+	- Modified compile() method in Compiler to check the VM status to avoid re-entry.
+	- Modified constructor() and funcDecl() methods in Compiler to pass sourceName to the
+	  ObjUserFunc objects, and set the root ObjUserFunc's ident to "<sourceName>".
+	  
+
 (August 14, 2022)
 [v2.0.11]
 	- Modified run() method in VM to change the VM status to IDLE at its end.

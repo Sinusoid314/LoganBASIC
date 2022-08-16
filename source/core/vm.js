@@ -142,6 +142,9 @@ class VM
   run()
   //Execute the bytecode ops
   {
+    if(this.status == VM_STATUS_RUNNING)
+      return;
+
     this.error = null;
     this.changeStatus(VM_STATUS_RUNNING);
 
@@ -702,7 +705,9 @@ class VM
     var sourceName = this.currCallFrame.func.sourceName;
 
     message = "Runtime error on line " + sourceLineNum + ": "  + message;
-    this.error = new VMError(message, sourceLineNum, sourceName);
+
+    if(!this.error)
+      this.error = new VMError(message, sourceLineNum, sourceName);
 
     if(this.onRuntimeErrorHook)
     {
@@ -713,6 +718,8 @@ class VM
         return;
       }
     }
+
+    this.clearStacks();
 
     if(this.status == VM_STATUS_RUNNING)
       throw this.error;
