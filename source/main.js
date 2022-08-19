@@ -63,11 +63,12 @@ function onStartProg(source)
   mainVM.addNativeFuncArray([].concat(stdNativeFuncs, consoleNativeFuncs, canvasNativeFuncs, soundNativeFuncs, spriteNativeFuncs));
   mainVM.onPrintHook = onPrint;
   mainVM.onStatusChangeHook = onStatusChange;
-  mainVM.onRuntimeErrorHook = onError;
+  mainVM.onRuntimeErrorHook = onRuntimeError;
+  mainVM.onRuntimeEndHook = onRuntimeEnd;
 
-  result = mainVM.doStuff(source);
+  result = mainVM.interpret(source);
 
-  if(result != DOSTUFF_SUCCESS)
+  if(result == INTERPRET_COMPILE_ERROR)
     postMessage({msgId: MSGID_PROG_DONE_ERROR, msgData: vm.error});
 }
 
@@ -76,11 +77,6 @@ function onStatusChange(vm, prevStatus)
 {
   switch(vm.status)
   {
-    case VM_STATUS_IDLE:
-      if((prevState == VM_STATUS_RUNNING) && (vm.currCallFrame == null))
-        postMessage({msgId: MSGID_PROG_DONE_SUCCESS});
-      break;
-
     case VM_STATUS_COMPILING:
       postMessage({msgId: MSGID_STATUS_CHANGE, msgData: "Compiling..."});
       break;
@@ -96,4 +92,10 @@ function onRuntimeError(vm)
 {
   postMessage({msgId: MSGID_PROG_DONE_ERROR, msgData: vm.error});
   return false;
+}
+
+function onRuntimeEnd(vm)
+//
+{
+  postMessage({msgId: MSGID_PROG_DONE_SUCCESS});
 }

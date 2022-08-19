@@ -2,9 +2,9 @@ const VM_STATUS_IDLE = 1;
 const VM_STATUS_COMPILING = 2;
 const VM_STATUS_RUNNING = 3;
 
-const DOSTUFF_COMPILE_ERROR = 1;
-const DOSTUFF_RUNTIME_ERROR = 2;
-const DOSTUFF_SUCCESS = 3;
+const INTERPRET_COMPILE_ERROR = 1;
+const INTERPRET_RUNTIME_ERROR = 2;
+const INTERPRET_SUCCESS = 3;
 
 class VMError
 {
@@ -62,6 +62,7 @@ class VM
   constructor()
   {
     this.onStatusChangeHook = null;
+    this.onRuntimeEndHook = null;
     this.onRuntimeErrorHook = null;
     this.onPrintHook = null;
     this.status = VM_STATUS_IDLE;
@@ -119,7 +120,7 @@ class VM
     this.opFuncs[OPCODE_STORE_STRUCT_FIELD_PERSIST] = this.opStoreStructFieldPersist.bind(this);
   }
 
-  doStuff(source, sourceName = "")
+  interpret(source, sourceName = "")
   //Compile and run the given source code
   {
     var rootUserFunc = new ObjUserFunc("<root>");;
@@ -127,16 +128,16 @@ class VM
 
     compiler.compile();
     if(this.error != null)
-      return DOSTUFF_COMPILE_ERROR;
+      return INTERPRET_COMPILE_ERROR;
 
     this.stack.push(rootUserFunc);
     this.callUserFunc(rootUserFunc, 0, 0);
 
     this.run();
     if(this.error != null)
-      return DOSTUFF_RUNTIME_ERROR;
+      return INTERPRET_RUNTIME_ERROR;
 
-    return DOSTUFF_SUCCESS;
+    return INTERPRET_SUCCESS;
   }
 
   run()
@@ -162,6 +163,12 @@ class VM
     }
 
     this.changeStatus(VM_STATUS_IDLE);
+
+    if(this.onRuntimeEndHook)
+    {
+      if((this.callFrames.length == 0) && (!this.error))
+        this.onRuntimeEndHook(this);
+    }
   }
 
   opLoadNothing()
@@ -769,8 +776,8 @@ class VM
   //Return true if either the next op index is out of bounds, or there is
   //no current call frame; return false otherwise
   {
-    return (this.currCallFrame == null) ||
-           (this.currCallFrame.nextOpIndex >= this.currCallFrame.func.ops.length);
+    return ((this.callFrames.length == 0) ||
+            (this.currCallFrame.nextOpIndex >= this.currCallFrame.func.ops.length));
   }
 
   addNativeFunc(ident, paramMin, paramMax, jsFunc)

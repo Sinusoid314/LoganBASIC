@@ -1,4 +1,3 @@
-- Modify the canvas, console, sound, and sprite modules to reflect the new VM structure.
 - Add debugging hooks to VM.
 - Add debugging interface.
 - Add ability to import source files

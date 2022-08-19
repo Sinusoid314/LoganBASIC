@@ -1,3 +1,8 @@
+(August 18, 2022)
+[v2.0.13]
+	- Added onRuntimeEndHook member to VM.
+	- Renamed doStuff() method in Vm to interpret().
+
 (August 15, 2022)
 [v2.0.12]
 	- Added call to clearStacks() back into endWithError() method in VM.
