@@ -71,7 +71,10 @@ class Compiler
       this.compileError("'end function' without 'function'.");
 
     else
+    {
       this.parseDeclaration();
+      return;
+    }
 
     if(!this.matchTerminator())
       this.compileError("Expected terminator after declaration.");
@@ -154,7 +157,10 @@ class Compiler
       this.arrayDecl();
 
     else
+    {
       this.parseStatement();
+      return;
+    }
 
     if(!this.matchTerminator())
       this.compileError("Expected terminator after declaration.");
@@ -1097,6 +1103,8 @@ class Compiler
     var map = this.currUserFunc.sourceLineMap;
     var opIndexRange = map.get(sourceLineNum);
 
+console.log(this.peekCurrToken());
+    
     if(opIndexRange)
       opIndexRange.endIndex = opIndex;
     else

@@ -1,4 +1,9 @@
 (August 20, 2022)
+[v2.0.15]
+	- Modified parseGlobalDeclaration() and parseDeclaration() methods in Compiler
+	  to return before the terminator check if calling parseDeclaration() and
+	  parseStatement() methods, respectively.
+
 [v2.0.14]
 	- Renamed onRuntimeEndHook and onRuntimeErrorHook members of VM to onRunEnd
 	  and onErrorHook respectively.
