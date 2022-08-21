@@ -1,8 +1,8 @@
 const consoleNativeFuncs = [
-                  new ObjNativeFunc("showeditor", 0, 0, funcShowEditor),
-                  new ObjNativeFunc("hideeditor", 0, 0, funcHideEditor),
-                  new ObjNativeFunc("showconsole", 0, 0, funcShowConsole),
-                  new ObjNativeFunc("hideconsole", 0, 0, funcHideConsole),
+                  new ObjNativeFunc("showEditor", 0, 0, funcShowEditor),
+                  new ObjNativeFunc("hideEditor", 0, 0, funcHideEditor),
+                  new ObjNativeFunc("showConsole", 0, 0, funcShowConsole),
+                  new ObjNativeFunc("hideConsole", 0, 0, funcHideConsole),
                   new ObjNativeFunc("input", 1, 1, funcInput)
                  ];
 

@@ -130,6 +130,11 @@ class VM
     if(this.error != null)
       return INTERPRET_COMPILE_ERROR;
 
+    console.log("********");
+    console.log(rootUserFunc.toString());
+    console.log("********");
+    //rootUserFunc.literals.forEach((value) => {if(value instanceof ObjUserFunc) console.log(value.toString())});
+      
     this.stack.push(rootUserFunc);
     this.callUserFunc(rootUserFunc, 0, 0);
 
@@ -160,13 +165,14 @@ class VM
     }
     catch(error)
     {
+      console.log(error);
     }
 
     this.changeStatus(VM_STATUS_IDLE);
 
     if(this.onRunEndHook)
     {
-      if((this.callFrames.length == 0) && (!this.error))
+      if((this.endOfOps()) && (!this.error))
         this.onRunEndHook(this);
     }
   }
@@ -768,8 +774,8 @@ console.log(this.globals);
   }
 
   endOfOps()
-  //Return true if either the next op index is out of bounds, or there is
-  //no current call frame; return false otherwise
+  //Return true if either the next op index is out of bounds, or there are
+  //no more call frames; return false otherwise
   {
     return ((this.callFrames.length == 0) ||
             (this.currCallFrame.nextOpIndex >= this.currCallFrame.func.ops.length));

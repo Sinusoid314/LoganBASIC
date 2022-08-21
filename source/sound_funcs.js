@@ -1,13 +1,13 @@
 const soundNativeFuncs = [
-                  new ObjNativeFunc("loadsound", 2, 2, funcLoadSound),
-                  new ObjNativeFunc("unloadsound", 1, 1, funcUnloadSound),
-                  new ObjNativeFunc("playsound", 1, 1, funcPlaySound),
-                  new ObjNativeFunc("pausesound", 1, 1, funcPauseSound),
-                  new ObjNativeFunc("stopsound", 1, 1, funcStopSound),
-                  new ObjNativeFunc("getsoundlen", 1, 1, funcGetSoundLen),
-                  new ObjNativeFunc("getsoundpos", 1, 1, funcGetSoundPos),
-                  new ObjNativeFunc("setsoundpos", 2, 2, funcSetSoundPos),
-                  new ObjNativeFunc("loopsound", 2, 2, funcLoopSound)
+                  new ObjNativeFunc("loadSound", 2, 2, funcLoadSound),
+                  new ObjNativeFunc("unloadSound", 1, 1, funcUnloadSound),
+                  new ObjNativeFunc("playSound", 1, 1, funcPlaySound),
+                  new ObjNativeFunc("pauseSound", 1, 1, funcPauseSound),
+                  new ObjNativeFunc("stopSound", 1, 1, funcStopSound),
+                  new ObjNativeFunc("getSoundLen", 1, 1, funcGetSoundLen),
+                  new ObjNativeFunc("getSoundPos", 1, 1, funcGetSoundPos),
+                  new ObjNativeFunc("setSoundPos", 2, 2, funcSetSoundPos),
+                  new ObjNativeFunc("loopSound", 2, 2, funcLoopSound)
                  ];
 
 var soundResultCallback = null;

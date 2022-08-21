@@ -1,4 +1,4 @@
-const lbVersion = "2.0.16";
+const lbVersion = "2.0.17";
 
 const stdNativeFuncs = [
                   new ObjNativeFunc("rnd", 0, 0, funcRnd),
@@ -22,24 +22,24 @@ const stdNativeFuncs = [
                   new ObjNativeFunc("sqr", 1, 1, funcSqr),
                   new ObjNativeFunc("str", 1, 1, funcStr),
                   new ObjNativeFunc("val", 1, 1, funcVal),
-                  new ObjNativeFunc("starttimer", 2, 2, funcStartTimer),
-                  new ObjNativeFunc("stoptimer", 0, 0, funcStopTimer),
-                  new ObjNativeFunc("addarrayitem", 2, 3, funcAddArrayItem),
-                  new ObjNativeFunc("removearrayitem", 2, 2, funcRemoveArrayItem),
+                  new ObjNativeFunc("startTimer", 2, 2, funcStartTimer),
+                  new ObjNativeFunc("stopTimer", 0, 0, funcStopTimer),
+                  new ObjNativeFunc("addArrayItem", 2, 3, funcAddArrayItem),
+                  new ObjNativeFunc("removeArrayItem", 2, 2, funcRemoveArrayItem),
                   new ObjNativeFunc("clamp", 3, 3, funcClamp),
-                  new ObjNativeFunc("pointinrect", 6, 6, funcPointInRect),
-                  new ObjNativeFunc("pointincircle", 5, 5, funcPointInCircle),
-                  new ObjNativeFunc("rectsoverlap", 8, 8, funcRectsOverlap),
-                  new ObjNativeFunc("circlesoverlap", 6, 6, funcCirclesOverlap),
-                  new ObjNativeFunc("rectoverlapscircle", 7, 7, funcRectOverlapsCircle),
+                  new ObjNativeFunc("pointInRect", 6, 6, funcPointInRect),
+                  new ObjNativeFunc("pointInCircle", 5, 5, funcPointInCircle),
+                  new ObjNativeFunc("rectsOverlap", 8, 8, funcRectsOverlap),
+                  new ObjNativeFunc("circlesOverlap", 6, 6, funcCirclesOverlap),
+                  new ObjNativeFunc("rectOverlapsCircle", 7, 7, funcRectOverlapsCircle),
                   new ObjNativeFunc("cos", 1, 1, funcCos),
                   new ObjNativeFunc("sin", 1, 1, funcSin),
                   new ObjNativeFunc("tan", 1, 1, funcTan),
                   new ObjNativeFunc("round", 1, 2, funcRound),
                   new ObjNativeFunc("version", 0, 0, funcVersion),
                   new ObjNativeFunc("word", 2, 3, funcWord),
-                  new ObjNativeFunc("splitstr", 2, 2, funcSplitStr),
-                  new ObjNativeFunc("pausefor", 1, 1, funcPauseFor)
+                  new ObjNativeFunc("splitStr", 2, 2, funcSplitStr),
+                  new ObjNativeFunc("pauseFor", 1, 1, funcPauseFor)
                  ];
 
 var timerID = 0;

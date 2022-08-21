@@ -43,20 +43,21 @@ class Compiler
       this.initTokens();
 
       while(!this.endOfTokens())
-        this.parseGlobalDeclaration();
+        this.parseHoistedDeclaration();
 
       this.addReturnOps();
       this.insertHoistedOps();
     }
     catch(error)
     {
+      console.log(error);
     }
 
     this.vm.changeStatus(prevStatus);
   }
 
-  parseGlobalDeclaration()
-  //Determine the next global declaraion to parse
+  parseHoistedDeclaration()
+  //Determine the next hoisted declaraion to parse
   {
     if(this.matchToken(TOKEN_STRUCTURE))
       this.structDecl();
@@ -210,7 +211,7 @@ class Compiler
 
     this.addOp([OPCODE_CREATE_ARRAY, dimCount]);
 
-    varRef = this.addVariable(varIdent);
+    this.addVariable(varIdent);
   }
 
   parseStatement(requireTerminator = true)
