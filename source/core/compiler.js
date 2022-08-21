@@ -50,7 +50,6 @@ class Compiler
     }
     catch(error)
     {
-      this.vm.error = error;
     }
 
     this.vm.changeStatus(prevStatus);
@@ -66,16 +65,16 @@ class Compiler
       this.funcDecl();
 
     else if(this.matchTokenPair(TOKEN_END, TOKEN_STRUCTURE))
-      this.raiseError("'end structure' without 'structure'.");
+      this.compileError("'end structure' without 'structure'.");
 
     else if(this.matchTokenPair(TOKEN_END, TOKEN_FUNCTION))
-      this.raiseError("'end function' without 'function'.");
+      this.compileError("'end function' without 'function'.");
 
     else
       this.parseDeclaration();
 
     if(!this.matchTerminator())
-      this.raiseError("Expected terminator after declaration.");
+      this.compileError("Expected terminator after declaration.");
   }
 
   structDecl()
@@ -88,26 +87,26 @@ class Compiler
     if(this.matchToken(TOKEN_IDENTIFIER))
       ident = this.peekPrevToken().lexeme;
     else
-      this.raiseError("Expected identifier.");
+      this.compileError("Expected identifier.");
 
     if(!this.matchTerminator())
-      this.raiseError("Expected terminator after identifier.");
+      this.compileError("Expected terminator after identifier.");
 
     structDef = new ObjStructureDef(ident);
 
     while(!this.checkTokenPair(TOKEN_END, TOKEN_STRUCTURE) && !this.endOfTokens())
     {
       if(!this.matchToken(TOKEN_IDENTIFIER))
-        this.raiseError("Expected identifier.");
+        this.compileError("Expected identifier.");
 
       structDef.fieldIdents.push(this.peekPrevToken().lexeme);
 
       if(!this.matchTerminator())
-        this.raiseError("Expected terminator after identifier.");
+        this.compileError("Expected terminator after identifier.");
     }
 
     if(!this.matchTokenPair(TOKEN_END, TOKEN_STRUCTURE))
-      this.raiseError("'structure' without 'end structure'.");
+      this.compileError("'structure' without 'end structure'.");
 
     litIndex = this.getLiteralIndex(structDef);
     this.addOp([OPCODE_LOAD_LIT, litIndex], true);
@@ -124,7 +123,7 @@ class Compiler
     if(this.matchToken(TOKEN_IDENTIFIER))
       ident = this.peekPrevToken().lexeme;
     else
-      this.raiseError("Expected identifier.");
+      this.compileError("Expected identifier.");
 
     func = new ObjUserFunc(ident, this.scanner.sourceName);
     this.currUserFunc = func;
@@ -135,7 +134,7 @@ class Compiler
       this.parseDeclaration();
 
     if(!this.matchTokenPair(TOKEN_END, TOKEN_FUNCTION))
-      this.raiseError("'function' without 'end function'.");
+      this.compileError("'function' without 'end function'.");
 
     this.addReturnOps();
     this.currUserFunc = this.rootUserFunc;
@@ -158,7 +157,7 @@ class Compiler
       this.parseStatement();
 
     if(!this.matchTerminator())
-      this.raiseError("Expected terminator after declaration.");
+      this.compileError("Expected terminator after declaration.");
   }
 
   varDecl()
@@ -171,7 +170,7 @@ class Compiler
       if(this.matchToken(TOKEN_IDENTIFIER))
         varIdent = this.peekPrevToken().lexeme;
       else
-        this.raiseError("Expected identifier.");
+        this.compileError("Expected identifier.");
 
       if(this.matchToken(TOKEN_EQUAL))
         this.parseExpression();
@@ -191,17 +190,17 @@ class Compiler
     if(this.matchToken(TOKEN_IDENTIFIER))
       varIdent = this.peekPrevToken().lexeme;
     else
-      this.raiseError("Expected identifier.");
+      this.compileError("Expected identifier.");
 
     if(!this.matchToken(TOKEN_LEFT_BRACKET))
-      this.raiseError("Expected '[' after identifier.");
+      this.compileError("Expected '[' after identifier.");
 
     dimCount = this.parseArguments();
     if(dimCount == 0)
-      this.raiseError("Expected one or more dimension expressions.");
+      this.compileError("Expected one or more dimension expressions.");
 
     if(!this.matchToken(TOKEN_RIGHT_BRACKET))
-      this.raiseError("Expected ']' after dimensions.");
+      this.compileError("Expected ']' after dimensions.");
 
     this.addOp([OPCODE_CREATE_ARRAY, dimCount]);
 
@@ -218,22 +217,22 @@ class Compiler
       this.ifStmt();
 
     else if(this.matchToken(TOKEN_ELSE))
-      this.raiseError("'else' without matching 'if' statement.");
+      this.compileError("'else' without matching 'if' statement.");
 
     else if(this.matchTokenPair(TOKEN_END, TOKEN_IF))
-      this.raiseError("'end if' without matching 'if' statement.");
+      this.compileError("'end if' without matching 'if' statement.");
 
     else if(this.matchToken(TOKEN_WHILE))
       this.whileStmt();
 
     else if(this.matchToken(TOKEN_WEND))
-      this.raiseError("'wend' without matching 'while' statement.");
+      this.compileError("'wend' without matching 'while' statement.");
 
     else if(this.matchToken(TOKEN_FOR))
       this.forStmt();
 
     else if(this.matchToken(TOKEN_NEXT))
-      this.raiseError("'next' without matching 'for' statement.");
+      this.compileError("'next' without matching 'for' statement.");
 
     else if(this.matchToken(TOKEN_END))
       this.endStmt();
@@ -251,7 +250,7 @@ class Compiler
       this.doStmt();
 
     else if(this.matchTokenPair(TOKEN_LOOP, TOKEN_WHILE))
-      this.raiseError("'loop while' without matching 'do' statement.");
+      this.compileError("'loop while' without matching 'do' statement.");
 
     else if(this.matchTokenPair(TOKEN_EXIT, TOKEN_WHILE))
       this.exitWhileStmt();
@@ -274,7 +273,7 @@ class Compiler
     if(requireTerminator)
     {
       if(!this.matchTerminator())
-        this.raiseError("Expected terminator after statement.");
+        this.compileError("Expected terminator after statement.");
     }
   }
 
@@ -301,7 +300,7 @@ class Compiler
     this.parseExpression();
 
     if(!this.matchToken(TOKEN_THEN))
-      this.raiseError("Expected 'then' after expression.");
+      this.compileError("Expected 'then' after expression.");
 
     thenJumpOpIndex = this.addOp([OPCODE_JUMP_IF_FALSE, 0]);
 
@@ -317,7 +316,7 @@ class Compiler
       this.parseStatement();
 
     if(this.endOfTokens())
-      this.raiseError("Expected either 'else' or 'end if' at the end of 'if' block.");
+      this.compileError("Expected either 'else' or 'end if' at the end of 'if' block.");
 
     if(this.matchTokenPair(TOKEN_END, TOKEN_IF))
     {
@@ -326,7 +325,7 @@ class Compiler
     else if(this.matchToken(TOKEN_ELSE))
     {
         if(!this.matchTerminator())
-          this.raiseError("Expected terminator after 'else'.");
+          this.compileError("Expected terminator after 'else'.");
 
         elseJumpOpIndex = this.addOp([OPCODE_JUMP, 0]);
         this.patchJumpOp(thenJumpOpIndex);
@@ -335,7 +334,7 @@ class Compiler
           this.parseStatement();
 
         if(!this.matchTokenPair(TOKEN_END, TOKEN_IF))
-          this.raiseError("Expected 'end if' at the end of 'else' block.");
+          this.compileError("Expected 'end if' at the end of 'else' block.");
 
         this.patchJumpOp(elseJumpOpIndex);
     }
@@ -350,7 +349,7 @@ class Compiler
     this.parseExpression();
 
     if(!this.matchTerminator())
-      this.raiseError("Expected terminator after expression.");
+      this.compileError("Expected terminator after expression.");
 
     jumpOpIndex = this.addOp([OPCODE_JUMP_IF_FALSE, 0]);
 
@@ -360,7 +359,7 @@ class Compiler
       this.parseStatement();
 
     if(!this.matchToken(TOKEN_WEND))
-      this.raiseError("Expected 'wend' at the end of 'while' block.");
+      this.compileError("Expected 'wend' at the end of 'while' block.");
 
     this.addOp([OPCODE_JUMP, startOpIndex]);
     this.patchJumpOp(jumpOpIndex);
@@ -377,19 +376,19 @@ class Compiler
     var jumpOpIndex, startOpIndex;
 
     if(!this.matchToken(TOKEN_IDENTIFIER))
-      this.raiseError("Expected identifier after 'for'.");
+      this.compileError("Expected identifier after 'for'.");
 
     varIdent = this.peekPrevToken().lexeme;
     varRef = this.getVariableReference(varIdent);
 
     if(!this.matchToken(TOKEN_EQUAL))
-      this.raiseError("Expected '=' after identifier.");
+      this.compileError("Expected '=' after identifier.");
 
     this.parseExpression();
     this.addOp([OPCODE_STORE_VAR, varRef.scope, varRef.index]);
 
     if(!this.matchToken(TOKEN_TO))
-      this.raiseError("Expected 'to' after start expression.");
+      this.compileError("Expected 'to' after start expression.");
 
     this.parseExpression();
 
@@ -399,7 +398,7 @@ class Compiler
       this.addOp([OPCODE_LOAD_INT, 1]);
 
     if(!this.matchTerminator())
-      this.raiseError("Expected terminator after expression.");
+      this.compileError("Expected terminator after expression.");
 
     this.addOp([OPCODE_LOAD_VAR, varRef.scope, varRef.index]);
 
@@ -413,12 +412,12 @@ class Compiler
       this.parseStatement();
 
     if(!this.matchToken(TOKEN_NEXT))
-      this.raiseError("Expected 'next' at the end of 'for' block.");
+      this.compileError("Expected 'next' at the end of 'for' block.");
 
     if(this.matchToken(TOKEN_IDENTIFIER))
     {
       if(varIdent != this.peekPrevToken().lexeme)
-        this.raiseError("Identifier '" + this.peekPrevToken().lexeme + "' does not match identifier '" + varIdent + "' given in 'for' statement.");
+        this.compileError("Identifier '" + this.peekPrevToken().lexeme + "' does not match identifier '" + varIdent + "' given in 'for' statement.");
     }
 
     this.addOp([OPCODE_INCREMENT_COUNTER]);
@@ -454,18 +453,18 @@ class Compiler
     }
     else
     {
-      this.raiseError("Expected identifier.");
+      this.compileError("Expected identifier.");
     }
 
     if(!this.matchToken(TOKEN_LEFT_BRACKET))
-      this.raiseError("Expected '[' after identifier");
+      this.compileError("Expected '[' after identifier");
 
     dimCount = this.parseArguments();
     if(dimCount == 0)
-      this.raiseError("Expected one or more dimension expressions.");
+      this.compileError("Expected one or more dimension expressions.");
 
     if(!this.matchToken(TOKEN_RIGHT_BRACKET))
-      this.raiseError("Expected ']' after indexes");
+      this.compileError("Expected ']' after indexes");
 
     this.addOp([OPCODE_REDIM_ARRAY, dimCount]);
   }
@@ -492,7 +491,7 @@ class Compiler
     var startOpIndex = this.opsCount();
 
     if(!this.matchTerminator())
-      this.raiseError("Expected statement terminator after 'do'.");
+      this.compileError("Expected statement terminator after 'do'.");
 
     this.exitDoOpIndexes.push([]);
 
@@ -500,7 +499,7 @@ class Compiler
       this.parseStatement();
 
     if(!this.matchTokenPair(TOKEN_LOOP, TOKEN_WHILE))
-      this.raiseError("Expected 'loop while' at the end of 'do' block.");
+      this.compileError("Expected 'loop while' at the end of 'do' block.");
 
     this.parseExpression();
     this.addOp([OPCODE_JUMP_IF_TRUE, startOpIndex]);
@@ -516,7 +515,7 @@ class Compiler
     var jumpOpIndex;
 
     if(this.exitWhileOpIndexes.length == 0)
-      this.raiseError("'exit while' outside of 'while' block.");
+      this.compileError("'exit while' outside of 'while' block.");
 
     jumpOpIndex = this.addOp([OPCODE_JUMP, 0]);
 
@@ -529,7 +528,7 @@ class Compiler
     var jumpOpIndex;
 
     if(this.exitForOpIndexes.length == 0)
-      this.raiseError("'exit for' outside of 'for' block.");
+      this.compileError("'exit for' outside of 'for' block.");
 
     jumpOpIndex = this.addOp([OPCODE_JUMP, 0]);
 
@@ -542,7 +541,7 @@ class Compiler
     var jumpOpIndex;
 
     if(this.exitDoOpIndexes.length == 0)
-      this.raiseError("'exit do' outside of 'do' block.");
+      this.compileError("'exit do' outside of 'do' block.");
 
     jumpOpIndex = this.addOp([OPCODE_JUMP, 0]);
 
@@ -553,7 +552,7 @@ class Compiler
   //Parse a Return statement
   {
     if(this.currUserFunc == this.rootUserFunc)
-      this.raiseError("'return' only allowed within a function.");
+      this.compileError("'return' only allowed within a function.");
 
     if(this.checkTerminator())
     {
@@ -770,7 +769,7 @@ class Compiler
         argCount = this.parseArguments();
 
         if(!this.matchToken(TOKEN_RIGHT_PAREN))
-          this.raiseError("Expected ')' after function arguments.");
+          this.compileError("Expected ')' after function arguments.");
 
         this.addOp([OPCODE_CALL_FUNC, argCount]);
       }
@@ -778,7 +777,7 @@ class Compiler
       else if(this.matchToken(TOKEN_DOT))
       {
         if(!this.matchToken(TOKEN_IDENTIFIER))
-          this.raiseError("Expected identifier after '.'.");
+          this.compileError("Expected identifier after '.'.");
 
         fieldIdent = this.peekPrevToken().lexeme;
         fieldLitIndex = this.getLiteralIndex(fieldIdent);
@@ -799,7 +798,7 @@ class Compiler
         argCount = this.parseArguments();
 
         if(!this.matchToken(TOKEN_RIGHT_BRACKET))
-          this.raiseError("Expected ']' after array indexes.");
+          this.compileError("Expected ']' after array indexes.");
 
         if(isStmt && this.matchToken(TOKEN_EQUAL))
         {
@@ -834,15 +833,15 @@ class Compiler
     if(this.matchToken(TOKEN_ARRAY))
     {
       if(!this.matchToken(TOKEN_LEFT_BRACKET))
-        this.raiseError("Expected '[' after 'array'.");
+        this.compileError("Expected '[' after 'array'.");
 
       dimCount = this.parseArguments();
 
       if(dimCount == 0)
-        this.raiseError("Expected one or more dimension expressions.");
+        this.compileError("Expected one or more dimension expressions.");
 
       if(!this.matchToken(TOKEN_RIGHT_BRACKET))
-        this.raiseError("Expected ']' after dimensions.");
+        this.compileError("Expected ']' after dimensions.");
 
       this.addOp([OPCODE_CREATE_ARRAY, dimCount]);
     }
@@ -855,7 +854,7 @@ class Compiler
     }
     else
     {
-      this.raiseError("Expected 'array' or structure identifier after 'new'.");
+      this.compileError("Expected 'array' or structure identifier after 'new'.");
     }
   }
 
@@ -923,13 +922,13 @@ class Compiler
       this.parseExpression();
 
       if(!this.matchToken(TOKEN_RIGHT_PAREN))
-        this.raiseError("Expected ')' after expression.");
+        this.compileError("Expected ')' after expression.");
 
       return;
     }
 
     //Invalid expression
-    this.raiseError("Expected expression.");
+    this.compileError("Expected expression.");
   }
 
   parseArguments()
@@ -954,29 +953,29 @@ class Compiler
   //Parse a comma-seperated list of identifiers surrounded in parentheses
   {
     if(!this.matchToken(TOKEN_LEFT_PAREN))
-      this.raiseError("Expected '(' after function identifier.");
+      this.compileError("Expected '(' after function identifier.");
 
     if(this.matchToken(TOKEN_RIGHT_PAREN))
     {
       if(!this.matchTerminator())
-        this.raiseError("Expected terminator after ')'.");
+        this.compileError("Expected terminator after ')'.");
       return;
     }
 
     do
     {
       if(!this.matchToken(TOKEN_IDENTIFIER))
-        this.raiseError("Expected identifier for function parameter.");
+        this.compileError("Expected identifier for function parameter.");
 
       this.addVariable(this.peekPrevToken().lexeme);
     }
     while(this.matchToken(TOKEN_COMMA));
 
     if(!this.matchToken(TOKEN_RIGHT_PAREN))
-      this.raiseError("Expected ')' after function parameters.");
+      this.compileError("Expected ')' after function parameters.");
 
     if(!this.matchTerminator())
-      this.raiseError("Expected terminator after ')'.");
+      this.compileError("Expected terminator after ')'.");
 
     this.currUserFunc.paramCount = this.currUserFunc.localIdents.length;
   }
@@ -988,7 +987,7 @@ class Compiler
     var litIndex;
 
     if(this.vm.nativeFuncs.has(varIdent))
-      this.raiseError("'" + varIdent + "' is already a built-in function.");
+      this.compileError("'" + varIdent + "' is already a built-in function.");
 
     if(this.currUserFunc == this.rootUserFunc)
     {
@@ -1000,7 +999,7 @@ class Compiler
       for(var varIndex = 0; varIndex < this.currUserFunc.localIdents.length; varIndex++)
       {
         if(this.currUserFunc.localIdents[varIndex] == varIdent)
-          this.raiseError("Variable '" + varIdent + "' already declared.");
+          this.compileError("Variable '" + varIdent + "' already declared.");
       }
       this.currUserFunc.localIdents.push(varIdent);
     }
@@ -1126,7 +1125,7 @@ class Compiler
     while(this.currToken.type == TOKEN_NEWLINE)
 
     if(this.currToken.type == TOKEN_ERROR)
-      this.raiseError(this.currToken.lexeme);
+      this.compileError(this.currToken.lexeme);
 
     this.nextToken = this.scanner.scanToken();
   }
@@ -1138,7 +1137,7 @@ class Compiler
     this.currToken = this.nextToken;
 
     if(this.currToken.type == TOKEN_ERROR)
-      this.raiseError(this.currToken.lexeme);
+      this.compileError(this.currToken.lexeme);
 
     this.nextToken = this.scanner.scanToken();
 
@@ -1243,7 +1242,7 @@ class Compiler
     return (this.peekCurrToken().type == TOKEN_EOF)
   }
 
-  raiseError(message)
+  compileError(message)
   //
   {
     var sourceLineNum = this.peekCurrToken().lineNum;
@@ -1251,6 +1250,14 @@ class Compiler
 
     message = "Compile error on line " + sourceLineNum + ": " + message;
 
-    throw new VMError(message, sourceLineNum, sourceName);
+    this.vm.error = new VMError(message, sourceLineNum, sourceName);
+
+    if((this.vm.onErrorHook) && (this.vm.onErrorHook(this.vm, this)))
+    {
+      this.vm.error = null;
+      return;
+    }
+
+    throw this.vm.error;
   }
 }

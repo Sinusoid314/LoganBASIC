@@ -50,7 +50,7 @@ function onImageRequestResult(result)
 //
 {
   if(result[0] != "")
-    imageResultCallback.vm.endWithError(result[0]);
+    imageResultCallback.vm.runError(result[0]);
   else
   {
     imageResultCallback.vm.stack[imageResultCallback.vm.stack.length - 1] = result[1];
@@ -264,10 +264,10 @@ function funcDrawCanvasBuffer(vm, args)
     callbackUserFunc = args[0];
 
     if(!(callbackUserFunc instanceof ObjUserFunc))
-      vm.endWithError("Argument of DrawCanvasBuffer() must be a function.");
+      vm.runError("Argument of DrawCanvasBuffer() must be a function.");
 
     if(callbackUserFunc.paramCount != 0)
-      vm.endWithError("Callback function for DrawCanvasBuffer() must have zero parameters.");
+      vm.runError("Callback function for DrawCanvasBuffer() must have zero parameters.");
 
     if(drawBufferCallback == null)
     {
@@ -293,17 +293,17 @@ function funcSetCanvasEvent(vm, args)
   var eventUserFunc;
 
   if(eventIndex == -1)
-    vm.endWithError("SetCanvasEvent() does not recognize event named '" + eventName + "'.");
+    vm.runError("SetCanvasEvent() does not recognize event named '" + eventName + "'.");
 
   if(args.length == 2)
   {
     eventUserFunc = args[1];
 
     if(!(eventUserFunc instanceof ObjUserFunc))
-      vm.endWithError("Second argument of SetCanvasEvent() must be a function.");
+      vm.runError("Second argument of SetCanvasEvent() must be a function.");
 
     if(eventUserFunc.paramCount != canvasEvents[eventIndex].paramCount)
-      vm.endWithError("Handler function " + eventUserFunc.ident + "() for event '" + eventName + "' must have " + canvasEvents[eventIndex].paramCount + " parameters.");
+      vm.runError("Handler function " + eventUserFunc.ident + "() for event '" + eventName + "' must have " + canvasEvents[eventIndex].paramCount + " parameters.");
 
     if(canvasEvents[eventIndex].callback == null)
     {

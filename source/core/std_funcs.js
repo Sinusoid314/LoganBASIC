@@ -1,4 +1,4 @@
-const lbVersion = "2.0.13";
+const lbVersion = "2.0.14";
 
 const stdNativeFuncs = [
                   new ObjNativeFunc("rnd", 0, 0, funcRnd),
@@ -216,10 +216,10 @@ function funcStartTimer(vm, args)
   var callbackUserFunc = args[1];
 
   if(!(callbackUserFunc instanceof ObjUserFunc))
-    vm.endWithError("Second argument of startTimer() must be a function.");
+    vm.runError("Second argument of startTimer() must be a function.");
 
   if(callbackUserFunc.paramCount != 0)
-    vm.endWithError("Callback function for startTimer() must have zero parameters.");
+    vm.runError("Callback function for startTimer() must have zero parameters.");
 
   if(timerID != 0)
     clearInterval(timerID);
@@ -263,12 +263,12 @@ function funcAddArrayItem(vm, args)
     beforeIndex = args[2];
 
   if(!(array instanceof ObjArray))
-    vm.endWithError("First argument of addArrayItem() must be an array.");
+    vm.runError("First argument of addArrayItem() must be an array.");
 
   errorMsg = array.addItem(newVal, beforeIndex);
 
   if(errorMsg != "")
-    vm.endWithError(errorMsg);
+    vm.runError(errorMsg);
 
   return 0;
 }
@@ -281,12 +281,12 @@ function funcRemoveArrayItem(vm, args)
   var errorMsg = "";
 
   if(!(array instanceof ObjArray))
-    vm.endWithError("First argument of removeArrayItem() must be an array.");
+    vm.runError("First argument of removeArrayItem() must be an array.");
 
   errorMsg = array.removeItem(itemIndex);
 
   if(errorMsg != "")
-    vm.endWithError(errorMsg);
+    vm.runError(errorMsg);
 
   return 0;
 }

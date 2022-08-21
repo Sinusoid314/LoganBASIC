@@ -62,8 +62,8 @@ class VM
   constructor()
   {
     this.onStatusChangeHook = null;
-    this.onRuntimeEndHook = null;
-    this.onRuntimeErrorHook = null;
+    this.onRunEndHook = null;
+    this.onErrorHook = null;
     this.onPrintHook = null;
     this.status = VM_STATUS_IDLE;
     this.error = null;
@@ -164,10 +164,10 @@ class VM
 
     this.changeStatus(VM_STATUS_IDLE);
 
-    if(this.onRuntimeEndHook)
+    if(this.onRunEndHook)
     {
       if((this.callFrames.length == 0) && (!this.error))
-        this.onRuntimeEndHook(this);
+        this.onRunEndHook(this);
     }
   }
 
@@ -203,7 +203,7 @@ class VM
     var func = this.nativeFuncs.get(ident);
 
     if(!func)
-      this.endWithError("Built-in function '" + ident + "' not defined.");
+      this.runError("Built-in function '" + ident + "' not defined.");
 
     this.stack.push(func);
   }
@@ -230,7 +230,7 @@ class VM
       val = this.globals.get(ident);
 
       if(!val)
-        this.endWithError("Variable '" + ident + "' not defined.");
+        this.runError("Variable '" + ident + "' not defined.");
     }
     else
       val = this.stack[this.currCallFrame.stackIndex + index + 1];
@@ -251,7 +251,7 @@ class VM
       ident = this.currCallFrame.func.literals[index];
 
       if(!this.globals.has(ident))
-        this.endWithError("Variable '" + ident + "' not defined.");
+        this.runError("Variable '" + ident + "' not defined.");
 
       this.globals.set(ident, val);
     }
@@ -272,7 +272,7 @@ class VM
       ident = this.currCallFrame.func.literals[index];
 
       if(!this.globals.has(ident))
-        this.endWithError("Variable '" + ident + "' not defined.");
+        this.runError("Variable '" + ident + "' not defined.");
 
       this.globals.set(ident, val);
     }
@@ -469,7 +469,7 @@ class VM
     else if(func instanceof ObjUserFunc)
       this.callUserFunc(func, argCount, stackIndex);
     else
-      this.endWithError("Can only call functions.");
+      this.runError("Can only call functions.");
   }
 
   opCreateArray()
@@ -501,7 +501,7 @@ class VM
     arrayRef = this.stack.pop();
 
     if(!(arrayRef instanceof ObjArray))
-      this.endWithError("Expected array.");
+      this.runError("Expected array.");
 
     arrayRef.reDim(dimSizes);
   }
@@ -519,12 +519,12 @@ class VM
     arrayRef = this.stack.pop();
 
     if(!(arrayRef instanceof ObjArray))
-      this.endWithError("Expected array.");
+      this.runError("Expected array.");
 
     linearIndex = arrayRef.getLinearIndex(indexList);
 
     if(linearIndex < 0)
-      this.endWithError("Array index out of bounds.");
+      this.runError("Array index out of bounds.");
 
     this.stack.push(arrayRef.items[linearIndex]);
   }
@@ -543,12 +543,12 @@ class VM
     arrayRef = this.stack.pop();
 
     if(!(arrayRef instanceof ObjArray))
-      this.endWithError("Expected array.");
+      this.runError("Expected array.");
 
     linearIndex = arrayRef.getLinearIndex(indexList);
 
     if(linearIndex < 0)
-      this.endWithError("Array index out of bounds.");
+      this.runError("Array index out of bounds.");
 
     arrayRef.items[linearIndex] = itemVal;
     this.stack.push(itemVal);
@@ -625,10 +625,10 @@ class VM
     var structDef = this.globals.get(ident);
 
     if(!structDef)
-      this.endWithError("Structure definition '" + ident + "' not defined.");
+      this.runError("Structure definition '" + ident + "' not defined.");
 
     if(!(structDef instanceof ObjStructureDef))
-      this.endWithError("'" + ident + "' is not a structure definition.");
+      this.runError("'" + ident + "' is not a structure definition.");
 
     this.stack.push(new ObjStructure(structDef));
   }
@@ -641,10 +641,10 @@ class VM
     var struct = this.stack.pop();
 
     if(!(struct instanceof ObjStructure))
-      this.endWithError("Expected structure.");
+      this.runError("Expected structure.");
 
     if(!struct.fieldMap.has(fieldIdent))
-      this.endWithError("Structure field '" + fieldIdent + "' not defined.");
+      this.runError("Structure field '" + fieldIdent + "' not defined.");
 
     this.stack.push(struct.fieldMap.get(fieldIdent));
   }
@@ -658,10 +658,10 @@ class VM
     var struct = this.stack.pop();
 
     if(!(struct instanceof ObjStructure))
-      this.endWithError("Expected structure.");
+      this.runError("Expected structure.");
 
     if(!struct.fieldMap.has(fieldIdent))
-      this.endWithError("Structure field '" + fieldIdent + "' not defined.");
+      this.runError("Structure field '" + fieldIdent + "' not defined.");
 
     struct.fieldMap.set(fieldIdent, fieldVal);
 
@@ -674,7 +674,7 @@ class VM
     var args, retVal;
 
     if((argCount < func.paramMin) || (argCount > func.paramMax))
-      this.endWithError("Wrong number of arguments for function '" + func.ident + "'.");
+      this.runError("Wrong number of arguments for function '" + func.ident + "'.");
 
     args = this.stack.splice(this.stack.length - argCount, argCount);
     this.stack.pop();
@@ -686,7 +686,7 @@ class VM
   //Load a new call frame for the given user function
   {
     if(argCount != func.paramCount)
-      this.endWithError("Wrong number of arguments for function '" + func.ident + "'.");
+      this.runError("Wrong number of arguments for function '" + func.ident + "'.");
 
     this.callFrames.push(new CallFrame(func, stackIndex));
 
@@ -704,26 +704,20 @@ class VM
     this.currCallFrame = this.callFrames[this.callFrames.length - 1];
   }
 
-  endWithError(message)
+  runError(message)
   //
   {
-    var hookResult;
     var sourceLineNum = this.getSourceLineNum();
     var sourceName = this.currCallFrame.func.sourceName;
 
     message = "Runtime error on line " + sourceLineNum + ": "  + message;
 
-    if(!this.error)
-      this.error = new VMError(message, sourceLineNum, sourceName);
+    this.error = new VMError(message, sourceLineNum, sourceName);
 
-    if(this.onRuntimeErrorHook)
+    if((this.onErrorHook) && (this.onErrorHook(this, null)))
     {
-      hookResult = this.onRuntimeErrorHook(this);
-      if(hookResult)
-      {
-        this.error = null;
-        return;
-      }
+      this.error = null;
+      return;
     }
 
     this.clearStacks();

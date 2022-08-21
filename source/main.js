@@ -58,18 +58,13 @@ function progWorker_onMessage(message)
 function onStartProg(source)
 //Compile and run the program
 {
-  var result;
-
   mainVM.addNativeFuncArray([].concat(stdNativeFuncs, consoleNativeFuncs, canvasNativeFuncs, soundNativeFuncs, spriteNativeFuncs));
   mainVM.onPrintHook = onPrint;
   mainVM.onStatusChangeHook = onStatusChange;
-  mainVM.onRuntimeErrorHook = onRuntimeError;
-  mainVM.onRuntimeEndHook = onRuntimeEnd;
+  mainVM.onErrorHook = onError;
+  mainVM.onRunEndHook = onRunEnd;
 
-  result = mainVM.interpret(source);
-
-  if(result == INTERPRET_COMPILE_ERROR)
-    postMessage({msgId: MSGID_PROG_DONE_ERROR, msgData: vm.error});
+  mainVM.interpret(source);
 }
 
 function onStatusChange(vm, prevStatus)
@@ -87,14 +82,14 @@ function onStatusChange(vm, prevStatus)
   }
 }
 
-function onRuntimeError(vm)
+function onError(vm)
 //
 {
   postMessage({msgId: MSGID_PROG_DONE_ERROR, msgData: vm.error});
   return false;
 }
 
-function onRuntimeEnd(vm)
+function onRunEnd(vm)
 //
 {
   postMessage({msgId: MSGID_PROG_DONE_SUCCESS});

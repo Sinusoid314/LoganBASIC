@@ -1,3 +1,13 @@
+(August 20, 2022)
+[v2.0.14]
+	- Renamed onRuntimeEndHook and onRuntimeErrorHook members of VM to onRunEnd
+	  and onErrorHook respectively.
+	- Modified endWithError() method in VM to create a new VMError instance in error property
+	  even if one already exists.
+	- Modified raiseError() method in Compiler to call the VM's onErrorHook.
+	- Renamed raiseError() method in Compiler to compileError().
+	- Renamed endWithError() method in VM to runError().
+
 (August 18, 2022)
 [v2.0.13]
 	- Added onRuntimeEndHook member to VM.
