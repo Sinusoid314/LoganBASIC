@@ -1,3 +1,4 @@
+- Fix bug with updateSourceLineMap() mehtod in Compiler not having the correct data.
 - Add debugging hooks to VM.
 - Add debugging interface.
 - Add ability to import source files

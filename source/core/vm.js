@@ -200,12 +200,11 @@ class VM
   {
     var litIndex = this.currOp[1];
     var ident = this.currCallFrame.func.literals[litIndex];
-    var func = this.nativeFuncs.get(ident);
 
-    if(!func)
+    if(!this.nativeFuncs.has(ident))
       this.runError("Built-in function '" + ident + "' not defined.");
 
-    this.stack.push(func);
+    this.stack.push(this.nativeFuncs.get(ident));
   }
 
   opLoadLit()
@@ -227,10 +226,10 @@ class VM
     {
       ident = this.currCallFrame.func.literals[index];
 
-      val = this.globals.get(ident);
-
-      if(!val)
+      if(!this.globals.has(ident))
         this.runError("Variable '" + ident + "' not defined.");
+
+      val = this.globals.get(ident);
     }
     else
       val = this.stack[this.currCallFrame.stackIndex + index + 1];
@@ -622,10 +621,12 @@ class VM
   {
     var litIndex = this.currOp[1];
     var ident = this.currCallFrame.func.literals[litIndex];
-    var structDef = this.globals.get(ident);
+    var structDef;
 
-    if(!structDef)
+    if(!this.globals.has(ident))
       this.runError("Structure definition '" + ident + "' not defined.");
+
+    structDef = this.globals.get(ident);
 
     if(!(structDef instanceof ObjStructureDef))
       this.runError("'" + ident + "' is not a structure definition.");
@@ -711,7 +712,7 @@ class VM
     var sourceName = this.currCallFrame.func.sourceName;
 
     message = "Runtime error on line " + sourceLineNum + ": "  + message;
-
+console.log(this.globals);
     this.error = new VMError(message, sourceLineNum, sourceName);
 
     if((this.onErrorHook) && (this.onErrorHook(this, null)))

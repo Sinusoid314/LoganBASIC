@@ -1,3 +1,9 @@
+(August 21, 2022)
+[v2.0.16]
+	- Modified opLoadNativeFunc(), opLoadVar(), and opCreateStruct() methods in
+	  VM to check the globals map for the given identifier before attempting to
+	  get its value.
+
 (August 20, 2022)
 [v2.0.15]
 	- Modified parseGlobalDeclaration() and parseDeclaration() methods in Compiler
