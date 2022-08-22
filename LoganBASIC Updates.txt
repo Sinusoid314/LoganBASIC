@@ -1,10 +1,13 @@
-(August 21, 2022)
+(August 22, 2022)
+[v2.0.18]
+	- Fixed bug with callUserFunc() method in VM where variables for the called 
+	  user function were being created within the method itself.
+
 [v2.0.17]
 	- Modified all native function names to have proper letter case.
 	- Modified run() method in VM to call endOfOps() method when checking if
 	  onRunEndHook should be called.
 	- Renamed parseGlobalDeclaration() method in Compiler to parseHoistedDeclaration().
-	- 
 
 [v2.0.16]
 	- Modified opLoadNativeFunc(), opLoadVar(), and opCreateStruct() methods in

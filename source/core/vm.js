@@ -696,18 +696,7 @@ class VM
       this.runError("Wrong number of arguments for function '" + func.ident + "'.");
 
     this.callFrames.push(new CallFrame(func, stackIndex));
-
-    if(this.callFrames.length == 1)
-    {
-      for(var varIndex = func.paramCount; varIndex < func.localIdents.length; varIndex++)
-        this.globals.set(func.localIdents[varIndex], 0);
-    }
-    else
-    {
-      for(var varIndex = func.paramCount; varIndex < func.localIdents.length; varIndex++)
-        this.stack.push(0);
-    }
-
+    
     this.currCallFrame = this.callFrames[this.callFrames.length - 1];
   }
 
@@ -718,7 +707,7 @@ class VM
     var sourceName = this.currCallFrame.func.sourceName;
 
     message = "Runtime error on line " + sourceLineNum + ": "  + message;
-console.log(this.globals);
+
     this.error = new VMError(message, sourceLineNum, sourceName);
 
     if((this.onErrorHook) && (this.onErrorHook(this, null)))
