@@ -16,6 +16,7 @@ class Compiler
     this.rootUserFunc = userFunc;
     this.currUserFunc = userFunc;
     this.hoistedOps = [];
+    this.hoistedOpsJumpOpIndex = 0;
     this.prevToken = null;
     this.currToken = null;
     this.nextToken = null;
@@ -42,11 +43,14 @@ class Compiler
     {
       this.initTokens();
 
+      this.addHoistedOpsJumpOp();
+
       while(!this.endOfTokens())
         this.parseHoistedDeclaration();
 
       this.addReturnOps();
-      this.insertHoistedOps();
+
+      this.addHoistedOps();
     }
     catch(error)
     {
@@ -1048,12 +1052,12 @@ class Compiler
 
   addOp(operandList, hoistOp = false)
   //Add a new bytecodce op, either to the current user function,
-  //or the hoisted ops array
+  //or the hoisted ops array, and return the new op's index
   {
     if(hoistOp)
     {
       this.hoistedOps.push(operandList);
-      return this.hoistedOps.length;
+      return this.hoistedOps.length - 1;
     }
 
     this.currUserFunc.ops.push(operandList);
@@ -1074,19 +1078,19 @@ class Compiler
     this.addOp([OPCODE_RETURN]);
   }
 
-  insertHoistedOps()
-  //Insert the hoisted ops into the front of the root user function's ops array
-  //and shift all of the indexes in sourceLineMap up by the hoisted ops length
+  addHoistedOpsJumpOp()
+  //Add a jump op to the beginning of the root user-function's ops that jumps to the hoisted ops
   {
-    var map = this.rootUserFunc.sourceLineMap;
+    this.hoistedOpsJumpOpIndex = this.addOp([OPCODE_JUMP, 0]);
+  }
 
-    this.rootUserFunc.ops = this.hoistedOps.concat(this.rootUserFunc.ops);
-
-    for(const opIndexRange of map.values())
-    {
-      opIndexRange.startIndex += this.hoistedOps.length;
-      opIndexRange.endIndex += this.hoistedOps.length;
-    }
+  addHoistedOps()
+  //Add a jump-back op to the hoisted ops, back-patch the jump op at the beginning of the
+  //root user-function's ops, and append the hoisted ops to the root user function's ops
+  {
+    this.addOp([OPCODE_JUMP, this.hoistedOpsJumpOpIndex + 1], true);
+    this.patchJumpOp(this.hoistedOpsJumpOpIndex);
+    this.rootUserFunc.ops = this.rootUserFunc.ops.concat(this.hoistedOps);
   }
 
   opsCount()

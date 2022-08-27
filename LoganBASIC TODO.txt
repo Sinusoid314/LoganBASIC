@@ -1,5 +1,3 @@
-- Fix bug with updateSourceLineMap() mehtod in Compiler not having the correct data.
-- Fix bug with insertHoistedOps() offsetting the other op indexes.
 - Add debugging hooks to VM.
 - Add debugging interface.
 - Add ability to import source files

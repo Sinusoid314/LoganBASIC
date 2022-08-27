@@ -129,11 +129,6 @@ class VM
     compiler.compile();
     if(this.error != null)
       return INTERPRET_COMPILE_ERROR;
-
-    console.log("********");
-    console.log(rootUserFunc.toString());
-    console.log("********");
-    //rootUserFunc.literals.forEach((value) => {if(value instanceof ObjUserFunc) console.log(value.toString())});
       
     this.stack.push(rootUserFunc);
     this.callUserFunc(rootUserFunc, 0, 0);

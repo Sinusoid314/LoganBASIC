@@ -1,3 +1,8 @@
+(August 27, 2022)
+[v2.0.19]
+	- Fixed bug with hoisted ops offsetting the other op indexes by adding the hoisted
+	  ops to the end of, and a jump op to the beginnig of, the root user-function's ops.
+
 (August 22, 2022)
 [v2.0.18]
 	- Fixed bug with callUserFunc() method in VM where variables for the called 
