@@ -193,7 +193,7 @@ class Scanner
   consumeNewLines()
   //
   {
-    var token = new Token(TOKEN_NEWLINE);
+    var token = this.makeToken(TOKEN_NEWLINE);
 
     do
     {

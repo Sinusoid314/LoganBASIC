@@ -1,4 +1,6 @@
 (August 28, 2022)
+[v2.0.21]
+	- Fixed bug with Scanner creating NEWLINE tokens without proper source line numbers.
 [v2.0.20]
 	- Added onUserFuncCallHook and onUserFuncReturnHook members to VM, and modified
 	  callUserFunc() and opReturn() methods of VM to utilize them.

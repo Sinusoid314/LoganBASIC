@@ -1107,7 +1107,7 @@ class Compiler
     var opIndex = this.opsCount() - 1;
     var map = this.currUserFunc.sourceLineMap;
     var opIndexRange = map.get(sourceLineNum);
-    
+
     if(opIndexRange)
       opIndexRange.endIndex = opIndex;
     else
