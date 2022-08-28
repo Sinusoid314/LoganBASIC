@@ -69,7 +69,6 @@ class VM
     this.onUserFuncReturnHook = null;
     this.onSourceLineChangeHook = null;
     this.currSourceLineNum = 0;
-    this.nextSourceLineNum = 0;
 
     this.status = VM_STATUS_IDLE;
     this.error = null;
@@ -163,6 +162,10 @@ class VM
       {
         this.currOp = this.currCallFrame.func.ops[this.currCallFrame.nextOpIndex];
         this.currCallFrame.nextOpIndex++;
+
+        if(this.onSourceLineChangeHook)
+          this.checkSourceLineChange();
+
         this.opFuncs[this.currOp[0]]();
       }
     }
@@ -729,6 +732,20 @@ class VM
 
     if(this.status == VM_STATUS_RUNNING)
       throw this.error;
+  }
+
+  checkSourceLineChange()
+  //Call the source-line-change hook if the source line number has changed
+  {
+    var prevSourceLinenum = this.currSourceLineNum;
+
+    this.currSourceLineNum = this.getSourceLineNum();
+
+    if((prevSourceLinenum == this.currSourceLineNum) ||
+       (this.currSourceLineNum == 0))
+      return;
+
+    this.onSourceLineChangeHook(this)
   }
 
   getSourceLineNum(opIndex = this.currCallFrame.nextOpIndex - 1)

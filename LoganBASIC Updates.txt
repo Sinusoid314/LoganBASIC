@@ -1,4 +1,6 @@
 (August 28, 2022)
+[v2.0.22]
+	- Added onSourceLineChangeHook member and checkSourceLineChange() method to VM.
 [v2.0.21]
 	- Fixed bug with Scanner creating NEWLINE tokens without proper source line numbers.
 [v2.0.20]
