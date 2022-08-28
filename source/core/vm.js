@@ -65,6 +65,12 @@ class VM
     this.onRunEndHook = null;
     this.onErrorHook = null;
     this.onPrintHook = null;
+    this.onUserFuncCallHook = null;
+    this.onUserFuncReturnHook = null;
+    this.onSourceLineChangeHook = null;
+    this.currSourceLineNum = 0;
+    this.nextSourceLineNum = 0;
+
     this.status = VM_STATUS_IDLE;
     this.error = null;
     this.nativeFuncs = new Map();
@@ -597,6 +603,9 @@ class VM
   opReturn()
   //Return from the currently running user function
   {
+    if(this.onUserFuncReturnHook)
+      this.onUserFuncReturnHook(this);
+
     this.stack.splice(this.currCallFrame.stackIndex, this.stack.length - this.currCallFrame.stackIndex - 1);
     this.callFrames.pop();
 
@@ -693,6 +702,9 @@ class VM
     this.callFrames.push(new CallFrame(func, stackIndex));
     
     this.currCallFrame = this.callFrames[this.callFrames.length - 1];
+
+    if(this.onUserFuncCallHook)
+      this.onUserFuncCallHook(this);
   }
 
   runError(message)

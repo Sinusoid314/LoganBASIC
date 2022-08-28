@@ -59,6 +59,7 @@ function onStartProg(source)
 //Compile and run the program
 {
   mainVM.addNativeFuncArray([].concat(stdNativeFuncs, consoleNativeFuncs, canvasNativeFuncs, soundNativeFuncs, spriteNativeFuncs));
+  
   mainVM.onPrintHook = onPrint;
   mainVM.onStatusChangeHook = onStatusChange;
   mainVM.onErrorHook = onError;

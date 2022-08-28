@@ -1,3 +1,8 @@
+(August 28, 2022)
+[v2.0.20]
+	- Added onUserFuncCallHook and onUserFuncReturnHook members to VM, and modified
+	  callUserFunc() and opReturn() methods of VM to utilize them.
+
 (August 27, 2022)
 [v2.0.19]
 	- Fixed bug with hoisted ops offsetting the other op indexes by adding the hoisted

@@ -1,5 +1,5 @@
-- Add debugging hooks to VM.
-- Add debugging interface.
+- Add onSourceLineChangeHook to VM.
 - Add ability to import source files
+- Add debugging interface.
 - Add onError user function support.
 - Add a help section for using the core source file library.
