@@ -128,7 +128,7 @@ class VM
   interpret(source, sourceName = "")
   //Compile and run the given source code
   {
-    var rootUserFunc = new ObjUserFunc("<root>");;
+    var rootUserFunc = new ObjUserFunc("<root>");
     var compiler = new Compiler(this, source, sourceName, rootUserFunc);
 
     compiler.compile();

@@ -1,4 +1,7 @@
 (August 28, 2022)
+[v2.0.23]
+	- Added import() native function to support library source files.
+
 [v2.0.22]
 	- Added onSourceLineChangeHook member and checkSourceLineChange() method to VM.
 [v2.0.21]

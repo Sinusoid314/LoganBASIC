@@ -1,4 +1,4 @@
-- Add ability to import source files
+- Finish help page for import() native funciton.
 - Add debugging interface.
 - Add onError user function support.
 - Add a help section for using the core source file library.

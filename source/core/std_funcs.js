@@ -1,4 +1,4 @@
-const lbVersion = "2.0.22";
+const lbVersion = "2.0.23";
 
 const stdNativeFuncs = [
                   new ObjNativeFunc("rnd", 0, 0, funcRnd),
@@ -39,13 +39,14 @@ const stdNativeFuncs = [
                   new ObjNativeFunc("version", 0, 0, funcVersion),
                   new ObjNativeFunc("word", 2, 3, funcWord),
                   new ObjNativeFunc("splitStr", 2, 2, funcSplitStr),
-                  new ObjNativeFunc("pauseFor", 1, 1, funcPauseFor)
+                  new ObjNativeFunc("pauseFor", 1, 1, funcPauseFor),
+                  new ObjNativeFunc("import", 1, 1, funcImport)
                  ];
 
 var timerID = 0;
 var timerCallback = null;
-
 var pauseForCallback = null;
+var importCallback = null;
 
 function timer_onTick()
 //
@@ -60,6 +61,22 @@ function pauseFor_onTimeout()
 //Continue program execution
 {
   pauseForCallback.runFunc();
+}
+
+function import_onLoad()
+//
+{
+  var source = this.responseText;
+
+  importCallback.vm.stack[importCallback.vm.stack.length - 1] = true;
+  importCallback.vm.interpret(source);
+}
+
+function import_onError()
+//
+{
+  importCallback.vm.stack[importCallback.vm.stack.length - 1] = false;
+  importCallback.runFunc();
 }
 
 function funcRnd(vm, args)
@@ -224,7 +241,7 @@ function funcStartTimer(vm, args)
   if(timerID != 0)
     clearInterval(timerID);
 
-  if(timerCallback == null)
+  if(!timerCallback)
   {
     timerCallback = new CallbackContext(vm, callbackUserFunc);
   }
@@ -470,7 +487,7 @@ function funcPauseFor(vm, args)
 {
   var timeout = args[0];
 
-  if(pauseForCallback == null)
+  if(!pauseForCallback)
     pauseForCallback = new CallbackContext(vm);
   else
     pauseForCallback.vm = vm;
@@ -480,4 +497,26 @@ function funcPauseFor(vm, args)
   setTimeout(pauseFor_onTimeout, timeout);
 
   return 0;
+}
+
+function funcImport(vm, args)
+//
+{
+  var sourceFile = args[0];
+  var httpReq = new XMLHttpRequest();
+
+  if(!importCallback)
+    importCallback = new CallbackContext(vm);
+  else
+    importCallback.vm = vm;
+
+  vm.changeStatus(VM_STATUS_IDLE);
+
+  httpReq.addEventListener("load", import_onLoad);
+  httpReq.addEventListener("error", import_onError);
+
+  httpReq.open("GET", sourceFile);
+  httpReq.send();
+
+  return false;
 }
