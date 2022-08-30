@@ -1,7 +1,11 @@
+(August 29, 2022)
+[v2.0.24]
+	- Added eval() native function.
+	- Modified import_onLoad() function in std_funcs to give a name to source code from import() native function.
+
 (August 28, 2022)
 [v2.0.23]
 	- Added import() native function to support library source files.
-
 [v2.0.22]
 	- Added onSourceLineChangeHook member and checkSourceLineChange() method to VM.
 [v2.0.21]

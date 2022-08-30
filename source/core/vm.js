@@ -142,8 +142,6 @@ class VM
     if(this.error != null)
       return INTERPRET_RUNTIME_ERROR;
 
-    console.log(this.globals);
-
     return INTERPRET_SUCCESS;
   }
 

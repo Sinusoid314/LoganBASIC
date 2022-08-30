@@ -1,4 +1,4 @@
-const lbVersion = "2.0.23";
+const lbVersion = "2.0.24";
 
 const stdNativeFuncs = [
                   new ObjNativeFunc("rnd", 0, 0, funcRnd),
@@ -40,7 +40,8 @@ const stdNativeFuncs = [
                   new ObjNativeFunc("word", 2, 3, funcWord),
                   new ObjNativeFunc("splitStr", 2, 2, funcSplitStr),
                   new ObjNativeFunc("pauseFor", 1, 1, funcPauseFor),
-                  new ObjNativeFunc("import", 1, 1, funcImport)
+                  new ObjNativeFunc("import", 1, 1, funcImport),
+                  new ObjNativeFunc("eval", 1, 1, funcEval)
                  ];
 
 var timerID = 0;
@@ -67,9 +68,11 @@ function import_onLoad()
 //
 {
   var source = this.responseText;
+  var url = new URL(this.responseURL);
+  var sourceName = url.pathname.split("/").pop();
 
   importCallback.vm.stack[importCallback.vm.stack.length - 1] = true;
-  importCallback.vm.interpret(source);
+  importCallback.vm.interpret(source, sourceName);
 }
 
 function import_onError()
@@ -519,4 +522,13 @@ function funcImport(vm, args)
   httpReq.send();
 
   return false;
+}
+
+function funcEval(vm, args)
+//
+{
+  var source = args[0];
+  var sourceName = vm.currCallFrame.func.sourceName  + ":" + vm.getSourceLineNum() + ":eval";
+
+  vm.interpret(source, sourceName);
 }
