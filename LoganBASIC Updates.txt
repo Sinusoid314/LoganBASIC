@@ -1,3 +1,7 @@
+(September 2, 2022)
+[v2.0.25]
+	- Finished help page for import() native funciton.
+
 (August 29, 2022)
 [v2.0.24]
 	- Added eval() native function.
