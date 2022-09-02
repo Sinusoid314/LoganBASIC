@@ -12,12 +12,25 @@
 <h4>Description</h4>
 <p id="description">
 Downloads, compiles, and runs the source code contained in <i>sourceFile</i>. The function waits
-for the code to finish running before returning.
+for the code to finish running before returning. If successful, it returns true. If <i>sourceFile</i>
+fails to download, it returns false. If the code fails to compile or run, and error is raised.
 </p>
 
 <h4>Usage</h4>
+importFile.bas
 <code id="usage">
+  print "This is the imported file."
+</code>
+example.bas
+<code id="usage">
+  print "Hello!"
+  <b>import("importFile.bas")</b>
+  print "Goodbye!"
 
+  'output:
+  'Hello!
+  'This is the imported file.
+  'Goodbye!
 </code>
 
 </body>
