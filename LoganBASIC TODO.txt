@@ -1,4 +1,3 @@
-- Modify implementation of onSourceLineChange hook to allow pausing the VM in between line changes.
 - Add debugging interface.
 - Add onError user function support.
 - Add a help section for using the core source file library.

@@ -1,3 +1,8 @@
+(September 4, 2022)
+[v2.0.26]
+	- Modified run() method of VM to support source line breakpoints.
+	- Added skipToNextSourceLine() method to VM to support skipping source lines.
+
 (September 2, 2022)
 [v2.0.25]
 	- Finished help page for import() native funciton.
