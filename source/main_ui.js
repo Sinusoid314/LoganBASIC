@@ -1,9 +1,11 @@
 var isRunning = false;
-var progWorker = null;
 var runBtn = document.getElementById("runBtn");
 var stopBtn = document.getElementById("stopBtn");
 var statusBar = document.getElementById("statusBar");
 var toggles = document.getElementsByClassName("toggle-open");
+var progWorker = new Worker('main.js');
+
+progWorker.onmessage = progUI_onMessage;
 
 runBtn.addEventListener("click", runBtn_onClick);
 stopBtn.addEventListener("click", stopBtn_onClick);
@@ -20,12 +22,10 @@ function switchMode()
 }
 
 function stopProg(exitStatus)
-//Stop the running program
+//Set the UI to reflect that the program has stopped running
 {
   if(!isRunning)
     return;
-
-  progWorker.terminate();
 
   closeConsoleInput();
   cleanupCanvas();
@@ -37,7 +37,7 @@ function stopProg(exitStatus)
 }
 
 function runBtn_onClick(event)
-//Run the program
+//Reset the UI and signal the worker thread to start the program
 {
   var editorStr;
 
@@ -45,9 +45,6 @@ function runBtn_onClick(event)
     return;
 
   editorStr = progEditor.value;
-  progWorker = null;
-  progWorker = new Worker('main.js');
-  progWorker.onmessage = progUI_onMessage;
   clearConsoleOutput();
   resetCanvas();
   progWorker.postMessage({msgId: MSGID_START_PROG, msgData: editorStr});
@@ -55,16 +52,20 @@ function runBtn_onClick(event)
   switchMode();
 }
 
+function stopBtn_onClick(event)
+//Terminate and restart the worker thread
+{
+  progWorker.terminate();
+  progWorker = new Worker('main.js');
+  progWorker.onmessage = progUI_onMessage;
+
+  stopProg("Program stopped.");
+}
+
 function toggle_onClick(event)
 {
   this.parentElement.querySelector(".pane-open").classList.toggle("pane-closed");
   this.classList.toggle("toggle-closed");
-}
-
-function stopBtn_onClick(event)
-//Stop the program (user-triggered)
-{
-  stopProg("Program stopped.");
 }
 
 function progUI_onMessage(message)
@@ -277,13 +278,13 @@ function progUI_onMessage(message)
 }
 
 function onProgDoneSuccess()
-//Stop the program with success (self-triggered)
+//The worker thread has signaled that the program has completed successfully
 {
   stopProg("Program run successfully.");
 }
 
 function onProgDoneError(error)
-//Stop the program with error (self-triggered)
+//The worker thread has signaled that the program has stopped with an error
 {
   selectEditorLine(error.sourceLineNum);
   stopProg(error.message);

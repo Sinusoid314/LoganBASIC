@@ -8,6 +8,12 @@ const consoleNativeFuncs = [
 
 var inputCallback = null;
 
+function clearConsole()
+//
+{
+  inputCallback = null;
+}
+
 function onInputResult(inputStr)
 //Process input sent from the console
 {

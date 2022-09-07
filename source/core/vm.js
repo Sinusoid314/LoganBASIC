@@ -68,8 +68,6 @@ class VM
     this.onUserFuncCallHook = null;
     this.onUserFuncReturnHook = null;
     this.onSourceLineChangeHook = null;
-    this.currSourceLineNum = 0;
-    this.inBreakpoint = false;
 
     this.status = VM_STATUS_IDLE;
     this.error = null;
@@ -79,6 +77,8 @@ class VM
     this.callFrames = [];
     this.currCallFrame = null;
     this.currOp = null;
+    this.inBreakpoint = false;
+    this.nextSourceLineNum = 0;
     
     //Allow the op methods to be called by indexing into a function array using the opcode constants
     this.opFuncs = [null];
@@ -159,23 +159,19 @@ class VM
     {
       while((this.status == VM_STATUS_RUNNING) && (!this.endOfOps()))
       {
-        if(!this.inBreakpoint)
+        if((!this.inBreakpoint) && (this.onSourceLineChangeHook))
         {
-          this.currOp = this.currCallFrame.func.ops[this.currCallFrame.nextOpIndex++];
-
-          if(this.onSourceLineChangeHook)
-          {
             this.checkSourceLineChange();
 
             if(this.inBreakpoint)
               break;
-          }
         }
-
-        this.opFuncs[this.currOp[0]]();
 
         if(this.inBreakpoint)
           this.inBreakpoint = false;
+
+        this.currOp = this.currCallFrame.func.ops[this.currCallFrame.nextOpIndex++];
+        this.opFuncs[this.currOp[0]]();
       }
     }
     catch(error)
@@ -744,28 +740,27 @@ class VM
   }
 
   checkSourceLineChange()
-  //Call the source-line-change hook if the source line number has changed
+  //Call the source-line-change hook if the next source line number has changed
   {
-    var prevSourceLineNum = this.currSourceLineNum;
+    var prevSourceLineNum = this.nextSourceLineNum;
 
-    this.currSourceLineNum = this.getSourceLineNum();
+    this.nextSourceLineNum = this.getSourceLineNum(this.currCallFrame.nextOpIndex);
 
-    if((prevSourceLineNum == this.currSourceLineNum) ||
-       (this.currSourceLineNum == 0))
+    if((prevSourceLineNum == this.nextSourceLineNum) ||
+       (this.nextSourceLineNum == 0))
       return;
 
     this.onSourceLineChangeHook(this)
   }
 
-  skipToNextSourceLine()
+  skipSourceLine()
   //Set the next op index to the first op index of the next source line
   {
-    for(var opIndex = this.currCallFrame.nextOpIndex; opIndex < this.currCallFrame.func.ops.length; opIndex++)
+    for(var opIndex = this.currCallFrame.nextOpIndex + 1; opIndex < this.currCallFrame.func.ops.length; opIndex++)
     {
-      if(this.getSourceLineNum(opIndex) != this.currSourceLineNum)
+      if(this.getSourceLineNum(opIndex) != this.nextSourceLineNum)
       {
         this.currCallFrame.nextOpIndex = opIndex;
-        this.inBreakpoint = false;
         return;
       }
     }
@@ -809,6 +804,7 @@ class VM
     this.stack = [];
     this.callFrames = [];
     this.currCallFrame = null;
+    this.currOp = null;
   }
 
   endOfOps()

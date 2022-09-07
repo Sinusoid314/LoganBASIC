@@ -12,6 +12,12 @@ const soundNativeFuncs = [
 
 var soundResultCallback = null;
 
+function clearSounds()
+//
+{
+  soundResultCallback = null;
+}
+
 function onSoundRequestResult(result)
 //
 {

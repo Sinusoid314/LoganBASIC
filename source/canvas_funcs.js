@@ -46,6 +46,13 @@ var canvasEvents = [
 var imageResultCallback = null;
 var drawBufferCallback = null;
 
+function clearCanvas()
+//
+{
+  imageResultCallback = null;
+  drawBufferCallback = null;
+}
+
 function onImageRequestResult(result)
 //
 {

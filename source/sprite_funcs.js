@@ -80,6 +80,16 @@ var scrollX = 0;
 var scrollY = 0;
 var spriteSheetResultCallback = null;
 
+function clearSprites()
+//
+{
+  sprites.clear();
+  zOrderedSprites = [];
+  scrollX = 0;
+  scrollY = 0;
+  spriteSheetResultCallback = null;
+}
+
 function onSpriteSheetRefRequestResult(result)
 //
 {

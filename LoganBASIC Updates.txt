@@ -1,3 +1,11 @@
+(September 7, 2022)
+[v2.0.27]
+	- Renamed skipToNextSourceLine() method in VM to skipSourceLine().
+	- Renamed currSourceLineNum member of VM to nextSourceLineNum and modified run(),
+	  checkSourceLineChange(), and skipSourceLine() methods in VM to reflect this change.
+	- Modified main_ui, main, console_funcs, canvas_funcs, sound_funcs, and sprite_funcs modules to
+	  have the worker thread always resident.
+
 (September 4, 2022)
 [v2.0.26]
 	- Modified run() method of VM to support source line breakpoints.
