@@ -274,6 +274,22 @@ function progUI_onMessage(message)
     case MSGID_GET_SPRITE_SHEET_FRAME_HEIGHT_REQUEST:
       getSpriteSheetFrameHeight(message.data.msgData);
       break;
+
+    case MSGID_DEBUG_UPDATE_DISPLAYS:
+      onDebugUpdateDisplays(message.data.msgData);
+      break;
+
+    case MSGID_DEBUG_USER_FUNC_CALL:
+      onDebugUserFuncCall(message.data.msgData);
+      break;
+      
+    case MSGID_DEBUG_USER_FUNC_RETURN:
+      onDebugUserFuncReturn();
+      break;
+      
+    case MSGID_DEBUG_SOURCE_LINE_CHANGE:
+      onDebugSourceLineChange(message.data.msgData);
+      break;
   }
 }
 

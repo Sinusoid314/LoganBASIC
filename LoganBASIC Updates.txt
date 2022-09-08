@@ -1,3 +1,12 @@
+(September 8, 2022)
+[v2.0.28]
+	- Modified run() method in VM to call endOfOps() at the beginning of the method.
+	- Modified opReturn() method of VM to call clearStacks() method when callFrames is empty.
+	- Modified clearStacks() method of VM to reset inBreakpoint and nextSourceLineNum members.
+	- Created debug and debug_ui modules, and added debug UI/Worker messages to worker_msg module.
+	- Added composeDebugDisplayInfo(), onDebugStart(), onDebugStop(), onDebugStep(), onDebugSkip(),
+	  onUserFuncCall(), onUserFuncReturn(), and onSourceLineChange() functions to debug module.
+
 (September 7, 2022)
 [v2.0.27]
 	- Renamed skipToNextSourceLine() method in VM to skipSourceLine().

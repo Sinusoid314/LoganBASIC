@@ -7,6 +7,7 @@ importScripts('./core/object.js',
               './core/vm.js');
 
 importScripts('worker_msg.js',
+              'debug.js',
               'console_funcs.js',
               'canvas_funcs.js',
               'sound_funcs.js',
@@ -72,6 +73,22 @@ function progWorker_onMessage(message)
 
     case MSGID_SPRITE_SHEET_REQUEST_RESULT:
       onSpriteSheetRequestResult(message.data.msgData);
+      break;
+
+    case MSGID_DEBUG_START:
+      onDebugStart();
+      break;
+
+    case MSGID_DEBUG_STOP:
+      onDebugStop();
+      break;
+  
+    case MSGID_DEBUG_STEP:
+      onDebugStep();
+      break;
+    
+    case MSGID_DEBUG_SKIP:
+      onDebugSkip();
       break;
   }
 }

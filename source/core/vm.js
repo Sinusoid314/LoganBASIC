@@ -149,7 +149,7 @@ class VM
   run()
   //Execute the bytecode ops
   {
-    if(this.status == VM_STATUS_RUNNING)
+    if((this.status == VM_STATUS_RUNNING) || (this.endOfOps()))
       return;
 
     this.error = null;
@@ -621,7 +621,7 @@ class VM
 
     if(this.callFrames.length == 0)
     {
-      this.currCallFrame = null;
+      this.clearStacks();
       this.changeStatus(VM_STATUS_IDLE);
     }
     else
@@ -714,7 +714,7 @@ class VM
     this.currCallFrame = this.callFrames[this.callFrames.length - 1];
 
     if(this.onUserFuncCallHook)
-      this.onUserFuncCallHook(this);
+      this.onUserFuncCallHook(this, func.ident);
   }
 
   runError(message)
@@ -750,7 +750,7 @@ class VM
        (this.nextSourceLineNum == 0))
       return;
 
-    this.onSourceLineChangeHook(this)
+    this.onSourceLineChangeHook(this, this.nextSourceLineNum)
   }
 
   skipSourceLine()
@@ -805,6 +805,8 @@ class VM
     this.callFrames = [];
     this.currCallFrame = null;
     this.currOp = null;
+    this.inBreakpoint = false;
+    this.nextSourceLineNum = 0;
   }
 
   endOfOps()
