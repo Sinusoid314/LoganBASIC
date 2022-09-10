@@ -1,4 +1,8 @@
 (September 10, 2022)
+[v2.0.31]
+	- Removed breakpointSourceLineNum member from VM.
+	- Added currOpIndex member to CallFrame.
+
 [v2.0.30]
 	- Renamed nextSourceLineNum member of VM to breakpointSourceLineNum.
 	- Renamed getCurrSourceLineNum(), getNextSourceLineNum(), and getSourceLineNum() methods of

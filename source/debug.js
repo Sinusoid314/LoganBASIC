@@ -3,7 +3,7 @@ function composeDebugDisplayInfo()
 {
   var displayInfo = {nextSourceLineNum: 0, funcIdents: []};
 
-  displayInfo.nextSourceLineNum = mainVM.getNextOpSourceLineNum();
+  displayInfo.nextSourceLineNum = mainVM.getCurrOpSourceLineNum();
   mainVM.callFrames.forEach(frame => displayInfo.funcIdents.push(frame.func.ident));
 
   return displayInfo;
