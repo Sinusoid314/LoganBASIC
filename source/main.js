@@ -23,19 +23,17 @@ mainVM.onRunEndHook = onRunEnd;
 
 onmessage = progWorker_onMessage;
 
-function clearMain()
+function resetMain()
 //
 {
-  clearConsole();
-  clearCanvas();
-  clearSounds();
-  clearSprites();
+  resetConsole();
+  resetCanvas();
+  resetSounds();
+  resetSprites();
   
-  mainVM.clearStacks();
+  mainVM.resetActiveRunState();
   mainVM.globals.clear();
   mainVM.error = null;
-  mainVM.inBreakpoint = false;
-  mainVM.nextSourceLineNum = 0;
 }
 
 function progWorker_onMessage(message)
@@ -117,7 +115,7 @@ function onStatusChange(vm, prevStatus)
 function onError(vm)
 //
 {
-  clearMain();
+  resetMain();
   postMessage({msgId: MSGID_PROG_DONE_ERROR, msgData: vm.error});
   return false;
 }
@@ -125,6 +123,6 @@ function onError(vm)
 function onRunEnd(vm)
 //
 {
-  clearMain();
+  resetMain();
   postMessage({msgId: MSGID_PROG_DONE_SUCCESS});
 }

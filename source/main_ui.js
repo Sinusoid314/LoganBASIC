@@ -18,6 +18,7 @@ function switchMode()
 {
   runBtn.disabled = !runBtn.disabled;
   stopBtn.disabled = !stopBtn.disabled;
+  progEditor.readOnly = !progEditor.readOnly;
   isRunning = !isRunning;
 }
 

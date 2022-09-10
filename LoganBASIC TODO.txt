@@ -1,3 +1,5 @@
+- Add smooth roll up/down to editor, console, and canvas panes.
+
 - Finish debugging interface.
 - Add onError user function support.
 - Add a help section for using the core source file library.

@@ -1,3 +1,14 @@
+(September 9, 2022)
+[v2.0.29]
+	- Removed call in onDebugStart() function to run() method of VM.
+	- Added check for inBreakpoint member of VM before calling run() method of VM.
+	- Renamed clearStacks() method in VM to resetActiveRunState().
+	- Renamed clearMain(), clearConsole(), clearCanvas(), clearSounds(), and clearSprites() functions
+	  to resetMain(), resetConsole(), resetCanvas(), resetSounds(), and resetSprites() respectively.
+	- Added getNextSourceLineNum() and getCurrSourceLineNum() methods to VM.
+	- Added nextSourceLineNum property to displayInfo in composeDebugDisplayInfo().
+	- Modified switchMode() function in main_ui module to make editor read-only while running the user's program.
+
 (September 8, 2022)
 [v2.0.28]
 	- Modified run() method in VM to call endOfOps() at the beginning of the method.

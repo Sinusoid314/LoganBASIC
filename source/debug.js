@@ -1,8 +1,9 @@
 function composeDebugDisplayInfo()
 //
 {
-  var displayInfo = {funcIdents: []};
+  var displayInfo = {nextSourceLineNum: 0, funcIdents: []};
 
+  displayInfo.nextSourceLineNum = mainVM.getNextSourceLineNum();
   mainVM.callFrames.forEach(frame => displayInfo.funcIdents.push(frame.func.ident));
 
   return displayInfo;
@@ -17,8 +18,6 @@ function onDebugStart()
 
   if(!mainVM.endOfOps())
     postMessage({msgId: MSGID_DEBUG_UPDATE_DISPLAYS, msgData: composeDebugDisplayInfo()});
-
-  mainVM.run();
 }
 
 function onDebugStop()
@@ -28,7 +27,8 @@ function onDebugStop()
   mainVM.onUserFuncReturnHook = null;
   mainVM.onSourceLineChangeHook = null;
   
-  mainVM.run();
+  if(mainVM.inBreakpoint)
+    mainVM.run();
 }
 
 function onDebugStep()

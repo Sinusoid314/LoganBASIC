@@ -80,7 +80,7 @@ var scrollX = 0;
 var scrollY = 0;
 var spriteSheetResultCallback = null;
 
-function clearSprites()
+function resetSprites()
 //
 {
   sprites.clear();

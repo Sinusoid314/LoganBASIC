@@ -469,7 +469,7 @@ class VM
   opEnd()
   //Trigger the program to end
   {
-    this.clearStacks();
+    this.resetActiveRunState();
     this.changeStatus(VM_STATUS_IDLE);
   }
 
@@ -621,7 +621,7 @@ class VM
 
     if(this.callFrames.length == 0)
     {
-      this.clearStacks();
+      this.resetActiveRunState();
       this.changeStatus(VM_STATUS_IDLE);
     }
     else
@@ -720,7 +720,7 @@ class VM
   runError(message)
   //
   {
-    var sourceLineNum = this.getSourceLineNum();
+    var sourceLineNum = this.getCurrSourceLineNum();
     var sourceName = this.currCallFrame.func.sourceName;
 
     message = "Runtime error on line " + sourceLineNum + ": "  + message;
@@ -733,7 +733,7 @@ class VM
       return;
     }
 
-    this.clearStacks();
+    this.resetActiveRunState();
 
     if(this.status == VM_STATUS_RUNNING)
       throw this.error;
@@ -744,7 +744,7 @@ class VM
   {
     var prevSourceLineNum = this.nextSourceLineNum;
 
-    this.nextSourceLineNum = this.getSourceLineNum(this.currCallFrame.nextOpIndex);
+    this.nextSourceLineNum = this.getNextSourceLineNum();
 
     if((prevSourceLineNum == this.nextSourceLineNum) ||
        (this.nextSourceLineNum == 0))
@@ -766,7 +766,19 @@ class VM
     }
   }
 
-  getSourceLineNum(opIndex = this.currCallFrame.nextOpIndex - 1)
+  getCurrSourceLineNum()
+  //
+  {
+    return this.getSourceLineNum(this.currCallFrame.nextOpIndex - 1);
+  }
+
+  getNextSourceLineNum()
+  //Return the source line number that corresponds to the next op index
+  {
+    return this.getSourceLineNum(this.currCallFrame.nextOpIndex);
+  }
+
+  getSourceLineNum(opIndex)
   //Return the source line number that corresponds to the given op index;
   //if the op index does not have an associated source line number, return 0
   {
@@ -798,7 +810,7 @@ class VM
     return prevStatus;
   }
 
-  clearStacks()
+  resetActiveRunState()
   //Clear the value and call stacks
   {
     this.stack = [];

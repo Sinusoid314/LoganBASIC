@@ -8,7 +8,7 @@ const consoleNativeFuncs = [
 
 var inputCallback = null;
 
-function clearConsole()
+function resetConsole()
 //
 {
   inputCallback = null;

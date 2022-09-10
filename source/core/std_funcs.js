@@ -1,4 +1,4 @@
-const lbVersion = "2.0.28";
+const lbVersion = "2.0.29";
 
 const stdNativeFuncs = [
                   new ObjNativeFunc("rnd", 0, 0, funcRnd),
@@ -528,7 +528,7 @@ function funcEval(vm, args)
 //
 {
   var source = args[0];
-  var sourceName = vm.currCallFrame.func.sourceName  + ":" + vm.getSourceLineNum() + ":eval";
+  var sourceName = vm.currCallFrame.func.sourceName  + ":" + vm.getCurrSourceLineNum() + ":eval";
 
   vm.interpret(source, sourceName);
 }
