@@ -78,7 +78,7 @@ class VM
     this.currCallFrame = null;
     this.currOp = null;
     this.inBreakpoint = false;
-    this.nextSourceLineNum = 0;
+    this.breakpointSourceLineNum = 0;
     
     //Allow the op methods to be called by indexing into a function array using the opcode constants
     this.opFuncs = [null];
@@ -720,7 +720,7 @@ class VM
   runError(message)
   //
   {
-    var sourceLineNum = this.getCurrSourceLineNum();
+    var sourceLineNum = this.getCurrOpSourceLineNum();
     var sourceName = this.currCallFrame.func.sourceName;
 
     message = "Runtime error on line " + sourceLineNum + ": "  + message;
@@ -742,23 +742,23 @@ class VM
   checkSourceLineChange()
   //Call the source-line-change hook if the next source line number has changed
   {
-    var prevSourceLineNum = this.nextSourceLineNum;
+    var prevSourceLineNum = this.breakpointSourceLineNum;
 
-    this.nextSourceLineNum = this.getNextSourceLineNum();
+    this.breakpointSourceLineNum = this.getNextOpSourceLineNum();
 
-    if((prevSourceLineNum == this.nextSourceLineNum) ||
-       (this.nextSourceLineNum == 0))
+    if((prevSourceLineNum == this.breakpointSourceLineNum) ||
+       (this.breakpointSourceLineNum == 0))
       return;
 
-    this.onSourceLineChangeHook(this, this.nextSourceLineNum)
+    this.onSourceLineChangeHook(this, this.breakpointSourceLineNum)
   }
 
   skipSourceLine()
-  //Set the next op index to the first op index of the next source line
+  //Set the next op index to the first op index of the source line after the current breakpoint line
   {
     for(var opIndex = this.currCallFrame.nextOpIndex + 1; opIndex < this.currCallFrame.func.ops.length; opIndex++)
     {
-      if(this.getSourceLineNum(opIndex) != this.nextSourceLineNum)
+      if(this.getOpSourceLineNum(opIndex) != this.breakpointSourceLineNum)
       {
         this.currCallFrame.nextOpIndex = opIndex;
         return;
@@ -766,19 +766,19 @@ class VM
     }
   }
 
-  getCurrSourceLineNum()
+  getCurrOpSourceLineNum()
   //
   {
-    return this.getSourceLineNum(this.currCallFrame.nextOpIndex - 1);
+    return this.getOpSourceLineNum(this.currCallFrame.nextOpIndex - 1);
   }
 
-  getNextSourceLineNum()
+  getNextOpSourceLineNum()
   //Return the source line number that corresponds to the next op index
   {
-    return this.getSourceLineNum(this.currCallFrame.nextOpIndex);
+    return this.getOpSourceLineNum(this.currCallFrame.nextOpIndex);
   }
 
-  getSourceLineNum(opIndex)
+  getOpSourceLineNum(opIndex)
   //Return the source line number that corresponds to the given op index;
   //if the op index does not have an associated source line number, return 0
   {
@@ -818,7 +818,7 @@ class VM
     this.currCallFrame = null;
     this.currOp = null;
     this.inBreakpoint = false;
-    this.nextSourceLineNum = 0;
+    this.breakpointSourceLineNum = 0;
   }
 
   endOfOps()

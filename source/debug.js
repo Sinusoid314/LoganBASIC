@@ -3,7 +3,7 @@ function composeDebugDisplayInfo()
 {
   var displayInfo = {nextSourceLineNum: 0, funcIdents: []};
 
-  displayInfo.nextSourceLineNum = mainVM.getNextSourceLineNum();
+  displayInfo.nextSourceLineNum = mainVM.getNextOpSourceLineNum();
   mainVM.callFrames.forEach(frame => displayInfo.funcIdents.push(frame.func.ident));
 
   return displayInfo;
@@ -67,4 +67,5 @@ function onSourceLineChange(vm, nextSourceLineNum)
 //
 {
   postMessage({msgId: MSGID_DEBUG_SOURCE_LINE_CHANGE, msgData: nextSourceLineNum});
+  mainVM.inBreakpoint = true;
 }
