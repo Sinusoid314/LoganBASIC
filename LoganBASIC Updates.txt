@@ -1,8 +1,10 @@
 (September 10, 2022)
+[v2.0.32]
+	- Modified runFunc() method of CallbackContext to avoid calling run() method of VM if the VM is
+	  currently in a breakpoint.
 [v2.0.31]
 	- Removed breakpointSourceLineNum member from VM.
 	- Added currOpIndex member to CallFrame.
-
 [v2.0.30]
 	- Renamed nextSourceLineNum member of VM to breakpointSourceLineNum.
 	- Renamed getCurrSourceLineNum(), getNextSourceLineNum(), and getSourceLineNum() methods of

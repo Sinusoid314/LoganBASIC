@@ -30,7 +30,7 @@ class CallbackContext
     var argCount = args.length;
     var stackIndex = this.vm.stack.length;
 
-    if(this.vm.status != VM_STATUS_IDLE)
+    if((this.vm.status != VM_STATUS_IDLE) || (this.vm.inBreakpoint))
       return;
 
     if(this.userFunc != null)
