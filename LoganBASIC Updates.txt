@@ -1,3 +1,7 @@
+(September 11, 2022)
+[v2.0.33]
+	- Finished basic Debug interface and functionality.
+
 (September 10, 2022)
 [v2.0.32]
 	- Modified runFunc() method of CallbackContext to avoid calling run() method of VM if the VM is

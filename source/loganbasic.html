@@ -18,50 +18,63 @@
 
 <body>
 
-<div id="menuBar" class="bar">
-  <button id="newBtn">New</button>
-  <button id="openFileBtn">Open File</button>
-  <button id="openURLBtn">Open URL</button>
-  <button id="saveBtn">Save</button>
-  <div class="bar-seperator"></div>
-  <button id="examplesBtn">Examples</button>
-  <button id="helpBtn">Help</button>
-  <button id="aboutBtn">About</button>
-</div>
-
-<div id="editorDiv">
-  <label id="editorToggle" class="toggle-open">Code Editor</label>
-  <div id="editorPane" class="pane-open">
-    <textarea id="progEditor" cols="80" rows="15" wrap="off" spellcheck="false"></textarea>
+<div id="debugDiv">
+  <div id="debugBar" class="bar">
+    <button id="debugStepBtn">Step</button>
+    <button id="debugSkipBtn">Skip</button>
   </div>
+  <label>Call Stack</label>
+  <select id="debugCallStackList"></select>
 </div>
 
-<div id="commandBar" class="bar">
-  <button id="runBtn">Run</button>
-  <button id="stopBtn" disabled>Stop</button>
-  <div class="bar-seperator"></div>
-  <div id="statusBar">Ready.</div>
-</div>
+<div id="mainDiv">
+  <div id="menuBar" class="bar">
+    <button id="newBtn">New</button>
+    <button id="openFileBtn">Open File</button>
+    <button id="openURLBtn">Open URL</button>
+    <button id="saveBtn">Save</button>
+    <div class="bar-seperator"></div>
+    <button id="examplesBtn">Examples</button>
+    <button id="helpBtn">Help</button>
+    <button id="aboutBtn">About</button>
+  </div>
 
-<div id="consoleDiv">
-  <label id="consoleToggle" class="toggle-open">Console</label>
-  <div id="consolePane" class="pane-open">
-    <textarea id="consoleOutput" cols="80" rows="15" wrap="off" spellcheck="false" readonly></textarea>
-    <div id="consoleInputDiv">
-      <input id="consoleInput" type="text">
-      <button id="consoleInputBtn">Enter</button>
+  <div id="editorDiv">
+    <label id="editorToggle" class="toggle-open">Code Editor</label>
+    <div id="editorPane" class="pane-open">
+      <textarea id="progEditor" cols="80" rows="15" wrap="off" spellcheck="false"></textarea>
+    </div>
+ </div>
+
+  <div id="commandBar" class="bar">
+    <button id="runBtn">Run</button>
+    <button id="stopBtn" disabled>Stop</button>
+    <div class="bar-seperator"></div>
+    <button id="debugToggleBtn">Debug</button>
+    <div class="bar-seperator"></div>
+    <div id="statusBar">Ready.</div>
+  </div>
+
+  <div id="consoleDiv">
+    <label id="consoleToggle" class="toggle-open">Console</label>
+    <div id="consolePane" class="pane-open">
+      <textarea id="consoleOutput" cols="80" rows="15" wrap="off" spellcheck="false" readonly></textarea>
+      <div id="consoleInputDiv">
+        <input id="consoleInput" type="text">
+        <button id="consoleInputBtn">Enter</button>
+      </div>
     </div>
   </div>
-</div>
 
-<div id="canvasDiv">
-  <label id="canvasToggle" class="toggle-open">Canvas</label>
-  <div id="canvasPane" class="pane-open">
-    <canvas id="progCanvas" width=500 height=300 tabindex="0"></canvas>
+  <div id="canvasDiv">
+    <label id="canvasToggle" class="toggle-open">Canvas</label>
+    <div id="canvasPane" class="pane-open">
+      <canvas id="progCanvas" width=500 height=300 tabindex="0"></canvas>
+    </div>
   </div>
-</div>
 
-<div id="version">Version 2.0.32 - <a href="../updates.html" target="_blank">Updates</a></div>
+  <div id="version">Version 2.0.33 - <a href="../updates.html" target="_blank">Updates</a></div>
+</div>
 
 </body>
 

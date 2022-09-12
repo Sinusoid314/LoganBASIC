@@ -107,3 +107,16 @@ button
 {
   margin-top: 30px;
 }
+
+#debugDiv
+{
+  height: 100%;
+  width: 200px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: lightskyblue;
+  overflow-x: hidden;
+  padding-top: 60px;
+  display: none;
+}
