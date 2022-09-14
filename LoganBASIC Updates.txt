@@ -1,3 +1,7 @@
+(September 14, 2022)
+[v2.0.34]
+	- Added clearDebugDisplays() function to debug_ui module.
+
 (September 11, 2022)
 [v2.0.33]
 	- Finished basic Debug interface and functionality.

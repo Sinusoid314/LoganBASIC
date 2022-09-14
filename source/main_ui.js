@@ -48,6 +48,8 @@ function runBtn_onClick(event)
   editorStr = progEditor.value;
   clearConsoleOutput();
   resetCanvas();
+  clearDebugDisplays();
+  
   progWorker.postMessage({msgId: MSGID_START_PROG, msgData: editorStr});
 
   switchMode();

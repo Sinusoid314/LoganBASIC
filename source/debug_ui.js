@@ -1,7 +1,7 @@
 var isDebugging = false;
 var mainDiv = document.getElementById("mainDiv");
-var debugDiv = document.getElementById("debugDiv");
 var debugToggleBtn = document.getElementById("debugToggleBtn");
+var debugDiv = document.getElementById("debugDiv");
 var debugStepBtn = document.getElementById("debugStepBtn");
 var debugSkipBtn = document.getElementById("debugSkipBtn");
 var debugCallStackList = document.getElementById("debugCallStackList");
@@ -9,6 +9,13 @@ var debugCallStackList = document.getElementById("debugCallStackList");
 debugToggleBtn.addEventListener("click", debugToggleBtn_onClick);
 debugStepBtn.addEventListener("click", debugStepBtn_onClick);
 debugSkipBtn.addEventListener("click", debugSkipBtn_onClick);
+
+function clearDebugDisplays()
+//
+{
+  while(debugCallStackList.options.length)
+    debugCallStackList.remove(0);
+}
 
 function debugToggleBtn_onClick(event)
 //
