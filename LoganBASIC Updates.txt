@@ -1,3 +1,8 @@
+(September 15, 2022)
+[v2.0.35]
+	- Renamed all worker module to end in _worker.
+	- Renamed all message-response functions in the worker thread to begin with onMsg.
+
 (September 14, 2022)
 [v2.0.34]
 	- Added clearDebugDisplays() function to debug_ui module.
