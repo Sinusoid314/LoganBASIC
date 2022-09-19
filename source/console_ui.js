@@ -6,50 +6,10 @@ var consoleInputDiv = document.getElementById("consoleInputDiv");
 consoleInput.addEventListener("keydown", consoleInput_onKeydown);
 consoleInputBtn.addEventListener("click", consoleInputBtn_onClick);
 
-function onMsgShowConsole()
-//Show the console pane
-{
-  var toggle = document.getElementById("consoleToggle");
-  var pane = document.getElementById("consolePane");
-
-  if(toggle.classList.contains("toggle-closed"))
-  {
-    toggle.classList.toggle("toggle-closed");
-    pane.classList.toggle("pane-closed");
-  }
-}
-
-function onMsgHideConsole()
-//Hide the console pane
-{
-  var toggle = document.getElementById("consoleToggle");
-  var pane = document.getElementById("consolePane");
-
-  if(!(toggle.classList.contains("toggle-closed")))
-  {
-    toggle.classList.toggle("toggle-closed");
-    pane.classList.toggle("pane-closed");
-  }
-}
-
-function onMsgPrint(val)
-//Print to the console output
-{
-  consoleOutput.value += val;
-  consoleOutput.scrollTop = consoleOutput.scrollHeight;
-}
-
 function clearConsoleOutput()
 //Clear the console
 {
   consoleOutput.value = "";
-}
-
-function onMsgInputRequest()
-//
-{
-  consoleInputDiv.style.display = "block";
-  consoleInput.focus();
 }
 
 function closeConsoleInput()
@@ -83,3 +43,48 @@ function consoleInputBtn_onClick(event)
   enterConsoleInput();
 }
 
+function onMsgShowConsole()
+//Show the console pane
+{
+  var toggle = document.getElementById("consoleToggle");
+  var pane = document.getElementById("consolePane");
+
+  if(toggle.classList.contains("toggle-closed"))
+  {
+    toggle.classList.toggle("toggle-closed");
+    pane.classList.toggle("pane-closed");
+  }
+}
+
+function onMsgHideConsole()
+//Hide the console pane
+{
+  var toggle = document.getElementById("consoleToggle");
+  var pane = document.getElementById("consolePane");
+
+  if(!(toggle.classList.contains("toggle-closed")))
+  {
+    toggle.classList.toggle("toggle-closed");
+    pane.classList.toggle("pane-closed");
+  }
+}
+
+function onMsgPrint(val)
+//Print to the console output
+{
+  consoleOutput.value += val;
+  consoleOutput.scrollTop = consoleOutput.scrollHeight;
+}
+
+function onMsgClearConsole()
+//
+{
+  clearConsoleOutput();
+}
+
+function onMsgInputRequest()
+//
+{
+  consoleInputDiv.style.display = "block";
+  consoleInput.focus();
+}

@@ -113,7 +113,7 @@ function progUI_onMessage(message)
       break;
 
     case MSGID_CLEAR_CONSOLE:
-      clearConsoleOutput();
+      onMsgClearConsole();
       break;
 
     case MSGID_SHOW_CANVAS:
@@ -125,157 +125,157 @@ function progUI_onMessage(message)
       break;
 
     case MSGID_SET_CANVAS_WIDTH:
-      setCanvasWidth(message.data.msgData);
+      onMsgSetCanvasWidth(message.data.msgData);
       break;
 
     case MSGID_SET_CANVAS_HEIGHT:
-      setCanvasHeight(message.data.msgData);
+      onMsgSetCanvasHeight(message.data.msgData);
       break;
 
     case MSGID_CLEAR_CANVAS:
-      clearCanvas();
+      onMsgClearCanvas();
       break;
 
     case MSGID_LOAD_IMAGE_REQUEST:
-      loadImage(message.data.msgData[0], message.data.msgData[1]);
+      onMsgLoadImageRequest(message.data.msgData[0], message.data.msgData[1]);
       break;
 
     case MSGID_UNLOAD_IMAGE_REQUEST:
-      unloadImage(message.data.msgData);
+      onMsgUnloadImageRequest(message.data.msgData);
       break;
 
     case MSGID_DRAW_IMAGE_REQUEST:
-      drawImage(message.data.msgData[0], message.data.msgData[1], message.data.msgData[2], message.data.msgData[3], message.data.msgData[4]);
+      onMsgDrawImageRequest(message.data.msgData[0], message.data.msgData[1], message.data.msgData[2], message.data.msgData[3], message.data.msgData[4]);
       break;
 
     case MSGID_DRAW_IMAGE_CLIP_REQUEST:
-      drawImageClip(message.data.msgData[0], message.data.msgData[1], message.data.msgData[2], message.data.msgData[3], message.data.msgData[4],
-                    message.data.msgData[5], message.data.msgData[6], message.data.msgData[7], message.data.msgData[8]);
+      onMsgDrawImageClipRequest(message.data.msgData[0], message.data.msgData[1], message.data.msgData[2], message.data.msgData[3], message.data.msgData[4],
+                               message.data.msgData[5], message.data.msgData[6], message.data.msgData[7], message.data.msgData[8]);
       break;
 
     case MSGID_DRAW_IMAGE_TILED_REQUEST:
-      drawImageTiled(message.data.msgData[0], message.data.msgData[1], message.data.msgData[2], message.data.msgData[3], message.data.msgData[4],
-                    message.data.msgData[5], message.data.msgData[6]);
+      onMsgDrawImageTiledRequest(message.data.msgData[0], message.data.msgData[1], message.data.msgData[2], message.data.msgData[3], message.data.msgData[4],
+                                message.data.msgData[5], message.data.msgData[6]);
       break;
 
     case MSGID_GET_IMAGE_WIDTH_REQUEST:
-      getImageWidth(message.data.msgData);
+      onMsgGetImageWidthRequest(message.data.msgData);
       break;
 
     case MSGID_GET_IMAGE_HEIGHT_REQUEST:
-      getImageHeight(message.data.msgData);
+      onMsgGetImageHeightRequest(message.data.msgData);
       break;
 
     case MSGID_ENABLE_CANVAS_BUFFER:
-      enableCanvasBuffer();
+      onMsgEnableCanvasBuffer();
       break;
 
     case MSGID_DISABLE_CANVAS_BUFFER:
-      disableCanvasBuffer();
+      onMsgDisableCanvasBuffer();
       break;
 
     case MSGID_DRAW_CANVAS_BUFFER:
-      drawCanvasBuffer();
+      onMsgDrawCanvasBuffer();
       break;
 
     case MSGID_ADD_CANVAS_EVENT:
-      addCanvasEvent(message.data.msgData);
+      onMsgAddCanvasEvent(message.data.msgData);
       break;
 
     case MSGID_REMOVE_CANVAS_EVENT:
-      removeCanvasEvent(message.data.msgData);
+      onMsgRemoveCanvasEvent(message.data.msgData);
       break;
 
     case MSGID_DRAW_TEXT:
-      drawText(message.data.msgData[0], message.data.msgData[1], message.data.msgData[2], message.data.msgData[3]);
+      onMsgDrawText(message.data.msgData[0], message.data.msgData[1], message.data.msgData[2], message.data.msgData[3]);
       break;
 
     case MSGID_DRAW_RECT:
-      drawRect(message.data.msgData[0], message.data.msgData[1], message.data.msgData[2], message.data.msgData[3], message.data.msgData[4]);
+      onMsgDrawRect(message.data.msgData[0], message.data.msgData[1], message.data.msgData[2], message.data.msgData[3], message.data.msgData[4]);
       break;
 
     case MSGID_DRAW_CIRCLE:
-      drawCircle(message.data.msgData[0], message.data.msgData[1], message.data.msgData[2], message.data.msgData[3]);
+      onMsgDrawCircle(message.data.msgData[0], message.data.msgData[1], message.data.msgData[2], message.data.msgData[3]);
       break;
 
     case MSGID_DRAW_LINE:
-      drawLine(message.data.msgData[0], message.data.msgData[1], message.data.msgData[2], message.data.msgData[3]);
+      onMsgDrawLine(message.data.msgData[0], message.data.msgData[1], message.data.msgData[2], message.data.msgData[3]);
       break;
 
     case MSGID_SET_TEXT_FONT:
-      setTextFont(message.data.msgData);
+      onMsgSetTextFont(message.data.msgData);
       break;
 
     case MSGID_SET_FILL_COLOR:
-      setFillColor(message.data.msgData);
+      onMsgSetFillColor(message.data.msgData);
       break;
 
     case MSGID_SET_LINE_COLOR:
-      setLineColor(message.data.msgData);
+      onMsgSetLineColor(message.data.msgData);
       break;
 
     case MSGID_SET_LINE_SIZE:
-      setLineSize(message.data.msgData);
+      onMsgSetLineSize(message.data.msgData);
       break;
 
     case MSGID_LOAD_SOUND_REQUEST:
-      loadSound(message.data.msgData[0], message.data.msgData[1]);
+      onMsgLoadSoundRequest(message.data.msgData[0], message.data.msgData[1]);
       break;
 
     case MSGID_UNLOAD_SOUND_REQUEST:
-      unloadSound(message.data.msgData);
+      onMsgUnloadSoundRequest(message.data.msgData);
       break;
 
     case MSGID_PLAY_SOUND_REQUEST:
-      playSound(message.data.msgData);
+      onMsgPlaySoundRequest(message.data.msgData);
       break;
 
     case MSGID_PAUSE_SOUND_REQUEST:
-      pauseSound(message.data.msgData);
+      onMsgPauseSoundRequest(message.data.msgData);
       break;
 
     case MSGID_STOP_SOUND_REQUEST:
-      stopSound(message.data.msgData);
+      onMsgStopSoundRequest(message.data.msgData);
       break;
 
     case MSGID_GET_SOUND_LEN_REQUEST:
-      getSoundLen(message.data.msgData);
+      onMsgGetSoundLenRequest(message.data.msgData);
       break;
 
     case MSGID_GET_SOUND_POS_REQUEST:
-      getSoundPos(message.data.msgData);
+      onMsgGetSoundPosRequest(message.data.msgData);
       break;
 
     case MSGID_SET_SOUND_POS_REQUEST:
-      setSoundPos(message.data.msgData[0], message.data.msgData[1]);
+      onMsgSetSoundPosRequest(message.data.msgData[0], message.data.msgData[1]);
       break;
 
     case MSGID_LOOP_SOUND_REQUEST:
-      loopSound(message.data.msgData[0], message.data.msgData[1]);
+      onMsgLoopSoundRequest(message.data.msgData[0], message.data.msgData[1]);
       break;
 
     case MSGID_SPRITE_SHEET_REF_REQUEST:
-      spriteSheetRefRequest(message.data.msgData[0], message.data.msgData[1]);
+      onMsgSpriteSheetRefRequest(message.data.msgData[0], message.data.msgData[1]);
       break;
 
     case MSGID_LOAD_SPRITE_SHEET_REQUEST:
-      loadSpriteSheet(message.data.msgData[0], message.data.msgData[1], message.data.msgData[2], message.data.msgData[3]);
+      onMsgLoadSpriteSheetRequest(message.data.msgData[0], message.data.msgData[1], message.data.msgData[2], message.data.msgData[3]);
       break;
 
     case MSGID_UNLOAD_SPRITE_SHEET_REQUEST:
-      unloadSpriteSheet(message.data.msgData);
+      onMsgUnloadSpriteSheetRequest(message.data.msgData);
       break;
 
     case MSGID_DRAW_SPRITE_SHEET_FRAMES_REQUEST:
-      drawSpriteSheetFrames(message.data.msgData);
+      onMsgDrawSpriteSheetFramesRequest(message.data.msgData);
       break;
 
     case MSGID_GET_SPRITE_SHEET_FRAME_WIDTH_REQUEST:
-      getSpriteSheetFrameWidth(message.data.msgData);
+      onMsgGetSpriteSheetFrameWidthRequest(message.data.msgData);
       break;
 
     case MSGID_GET_SPRITE_SHEET_FRAME_HEIGHT_REQUEST:
-      getSpriteSheetFrameHeight(message.data.msgData);
+      onMsgGetSpriteSheetFrameHeightRequest(message.data.msgData);
       break;
 
     case MSGID_DEBUG_UPDATE_DISPLAYS:

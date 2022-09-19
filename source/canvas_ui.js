@@ -32,6 +32,40 @@ function cleanupCanvas()
   progCanvas.removeEventListener("keyup", canvas_onEvent);
 }
 
+function setCanvasWidth(newWidth)
+//
+{
+  var imageData;
+
+  imageData = progCanvasContext.getImageData(0, 0, progCanvas.width, progCanvas.height);
+  progCanvas.width = newWidth;
+  progCanvasContext.putImageData(imageData, 0, 0);
+
+  imageData = bufferCanvasContext.getImageData(0, 0, bufferCanvas.width, bufferCanvas.height);
+  bufferCanvas.width = newWidth;
+  bufferCanvasContext.putImageData(imageData, 0, 0);
+}
+
+function setCanvasHeight(newHeight)
+//
+{
+  var imageData;
+
+  imageData = progCanvasContext.getImageData(0, 0, progCanvas.width, progCanvas.height);
+  progCanvas.height = newHeight;
+  progCanvasContext.putImageData(imageData, 0, 0);
+
+  imageData = bufferCanvasContext.getImageData(0, 0, bufferCanvas.width, bufferCanvas.height);
+  bufferCanvas.height = newHeight;
+  bufferCanvasContext.putImageData(imageData, 0, 0);
+}
+
+function clearCanvas()
+//Clear all graphics from the active canvas
+{
+  activeContext.clearRect(0, 0, activeContext.canvas.width, activeContext.canvas.height);
+}
+
 function image_onLoad(event)
 //
 {
@@ -120,41 +154,25 @@ function onMsgHideCanvas()
   }
 }
 
-function setCanvasWidth(newWidth)
+function onMsgSetCanvasWidth(newWidth)
 //
 {
-  var imageData;
-
-  imageData = progCanvasContext.getImageData(0, 0, progCanvas.width, progCanvas.height);
-  progCanvas.width = newWidth;
-  progCanvasContext.putImageData(imageData, 0, 0);
-
-  imageData = bufferCanvasContext.getImageData(0, 0, bufferCanvas.width, bufferCanvas.height);
-  bufferCanvas.width = newWidth;
-  bufferCanvasContext.putImageData(imageData, 0, 0);
+  setCanvasWidth(newWidth);
 }
 
-function setCanvasHeight(newHeight)
+function onMsgSetCanvasHeight(newHeight)
 //
 {
-  var imageData;
-
-  imageData = progCanvasContext.getImageData(0, 0, progCanvas.width, progCanvas.height);
-  progCanvas.height = newHeight;
-  progCanvasContext.putImageData(imageData, 0, 0);
-
-  imageData = bufferCanvasContext.getImageData(0, 0, bufferCanvas.width, bufferCanvas.height);
-  bufferCanvas.height = newHeight;
-  bufferCanvasContext.putImageData(imageData, 0, 0);
+  setCanvasHeight(newHeight);
 }
 
-function clearCanvas()
-//Clear all graphics from the active canvas
+function onMsgClearCanvas()
+//
 {
-  activeContext.clearRect(0, 0, activeContext.canvas.width, activeContext.canvas.height);
+  clearCanvas();
 }
 
-function loadImage(imageName, imageSource)
+function onMsgLoadImageRequest(imageName, imageSource)
 //Load an image for drawing on the canvas
 {
   var newImage;
@@ -173,7 +191,7 @@ function loadImage(imageName, imageSource)
     sendImageRequestResult(["Image '" + imageName + "' has already been loaded."]);
 }
 
-function unloadImage(imageName)
+function onMsgUnloadImageRequest(imageName)
 //Unload a canvas image
 {
   if(images.has(imageName))
@@ -185,7 +203,7 @@ function unloadImage(imageName)
     sendImageRequestResult(["Image '" + imageName + "' has not been loaded."]);
 }
 
-function drawImage(imageName, drawX, drawY, drawWidth, drawHeight)
+function onMsgDrawImageRequest(imageName, drawX, drawY, drawWidth, drawHeight)
 //Draw the given image to the active canvas
 {
   var image;
@@ -208,7 +226,7 @@ function drawImage(imageName, drawX, drawY, drawWidth, drawHeight)
     sendImageRequestResult(["Image '" + imageName + "' has not been loaded."]);
 }
 
-function drawImageClip(imageName, clipX, clipY, clipWidth, clipHeight, drawX, drawY, drawWidth, drawHeight)
+function onMsgDrawImageClipRequest(imageName, clipX, clipY, clipWidth, clipHeight, drawX, drawY, drawWidth, drawHeight)
 //Draw the given image to the active canvas
 {
   var image;
@@ -225,7 +243,7 @@ function drawImageClip(imageName, clipX, clipY, clipWidth, clipHeight, drawX, dr
     sendImageRequestResult(["Image '" + imageName + "' has not been loaded."]);
 }
 
-function drawImageTiled(imageName, drawX, drawY, drawWidth, drawHeight, offsetX, offsetY)
+function onMsgDrawImageTiledRequest(imageName, drawX, drawY, drawWidth, drawHeight, offsetX, offsetY)
 //
 {
   var image;
@@ -264,7 +282,7 @@ function drawImageTiled(imageName, drawX, drawY, drawWidth, drawHeight, offsetX,
   sendImageRequestResult(["", 0]);
 }
 
-function getImageWidth(imageName)
+function onMsgGetImageWidthRequest(imageName)
 //
 {
   if(images.has(imageName))
@@ -273,7 +291,7 @@ function getImageWidth(imageName)
     sendImageRequestResult(["Image '" + imageName + "' has not been loaded."]);
 }
 
-function getImageHeight(imageName)
+function onMsgGetImageHeightRequest(imageName)
 //
 {
   if(images.has(imageName))
@@ -282,37 +300,37 @@ function getImageHeight(imageName)
     sendImageRequestResult(["Image '" + imageName + "' has not been loaded."]);
 }
 
-function enableCanvasBuffer()
+function onMsgEnableCanvasBuffer()
 //
 {
   activeContext = bufferCanvasContext;
 }
 
-function disableCanvasBuffer()
+function onMsgDisableCanvasBuffer()
 //
 {
   activeContext = progCanvasContext;
 }
 
-function drawCanvasBuffer()
+function onMsgDrawCanvasBuffer()
 //
 {
   window.requestAnimationFrame(canvas_onAnimationFrame);
 }
 
-function addCanvasEvent(eventName)
+function onMsgAddCanvasEvent(eventName)
 //
 {
   progCanvas.addEventListener(eventName, canvas_onEvent);
 }
 
-function removeCanvasEvent(eventName)
+function onMsgRemoveCanvasEvent(eventName)
 //
 {
   progCanvas.removeEventListener(eventName, canvas_onEvent);
 }
 
-function drawText(text, drawX, drawY, isFilled)
+function onMsgDrawText(text, drawX, drawY, isFilled)
 //
 {
   if(isFilled)
@@ -321,7 +339,7 @@ function drawText(text, drawX, drawY, isFilled)
     activeContext.strokeText(text, drawX, drawY);
 }
 
-function drawRect(drawX, drawY, drawWidth, drawHeight, isFilled)
+function onMsgDrawRect(drawX, drawY, drawWidth, drawHeight, isFilled)
 //
 {
   if(isFilled)
@@ -330,7 +348,7 @@ function drawRect(drawX, drawY, drawWidth, drawHeight, isFilled)
     activeContext.strokeRect(drawX, drawY, drawWidth, drawHeight);
 }
 
-function drawCircle(centerX, centerY, radius, isFilled)
+function onMsgDrawCircle(centerX, centerY, radius, isFilled)
 //
 {
   activeContext.beginPath();
@@ -342,7 +360,7 @@ function drawCircle(centerX, centerY, radius, isFilled)
     activeContext.stroke();
 }
 
-function drawLine(startX, startY, endX, endY)
+function onMsgDrawLine(startX, startY, endX, endY)
 //
 {
   activeContext.beginPath();
@@ -351,25 +369,25 @@ function drawLine(startX, startY, endX, endY)
   activeContext.stroke();
 }
 
-function setTextFont(font)
+function onMsgSetTextFont(font)
 //
 {
   activeContext.font = font;
 }
 
-function setFillColor(color)
+function onMsgSetFillColor(color)
 //
 {
   activeContext.fillStyle = color;
 }
 
-function setLineColor(color)
+function onMsgSetLineColor(color)
 //
 {
   activeContext.strokeStyle = color;
 }
 
-function setLineSize(size)
+function onMsgSetLineSize(size)
 //
 {
   activeContext.lineWidth = size;

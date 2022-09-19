@@ -32,7 +32,7 @@ function sendSoundRequestResult(msgData)
   progWorker.postMessage({msgId: MSGID_SOUND_REQUEST_RESULT, msgData: msgData});
 }
 
-function loadSound(soundName, soundSource)
+function onMsgLoadSoundRequest(soundName, soundSource)
 //Load an audio element
 {
   var newSound;
@@ -51,7 +51,7 @@ function loadSound(soundName, soundSource)
     sendSoundRequestResult(["Sound '" + soundName + "' has already been loaded."]);
 }
 
-function unloadSound(soundName)
+function onMsgUnloadSoundRequest(soundName)
 //Unload an audio element
 {
   var sound;
@@ -69,7 +69,7 @@ function unloadSound(soundName)
     sendSoundRequestResult(["Sound '" + soundName + "' has not been loaded."]);
 }
 
-function playSound(soundName)
+function onMsgPlaySoundRequest(soundName)
 //
 {
   if(sounds.has(soundName))
@@ -81,7 +81,7 @@ function playSound(soundName)
     sendSoundRequestResult(["Sound '" + soundName + "' has not been loaded."]);
 }
 
-function pauseSound(soundName)
+function onMsgPauseSoundRequest(soundName)
 //
 {
   if(sounds.has(soundName))
@@ -93,7 +93,7 @@ function pauseSound(soundName)
     sendSoundRequestResult(["Sound '" + soundName + "' has not been loaded."]);
 }
 
-function stopSound(soundName)
+function onMsgStopSoundRequest(soundName)
 //
 {
   if(sounds.has(soundName))
@@ -106,7 +106,7 @@ function stopSound(soundName)
     sendSoundRequestResult(["Sound '" + soundName + "' has not been loaded."]);
 }
 
-function getSoundLen(soundName)
+function onMsgGetSoundLenRequest(soundName)
 //
 {
   if(sounds.has(soundName))
@@ -115,7 +115,7 @@ function getSoundLen(soundName)
     sendSoundRequestResult(["Sound '" + soundName + "' has not been loaded."]);
 }
 
-function getSoundPos(soundName)
+function onMsgGetSoundPosRequest(soundName)
 //
 {
   if(sounds.has(soundName))
@@ -124,7 +124,7 @@ function getSoundPos(soundName)
     sendSoundRequestResult(["Sound '" + soundName + "' has not been loaded."]);
 }
 
-function setSoundPos(soundName, soundPos)
+function onMsgSetSoundPosRequest(soundName, soundPos)
 //
 {
   if(sounds.has(soundName))
@@ -136,7 +136,7 @@ function setSoundPos(soundName, soundPos)
     sendSoundRequestResult(["Sound '" + soundName + "' has not been loaded."]);
 }
 
-function loopSound(soundName, isLooped)
+function onMsgLoopSoundRequest(soundName, isLooped)
 //
 {
   if(sounds.has(soundName))

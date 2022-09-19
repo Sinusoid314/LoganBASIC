@@ -1,6 +1,5 @@
-- Rename all message-response functions in the UI thread to begin with onMsg.
-
 - Add current source line highlighting when selecting call stack item in debugger.
+- Add ability to display different sources in debugger.
 - Add variable displays to debugger.
 - Add ability to modify variable values in debugger.
 

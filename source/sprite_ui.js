@@ -56,7 +56,7 @@ function sendSpriteSheetRequestResult(msgData)
   progWorker.postMessage({msgId: MSGID_SPRITE_SHEET_REQUEST_RESULT, msgData: msgData});
 }
 
-function spriteSheetRefRequest(sheetName, spriteName)
+function onMsgSpriteSheetRefRequest(sheetName, spriteName)
 //
 {
   var sheet;
@@ -72,7 +72,7 @@ function spriteSheetRefRequest(sheetName, spriteName)
                             msgData: ["Sprite sheet '" + sheetName + "' has not been loaded."]});
 }
 
-function loadSpriteSheet(sheetName, sheetSource, columnCount, rowCount)
+function onMsgLoadSpriteSheetRequest(sheetName, sheetSource, columnCount, rowCount)
 //Load a sprite sheet image
 {
   var newSheetImage;
@@ -93,7 +93,7 @@ function loadSpriteSheet(sheetName, sheetSource, columnCount, rowCount)
     sendSpriteSheetRequestResult(["Sprite sheet '" + sheetName + "' has already been loaded."]);
 }
 
-function unloadSpriteSheet(sheetName)
+function onMsgUnloadSpriteSheetRequest(sheetName)
 //Unload a sprite sheet image
 {
   if(spriteSheets.has(sheetName))
@@ -105,7 +105,7 @@ function unloadSpriteSheet(sheetName)
     sendSpriteSheetRequestResult(["Sprite sheet '" + sheetName + "' has not been loaded."]);
 }
 
-function drawSpriteSheetFrames(drawData)
+function onMsgDrawSpriteSheetFramesRequest(drawData)
 //
 {
   var sheetName, sheet, frameIndex;
@@ -148,7 +148,7 @@ function drawSpriteSheetFrames(drawData)
   sendSpriteSheetRequestResult(["", 0]);
 }
 
-function getSpriteSheetFrameWidth(sheetName)
+function onMsgGetSpriteSheetFrameWidthRequest(sheetName)
 //
 {
   if(spriteSheets.has(sheetName))
@@ -157,7 +157,7 @@ function getSpriteSheetFrameWidth(sheetName)
     sendSpriteSheetRequestResult(["Sprite sheet '" + sheetName + "' has not been loaded."]);
 }
 
-function getSpriteSheetFrameHeight(sheetName)
+function onMsgGetSpriteSheetFrameHeightRequest(sheetName)
 //
 {
   if(spriteSheets.has(sheetName))

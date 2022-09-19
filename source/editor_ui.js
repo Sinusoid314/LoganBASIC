@@ -16,32 +16,6 @@ examplesBtn.addEventListener("click", examplesBtn_onClick);
 helpBtn.addEventListener("click", helpBtn_onClick);
 aboutBtn.addEventListener("click", aboutBtn_onClick);
 
-function onMsgShowEditor()
-//Show the program editor pane
-{
-  var toggle = document.getElementById("editorToggle");
-  var pane = document.getElementById("editorPane");
-
-  if(toggle.classList.contains("toggle-closed"))
-  {
-    toggle.classList.toggle("toggle-closed");
-    pane.classList.toggle("pane-closed");
-  }
-}
-
-function onMsgHideEditor()
-//Hide the program editor pane
-{
-  var toggle = document.getElementById("editorToggle");
-  var pane = document.getElementById("editorPane");
-
-  if(!(toggle.classList.contains("toggle-closed")))
-  {
-    toggle.classList.toggle("toggle-closed");
-    pane.classList.toggle("pane-closed");
-  }
-}
-
 function selectEditorLine(selLine)
 //Select the given editor line number
 {
@@ -169,4 +143,30 @@ function aboutBtn_onClick(event)
 //Open the About page
 {
   window.open("../about.html", "_blank");
+}
+
+function onMsgShowEditor()
+//Show the program editor pane
+{
+  var toggle = document.getElementById("editorToggle");
+  var pane = document.getElementById("editorPane");
+
+  if(toggle.classList.contains("toggle-closed"))
+  {
+    toggle.classList.toggle("toggle-closed");
+    pane.classList.toggle("pane-closed");
+  }
+}
+
+function onMsgHideEditor()
+//Hide the program editor pane
+{
+  var toggle = document.getElementById("editorToggle");
+  var pane = document.getElementById("editorPane");
+
+  if(!(toggle.classList.contains("toggle-closed")))
+  {
+    toggle.classList.toggle("toggle-closed");
+    pane.classList.toggle("pane-closed");
+  }
 }
