@@ -9,12 +9,11 @@ class VariableReference
 
 class Compiler
 {
-  constructor(vm, source, sourceName, userFunc)
+  constructor(vm, source, sourceName, topUserFunc)
   {
     this.vm = vm;
     this.scanner = new Scanner(source, sourceName);
-    this.rootUserFunc = userFunc;
-    this.currUserFunc = userFunc;
+    this.currUserFunc = topUserFunc;
     this.hoistedOps = [];
     this.hoistedOpsJumpOpIndex = 0;
     this.prevToken = null;
@@ -23,9 +22,6 @@ class Compiler
     this.exitWhileOpIndexes = [];
     this.exitForOpIndexes = [];
     this.exitDoOpIndexes = [];
-
-    this.rootUserFunc.ident = "<" + sourceName + ">";
-    this.rootUserFunc.sourceName = sourceName;
   }
 
   compile()
@@ -37,6 +33,7 @@ class Compiler
       return;
 
     this.vm.error = null;
+    this.vm.currCompiler = this;
     prevStatus = this.vm.changeStatus(VM_STATUS_COMPILING);
 
     try
@@ -58,6 +55,7 @@ class Compiler
     }
 
     this.vm.changeStatus(prevStatus);
+    this.vm.currCompiler = null;
   }
 
   parseHoistedDeclaration()
@@ -124,17 +122,15 @@ class Compiler
   funcDecl()
   //Parse a Function declaration
   {
-    var func;
-    var ident;
-    var litIndex;
+    var newFunc, topUserFunc, ident, litIndex;
 
     if(this.matchToken(TOKEN_IDENTIFIER))
       ident = this.peekPrevToken().lexeme;
     else
       this.compileError("Expected identifier.");
 
-    func = new ObjUserFunc(ident, this.scanner.sourceName);
-    this.currUserFunc = func;
+    topUserFunc = this.currUserFunc;
+    this.currUserFunc = new ObjUserFunc(ident, this.scanner.sourceName, SOURCE_LEVEL_FUNC);
 
     this.parseParameters();
 
@@ -145,9 +141,11 @@ class Compiler
       this.compileError("'function' without 'end function'.");
 
     this.addReturnOps();
-    this.currUserFunc = this.rootUserFunc;
 
-    litIndex = this.getLiteralIndex(func);
+    newFunc = this.currUserFunc;
+    this.currUserFunc = topUserFunc;
+
+    litIndex = this.getLiteralIndex(newFunc);
     this.addOp([OPCODE_LOAD_LIT, litIndex], true);
     this.addVariable(ident, true);
   }
@@ -562,7 +560,7 @@ class Compiler
   returnStmt()
   //Parse a Return statement
   {
-    if(this.currUserFunc == this.rootUserFunc)
+    if(this.currUserFunc.sourceLevel == SOURCE_LEVEL_TOP)
       this.compileError("'return' only allowed within a function.");
 
     if(this.checkTerminator())
@@ -1000,7 +998,7 @@ class Compiler
     if(this.vm.nativeFuncs.has(varIdent))
       this.compileError("'" + varIdent + "' is already a built-in function.");
 
-    if(this.currUserFunc == this.rootUserFunc)
+    if(this.currUserFunc.sourceLevel == SOURCE_LEVEL_TOP)
     {
       litIndex = this.getLiteralIndex(varIdent);
       this.addOp([OPCODE_DEFINE_GLOBAL_VAR, litIndex], hoistOp);
@@ -1036,7 +1034,7 @@ class Compiler
     var varIndex, litIndex;
 
     //Look for local variable
-    if(this.currUserFunc != this.rootUserFunc)
+    if(this.currUserFunc.sourceLevel == SOURCE_LEVEL_FUNC)
     {
       for(varIndex = 0; varIndex < this.currUserFunc.localIdents.length; varIndex++)
       {
@@ -1090,7 +1088,7 @@ class Compiler
   {
     this.addOp([OPCODE_JUMP, this.hoistedOpsJumpOpIndex + 1], true);
     this.patchJumpOp(this.hoistedOpsJumpOpIndex);
-    this.rootUserFunc.ops = this.rootUserFunc.ops.concat(this.hoistedOps);
+    this.currUserFunc.ops = this.currUserFunc.ops.concat(this.hoistedOps);
   }
 
   opsCount()

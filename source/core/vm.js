@@ -72,6 +72,7 @@ class VM
 
     this.status = VM_STATUS_IDLE;
     this.error = null;
+    this.currCompiler = null;
     this.nativeFuncs = new Map();
     this.globals = new Map();
     this.stack = [];
@@ -129,15 +130,15 @@ class VM
   interpret(source, sourceName = "")
   //Compile and run the given source code
   {
-    var rootUserFunc = new ObjUserFunc("<root>");
-    var compiler = new Compiler(this, source, sourceName, rootUserFunc);
+    var topUserFunc = new ObjUserFunc(sourceName, sourceName, SOURCE_LEVEL_TOP);
+    var compiler = new Compiler(this, source, sourceName, topUserFunc);
 
     compiler.compile();
     if(this.error != null)
       return INTERPRET_COMPILE_ERROR;
       
-    this.stack.push(rootUserFunc);
-    this.callUserFunc(rootUserFunc, 0, 0);
+    this.stack.push(topUserFunc);
+    this.callUserFunc(topUserFunc, 0, 0);
 
     this.run();
     if(this.error != null)

@@ -1,3 +1,10 @@
+(September 27, 2022)
+[v2.0.37]
+	- Added currCompiiler member to VM that holds a reference to the Compiler object that is currently
+	  executing its compile() method.
+	- Added sourceLevel member to ObjUserFunc that can be either SOURCE_LEVEL_TOP or SOURCE_LEVEL_FUNC,
+	  and modified Compiler to utilize this member instead of using a serperate rootUserFunc reference.
+
 (September 18, 2022)
 [v2.0.36]
 	- Renamed all message-response functions in the UI thread to begin with onMsg.

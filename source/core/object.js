@@ -1,6 +1,9 @@
+const SOURCE_LEVEL_TOP = 1;
+const SOURCE_LEVEL_FUNC = 2;
+
 class ObjUserFunc
 {
-  constructor(ident = "", sourceName = "")
+  constructor(ident = "", sourceName = "", sourceLevel = SOURCE_LEVEL_TOP)
   {
     this.ident = ident;
     this.paramCount = 0;
@@ -9,6 +12,7 @@ class ObjUserFunc
     this.ops = [];
     this.sourceLineMap = new Map();
     this.sourceName = sourceName;
+    this.sourceLevel = sourceLevel;
   }
 
   typeToString()
