@@ -3,7 +3,7 @@ const SOURCE_LEVEL_FUNC = 2;
 
 class ObjUserFunc
 {
-  constructor(ident = "", sourceName = "", sourceLevel = SOURCE_LEVEL_TOP)
+  constructor(ident, sourceName, sourceLevel)
   {
     this.ident = ident;
     this.paramCount = 0;

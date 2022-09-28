@@ -12,7 +12,8 @@ class Compiler
   constructor(vm, source, sourceName, topUserFunc)
   {
     this.vm = vm;
-    this.scanner = new Scanner(source, sourceName);
+    this.scanner = new Scanner(source);
+    this.sourceName = sourceName;
     this.currUserFunc = topUserFunc;
     this.hoistedOps = [];
     this.hoistedOpsJumpOpIndex = 0;
@@ -130,7 +131,7 @@ class Compiler
       this.compileError("Expected identifier.");
 
     topUserFunc = this.currUserFunc;
-    this.currUserFunc = new ObjUserFunc(ident, this.scanner.sourceName, SOURCE_LEVEL_FUNC);
+    this.currUserFunc = new ObjUserFunc(ident, this.sourceName, SOURCE_LEVEL_FUNC);
 
     this.parseParameters();
 
@@ -1255,11 +1256,10 @@ class Compiler
   //
   {
     var sourceLineNum = this.peekCurrToken().lineNum;
-    var sourceName = this.scanner.sourceName;
 
     message = "Compile error on line " + sourceLineNum + ": " + message;
 
-    this.vm.error = new VMError(message, sourceLineNum, sourceName);
+    this.vm.error = new VMError(message, sourceLineNum, this.sourceName);
 
     if((this.vm.onErrorHook) && (this.vm.onErrorHook(this.vm, this)))
     {

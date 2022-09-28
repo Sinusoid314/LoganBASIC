@@ -1,3 +1,7 @@
+(September 28, 2022)
+[v2.0.38]
+	- Removed sourceName member from Scanner and moved it into Compiler.
+
 (September 27, 2022)
 [v2.0.37]
 	- Added currCompiiler member to VM that holds a reference to the Compiler object that is currently
