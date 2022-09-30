@@ -1,3 +1,6 @@
+const SOURCE_LEVEL_TOP = 1;
+const SOURCE_LEVEL_FUNC = 2;
+
 class VariableReference
 {
   constructor(scope, index)
@@ -9,12 +12,12 @@ class VariableReference
 
 class Compiler
 {
-  constructor(vm, source, sourceName, topUserFunc)
+  constructor(vm, source, sourceName)
   {
     this.vm = vm;
     this.scanner = new Scanner(source);
     this.sourceName = sourceName;
-    this.currUserFunc = topUserFunc;
+    this.currUserFunc = null;
     this.hoistedOps = [];
     this.hoistedOpsJumpOpIndex = 0;
     this.prevToken = null;
@@ -39,6 +42,8 @@ class Compiler
 
     try
     {
+      this.currUserFunc = new ObjUserFunc(this.sourceName, this.sourceName, SOURCE_LEVEL_TOP);
+
       this.initTokens();
 
       this.addHoistedOpsJumpOp();
@@ -52,11 +57,14 @@ class Compiler
     }
     catch(error)
     {
+      this.currUserFunc = null;
       console.log(error);
     }
 
     this.vm.changeStatus(prevStatus);
     this.vm.currCompiler = null;
+
+    return this.currUserFunc;
   }
 
   parseHoistedDeclaration()

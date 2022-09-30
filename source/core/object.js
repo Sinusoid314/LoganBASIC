@@ -1,6 +1,3 @@
-const SOURCE_LEVEL_TOP = 1;
-const SOURCE_LEVEL_FUNC = 2;
-
 class ObjUserFunc
 {
   constructor(ident, sourceName, sourceLevel)

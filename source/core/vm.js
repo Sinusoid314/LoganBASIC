@@ -130,10 +130,10 @@ class VM
   interpret(source, sourceName = "")
   //Compile and run the given source code
   {
-    var topUserFunc = new ObjUserFunc(sourceName, sourceName, SOURCE_LEVEL_TOP);
-    var compiler = new Compiler(this, source, sourceName, topUserFunc);
+    var topUserFunc;
+    var compiler = new Compiler(this, source, sourceName);
 
-    compiler.compile();
+    topUserFunc = compiler.compile();
     if(this.error != null)
       return INTERPRET_COMPILE_ERROR;
       
