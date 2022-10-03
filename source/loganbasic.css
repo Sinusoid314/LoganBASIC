@@ -108,6 +108,11 @@ button
   margin-top: 30px;
 }
 
+#mainDiv
+{
+  padding: 1px;
+}
+
 #debugDiv
 {
   height: 100%;
@@ -115,8 +120,19 @@ button
   position: fixed;
   top: 0;
   left: 0;
-  background-color: lightskyblue;
+  background-color: rgb(231, 241, 241);
   overflow-x: hidden;
-  padding-top: 60px;
   display: none;
+  padding: 5px;
+  border: inset 2px;
+}
+
+#debugCallStackDiv
+{
+  margin-top: 15px;
+}
+
+#debugCallStackList
+{
+  display: block;
 }

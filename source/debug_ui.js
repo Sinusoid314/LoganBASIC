@@ -32,7 +32,7 @@ function debugToggleBtn_onClick(event)
   {
     debugToggleBtn.style.border = "inset 2px";
 	  debugDiv.style.display = "block";
-    mainDiv.style.marginLeft = debugDiv.clientWidth;
+    mainDiv.style.marginLeft = debugDiv.clientWidth + "px";
 
     progWorker.postMessage({msgId: MSGID_DEBUG_START});
   }
