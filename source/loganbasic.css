@@ -110,21 +110,31 @@ button
 
 #mainDiv
 {
-  padding: 1px;
+  padding: 0px;
 }
 
 #debugDiv
 {
   height: 100%;
   width: 200px;
+  min-width: 30px;
   position: fixed;
   top: 0;
   left: 0;
   background-color: rgb(231, 241, 241);
   overflow-x: hidden;
   display: none;
-  padding: 5px;
-  border: inset 2px;
+}
+
+#debugResizer
+{
+  width: 4px;
+  height: 100%;
+  padding: 0;
+  cursor: ew-resize;
+  display: block;
+  background: lightsteelblue;
+  float: right;
 }
 
 #debugCallStackDiv
