@@ -136,9 +136,6 @@ class VM
     topUserFunc = compiler.compile();
     if(this.error != null)
       return INTERPRET_COMPILE_ERROR;
-
-    console.log(topUserFunc.sourceLineMap);
-    console.log(topUserFunc.toString());
     
     this.stack.push(topUserFunc);
     this.callUserFunc(topUserFunc, 0, 0);
@@ -752,10 +749,6 @@ class VM
 
     if((currOpSourceLineNum == nextOpSourceLineNum) || (nextOpSourceLineNum == 0))
       return;
-
-    console.log("currOpSourceLineNum = " + currOpSourceLineNum + "  [" + this.currCallFrame.currOpIndex + "]");
-    console.log("nextOpSourceLineNum = " + nextOpSourceLineNum + "  [" + this.currCallFrame.nextOpIndex + "]");
-    console.log(" ");
 
     this.onSourceLineChangeHook(this, nextOpSourceLineNum)
   }

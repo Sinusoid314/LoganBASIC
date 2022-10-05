@@ -51,7 +51,7 @@ class Compiler
       while(!this.endOfTokens())
         this.parseHoistedDeclaration();
 
-      this.addReturnOps();
+      this.addReturnOps(false);
 
       this.addHoistedOps();
     }
@@ -149,7 +149,7 @@ class Compiler
     if(!this.matchTokenPair(TOKEN_END, TOKEN_FUNCTION))
       this.compileError("'function' without 'end function'.");
 
-    this.addReturnOps();
+    this.addReturnOps(false);
 
     newFunc = this.currUserFunc;
     this.currUserFunc = topUserFunc;
@@ -574,7 +574,7 @@ class Compiler
 
     if(this.checkTerminator())
     {
-      this.addReturnOps();
+      this.addReturnOps(true);
     }
     else
     {
@@ -1057,7 +1057,7 @@ class Compiler
     return new VariableReference(SCOPE_GLOBAL, litIndex);
   }
 
-  addOp(operandList, hoistOp = false)
+  addOp(operandList, hoistOp = false, hasSourceLine = true)
   //Add a new bytecodce op, either to the current user function,
   //or the hoisted ops array, and return the new op's index
   {
@@ -1068,7 +1068,10 @@ class Compiler
     }
 
     this.currUserFunc.ops.push(operandList);
-    this.updateSourceLineMap();
+    
+    if(hasSourceLine)
+      this.updateSourceLineMap();
+    
     return this.opsCount() - 1;
   }
 
@@ -1078,17 +1081,17 @@ class Compiler
     this.currUserFunc.ops[opIndex][1] = this.opsCount();
   }
 
-  addReturnOps()
+  addReturnOps(hasSourceLine)
   //Add bytecode ops for returning from a user function
   {
-    this.addOp([OPCODE_LOAD_INT, 0]);
-    this.addOp([OPCODE_RETURN]);
+    this.addOp([OPCODE_LOAD_NOTHING], false, hasSourceLine);
+    this.addOp([OPCODE_RETURN], false, hasSourceLine);
   }
 
   addHoistedOpsJumpOp()
   //Add a jump op to the beginning of the root user-function's ops that jumps to the hoisted ops
   {
-    this.hoistedOpsJumpOpIndex = this.addOp([OPCODE_JUMP, 0]);
+    this.hoistedOpsJumpOpIndex = this.addOp([OPCODE_JUMP, 0], false, false);
   }
 
   addHoistedOps()
@@ -1146,9 +1149,6 @@ class Compiler
       this.compileError(this.currToken.lexeme);
 
     this.nextToken = this.scanner.scanToken();
-
-    console.log(this.currToken);
-    console.log(this.nextToken);
   }
 
   consumeToken()
@@ -1161,8 +1161,6 @@ class Compiler
       this.compileError(this.currToken.lexeme);
 
     this.nextToken = this.scanner.scanToken();
-
-    console.log(this.nextToken);
 
     return this.prevToken;
   }

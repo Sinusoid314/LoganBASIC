@@ -1,3 +1,9 @@
+(October 5, 2022)
+[v2.0.42]
+	- Added hasSourceLine parameter to addOp() method in Compiler.
+	- Added hasSourceLine parameter to addReturnOps() method in Compiler.
+	- Modified addReturnOps() method in Compiler to add LOAD_NOTHING op instead of LOAD_INT.
+
 (October 3, 2022)
 [v2.0.41]
 	- Added ability to resize debugger pane.
