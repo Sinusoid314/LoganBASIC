@@ -1146,6 +1146,9 @@ class Compiler
       this.compileError(this.currToken.lexeme);
 
     this.nextToken = this.scanner.scanToken();
+
+    console.log(this.currToken);
+    console.log(this.nextToken);
   }
 
   consumeToken()
@@ -1158,6 +1161,8 @@ class Compiler
       this.compileError(this.currToken.lexeme);
 
     this.nextToken = this.scanner.scanToken();
+
+    console.log(this.nextToken);
 
     return this.prevToken;
   }
