@@ -1,4 +1,4 @@
-const lbVersion = "2.0.42";
+const lbVersion = "2.0.43";
 
 const stdNativeFuncs = [
                   new ObjNativeFunc("rnd", 0, 0, funcRnd),
@@ -41,7 +41,7 @@ const stdNativeFuncs = [
                   new ObjNativeFunc("splitStr", 2, 2, funcSplitStr),
                   new ObjNativeFunc("pauseFor", 1, 1, funcPauseFor),
                   new ObjNativeFunc("import", 1, 1, funcImport),
-                  new ObjNativeFunc("eval", 1, 1, funcEval)
+                  new ObjNativeFunc("run", 1, 1, funcRun)
                  ];
 
 var timerID = 0;
@@ -524,7 +524,7 @@ function funcImport(vm, args)
   return false;
 }
 
-function funcEval(vm, args)
+function funcRun(vm, args)
 //
 {
   var source = args[0];

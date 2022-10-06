@@ -1,3 +1,7 @@
+(October 6, 2022)
+[v2.0.43]
+	- Renamed eval() native function to run().
+
 (October 5, 2022)
 [v2.0.42]
 	- Added hasSourceLine parameter to addOp() method in Compiler.
