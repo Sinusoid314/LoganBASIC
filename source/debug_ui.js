@@ -18,6 +18,8 @@ debugSkipBtn.addEventListener("click", debugSkipBtn_onClick);
 function clearDebugDisplays()
 //
 {
+  selectEditorLine(0);
+  
   while(debugCallStackList.options.length)
     debugCallStackList.remove(0);
 }
@@ -87,27 +89,11 @@ function debugSkipBtn_onClick(event)
   progWorker.postMessage({msgId: MSGID_DEBUG_SKIP});
 }
 
-function onMsgDebugUpdateDisplays(displayInfo)
+function onMsgDebugBreakpoint(breakpointInfo)
 //
 {
-  selectEditorLine(displayInfo.currSourceLineNum);
-  displayInfo.funcIdents.forEach(ident => debugCallStackList.add(new Option(funcIdent), 0));
-}
+  clearDebugDisplays();
 
-function onMsgDebugUserFuncCall(funcIdent)
-//
-{
-  debugCallStackList.add(new Option(funcIdent), 0);
-}
-
-function onMsgDebugUserFuncReturn()
-//
-{
-  debugCallStackList.remove(0);
-}
-
-function onMsgDebugSourceLineChange(nextSourceLineNum)
-//
-{
-  selectEditorLine(nextSourceLineNum);
+  selectEditorLine(breakpointInfo.sourceLineNum);
+  breakpointInfo.funcIdents.forEach(ident => debugCallStackList.add(new Option(ident), 0));
 }

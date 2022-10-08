@@ -94,6 +94,7 @@ function progWorker_onMessage(message)
 function onMsgStartProg(source)
 //Compile and run the program
 {
+  resetMain();
   mainVM.interpret(source);
 }
 
@@ -115,7 +116,6 @@ function onVMStatusChange(vm, prevStatus)
 function onVMError(vm)
 //
 {
-  resetMain();
   postMessage({msgId: MSGID_PROG_DONE_ERROR, msgData: vm.error});
   return false;
 }
@@ -123,6 +123,5 @@ function onVMError(vm)
 function onVMRunEnd(vm)
 //
 {
-  resetMain();
   postMessage({msgId: MSGID_PROG_DONE_SUCCESS});
 }

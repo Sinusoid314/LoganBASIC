@@ -1,3 +1,13 @@
+(October 7, 2022)
+[v2.0.44]
+	- Modified selectEditorLine() function in editor_ui to properly center the selected line.
+	- Renamed MSGID_DEBUG_SOURCE_LINE_CHANGE to MSGID_DEBUG_BREAKPOINT.
+	- Removed MSGID_DEBUG_USER_FUNC_CALL and MSGID_DEBUG_USER_FUNC_RETURN messages.
+	- Removed MSGID_DEBUG_UPDATE_DISPLAYS message and replaced it's functionality into MSGID_DEBUG_BREAKPOINT.
+	- Modified selectEditorLine() function in editor_ui to clear the selection if the line number is out of range.
+	- Fixed bug with errors not being reported properly by resetting the VM before compiling and running a
+	  program instead of after.
+
 (October 6, 2022)
 [v2.0.43]
 	- Renamed eval() native function to run().

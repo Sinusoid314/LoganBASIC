@@ -1,30 +1,26 @@
-function composeDebugDisplayInfo()
+function composeDebugBreakpointInfo(sourceLineNum)
 //
 {
-  var displayInfo = {currSourceLineNum: 0, funcIdents: []};
+  var breakpointInfo = {sourceLineNum: 0, funcIdents: []};
 
-  displayInfo.currSourceLineNum = mainVM.getCurrOpSourceLineNum();
-  mainVM.callFrames.forEach(frame => displayInfo.funcIdents.push(frame.func.ident));
+  breakpointInfo.sourceLineNum = sourceLineNum;
+  mainVM.callFrames.forEach(frame => breakpointInfo.funcIdents.push(frame.func.ident));
 
-  return displayInfo;
+  return breakpointInfo;
 }
 
 function onMsgDebugStart()
 //
 {
-  mainVM.onUserFuncCallHook = onVMUserFuncCall;
-  mainVM.onUserFuncReturnHook = onVMUserFuncReturn;
   mainVM.onSourceLineChangeHook = onVMSourceLineChange;
 
   if(!mainVM.endOfOps())
-    postMessage({msgId: MSGID_DEBUG_UPDATE_DISPLAYS, msgData: composeDebugDisplayInfo()});
+    postMessage({msgId: MSGID_DEBUG_BREAKPOINT, msgData: composeDebugBreakpointInfo(mainVM.getCurrOpSourceLineNum())});
 }
 
 function onMsgDebugStop()
 //
 {
-  mainVM.onUserFuncCallHook = null;
-  mainVM.onUserFuncReturnHook = null;
   mainVM.onSourceLineChangeHook = null;
   
   if(mainVM.inBreakpoint)
@@ -51,21 +47,9 @@ function onMsgDebugSkip()
   mainVM.run();
 }
 
-function onVMUserFuncCall(vm, funcIdent)
-//
-{
-  postMessage({msgId: MSGID_DEBUG_USER_FUNC_CALL, msgData: funcIdent});
-}
-
-function onVMUserFuncReturn(vm)
-//
-{
-  postMessage({msgId: MSGID_DEBUG_USER_FUNC_RETURN});
-}
-
 function onVMSourceLineChange(vm, nextSourceLineNum)
 //
 {
-  postMessage({msgId: MSGID_DEBUG_SOURCE_LINE_CHANGE, msgData: nextSourceLineNum});
+  postMessage({msgId: MSGID_DEBUG_BREAKPOINT, msgData: composeDebugBreakpointInfo(nextSourceLineNum)});
   mainVM.inBreakpoint = true;
 }

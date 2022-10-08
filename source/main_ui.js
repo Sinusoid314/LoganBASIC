@@ -277,21 +277,9 @@ function progUI_onMessage(message)
     case MSGID_GET_SPRITE_SHEET_FRAME_HEIGHT_REQUEST:
       onMsgGetSpriteSheetFrameHeightRequest(message.data.msgData);
       break;
-
-    case MSGID_DEBUG_UPDATE_DISPLAYS:
-      onMsgDebugUpdateDisplays(message.data.msgData);
-      break;
-
-    case MSGID_DEBUG_USER_FUNC_CALL:
-      onMsgDebugUserFuncCall(message.data.msgData);
-      break;
       
-    case MSGID_DEBUG_USER_FUNC_RETURN:
-      onMsgDebugUserFuncReturn();
-      break;
-      
-    case MSGID_DEBUG_SOURCE_LINE_CHANGE:
-      onMsgDebugSourceLineChange(message.data.msgData);
+    case MSGID_DEBUG_BREAKPOINT:
+      onMsgDebugBreakpoint(message.data.msgData);
       break;
   }
 }

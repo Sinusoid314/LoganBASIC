@@ -23,7 +23,11 @@ function selectEditorLine(selLine)
   var startPos = 0, endPos = 0;
 
   if((selLine < 1) || (selLine > lines.length))
+  {
+    progEditor.focus();
+    progEditor.setSelectionRange(0, 0);
     return;
+  }
 
   selLine--;
 
@@ -33,9 +37,8 @@ function selectEditorLine(selLine)
   endPos = startPos + lines[selLine].length;
 
   progEditor.focus();
-  progEditor.selectionStart = startPos;
-  progEditor.selectionEnd = endPos;
-  progEditor.scrollTop = (progEditor.clientHeight / progEditor.rows) * selLine;
+  progEditor.setSelectionRange(startPos, endPos);
+  progEditor.scrollTop = ((progEditor.scrollHeight / lines.length) * selLine) - (progEditor.clientHeight / 2);
 }
 
 function window_onLoad(event)
