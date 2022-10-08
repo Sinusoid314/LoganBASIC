@@ -1,4 +1,3 @@
-- Fix the call stack display's layout.
 - Add display update when selecting call stack item in debugger.
 - Add ability to display different sources in debugger.
 - Add variable displays to debugger.

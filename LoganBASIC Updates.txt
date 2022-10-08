@@ -1,3 +1,7 @@
+(October 8, 2022)
+[v2.0.45]
+	- Fixed the call stack display's layout in debugger.
+
 (October 7, 2022)
 [v2.0.44]
 	- Modified selectEditorLine() function in editor_ui to properly center the selected line.

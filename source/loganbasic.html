@@ -20,13 +20,22 @@
 
 <div id="debugDiv">
   <div id="debugResizer"></div>
-  <div id="debugBar" class="bar">
-    <button id="debugStepBtn">Step</button>
-    <button id="debugSkipBtn">Skip</button>
-  </div>
-  <div id="debugCallStackDiv">
-    <label>Call Stack</label>
-    <select id="debugCallStackList" size="10"></select>
+
+  <div id="debugWrapper">
+    <div id="debugBar" class="bar">
+      <button id="debugStepBtn">Step</button>
+      <button id="debugSkipBtn">Skip</button>
+    </div>
+
+    <div id="debugCallStackDiv">
+      <label>Call Stack</label>
+      <ol id="debugCallStackList">
+        <li>One</li>
+        <li>Two</li>
+        <li>Three</li>
+        <li>Four</li>
+      </ol>
+    </div>
   </div>
 </div>
 
@@ -76,7 +85,7 @@
     </div>
   </div>
 
-  <div id="version">Version 2.0.44 - <a href="../updates.html" target="_blank">Updates</a></div>
+  <div id="version">Version 2.0.45 - <a href="../updates.html" target="_blank">Updates</a></div>
 </div>
 
 </body>
