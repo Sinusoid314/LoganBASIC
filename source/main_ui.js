@@ -1,3 +1,5 @@
+const mainSourceName = "<main>";
+
 var isRunning = false;
 var runBtn = document.getElementById("runBtn");
 var stopBtn = document.getElementById("stopBtn");
@@ -50,7 +52,7 @@ function runBtn_onClick(event)
   resetCanvas();
   clearDebugDisplays();
   
-  progWorker.postMessage({msgId: MSGID_START_PROG, msgData: editorStr});
+  progWorker.postMessage({msgId: MSGID_START_PROG, msgData: {source: editorStr, sourceName: mainSourceName}});
 
   switchMode();
 }

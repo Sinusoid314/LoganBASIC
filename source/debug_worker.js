@@ -1,12 +1,12 @@
-function composeDebugBreakpointInfo(sourceLineNum)
-//
+class DebugInfo
 {
-  var breakpointInfo = {sourceLineNum: 0, funcIdents: []};
+  constructor(vm, sourceLineNum)
+  {
+    this.sourceLineNum = sourceLineNum;
+    this.funcIdents = [];
 
-  breakpointInfo.sourceLineNum = sourceLineNum;
-  mainVM.callFrames.forEach(frame => breakpointInfo.funcIdents.push(frame.func.ident));
-
-  return breakpointInfo;
+    vm.callFrames.forEach(frame => this.funcIdents.push(frame.func.ident));
+  }
 }
 
 function onMsgDebugStart()
@@ -15,7 +15,7 @@ function onMsgDebugStart()
   mainVM.onSourceLineChangeHook = onVMSourceLineChange;
 
   if(!mainVM.endOfOps())
-    postMessage({msgId: MSGID_DEBUG_BREAKPOINT, msgData: composeDebugBreakpointInfo(mainVM.getCurrOpSourceLineNum())});
+    postMessage({msgId: MSGID_DEBUG_BREAKPOINT, msgData: new DebugInfo(mainVM, mainVM.getCurrOpSourceLineNum())});
 }
 
 function onMsgDebugStop()
@@ -50,6 +50,6 @@ function onMsgDebugSkip()
 function onVMSourceLineChange(vm, nextSourceLineNum)
 //
 {
-  postMessage({msgId: MSGID_DEBUG_BREAKPOINT, msgData: composeDebugBreakpointInfo(nextSourceLineNum)});
-  mainVM.inBreakpoint = true;
+  postMessage({msgId: MSGID_DEBUG_BREAKPOINT, msgData: new DebugInfo(vm, nextSourceLineNum)});
+  vm.inBreakpoint = true;
 }

@@ -1,4 +1,10 @@
 (October 8, 2022)
+[v2.0.46]
+	- Added mainSourceName constant to main_ui module that is passed to main_worker module
+	  when starting a program.
+	- Added DebugInfo class to debug_worker module to hold debug data sent to the UI thread.
+
+(October 8, 2022)
 [v2.0.45]
 	- Fixed the call stack display's layout in debugger.
 

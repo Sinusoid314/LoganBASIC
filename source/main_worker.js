@@ -91,11 +91,11 @@ function progWorker_onMessage(message)
   }
 }
 
-function onMsgStartProg(source)
+function onMsgStartProg(msgData)
 //Compile and run the program
 {
   resetMain();
-  mainVM.interpret(source);
+  mainVM.interpret(msgData.source, msgData.sourceName);
 }
 
 function onVMStatusChange(vm, prevStatus)
