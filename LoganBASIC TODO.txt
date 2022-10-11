@@ -2,7 +2,6 @@
 - Modify all worker/UI messages to send objects with named fields instead of arrays.
 
 - Add ability to display different sources in debugger.
-- Add variable displays to debugger.
 - Add ability to add/remove breakpoints in debugger.
 - Add Step Over and Step Out functions to debugger.
 - Add display update when selecting call stack item in debugger.

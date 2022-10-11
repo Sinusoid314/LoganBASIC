@@ -1,11 +1,24 @@
 class DebugInfo
 {
-  constructor(vm, sourceLineNum)
+  constructor(vm, sourceLineNum, callFrame)
   {
     this.sourceLineNum = sourceLineNum;
-    this.funcIdents = [];
+    this.sourceName = null;
+    this.locals = null;
+    this.globals = null;
+    this.funcIdents = null;
 
-    vm.callFrames.forEach(frame => this.funcIdents.push(frame.func.ident));
+    if(!callFrame)
+    {
+      callFrame = vm.currCallFrame;
+
+      this.globals = vm.globals;
+      this.funcIdents = [];
+      vm.callFrames.forEach(frame => this.funcIdents.push(frame.func.ident));
+    }
+
+    this.sourceName = callFrame.func.sourceName;
+    this.locals = callFrame.func.localIdents;
   }
 }
 
@@ -15,7 +28,7 @@ function onMsgDebugStart()
   mainVM.onSourceLineChangeHook = onVMSourceLineChange;
 
   if(!mainVM.endOfOps())
-    postMessage({msgId: MSGID_DEBUG_BREAKPOINT, msgData: new DebugInfo(mainVM, mainVM.getCurrOpSourceLineNum())});
+    postMessage({msgId: MSGID_DEBUG_UPDATE_UI, msgData: new DebugInfo(mainVM, mainVM.getCurrOpSourceLineNum(), null)});
 }
 
 function onMsgDebugStop()
@@ -50,6 +63,6 @@ function onMsgDebugSkip()
 function onVMSourceLineChange(vm, nextSourceLineNum)
 //
 {
-  postMessage({msgId: MSGID_DEBUG_BREAKPOINT, msgData: new DebugInfo(vm, nextSourceLineNum)});
+  postMessage({msgId: MSGID_DEBUG_UPDATE_UI, msgData: new DebugInfo(vm, nextSourceLineNum, null)});
   vm.inBreakpoint = true;
 }

@@ -280,8 +280,8 @@ function progUI_onMessage(message)
       onMsgGetSpriteSheetFrameHeightRequest(message.data.msgData);
       break;
       
-    case MSGID_DEBUG_BREAKPOINT:
-      onMsgDebugBreakpoint(message.data.msgData);
+    case MSGID_DEBUG_UPDATE_UI:
+      onMsgDebugUpdateUI(message.data.msgData);
       break;
   }
 }

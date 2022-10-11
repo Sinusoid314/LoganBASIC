@@ -27,14 +27,25 @@
       <button id="debugSkipBtn">Skip</button>
     </div>
 
-    <div id="debugCallStackDiv">
-      <label>Call Stack</label>
-      <ol id="debugCallStackList">
-        <li>One</li>
-        <li>Two</li>
-        <li>Three</li>
-        <li>Four</li>
-      </ol>
+    <div id="debugCallStackDiv" class="debugSubDiv">
+      <label id="debugCallStackToggle" class="toggle-open">Call Stack</label>
+      <div id="debugCallStackPane" class="pane-open">
+        <select id="debugCallStackList" size="6"></select>
+      </div>
+    </div>
+
+    <div id="debugLocalsDiv" class="debugSubDiv">
+      <label id="debugLocalsToggle" class="toggle-open">Local Variables</label>
+      <div id="debugLocalsPane" class="pane-open">
+        <ul id="debugLocalsList" class="debugVarList"></ul>
+      </div>
+    </div>
+
+    <div id="debugGlobalsDiv" class="debugSubDiv">
+      <label id="debugGlobalsToggle" class="toggle-open">Global Variables</label>
+      <div id="debugGlobalsPane" class="pane-open">
+        <ul id="debugGlobalsList" class="debugVarList"></ul>
+      </div>
     </div>
   </div>
 </div>
@@ -85,7 +96,7 @@
     </div>
   </div>
 
-  <div id="version">Version 2.0.46 - <a href="../updates.html" target="_blank">Updates</a></div>
+  <div id="version">Version 2.0.47 - <a href="../updates.html" target="_blank">Updates</a></div>
 </div>
 
 </body>

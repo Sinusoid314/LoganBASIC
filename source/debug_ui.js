@@ -21,8 +21,8 @@ function clearDebugDisplays()
 {
   selectEditorLine(0);
   
-  //while(debugCallStackList.options.length)
-  //  debugCallStackList.remove(0);
+  while(debugCallStackList.options.length)
+    debugCallStackList.remove(0);
 }
 
 function debugToggleBtn_onClick(event)
@@ -98,11 +98,11 @@ function debugCallStackList_onClick(event)
     item.style.backgroundColor = (item == event.target) ? "skyblue" : "white";
 }
 
-function onMsgDebugBreakpoint(breakpointInfo)
+function onMsgDebugUpdateUI(msgData)
 //
 {
   clearDebugDisplays();
 
-  selectEditorLine(breakpointInfo.sourceLineNum);
-  //breakpointInfo.funcIdents.forEach(ident => debugCallStackList.add(new Option(ident), 0));
+  selectEditorLine(msgData.sourceLineNum);
+  msgData.funcIdents.forEach(ident => debugCallStackList.add(new Option(ident), 0));
 }

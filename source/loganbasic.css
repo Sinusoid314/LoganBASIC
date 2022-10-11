@@ -53,6 +53,11 @@ button
   display: none;
 }
 
+#mainDiv
+{
+  padding: 0px;
+}
+
 #menuBar
 {
   margin-bottom: 15px;
@@ -108,15 +113,36 @@ button
   margin-top: 30px;
 }
 
-#mainDiv
+.debugSubDiv
 {
-  padding: 0px;
+  margin-top: 20px;
+  margin-left: 6px;
+  margin-right: 10px;
+}
+
+.debugVarList
+{
+  background: white;
+  color: black;
+  border: solid 1px;
+  padding: 1px;
+  width: 100%;
+  height: 160px;
+  overflow: hidden;
+  overflow-y: scroll;
+  margin: 0;
+}
+
+.debugVarList li
+{
+  list-style-type: none;
+  cursor: pointer;
 }
 
 #debugDiv
 {
   height: 100%;
-  width: 200px;
+  width: 250px;
   min-width: 30px;
   position: fixed;
   top: 0;
@@ -144,28 +170,9 @@ button
   margin-right: 8px;
 }
 
-#debugCallStackDiv
-{
-  margin-top: 10px;
-  margin-left: 6px;
-  margin-right: 10px;
-}
-
 #debugCallStackList
 {
-  background: white;
-  color: black;
-  border: solid 1px;
   padding: 1px;
   width: 100%;
-  height: 100px;
-  overflow: hidden;
-  overflow-y: scroll;
-  margin: 0;
-}
-
-#debugCallStackList li
-{
-  list-style-type: none;
-  cursor: pointer;
+  border: solid 1px;
 }

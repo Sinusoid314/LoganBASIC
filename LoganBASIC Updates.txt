@@ -1,4 +1,10 @@
-(October 8, 2022)
+(October 10, 2022)
+[v2.0.47]
+	- Added sourceName, locals, and globals members to DebugInfo.
+	- Added local and gloabal variable views to debugger.
+	- Added ability to roll up/down the debugger views.
+
+(October 10, 2022)
 [v2.0.46]
 	- Added mainSourceName constant to main_ui module that is passed to main_worker module
 	  when starting a program.
