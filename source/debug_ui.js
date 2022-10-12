@@ -7,6 +7,8 @@ var debugResizer = document.getElementById("debugResizer");
 var debugStepBtn = document.getElementById("debugStepBtn");
 var debugSkipBtn = document.getElementById("debugSkipBtn");
 var debugCallStackList = document.getElementById("debugCallStackList");
+var debugLocalsList = document.getElementById("debugLocalsList");
+var debugGlobalsList = document.getElementById("debugGlobalsList");
 
 debugToggleBtn.addEventListener("click", debugToggleBtn_onClick);
 document.addEventListener("mousedown", document_onMouseDown);
@@ -14,15 +16,20 @@ document.addEventListener("mousemove", document_onMouseMove);
 document.addEventListener("mouseup", document_onMouseUp);
 debugStepBtn.addEventListener("click", debugStepBtn_onClick);
 debugSkipBtn.addEventListener("click", debugSkipBtn_onClick);
-debugCallStackList.addEventListener("click", debugCallStackList_onClick);
 
 function clearDebugDisplays()
 //
 {
+  var items
+
   selectEditorLine(0);
   
   while(debugCallStackList.options.length)
     debugCallStackList.remove(0);
+
+  debugLocalsList.innerHTML = "";
+
+  debugGlobalsList.innerHTML = "";
 }
 
 function debugToggleBtn_onClick(event)
@@ -90,19 +97,24 @@ function debugSkipBtn_onClick(event)
   progWorker.postMessage({msgId: MSGID_DEBUG_SKIP});
 }
 
-function debugCallStackList_onClick(event)
-{
-  var items = debugCallStackList.getElementsByTagName("li");
-
-  for(const item of items)
-    item.style.backgroundColor = (item == event.target) ? "skyblue" : "white";
-}
-
 function onMsgDebugUpdateUI(msgData)
 //
 {
   clearDebugDisplays();
 
   selectEditorLine(msgData.sourceLineNum);
-  msgData.funcIdents.forEach(ident => debugCallStackList.add(new Option(ident), 0));
+
+  if(msgData.funcIdents)
+    msgData.funcIdents.forEach(ident => debugCallStackList.add(new Option(ident), 0));
+
+  if(msgData.locals)
+  {
+
+  }
+
+  if(msgData.globals)
+  {
+    for (const [key, value] of msgData.globals)
+      debugGlobalsList.appendChild(document.createElement("li")).innerHTML = key + " = " + value;
+  }
 }

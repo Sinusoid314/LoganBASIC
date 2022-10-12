@@ -1,4 +1,7 @@
 (October 10, 2022)
+[v2.0.48]
+	- Added ability to populate the globals view in debugger at every UI update.
+
 [v2.0.47]
 	- Added sourceName, locals, and globals members to DebugInfo.
 	- Added local and gloabal variable views to debugger.
