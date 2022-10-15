@@ -1,3 +1,14 @@
+(October 14, 2022)
+[v2.0.49]
+	- Added debugCurrGlobals to debug_ui module to hold a reference to the current global variable map.
+	- Added debugGlobalsItemMap to debug_ui module to map items from the globals list element to values
+	  from the current globals map.
+	- Removed typeToString() methods from all Obj classes in objects module.
+	- Added object type constants to objects module and type member to all Obj classes.
+	- Modified onMsgDebugUpdateUI() in debug_ui module to display globals items differently
+	  based on value type.
+	- Fixed bug with debugger not working when force-stopping and restarting a program.
+
 (October 10, 2022)
 [v2.0.48]
 	- Added ability to populate the globals view in debugger at every UI update.

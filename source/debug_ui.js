@@ -1,5 +1,9 @@
 var isDebugging = false;
 var debugIsResizing = false;
+
+var debugCurrGlobals = null;
+var debugGlobalsItemMap = new Map;
+
 var mainDiv = document.getElementById("mainDiv");
 var debugToggleBtn = document.getElementById("debugToggleBtn");
 var debugDiv = document.getElementById("debugDiv");
@@ -100,6 +104,8 @@ function debugSkipBtn_onClick(event)
 function onMsgDebugUpdateUI(msgData)
 //
 {
+  var listItem;
+
   clearDebugDisplays();
 
   selectEditorLine(msgData.sourceLineNum);
@@ -114,7 +120,24 @@ function onMsgDebugUpdateUI(msgData)
 
   if(msgData.globals)
   {
-    for (const [key, value] of msgData.globals)
-      debugGlobalsList.appendChild(document.createElement("li")).innerHTML = key + " = " + value;
+    debugCurrGlobals = msgData.globals;
+
+    for (const [key, value] of debugCurrGlobals)
+    {
+      listItem = document.createElement("li");
+
+      if(value instanceof Object)
+      {
+        debugGlobalsItemMap.set(listItem, value)
+        listItem.innerHTML = key + " (" + value.type + ")";
+        listItem.style.cursor = "pointer";
+      }
+      else if(typeof value == "string")
+        listItem.innerHTML = key + ' = "' + value + '"';
+      else
+        listItem.innerHTML = key + " = " + value;
+
+      debugGlobalsList.appendChild(listItem);
+    }
   }
 }

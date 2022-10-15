@@ -64,6 +64,9 @@ function stopBtn_onClick(event)
   progWorker = new Worker('main_worker.js');
   progWorker.onmessage = progUI_onMessage;
 
+  if(isDebugging)
+    progWorker.postMessage({msgId: MSGID_DEBUG_START});
+
   stopProg("Program stopped.");
 }
 

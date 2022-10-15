@@ -1,7 +1,14 @@
+const OBJ_TYPE_USER_FUNC = "Function";
+const OBJ_TYPE_NATIVE_FUNC = "Native Function";
+const OBJ_TYPE_ARRAY = "Array";
+const OBJ_TYPE_STRUCT_DEF = "Structure Definition";
+const OBJ_TYPE_STRUCT = "Structure Instance";
+
 class ObjUserFunc
 {
   constructor(ident, sourceName, sourceLevel)
   {
+    this.type = OBJ_TYPE_USER_FUNC;
     this.ident = ident;
     this.paramCount = 0;
     this.localIdents = [];
@@ -10,12 +17,6 @@ class ObjUserFunc
     this.sourceLineMap = new Map();
     this.sourceName = sourceName;
     this.sourceLevel = sourceLevel;
-  }
-
-  typeToString()
-  //
-  {
-    return "a Function";
   }
 
   toString()
@@ -54,16 +55,11 @@ class ObjNativeFunc
 {
   constructor(ident, paramMin, paramMax, jsFunc)
   {
+    this.type = OBJ_TYPE_NATIVE_FUNC;
     this.ident = ident;
     this.paramMin = paramMin;
     this.paramMax = paramMax;
     this.jsFunc = jsFunc;
-  }
-
-  typeToString()
-  //
-  {
-    return "a Native Function";
   }
 }
 
@@ -71,14 +67,9 @@ class ObjArray
 {
   constructor()
   {
+    this.type = OBJ_TYPE_ARRAY;
     this.items = [];
     this.dimSizes = [];
-  }
-
-  typeToString()
-  //
-  {
-    return "an Array";
   }
 
   reDim(newDimSizeList)
@@ -159,15 +150,10 @@ class ObjStructureDef
 {
   constructor(ident)
   {
+    this.type = OBJ_TYPE_STRUCT_DEF;
     this.ident = ident;
     this.fieldIdents = [];
     this.tokens = [];
-  }
-
-  typeToString()
-  //
-  {
-    return "a Structure Definition";
   }
 
   toString()
@@ -190,16 +176,11 @@ class ObjStructure
 {
   constructor(def)
   {
+    this.type = OBJ_TYPE_STRUCT;
     this.def = def;
     this.fieldMap = new Map();
 
     for(var fieldIndex = 0; fieldIndex < def.fieldIdents.length; fieldIndex++)
       this.fieldMap.set(def.fieldIdents[fieldIndex], 0);
-  }
-
-  typeToString()
-  //
-  {
-    return "a Structure Instance";
   }
 }
