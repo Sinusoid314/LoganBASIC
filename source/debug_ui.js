@@ -1,8 +1,9 @@
 var isDebugging = false;
 var debugIsResizing = false;
 
+var debugCurrLocals = null;
 var debugCurrGlobals = null;
-var debugGlobalsItemMap = new Map;
+var debugItemValueMap = new Map;
 
 var mainDiv = document.getElementById("mainDiv");
 var debugToggleBtn = document.getElementById("debugToggleBtn");
@@ -34,6 +35,29 @@ function clearDebugDisplays()
   debugLocalsList.innerHTML = "";
 
   debugGlobalsList.innerHTML = "";
+
+  debugItemValueMap.clear();
+}
+
+function debugAddVarListItem(key, value, parentList)
+//
+{
+  listItem = document.createElement("li");
+
+  if(value instanceof Object)
+  {
+    debugItemValueMap.set(listItem, value)
+    listItem.innerHTML = key + " (" + value.type + ")";
+    listItem.style.cursor = "pointer";
+  }
+  else if(typeof value == "string")
+    listItem.innerHTML = key + ' = "' + value + '"';
+  else if(value === null)
+    listItem.innerHTML = key + " = Nothing";
+  else
+    listItem.innerHTML = key + " = " + value;
+
+  parentList.appendChild(listItem);
 }
 
 function debugToggleBtn_onClick(event)
@@ -115,7 +139,10 @@ function onMsgDebugUpdateUI(msgData)
 
   if(msgData.locals)
   {
+    debugCurrLocals = msgData.locals;
 
+    for (const [key, value] of debugCurrLocals)
+      debugAddVarListItem(key, value, debugLocalsList);
   }
 
   if(msgData.globals)
@@ -123,21 +150,6 @@ function onMsgDebugUpdateUI(msgData)
     debugCurrGlobals = msgData.globals;
 
     for (const [key, value] of debugCurrGlobals)
-    {
-      listItem = document.createElement("li");
-
-      if(value instanceof Object)
-      {
-        debugGlobalsItemMap.set(listItem, value)
-        listItem.innerHTML = key + " (" + value.type + ")";
-        listItem.style.cursor = "pointer";
-      }
-      else if(typeof value == "string")
-        listItem.innerHTML = key + ' = "' + value + '"';
-      else
-        listItem.innerHTML = key + " = " + value;
-
-      debugGlobalsList.appendChild(listItem);
-    }
+      debugAddVarListItem(key, value, debugGlobalsList);
   }
 }

@@ -1,3 +1,9 @@
+(October 16, 2022)
+[v2.0.50]
+	- Fixed bug with variable values not being updated in the debugger right before program end.
+	- Added debugAddVarListItem() function to debug_ui module.
+	- Added support for displaying local variables in debugger.
+
 (October 14, 2022)
 [v2.0.49]
 	- Added debugCurrGlobals to debug_ui module to hold a reference to the current global variable map.

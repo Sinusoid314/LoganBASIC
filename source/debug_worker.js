@@ -4,9 +4,16 @@ class DebugInfo
   {
     this.sourceLineNum = sourceLineNum;
     this.sourceName = null;
-    this.locals = null;
+    this.locals = new Map();
     this.globals = null;
     this.funcIdents = null;
+
+    if(vm.endOfOps())
+    {
+      this.globals = vm.globals;
+      this.funcIdents = [];
+      return;
+    }
 
     if(!callFrame)
     {
@@ -18,7 +25,9 @@ class DebugInfo
     }
 
     this.sourceName = callFrame.func.sourceName;
-    this.locals = callFrame.func.localIdents;
+
+    for(var index = 0; index < (vm.stack.length - callFrame.stackIndex - 1); index++)
+      this.locals.set(callFrame.func.localIdents[index], vm.stack[callFrame.stackIndex + index + 1]);
   }
 }
 
