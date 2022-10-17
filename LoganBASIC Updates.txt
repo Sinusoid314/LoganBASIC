@@ -1,4 +1,7 @@
 (October 16, 2022)
+[v2.0.51]
+	- Added Step Over and Step Out functions to debugger.
+
 [v2.0.50]
 	- Fixed bug with variable values not being updated in the debugger right before program end.
 	- Added debugAddVarListItem() function to debug_ui module.

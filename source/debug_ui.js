@@ -10,6 +10,8 @@ var debugToggleBtn = document.getElementById("debugToggleBtn");
 var debugDiv = document.getElementById("debugDiv");
 var debugResizer = document.getElementById("debugResizer");
 var debugStepBtn = document.getElementById("debugStepBtn");
+var debugStepOverBtn = document.getElementById("debugStepOverBtn");
+var debugStepOutBtn = document.getElementById("debugStepOutBtn");
 var debugSkipBtn = document.getElementById("debugSkipBtn");
 var debugCallStackList = document.getElementById("debugCallStackList");
 var debugLocalsList = document.getElementById("debugLocalsList");
@@ -20,6 +22,8 @@ document.addEventListener("mousedown", document_onMouseDown);
 document.addEventListener("mousemove", document_onMouseMove);
 document.addEventListener("mouseup", document_onMouseUp);
 debugStepBtn.addEventListener("click", debugStepBtn_onClick);
+debugStepOverBtn.addEventListener("click", debugStepOverBtn_onClick);
+debugStepOutBtn.addEventListener("click", debugStepOutBtn_onClick);
 debugSkipBtn.addEventListener("click", debugSkipBtn_onClick);
 
 function clearDebugDisplays()
@@ -117,6 +121,18 @@ function debugStepBtn_onClick(event)
 //
 {
   progWorker.postMessage({msgId: MSGID_DEBUG_STEP});
+}
+
+function debugStepOverBtn_onClick(event)
+//
+{
+  progWorker.postMessage({msgId: MSGID_DEBUG_STEP_OVER});
+}
+
+function debugStepOutBtn_onClick(event)
+//
+{
+  progWorker.postMessage({msgId: MSGID_DEBUG_STEP_OUT});
 }
 
 function debugSkipBtn_onClick(event)
