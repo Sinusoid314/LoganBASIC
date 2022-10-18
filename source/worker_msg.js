@@ -13,6 +13,7 @@ const MSGID_DEBUG_STEP = 11;
 const MSGID_DEBUG_STEP_OVER = 12;
 const MSGID_DEBUG_STEP_OUT = 13;
 const MSGID_DEBUG_SKIP = 14;
+const MSGID_DEBUG_CALL_FRAME_INFO_REQUEST = 15;
 
 
 //Worker -> UI messages

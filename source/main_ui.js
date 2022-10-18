@@ -50,7 +50,7 @@ function runBtn_onClick(event)
   editorStr = progEditor.value;
   clearConsoleOutput();
   resetCanvas();
-  clearDebugDisplays();
+  debugClearDisplays();
   
   progWorker.postMessage({msgId: MSGID_START_PROG, msgData: {source: editorStr, sourceName: mainSourceName}});
 

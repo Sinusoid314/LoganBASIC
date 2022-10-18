@@ -1,10 +1,10 @@
+- Fix bug with display update when selecting call stack item in debugger.
 - Fix bug with sounds not being unloaded when force-stopping a program.
 - Fix bug with debugger highlighting wrong lines in IF and WHILE blocks.
 - Modify all worker/UI messages to send objects with named fields instead of arrays.
 
 - Add ability to display different sources in debugger.
 - Add ability to add/remove breakpoints in debugger.
-- Add display update when selecting call stack item in debugger.
 - Add ability to run code in debugger.
 - Add help section for debugger.
 

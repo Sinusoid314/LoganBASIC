@@ -96,6 +96,10 @@ function progWorker_onMessage(message)
     case MSGID_DEBUG_SKIP:
       onMsgDebugSkip();
       break;
+
+    case MSGID_DEBUG_CALL_FRAME_INFO_REQUEST:
+      onMsgDebugCallFrameInfoRequest(message.data.msgData);
+      break;
   }
 }
 

@@ -119,6 +119,16 @@ function onMsgDebugSkip()
   mainVM.run();
 }
 
+function onMsgDebugCallFrameInfoRequest(callFrameIndex)
+//
+{
+  if(callFrameIndex < 0 || callFrameIndex >= mainVM.callFrames.length)
+    return;
+
+  postMessage({msgId: MSGID_DEBUG_UPDATE_UI,
+               msgData: new DebugInfo(mainVM, mainVM.getCurrOpSourceLineNum(), mainVM.callFrames[callFrameIndex])});
+}
+
 function onVMSourceLineChange(vm, nextSourceLineNum)
 //
 {

@@ -1,3 +1,7 @@
+(October 17, 2022)
+[v2.0.52]
+	- Added display update when selecting call stack item in debugger.
+
 (October 16, 2022)
 [v2.0.51]
 	- Added Step Over and Step Out functions to debugger.

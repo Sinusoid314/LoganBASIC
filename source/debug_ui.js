@@ -3,7 +3,8 @@ var debugIsResizing = false;
 
 var debugCurrLocals = null;
 var debugCurrGlobals = null;
-var debugItemValueMap = new Map;
+var debugLocalsItemValueMap = new Map;
+var debugGlobalsItemValueMap = new Map;
 
 var mainDiv = document.getElementById("mainDiv");
 var debugToggleBtn = document.getElementById("debugToggleBtn");
@@ -25,28 +26,43 @@ debugStepBtn.addEventListener("click", debugStepBtn_onClick);
 debugStepOverBtn.addEventListener("click", debugStepOverBtn_onClick);
 debugStepOutBtn.addEventListener("click", debugStepOutBtn_onClick);
 debugSkipBtn.addEventListener("click", debugSkipBtn_onClick);
+debugCallStackList.addEventListener("change", debugCallStackList_onChange);
 
-function clearDebugDisplays()
+function debugClearDisplays()
 //
 {
-  var items
-
   selectEditorLine(0);
   
-  while(debugCallStackList.options.length)
-    debugCallStackList.remove(0);
-
-  debugLocalsList.innerHTML = "";
-
-  debugGlobalsList.innerHTML = "";
-
-  debugItemValueMap.clear();
+  debugClearCallFrameList();
+  debugClearLocalsList();
+  debugClearGlobalsList();
 }
 
-function debugAddVarListItem(key, value, parentList)
+function debugClearCallFrameList()
 //
 {
-  listItem = document.createElement("li");
+  while(debugCallStackList.options.length)
+    debugCallStackList.remove(0);
+}
+
+function debugClearLocalsList()
+//
+{
+  debugLocalsList.innerHTML = "";
+  debugLocalsItemValueMap.clear();
+}
+
+function debugClearGlobalsList()
+//
+{
+  debugGlobalsList.innerHTML = "";
+  debugGlobalsItemValueMap.clear();
+}
+
+function debugAddVarListItem(key, value, parentList, debugItemValueMap)
+//
+{
+  var listItem = document.createElement("li");
 
   if(value instanceof Object)
   {
@@ -141,31 +157,40 @@ function debugSkipBtn_onClick(event)
   progWorker.postMessage({msgId: MSGID_DEBUG_SKIP});
 }
 
+function debugCallStackList_onChange(event)
+//
+{
+  var callFrameIndex = (event.target.length - 1) - event.target.selectedIndex;
+
+  progWorker.postMessage({msgId: MSGID_DEBUG_CALL_FRAME_INFO_REQUEST, msgData: callFrameIndex});
+}
+
 function onMsgDebugUpdateUI(msgData)
 //
 {
-  var listItem;
-
-  clearDebugDisplays();
-
   selectEditorLine(msgData.sourceLineNum);
 
   if(msgData.funcIdents)
+  {
+    debugClearCallFrameList();
     msgData.funcIdents.forEach(ident => debugCallStackList.add(new Option(ident), 0));
+  }
 
   if(msgData.locals)
   {
+    debugClearLocalsList();
     debugCurrLocals = msgData.locals;
 
     for (const [key, value] of debugCurrLocals)
-      debugAddVarListItem(key, value, debugLocalsList);
+      debugAddVarListItem(key, value, debugLocalsList, debugLocalsItemValueMap);
   }
 
   if(msgData.globals)
   {
+    debugClearGlobalsList();
     debugCurrGlobals = msgData.globals;
 
     for (const [key, value] of debugCurrGlobals)
-      debugAddVarListItem(key, value, debugGlobalsList);
+      debugAddVarListItem(key, value, debugGlobalsList, debugGlobalsItemValueMap);
   }
 }
