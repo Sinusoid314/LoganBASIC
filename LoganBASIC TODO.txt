@@ -1,4 +1,3 @@
-- Fix bug with display update when selecting call stack item in debugger.
 - Fix bug with sounds not being unloaded when force-stopping a program.
 - Fix bug with debugger highlighting wrong lines in IF and WHILE blocks.
 - Modify all worker/UI messages to send objects with named fields instead of arrays.

@@ -8,8 +8,10 @@ var debugStepCallFrame = null;
 
 class DebugInfo
 {
-  constructor(vm, sourceLineNum, callFrame)
+  constructor(vm, sourceLineNum, callFrameIndex = -1)
   {
+    var callFrame, nextFrameStackIndex;
+
     this.sourceLineNum = sourceLineNum;
     this.sourceName = null;
     this.locals = new Map();
@@ -23,19 +25,25 @@ class DebugInfo
       return;
     }
 
-    if(!callFrame)
+    if(callFrameIndex == -1)
     {
-      callFrame = vm.currCallFrame;
+      callFrameIndex = vm.callFrames.length - 1;
 
       this.globals = vm.globals;
       this.funcIdents = [];
       vm.callFrames.forEach(frame => this.funcIdents.push(frame.func.ident));
     }
 
+    callFrame = vm.callFrames[callFrameIndex];
+    if(callFrame == vm.currCallFrame)
+      nextFrameStackIndex = vm.stack.length;
+    else
+      nextFrameStackIndex = vm.callFrames[callFrameIndex + 1].stackIndex;
+
     this.sourceName = callFrame.func.sourceName;
 
-    for(var index = 0; index < (vm.stack.length - callFrame.stackIndex - 1); index++)
-      this.locals.set(callFrame.func.localIdents[index], vm.stack[callFrame.stackIndex + index + 1]);
+    for(var index = callFrame.stackIndex + 1; index < nextFrameStackIndex; index++)
+      this.locals.set(callFrame.func.localIdents[index - (callFrame.stackIndex + 1)], vm.stack[index]);
   }
 }
 
@@ -58,7 +66,7 @@ function onMsgDebugStart()
   debugChangeMode(DEBUG_MODE_STEP);
 
   if(!mainVM.endOfOps())
-    postMessage({msgId: MSGID_DEBUG_UPDATE_UI, msgData: new DebugInfo(mainVM, mainVM.getCurrOpSourceLineNum(), null)});
+    postMessage({msgId: MSGID_DEBUG_UPDATE_UI, msgData: new DebugInfo(mainVM, mainVM.getCurrOpSourceLineNum())});
 }
 
 function onMsgDebugStop()
@@ -122,11 +130,18 @@ function onMsgDebugSkip()
 function onMsgDebugCallFrameInfoRequest(callFrameIndex)
 //
 {
+  var sourceLineNum;
+
   if(callFrameIndex < 0 || callFrameIndex >= mainVM.callFrames.length)
     return;
 
+  if(callFrameIndex == mainVM.callFrames.length - 1)
+    sourceLineNum = mainVM.getNextOpSourceLineNum(mainVM.callFrames[callFrameIndex]);
+  else
+    sourceLineNum = mainVM.getCurrOpSourceLineNum(mainVM.callFrames[callFrameIndex]);
+
   postMessage({msgId: MSGID_DEBUG_UPDATE_UI,
-               msgData: new DebugInfo(mainVM, mainVM.getCurrOpSourceLineNum(), mainVM.callFrames[callFrameIndex])});
+               msgData: new DebugInfo(mainVM, sourceLineNum, callFrameIndex)});
 }
 
 function onVMSourceLineChange(vm, nextSourceLineNum)
@@ -145,7 +160,7 @@ function onVMSourceLineChange(vm, nextSourceLineNum)
 
   if(debugMode == DEBUG_MODE_STEP)
   {
-    postMessage({msgId: MSGID_DEBUG_UPDATE_UI, msgData: new DebugInfo(vm, nextSourceLineNum, null)});
+    postMessage({msgId: MSGID_DEBUG_UPDATE_UI, msgData: new DebugInfo(vm, nextSourceLineNum)});
     vm.inBreakpoint = true;
   }
 }

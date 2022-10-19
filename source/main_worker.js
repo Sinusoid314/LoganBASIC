@@ -129,7 +129,7 @@ function onVMError(vm)
 //
 {
   if(vm.status != VM_STATUS_COMPILING)
-    postMessage({msgId: MSGID_DEBUG_UPDATE_UI, msgData: new DebugInfo(vm, 0, null)});
+    postMessage({msgId: MSGID_DEBUG_UPDATE_UI, msgData: new DebugInfo(vm, 0)});
 
   postMessage({msgId: MSGID_PROG_DONE_ERROR, msgData: vm.error});
   return false;
@@ -138,6 +138,6 @@ function onVMError(vm)
 function onVMRunEnd(vm)
 //
 {
-  postMessage({msgId: MSGID_DEBUG_UPDATE_UI, msgData: new DebugInfo(vm, 0, null)});
+  postMessage({msgId: MSGID_DEBUG_UPDATE_UI, msgData: new DebugInfo(vm, 0)});
   postMessage({msgId: MSGID_PROG_DONE_SUCCESS});
 }

@@ -768,23 +768,23 @@ class VM
     }
   }
 
-  getCurrOpSourceLineNum()
+  getCurrOpSourceLineNum(callFrame = this.currCallFrame)
   //
   {
-    return this.getOpSourceLineNum(this.currCallFrame.currOpIndex);
+    return this.getOpSourceLineNum(callFrame.currOpIndex, callFrame);
   }
 
-  getNextOpSourceLineNum()
+  getNextOpSourceLineNum(callFrame = this.currCallFrame)
   //Return the source line number that corresponds to the next op index
   {
-    return this.getOpSourceLineNum(this.currCallFrame.nextOpIndex);
+    return this.getOpSourceLineNum(callFrame.nextOpIndex, callFrame);
   }
 
-  getOpSourceLineNum(opIndex)
+  getOpSourceLineNum(opIndex, callFrame = this.currCallFrame)
   //Return the source line number that corresponds to the given op index;
   //if the op index does not have an associated source line number, return 0
   {
-    var map = this.currCallFrame.func.sourceLineMap;
+    var map = callFrame.func.sourceLineMap;
 
     for(const [sourceLineNum, opIndexRange] of map)
     {

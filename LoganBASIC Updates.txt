@@ -1,3 +1,7 @@
+(October 18, 2022)
+[v2.0.53]
+	- Fixed bug with display update when selecting call stack item in debugger.
+
 (October 17, 2022)
 [v2.0.52]
 	- Added display update when selecting call stack item in debugger.
