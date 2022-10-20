@@ -1,5 +1,6 @@
+- Move getOpSourceLineNum() method from VM to ObjUserFunc.
+- Finish test-running all example programs.
 - Fix bug with sounds not being unloaded when force-stopping a program.
-- Fix bug with debugger highlighting wrong lines in IF and WHILE blocks.
 - Modify all worker/UI messages to send objects with named fields instead of arrays.
 
 - Add ability to display different sources in debugger.

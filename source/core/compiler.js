@@ -317,10 +317,10 @@ class Compiler
 
     this.parseExpression();
 
+    thenJumpOpIndex = this.addOp([OPCODE_JUMP_IF_FALSE, 0]);
+
     if(!this.matchToken(TOKEN_THEN))
       this.compileError("Expected 'then' after expression.");
-
-    thenJumpOpIndex = this.addOp([OPCODE_JUMP_IF_FALSE, 0]);
 
     if(!this.matchTerminator())
     {
@@ -342,11 +342,11 @@ class Compiler
     }
     else if(this.matchToken(TOKEN_ELSE))
     {
-        if(!this.matchTerminator())
-          this.compileError("Expected terminator after 'else'.");
-
         elseJumpOpIndex = this.addOp([OPCODE_JUMP, 0]);
         this.patchJumpOp(thenJumpOpIndex);
+
+        if(!this.matchTerminator())
+          this.compileError("Expected terminator after 'else'.");
 
         while(!this.checkTokenPair(TOKEN_END, TOKEN_IF) && !this.endOfTokens())
           this.parseStatement();
@@ -366,12 +366,12 @@ class Compiler
 
     this.parseExpression();
 
-    if(!this.matchTerminator())
-      this.compileError("Expected terminator after expression.");
-
     jumpOpIndex = this.addOp([OPCODE_JUMP_IF_FALSE, 0]);
 
     this.exitWhileOpIndexes.push([]);
+
+    if(!this.matchTerminator())
+      this.compileError("Expected terminator after expression.");
 
     while(!this.checkToken(TOKEN_WEND) && !this.endOfTokens())
       this.parseStatement();
@@ -415,9 +415,6 @@ class Compiler
     else
       this.addOp([OPCODE_LOAD_INT, 1]);
 
-    if(!this.matchTerminator())
-      this.compileError("Expected terminator after expression.");
-
     this.addOp([OPCODE_LOAD_VAR, varRef.scope, varRef.index]);
 
     startOpIndex = this.opsCount();
@@ -425,6 +422,9 @@ class Compiler
     jumpOpIndex = this.addOp([OPCODE_JUMP_IF_TRUE, 0]);
 
     this.exitForOpIndexes.push([]);
+
+    if(!this.matchTerminator())
+      this.compileError("Expected terminator after expression.");
 
     while(!this.checkToken(TOKEN_NEXT) && !this.endOfTokens())
       this.parseStatement();
