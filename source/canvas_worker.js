@@ -111,20 +111,14 @@ function funcHideCanvas(vm, args)
 function funcSetCanvasWidth(vm, args)
 //
 {
-  var newWidth = args[0];
-
-  postMessage({msgId: MSGID_SET_CANVAS_WIDTH, msgData: newWidth});
-
+  postMessage({msgId: MSGID_SET_CANVAS_WIDTH, msgData: {newWidth: args[0]}});
   return 0;
 }
 
 function funcSetCanvasHeight(vm, args)
 //
 {
-  var newHeight = args[0];
-
-  postMessage({msgId: MSGID_SET_CANVAS_HEIGHT, msgData: newHeight});
-
+  postMessage({msgId: MSGID_SET_CANVAS_HEIGHT, msgData: {newHeight: args[0]}});
   return 0;
 }
 

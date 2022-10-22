@@ -295,16 +295,16 @@ function onMsgProgDoneSuccess()
   stopProg("Program run successfully.");
 }
 
-function onMsgProgDoneError(error)
+function onMsgProgDoneError(msgData)
 //The worker thread has signaled that the program has stopped with an error
 {
-  selectEditorLine(error.sourceLineNum);
-  stopProg(error.message);
+  selectEditorLine(msgData.error.sourceLineNum);
+  stopProg(msgData.error.message);
 }
 
-function onMsgStatusChange(statusStr)
+function onMsgStatusChange(msgData)
 //Display a status change
 {
-  statusBar.innerHTML = statusStr;
+  statusBar.innerHTML = msgData.statusText;
 }
 

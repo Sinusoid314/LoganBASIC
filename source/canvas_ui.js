@@ -154,16 +154,16 @@ function onMsgHideCanvas()
   }
 }
 
-function onMsgSetCanvasWidth(newWidth)
+function onMsgSetCanvasWidth(msgData)
 //
 {
-  setCanvasWidth(newWidth);
+  setCanvasWidth(msgData.newWidth);
 }
 
-function onMsgSetCanvasHeight(newHeight)
+function onMsgSetCanvasHeight(msgData)
 //
 {
-  setCanvasHeight(newHeight);
+  setCanvasHeight(msgData.newHeight);
 }
 
 function onMsgClearCanvas()

@@ -1,7 +1,6 @@
-- Move getOpSourceLineNum() method from VM to ObjUserFunc.
 - Finish test-running all example programs.
 - Fix bug with sounds not being unloaded when force-stopping a program.
-- Modify all worker/UI messages to send objects with named fields instead of arrays.
+- Finish modifying worker/UI messages to send objects with named fields.
 
 - Add ability to display different sources in debugger.
 - Add ability to add/remove breakpoints in debugger.

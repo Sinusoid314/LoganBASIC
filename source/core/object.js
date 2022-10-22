@@ -49,6 +49,19 @@ class ObjUserFunc
 
     return retStr;
   }
+
+  getOpSourceLineNum(opIndex)
+  //Return the source line number that corresponds to the given op index;
+  //if the op index does not have an associated source line number, return 0
+  {
+    for(const [sourceLineNum, opIndexRange] of this.sourceLineMap)
+    {
+      if(opIndexRange.isInRange(opIndex))
+        return sourceLineNum;
+    }
+
+    return 0;
+  }
 }
 
 class ObjNativeFunc

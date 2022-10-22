@@ -760,7 +760,7 @@ class VM
 
     for(var opIndex = this.currCallFrame.nextOpIndex + 1; opIndex < this.currCallFrame.func.ops.length; opIndex++)
     {
-      if(this.getOpSourceLineNum(opIndex) != nextOpSourceLineNum)
+      if(this.currCallFrame.func.getOpSourceLineNum(opIndex) != nextOpSourceLineNum)
       {
         this.currCallFrame.nextOpIndex = opIndex;
         return;
@@ -771,28 +771,13 @@ class VM
   getCurrOpSourceLineNum(callFrame = this.currCallFrame)
   //
   {
-    return this.getOpSourceLineNum(callFrame.currOpIndex, callFrame);
+    return this.callFrame.func.getOpSourceLineNum(callFrame.currOpIndex);
   }
 
   getNextOpSourceLineNum(callFrame = this.currCallFrame)
   //Return the source line number that corresponds to the next op index
   {
-    return this.getOpSourceLineNum(callFrame.nextOpIndex, callFrame);
-  }
-
-  getOpSourceLineNum(opIndex, callFrame = this.currCallFrame)
-  //Return the source line number that corresponds to the given op index;
-  //if the op index does not have an associated source line number, return 0
-  {
-    var map = callFrame.func.sourceLineMap;
-
-    for(const [sourceLineNum, opIndexRange] of map)
-    {
-      if(opIndexRange.isInRange(opIndex))
-        return sourceLineNum;
-    }
-
-    return 0;
+    return this.callFrame.func.getOpSourceLineNum(callFrame.nextOpIndex);
   }
 
   changeStatus(newStatus)

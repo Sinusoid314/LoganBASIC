@@ -116,11 +116,11 @@ function onVMStatusChange(vm, prevStatus)
   switch(vm.status)
   {
     case VM_STATUS_COMPILING:
-      postMessage({msgId: MSGID_STATUS_CHANGE, msgData: "Compiling..."});
+      postMessage({msgId: MSGID_STATUS_CHANGE, msgData: {statusText: "Compiling..."}});
       break;
 
     case VM_STATUS_RUNNING:
-      postMessage({msgId: MSGID_STATUS_CHANGE, msgData: "Running..."});
+      postMessage({msgId: MSGID_STATUS_CHANGE, msgData: {statusText: "Running..."}});
       break;
   }
 }
@@ -131,7 +131,7 @@ function onVMError(vm)
   if(vm.status != VM_STATUS_COMPILING)
     postMessage({msgId: MSGID_DEBUG_UPDATE_UI, msgData: new DebugInfo(vm, 0)});
 
-  postMessage({msgId: MSGID_PROG_DONE_ERROR, msgData: vm.error});
+  postMessage({msgId: MSGID_PROG_DONE_ERROR, msgData: {error: vm.error}});
   return false;
 }
 

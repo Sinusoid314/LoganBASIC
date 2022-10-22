@@ -69,10 +69,10 @@ function onMsgHideConsole()
   }
 }
 
-function onMsgPrint(val)
+function onMsgPrint(msgData)
 //Print to the console output
 {
-  consoleOutput.value += val;
+  consoleOutput.value += msgData.printVal;
   consoleOutput.scrollTop = consoleOutput.scrollHeight;
 }
 

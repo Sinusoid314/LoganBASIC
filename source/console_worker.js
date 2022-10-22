@@ -27,7 +27,7 @@ function onVMPrint(vm, printVal, replaceAll)
   if(replaceAll)
     postMessage({msgId: MSGID_CLEAR_CONSOLE});
   else
-    postMessage({msgId: MSGID_PRINT, msgData: printVal});
+    postMessage({msgId: MSGID_PRINT, msgData: {printVal: printVal}});
 }
 
 function funcShowEditor(vm, args)
@@ -66,7 +66,7 @@ function funcInput(vm, args)
   else
     inputCallback.vm = vm;
 
-  postMessage({msgId: MSGID_PRINT, msgData: args[0]});
+  postMessage({msgId: MSGID_PRINT, msgData: {printVal: args[0]}});
   postMessage({msgId: MSGID_INPUT_REQUEST});
 
   vm.changeStatus(VM_STATUS_IDLE);
