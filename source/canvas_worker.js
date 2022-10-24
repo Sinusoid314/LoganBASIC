@@ -132,40 +132,35 @@ function funcClearCanvas(vm, args)
 function funcLoadImage(vm, args)
 //Send a message to the canvas to load an image
 {
-  var imageName = args[0];
-  var imageSource = args[1];
-
-  sendImageRequest(vm, MSGID_LOAD_IMAGE_REQUEST, [imageName, imageSource]);
-
+  sendImageRequest(vm, MSGID_LOAD_IMAGE_REQUEST, {imageName: args[0], imageSource: args[1]});
   return false;
 }
 
 function funcUnloadImage(vm, args)
 //Send a message to the canvas to unload an image
 {
-  var imageName = args[0];
-
-  sendImageRequest(vm, MSGID_UNLOAD_IMAGE_REQUEST, imageName);
-
+  sendImageRequest(vm, MSGID_UNLOAD_IMAGE_REQUEST, {imageName: args[0]});
   return 0;
 }
 
 function funcDrawImage(vm, args)
 //Send a message to the canvas to draw an image
 {
-  var imageName = args[0];
-  var drawX = args[1];
-  var drawY = args[2];
-  var drawWidth = null;
-  var drawHeight = null;
+  var msgData = {
+      imageName: args[0],
+      drawX: args[1],
+      drawY: args[2],
+      drawWidth: null,
+      drawHeight: null
+  };
 
   if(args.length >= 4)
-    drawWidth = args[3];
+    msgData.drawWidth = args[3];
 
   if(args.length == 5)
-    drawHeight = args[4];
+    msgData.drawHeight = args[4];
 
-  sendImageRequest(vm, MSGID_DRAW_IMAGE_REQUEST, [imageName, drawX, drawY, drawWidth, drawHeight]);
+  sendImageRequest(vm, MSGID_DRAW_IMAGE_REQUEST, msgData);
 
   return 0;
 }
@@ -173,23 +168,25 @@ function funcDrawImage(vm, args)
 function funcDrawImageClip(vm, args)
 //Send an image to the canvas to draw an image
 {
-  var imageName = args[0];
-  var clipX = args[1];
-  var clipY = args[2];
-  var clipWidth = args[3];
-  var clipHeight = args[4];
-  var drawX = args[5];
-  var drawY = args[6];
-  var drawWidth = clipWidth;
-  var drawHeight = clipHeight;
+  var msgData = {
+      imageName: args[0],
+      clipX: args[1],
+      clipY: args[2],
+      clipWidth: args[3],
+      clipHeight: args[4],
+      drawX: args[5],
+      drawY: args[6],
+      drawWidth: args[3],
+      drawHeight: args[4]
+  };
 
   if(args.length >= 8)
-    drawWidth = args[7];
+    msgData.drawWidth = args[7];
 
   if(args.length == 9)
-    drawHeight = args[8];
+    msgData.drawHeight = args[8];
 
-  sendImageRequest(vm, MSGID_DRAW_IMAGE_CLIP_REQUEST, [imageName, clipX, clipY, clipWidth, clipHeight, drawX, drawY, drawWidth, drawHeight]);
+  sendImageRequest(vm, MSGID_DRAW_IMAGE_CLIP_REQUEST, msgData);
 
   return 0;
 }
@@ -197,21 +194,23 @@ function funcDrawImageClip(vm, args)
 function funcDrawImageTiled(vm, args)
 //
 {
-  var imageName = args[0];
-  var drawX = args[1];
-  var drawY = args[2];
-  var drawWidth = args[3];
-  var drawHeight = args[4];
-  var offsetX = 0;
-  var offsetY = 0;
+  var msgData = {
+      imageName: args[0],
+      drawX: args[1],
+      drawY: args[2],
+      drawWidth: args[3],
+      drawHeight: args[4],
+      offsetX: 0,
+      offsetY: 0
+  };
 
   if(args.length >= 6)
-    offsetX = args[5];
+    msgData.offsetX = args[5];
 
   if(args.length == 7)
-    offsetY = args[6];
+    msgData.offsetY = args[6];
 
-  sendImageRequest(vm, MSGID_DRAW_IMAGE_TILED_REQUEST, [imageName, drawX, drawY, drawWidth, drawHeight, offsetX, offsetY]);
+  sendImageRequest(vm, MSGID_DRAW_IMAGE_TILED_REQUEST, msgData);
 
   return 0;
 }

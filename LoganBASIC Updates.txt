@@ -1,3 +1,8 @@
+(October 23, 2022)
+[v2.0.56]
+	- Modified worker/UI messages up to and including MSGID_DRAW_IMAGE_TILED_REQUEST in main_ui to send 
+	  objects with named fields.
+
 (October 21, 2022)
 [v2.0.55]
 	- Moved getOpSourceLineNum() method from VM to ObjUserFunc.

@@ -142,7 +142,7 @@ function progUI_onMessage(message)
       break;
 
     case MSGID_LOAD_IMAGE_REQUEST:
-      onMsgLoadImageRequest(message.data.msgData[0], message.data.msgData[1]);
+      onMsgLoadImageRequest(message.data.msgData);
       break;
 
     case MSGID_UNLOAD_IMAGE_REQUEST:
@@ -150,17 +150,15 @@ function progUI_onMessage(message)
       break;
 
     case MSGID_DRAW_IMAGE_REQUEST:
-      onMsgDrawImageRequest(message.data.msgData[0], message.data.msgData[1], message.data.msgData[2], message.data.msgData[3], message.data.msgData[4]);
+      onMsgDrawImageRequest(message.data.msgData);
       break;
 
     case MSGID_DRAW_IMAGE_CLIP_REQUEST:
-      onMsgDrawImageClipRequest(message.data.msgData[0], message.data.msgData[1], message.data.msgData[2], message.data.msgData[3], message.data.msgData[4],
-                               message.data.msgData[5], message.data.msgData[6], message.data.msgData[7], message.data.msgData[8]);
+      onMsgDrawImageClipRequest(message.data.msgData);
       break;
 
     case MSGID_DRAW_IMAGE_TILED_REQUEST:
-      onMsgDrawImageTiledRequest(message.data.msgData[0], message.data.msgData[1], message.data.msgData[2], message.data.msgData[3], message.data.msgData[4],
-                                message.data.msgData[5], message.data.msgData[6]);
+      onMsgDrawImageTiledRequest(message.data.msgData);
       break;
 
     case MSGID_GET_IMAGE_WIDTH_REQUEST:

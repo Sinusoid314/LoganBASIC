@@ -172,105 +172,106 @@ function onMsgClearCanvas()
   clearCanvas();
 }
 
-function onMsgLoadImageRequest(imageName, imageSource)
+function onMsgLoadImageRequest(msgData)
 //Load an image for drawing on the canvas
 {
   var newImage;
 
-  if(!images.has(imageName))
+  if(!images.has(msgData.imageName))
   {
     newImage = new Image();
 
     newImage.addEventListener("load", image_onLoad);
     newImage.addEventListener("error", image_onError);
 
-    newImage.id = imageName;
-    newImage.src = imageSource;
+    newImage.id = msgData.imageName;
+    newImage.src = msgData.imageSource;
   }
   else
-    sendImageRequestResult(["Image '" + imageName + "' has already been loaded."]);
+    sendImageRequestResult(["Image '" + msgData.imageName + "' has already been loaded."]);
 }
 
-function onMsgUnloadImageRequest(imageName)
+function onMsgUnloadImageRequest(msgData)
 //Unload a canvas image
 {
-  if(images.has(imageName))
+  if(images.has(msgData.imageName))
   {
-    images.delete(imageName);
+    images.delete(msgData.imageName);
     sendImageRequestResult(["", 0]);
   }
   else
-    sendImageRequestResult(["Image '" + imageName + "' has not been loaded."]);
+    sendImageRequestResult(["Image '" + msgData.imageName + "' has not been loaded."]);
 }
 
-function onMsgDrawImageRequest(imageName, drawX, drawY, drawWidth, drawHeight)
+function onMsgDrawImageRequest(msgData)
 //Draw the given image to the active canvas
 {
   var image;
 
-  if(images.has(imageName))
+  if(images.has(msgData.imageName))
   {
-    image = images.get(imageName);
+    image = images.get(msgData.imageName);
 
-    if(drawWidth == null)
-      drawWidth = image.width;
+    if(msgData.drawWidth == null)
+      msgData.drawWidth = image.width;
 
-    if(drawHeight == null)
-      drawHeight = image.height;
+    if(msgData.drawHeight == null)
+      msgData.drawHeight = image.height;
 
-    activeContext.drawImage(image, drawX, drawY, drawWidth, drawHeight);
+    activeContext.drawImage(image, msgData.drawX, msgData.drawY, msgData.drawWidth, msgData.drawHeight);
 
     sendImageRequestResult(["", 0]);
   }
   else
-    sendImageRequestResult(["Image '" + imageName + "' has not been loaded."]);
+    sendImageRequestResult(["Image '" + msgData.imageName + "' has not been loaded."]);
 }
 
-function onMsgDrawImageClipRequest(imageName, clipX, clipY, clipWidth, clipHeight, drawX, drawY, drawWidth, drawHeight)
+function onMsgDrawImageClipRequest(msgData)
 //Draw the given image to the active canvas
 {
   var image;
 
-  if(images.has(imageName))
+  if(images.has(msgData.imageName))
   {
-    image = images.get(imageName);
+    image = images.get(msgData.imageName);
 
-    activeContext.drawImage(image, clipX, clipY, clipWidth, clipHeight, drawX, drawY, drawWidth, drawHeight);
+    activeContext.drawImage(image, msgData.clipX, msgData.clipY, msgData.clipWidth, msgData.clipHeight,
+                            msgData.drawX, msgData.drawY, msgData.drawWidth, msgData.drawHeight);
 
     sendImageRequestResult(["", 0]);
   }
   else
-    sendImageRequestResult(["Image '" + imageName + "' has not been loaded."]);
+    sendImageRequestResult(["Image '" + msgData.imageName + "' has not been loaded."]);
 }
 
-function onMsgDrawImageTiledRequest(imageName, drawX, drawY, drawWidth, drawHeight, offsetX, offsetY)
+function onMsgDrawImageTiledRequest(msgData)
 //
 {
   var image;
   var initX, initY, destX, destY;
 
-  if(!images.has(imageName))
+  if(!images.has(msgData.imageName))
   {
-    sendImageRequestResult(["Image '" + imageName + "' has not been loaded."]);
+    sendImageRequestResult(["Image '" + msgData.imageName + "' has not been loaded."]);
     return;
   }
 
-  image = images.get(imageName);
+  image = images.get(msgData.imageName);
 
-  offsetX = offsetX % image.width;
-  offsetY = offsetY % image.height;
+  msgData.offsetX = msgData.offsetX % image.width;
+  msgData.offsetY = msgData.offsetY % image.height;
 
-  initX = drawX + offsetX - (offsetX > 0 ? image.width : 0);
-  initY = drawY + offsetY - (offsetY > 0 ? image.height : 0);
+  initX = msgData.drawX + msgData.offsetX - (msgData.offsetX > 0 ? image.width : 0);
+  initY = msgData.drawY + msgData.offsetY - (msgData.offsetY > 0 ? image.height : 0);
 
   activeContext.save();
   activeContext.beginPath();
-  activeContext.rect(drawX, drawY, drawWidth, drawHeight);
+  activeContext.rect(msgData.drawX, msgData.drawY, msgData.drawWidth, msgData.drawHeight);
   activeContext.clip();
 
-  for(destY = initY; destY < (drawY + drawHeight); destY += image.height)
+  for(destY = initY; destY < (msgData.drawY + msgData.drawHeight); destY += image.height)
   {
-    for(destX = initX; destX < (drawX + drawWidth); destX += image.width)
+    for(destX = initX; destX < (msgData.drawX + msgData.drawWidth); destX += image.width)
     {
       activeContext.drawImage(image, destX, destY);
     }
