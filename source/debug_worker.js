@@ -127,21 +127,21 @@ function onMsgDebugSkip()
   mainVM.run();
 }
 
-function onMsgDebugCallFrameInfoRequest(callFrameIndex)
+function onMsgDebugCallFrameInfoRequest(msgData)
 //
 {
   var sourceLineNum;
 
-  if(callFrameIndex < 0 || callFrameIndex >= mainVM.callFrames.length)
+  if(msgData.callFrameIndex < 0 || msgData.callFrameIndex >= mainVM.callFrames.length)
     return;
 
-  if(callFrameIndex == mainVM.callFrames.length - 1)
-    sourceLineNum = mainVM.getNextOpSourceLineNum(mainVM.callFrames[callFrameIndex]);
+  if(msgData.callFrameIndex == mainVM.callFrames.length - 1)
+    sourceLineNum = mainVM.getNextOpSourceLineNum(mainVM.callFrames[msgData.callFrameIndex]);
   else
-    sourceLineNum = mainVM.getCurrOpSourceLineNum(mainVM.callFrames[callFrameIndex]);
+    sourceLineNum = mainVM.getCurrOpSourceLineNum(mainVM.callFrames[msgData.callFrameIndex]);
 
   postMessage({msgId: MSGID_DEBUG_UPDATE_UI,
-               msgData: new DebugInfo(mainVM, sourceLineNum, callFrameIndex)});
+               msgData: new DebugInfo(mainVM, sourceLineNum, msgData.callFrameIndex)});
 }
 
 function onVMSourceLineChange(vm, nextSourceLineNum)

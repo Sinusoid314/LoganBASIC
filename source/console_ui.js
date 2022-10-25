@@ -23,7 +23,7 @@ function enterConsoleInput()
 //
 {
   consoleOutput.value += consoleInput.value + '\n';
-  progWorker.postMessage({msgId: MSGID_INPUT_RESULT, msgData: consoleInput.value});
+  progWorker.postMessage({msgId: MSGID_INPUT_RESULT, msgData: {inputVal: consoleInput.value}});
   closeConsoleInput();
 }
 

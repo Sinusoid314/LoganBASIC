@@ -90,33 +90,33 @@ function resetSprites()
   spriteSheetResultCallback = null;
 }
 
-function onMsgSpriteSheetRefRequestResult(result)
+function onMsgSpriteSheetRefRequestResult(msgData)
 //
 {
   var sprite;
 
-  if(result[0] != "")
-    spriteSheetResultCallback.vm.runError(result[0]);
+  if(msgData.errorMsg != "")
+    spriteSheetResultCallback.vm.runError(msgData.errorMsg);
   else
   {
-    sprite = sprites.get(result[1]);
-    sprite.drawWidth = result[2];
-    sprite.drawHeight = result[3];
-    sprite.frameCount = result[4];
+    sprite = sprites.get(msgData.spriteName);
+    sprite.drawWidth = msgData.frameWidth;
+    sprite.drawHeight = msgData.frameHeight;
+    sprite.frameCount = msgData.frameCount;
     sprite.lastFrameIndex = sprite.frameCount - 1;
 
     spriteSheetResultCallback.runFunc();
   }
 }
 
-function onMsgSpriteSheetRequestResult(result)
+function onMsgSpriteSheetRequestResult(msgData)
 //
 {
-  if(result[0] != "")
-    spriteSheetResultCallback.vm.runError(result[0]);
+  if(msgData.errorMsg != "")
+    spriteSheetResultCallback.vm.runError(msgData.errorMsg);
   else
   {
-    spriteSheetResultCallback.vm.stack[spriteSheetResultCallback.vm.stack.length - 1] = result[1];
+    spriteSheetResultCallback.vm.stack[spriteSheetResultCallback.vm.stack.length - 1] = msgData.resultVal;
     spriteSheetResultCallback.runFunc();
   }
 }
@@ -137,12 +137,14 @@ function sendSpriteSheetRequest(vm, msgId, msgData)
 function funcLoadSpriteSheet(vm, args)
 //
 {
-  var sheetName = args[0];
-  var sheetSource = args[1];
-  var columnCount = args[2];
-  var rowCount = args[3];
+  var msgData = {
+      sheetName: args[0],
+      sheetSource: args[1],
+      columnCount: args[2],
+      rowCount: args[3]
+  };
 
-  sendSpriteSheetRequest(vm, MSGID_LOAD_SPRITE_SHEET_REQUEST, [sheetName, sheetSource, columnCount, rowCount]);
+  sendSpriteSheetRequest(vm, MSGID_LOAD_SPRITE_SHEET_REQUEST, msgData);
 
   return false;
 }
@@ -150,10 +152,7 @@ function funcLoadSpriteSheet(vm, args)
 function funcUnloadSpriteSheet(vm, args)
 //
 {
-  var sheetName = args[0];
-
-  sendSpriteSheetRequest(vm, MSGID_UNLOAD_SPRITE_SHEET_REQUEST, sheetName);
-
+  sendSpriteSheetRequest(vm, MSGID_UNLOAD_SPRITE_SHEET_REQUEST, {sheetName: args[0]});
   return 0;
 }
 
@@ -172,7 +171,7 @@ function funcDrawSprites(vm, args)
       drawData.push([sprite.sheetName, sprite.currFrameIndex, drawX, drawY, sprite.drawWidth, sprite.drawHeight]);
   }
 
-  sendSpriteSheetRequest(vm, MSGID_DRAW_SPRITE_SHEET_FRAMES_REQUEST, drawData);
+  sendSpriteSheetRequest(vm, MSGID_DRAW_SPRITE_SHEET_FRAMES_REQUEST, {drawData: drawData});
 
   return 0;
 }
@@ -185,7 +184,7 @@ function funcGetSpriteFrameWidth(vm, args)
   if(!sprites.has(spriteName))
     vm.runError("Sprite '" + spriteName + "' does not exist.");
 
-  sendSpriteSheetRequest(vm, MSGID_GET_SPRITE_SHEET_FRAME_WIDTH_REQUEST, sprites.get(spriteName).sheetName);
+  sendSpriteSheetRequest(vm, MSGID_GET_SPRITE_SHEET_FRAME_WIDTH_REQUEST, {sheetName: sprites.get(spriteName).sheetName});
 
   return 0;
 }
@@ -198,7 +197,7 @@ function funcGetSpriteFrameHeight(vm, args)
   if(!sprites.has(spriteName))
     vm.runError("Sprite '" + spriteName + "' does not exist.");
 
-  sendSpriteSheetRequest(vm, MSGID_GET_SPRITE_SHEET_FRAME_HEIGHT_REQUEST, sprites.get(spriteName).sheetName);
+  sendSpriteSheetRequest(vm, MSGID_GET_SPRITE_SHEET_FRAME_HEIGHT_REQUEST, {sheetName: sprites.get(spriteName).sheetName});
 
   return 0;
 }
@@ -219,7 +218,7 @@ function funcAddSprite(vm, args)
   sprites.set(spriteName, sprite);
   zOrderedSprites.push(sprite);
 
-  sendSpriteSheetRequest(vm, MSGID_SPRITE_SHEET_REF_REQUEST, [sheetName, spriteName]);
+  sendSpriteSheetRequest(vm, MSGID_SPRITE_SHEET_REF_REQUEST, {sheetName: sheetName, spriteName: spriteName});
 
   return 0;
 }
@@ -259,7 +258,7 @@ function funcSetSpriteSheet(vm, args)
   sprite.firstFrameIndex = 0;
   sprite.currFrameIndex = 0;
 
-  sendSpriteSheetRequest(vm, MSGID_SPRITE_SHEET_REF_REQUEST, [sheetName, spriteName]);
+  sendSpriteSheetRequest(vm, MSGID_SPRITE_SHEET_REF_REQUEST, {sheetName: sheetName, spriteName: spriteName});
 
   return 0;
 }

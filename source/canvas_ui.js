@@ -74,7 +74,7 @@ function image_onLoad(event)
 
   images.set(this.id, this);
 
-  sendImageRequestResult(["", true])
+  sendImageRequestResult(true)
 }
 
 function image_onError(event)
@@ -83,13 +83,13 @@ function image_onError(event)
   this.removeEventListener("load", image_onLoad);
   this.removeEventListener("error", image_onError);
 
-  sendImageRequestResult(["", false])
+  sendImageRequestResult(false)
 }
 
-function sendImageRequestResult(msgData)
+function sendImageRequestResult(resultVal, errorMsg = "")
 //
 {
-  progWorker.postMessage({msgId: MSGID_IMAGE_REQUEST_RESULT, msgData: msgData});
+  progWorker.postMessage({msgId: MSGID_IMAGE_REQUEST_RESULT, msgData: {resultVal: resultVal, errorMsg: errorMsg}});
 }
 
 
@@ -116,11 +116,11 @@ function canvas_onEvent(event)
     canvasRect = progCanvas.getBoundingClientRect();
     pointerX = event.clientX - canvasRect.left;
     pointerY = event.clientY - canvasRect.top;
-    progWorker.postMessage({msgId: MSGID_CANVAS_EVENT, msgData: [event.type, pointerX, pointerY]});
+    progWorker.postMessage({msgId: MSGID_CANVAS_EVENT, msgData: {eventName: event.type, eventArgs: [pointerX, pointerY]}});
   }
   else if(event instanceof KeyboardEvent)
   {
-    progWorker.postMessage({msgId: MSGID_CANVAS_EVENT, msgData: [event.type, event.key]});
+    progWorker.postMessage({msgId: MSGID_CANVAS_EVENT, msgData: {eventName: event.type, eventArgs: [event.key]}});
   }
 
   event.preventDefault();
@@ -188,7 +188,7 @@ function onMsgLoadImageRequest(msgData)
     newImage.src = msgData.imageSource;
   }
   else
-    sendImageRequestResult(["Image '" + msgData.imageName + "' has already been loaded."]);
+    sendImageRequestResult(null, "Image '" + msgData.imageName + "' has already been loaded.");
 }
 
 function onMsgUnloadImageRequest(msgData)
@@ -197,10 +197,10 @@ function onMsgUnloadImageRequest(msgData)
   if(images.has(msgData.imageName))
   {
     images.delete(msgData.imageName);
-    sendImageRequestResult(["", 0]);
+    sendImageRequestResult(0);
   }
   else
-    sendImageRequestResult(["Image '" + msgData.imageName + "' has not been loaded."]);
+    sendImageRequestResult(null, "Image '" + msgData.imageName + "' has not been loaded.");
 }
 
 function onMsgDrawImageRequest(msgData)
@@ -220,10 +220,10 @@ function onMsgDrawImageRequest(msgData)
 
     activeContext.drawImage(image, msgData.drawX, msgData.drawY, msgData.drawWidth, msgData.drawHeight);
 
-    sendImageRequestResult(["", 0]);
+    sendImageRequestResult(0);
   }
   else
-    sendImageRequestResult(["Image '" + msgData.imageName + "' has not been loaded."]);
+    sendImageRequestResult(null, "Image '" + msgData.imageName + "' has not been loaded.");
 }
 
 function onMsgDrawImageClipRequest(msgData)
@@ -238,10 +238,10 @@ function onMsgDrawImageClipRequest(msgData)
     activeContext.drawImage(image, msgData.clipX, msgData.clipY, msgData.clipWidth, msgData.clipHeight,
                             msgData.drawX, msgData.drawY, msgData.drawWidth, msgData.drawHeight);
 
-    sendImageRequestResult(["", 0]);
+    sendImageRequestResult(0);
   }
   else
-    sendImageRequestResult(["Image '" + msgData.imageName + "' has not been loaded."]);
+    sendImageRequestResult(null, "Image '" + msgData.imageName + "' has not been loaded.");
 }
 
 function onMsgDrawImageTiledRequest(msgData)
@@ -252,7 +252,7 @@ function onMsgDrawImageTiledRequest(msgData)
 
   if(!images.has(msgData.imageName))
   {
-    sendImageRequestResult(["Image '" + msgData.imageName + "' has not been loaded."]);
+    sendImageRequestResult(null, "Image '" + msgData.imageName + "' has not been loaded.");
     return;
   }
 
@@ -280,25 +280,25 @@ function onMsgDrawImageTiledRequest(msgData)
   activeContext.beginPath();
   activeContext.restore();
 
-  sendImageRequestResult(["", 0]);
+  sendImageRequestResult(0);
 }
 
-function onMsgGetImageWidthRequest(imageName)
+function onMsgGetImageWidthRequest(msgData)
 //
 {
-  if(images.has(imageName))
-    sendImageRequestResult(["", images.get(imageName).width]);
+  if(images.has(msgData.imageName))
+    sendImageRequestResult(images.get(msgData.imageName).width);
   else
-    sendImageRequestResult(["Image '" + imageName + "' has not been loaded."]);
+    sendImageRequestResult(null, "Image '" + msgData.imageName + "' has not been loaded.");
 }
 
-function onMsgGetImageHeightRequest(imageName)
+function onMsgGetImageHeightRequest(msgData)
 //
 {
-  if(images.has(imageName))
-    sendImageRequestResult(["", images.get(imageName).height]);
+  if(images.has(msgData.imageName))
+    sendImageRequestResult(images.get(msgData.imageName).height);
   else
-    sendImageRequestResult(["Image '" + imageName + "' has not been loaded."]);
+    sendImageRequestResult(null, "Image '" + msgData.imageName + "' has not been loaded.");
 }
 
 function onMsgEnableCanvasBuffer()
@@ -319,78 +319,78 @@ function onMsgDrawCanvasBuffer()
   window.requestAnimationFrame(canvas_onAnimationFrame);
 }
 
-function onMsgAddCanvasEvent(eventName)
+function onMsgAddCanvasEvent(msgData)
 //
 {
-  progCanvas.addEventListener(eventName, canvas_onEvent);
+  progCanvas.addEventListener(msgData.eventName, canvas_onEvent);
 }
 
-function onMsgRemoveCanvasEvent(eventName)
+function onMsgRemoveCanvasEvent(msgData)
 //
 {
-  progCanvas.removeEventListener(eventName, canvas_onEvent);
+  progCanvas.removeEventListener(msgData.eventName, canvas_onEvent);
 }
 
-function onMsgDrawText(text, drawX, drawY, isFilled)
+function onMsgDrawText(msgData)
 //
 {
-  if(isFilled)
-    activeContext.fillText(text, drawX, drawY);
+  if(msgData.isFilled)
+    activeContext.fillText(msgData.text, msgData.drawX, msgData.drawY);
   else
-    activeContext.strokeText(text, drawX, drawY);
+    activeContext.strokeText(msgData.text, msgData.drawX, msgData.drawY);
 }
 
-function onMsgDrawRect(drawX, drawY, drawWidth, drawHeight, isFilled)
+function onMsgDrawRect(msgData)
 //
 {
-  if(isFilled)
-    activeContext.fillRect(drawX, drawY, drawWidth, drawHeight);
+  if(msgData.isFilled)
+    activeContext.fillRect(msgData.drawX, msgData.drawY, msgData.drawWidth, msgData.drawHeight);
   else
-    activeContext.strokeRect(drawX, drawY, drawWidth, drawHeight);
+    activeContext.strokeRect(msgData.drawX, msgData.drawY, msgData.drawWidth, msgData.drawHeight);
 }
 
-function onMsgDrawCircle(centerX, centerY, radius, isFilled)
+function onMsgDrawCircle(msgData)
 //
 {
   activeContext.beginPath();
-  activeContext.arc(centerX, centerY, radius, 0, 2 * Math.PI);
+  activeContext.arc(msgData.centerX, msgData.centerY, msgData.radius, 0, 2 * Math.PI);
 
-  if(isFilled)
+  if(msgData.isFilled)
     activeContext.fill();
   else
     activeContext.stroke();
 }
 
-function onMsgDrawLine(startX, startY, endX, endY)
+function onMsgDrawLine(msgData)
 //
 {
   activeContext.beginPath();
-  activeContext.moveTo(startX, startY);
-  activeContext.lineTo(endX, endY);
+  activeContext.moveTo(msgData.startX, msgData.startY);
+  activeContext.lineTo(msgData.endX, msgData.endY);
   activeContext.stroke();
 }
 
-function onMsgSetTextFont(font)
+function onMsgSetTextFont(msgData)
 //
 {
-  activeContext.font = font;
+  activeContext.font = msgData.font;
 }
 
-function onMsgSetFillColor(color)
+function onMsgSetFillColor(msgData)
 //
 {
-  activeContext.fillStyle = color;
+  activeContext.fillStyle = msgData.color;
 }
 
-function onMsgSetLineColor(color)
+function onMsgSetLineColor(msgData)
 //
 {
-  activeContext.strokeStyle = color;
+  activeContext.strokeStyle = msgData.color;
 }
 
-function onMsgSetLineSize(size)
+function onMsgSetLineSize(msgData)
 //
 {
-  activeContext.lineWidth = size;
+  activeContext.lineWidth = msgData.size;
 }
 

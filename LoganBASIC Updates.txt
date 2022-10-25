@@ -1,12 +1,17 @@
+(October 24, 2022)
+[v2.0.57]
+	- Finished modifying worker/UI messages in main_ui module to send object with named fields.
+	- Modified worker/UI messages in main_worker module to send objects with named fields.
+
 (October 23, 2022)
 [v2.0.56]
-	- Modified worker/UI messages up to and including MSGID_DRAW_IMAGE_TILED_REQUEST in main_ui to send 
+	- Modified worker/UI messages up to and including MSGID_DRAW_IMAGE_TILED_REQUEST in main_ui module to send 
 	  objects with named fields.
 
 (October 21, 2022)
 [v2.0.55]
 	- Moved getOpSourceLineNum() method from VM to ObjUserFunc.
-	- Modified worker/UI messages up to MSGID_LOAD_IMAGE_REQUEST in main_ui to send 
+	- Modified worker/UI messages up to MSGID_LOAD_IMAGE_REQUEST in main_ui module to send 
 	  objects with named fields.
 
 (October 20, 2022)

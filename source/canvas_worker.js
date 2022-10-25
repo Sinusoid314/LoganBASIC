@@ -53,14 +53,14 @@ function resetCanvas()
   drawBufferCallback = null;
 }
 
-function onMsgImageRequestResult(result)
+function onMsgImageRequestResult(msgData)
 //
 {
-  if(result[0] != "")
-    imageResultCallback.vm.runError(result[0]);
+  if(msgData.errorMsg != "")
+    imageResultCallback.vm.runError(msgData.errorMsg);
   else
   {
-    imageResultCallback.vm.stack[imageResultCallback.vm.stack.length - 1] = result[1];
+    imageResultCallback.vm.stack[imageResultCallback.vm.stack.length - 1] = msgData.resultVal;
     imageResultCallback.runFunc();
   }
 }
@@ -78,13 +78,12 @@ function sendImageRequest(vm, msgId, msgData)
   vm.changeStatus(VM_STATUS_IDLE);
 }
 
-function onMsgCanvasEvent(eventData)
+function onMsgCanvasEvent(msgData)
 //
 {
-  var eventIndex = canvasEvents.findIndex((event) => event.name == eventData[0]);
+  var eventIndex = canvasEvents.findIndex((event) => event.name == msgData.eventName);
 
-  eventData.splice(0, 1);
-  canvasEvents[eventIndex].callback.runFunc(eventData);
+  canvasEvents[eventIndex].callback.runFunc(msgData.eventArgs);
 }
 
 function onMsgDrawCanvasBufferDone()
@@ -218,20 +217,14 @@ function funcDrawImageTiled(vm, args)
 function funcGetImageWidth(vm, args)
 //
 {
-  var imageName = args[0];
-
-  sendImageRequest(vm, MSGID_GET_IMAGE_WIDTH_REQUEST, imageName);
-
+  sendImageRequest(vm, MSGID_GET_IMAGE_WIDTH_REQUEST, {imageName: args[0]});
   return 0;
 }
 
 function funcGetImageHeight(vm, args)
 //
 {
-  var imageName = args[0];
-
-  sendImageRequest(vm, MSGID_GET_IMAGE_HEIGHT_REQUEST, imageName);
-
+  sendImageRequest(vm, MSGID_GET_IMAGE_HEIGHT_REQUEST, {imageName: args[0]});
   return 0;
 }
 
@@ -315,12 +308,12 @@ function funcSetCanvasEvent(vm, args)
       canvasEvents[eventIndex].callback.userFunc = eventUserFunc;
     }
 
-    postMessage({msgId: MSGID_ADD_CANVAS_EVENT, msgData: eventName});
+    postMessage({msgId: MSGID_ADD_CANVAS_EVENT, msgData: {eventName: eventName}});
   }
   else
   {
     canvasEvents[eventIndex].callback = null;
-    postMessage({msgId: MSGID_REMOVE_CANVAS_EVENT, msgData: eventName});
+    postMessage({msgId: MSGID_REMOVE_CANVAS_EVENT, msgData: {eventName: eventName}});
   }
 
   return 0;
@@ -329,15 +322,17 @@ function funcSetCanvasEvent(vm, args)
 function funcDrawText(vm, args)
 //
 {
-  var text = args[0];
-  var drawX = args[1];
-  var drawY = args[2];
-  var isFilled = true;
+  var msgData = {
+      text: args[0],
+      drawX: args[1],
+      drawY: args[2],
+      isFilled: true
+  };
 
   if(args.length == 4)
-    isFilled = args[3];
+    msgData.isFilled = args[3];
 
-  postMessage({msgId: MSGID_DRAW_TEXT, msgData: [text, drawX, drawY, isFilled]});
+  postMessage({msgId: MSGID_DRAW_TEXT, msgData: msgData});
 
   return 0;
 }
@@ -345,16 +340,18 @@ function funcDrawText(vm, args)
 function funcDrawRect(vm, args)
 //
 {
-  var drawX = args[0];
-  var drawY = args[1];
-  var drawWidth = args[2];
-  var drawHeight = args[3];
-  var isFilled = true;
+  var msgData = {
+      drawX: args[0],
+      drawY: args[1],
+      drawWidth: args[2],
+      drawHeight: args[3],
+      isFilled: true
+  };
 
   if(args.length == 5)
-    isFilled = args[4];
+    msgData.isFilled = args[4];
 
-  postMessage({msgId: MSGID_DRAW_RECT, msgData: [drawX, drawY, drawWidth, drawHeight, isFilled]});
+  postMessage({msgId: MSGID_DRAW_RECT, msgData: msgData});
 
   return 0;
 }
@@ -362,15 +359,17 @@ function funcDrawRect(vm, args)
 function funcDrawCircle(vm, args)
 //
 {
-  var centerX = args[0];
-  var centerY = args[1];
-  var radius = args[2];
-  var isFilled = true;
+  var msgData = {
+      centerX: args[0],
+      centerY: args[1],
+      radius: args[2],
+      isFilled: true
+  };
 
   if(args.length == 4)
-    isFilled = args[3];
+    msgData.isFilled = args[3];
 
-  postMessage({msgId: MSGID_DRAW_CIRCLE, msgData: [centerX, centerY, radius, isFilled]});
+  postMessage({msgId: MSGID_DRAW_CIRCLE, msgData: msgData});
 
   return 0;
 }
@@ -378,12 +377,14 @@ function funcDrawCircle(vm, args)
 function funcDrawLine(vm, args)
 //
 {
-  var startX = args[0];
-  var startY = args[1];
-  var endX = args[2];
-  var endY = args[3];
+  var msgData = {
+      startX: args[0],
+      startY: args[1],
+      endX: args[2],
+      endY: args[3]
+  };
 
-  postMessage({msgId: MSGID_DRAW_LINE, msgData: [startX, startY, endX, endY]});
+  postMessage({msgId: MSGID_DRAW_LINE, msgData: msgData});
 
   return 0;
 }
@@ -391,39 +392,27 @@ function funcDrawLine(vm, args)
 function funcSetTextFont(vm, args)
 //
 {
-  var font = args[0];
-
-  postMessage({msgId: MSGID_SET_TEXT_FONT, msgData: font});
-
+  postMessage({msgId: MSGID_SET_TEXT_FONT, msgData: {font: args[0]}});
   return 0;
 }
 
 function funcSetFillColor(vm, args)
 //
 {
-  var color = args[0];
-
-  postMessage({msgId: MSGID_SET_FILL_COLOR, msgData: color});
-
+  postMessage({msgId: MSGID_SET_FILL_COLOR, msgData: {color: args[0]}});
   return 0;
 }
 
 function funcSetLineColor(vm, args)
 //
 {
-  var color = args[0];
-
-  postMessage({msgId: MSGID_SET_LINE_COLOR, msgData: color});
-
+  postMessage({msgId: MSGID_SET_LINE_COLOR, msgData: {color: args[0]}});
   return 0;
 }
 
 function funcSetLineSize(vm, args)
 {
-  var size = args[0];
-
-  postMessage({msgId: MSGID_SET_LINE_SIZE, msgData: size});
-
+  postMessage({msgId: MSGID_SET_LINE_SIZE, msgData: {size: args[0]}});
   return 0;
 }
 

@@ -190,19 +190,19 @@ function progUI_onMessage(message)
       break;
 
     case MSGID_DRAW_TEXT:
-      onMsgDrawText(message.data.msgData[0], message.data.msgData[1], message.data.msgData[2], message.data.msgData[3]);
+      onMsgDrawText(message.data.msgData);
       break;
 
     case MSGID_DRAW_RECT:
-      onMsgDrawRect(message.data.msgData[0], message.data.msgData[1], message.data.msgData[2], message.data.msgData[3], message.data.msgData[4]);
+      onMsgDrawRect(message.data.msgData);
       break;
 
     case MSGID_DRAW_CIRCLE:
-      onMsgDrawCircle(message.data.msgData[0], message.data.msgData[1], message.data.msgData[2], message.data.msgData[3]);
+      onMsgDrawCircle(message.data.msgData);
       break;
 
     case MSGID_DRAW_LINE:
-      onMsgDrawLine(message.data.msgData[0], message.data.msgData[1], message.data.msgData[2], message.data.msgData[3]);
+      onMsgDrawLine(message.data.msgData);
       break;
 
     case MSGID_SET_TEXT_FONT:
@@ -222,7 +222,7 @@ function progUI_onMessage(message)
       break;
 
     case MSGID_LOAD_SOUND_REQUEST:
-      onMsgLoadSoundRequest(message.data.msgData[0], message.data.msgData[1]);
+      onMsgLoadSoundRequest(message.data.msgData);
       break;
 
     case MSGID_UNLOAD_SOUND_REQUEST:
@@ -250,19 +250,19 @@ function progUI_onMessage(message)
       break;
 
     case MSGID_SET_SOUND_POS_REQUEST:
-      onMsgSetSoundPosRequest(message.data.msgData[0], message.data.msgData[1]);
+      onMsgSetSoundPosRequest(message.data.msgData);
       break;
 
     case MSGID_LOOP_SOUND_REQUEST:
-      onMsgLoopSoundRequest(message.data.msgData[0], message.data.msgData[1]);
+      onMsgLoopSoundRequest(message.data.msgData);
       break;
 
     case MSGID_SPRITE_SHEET_REF_REQUEST:
-      onMsgSpriteSheetRefRequest(message.data.msgData[0], message.data.msgData[1]);
+      onMsgSpriteSheetRefRequest(message.data.msgData);
       break;
 
     case MSGID_LOAD_SPRITE_SHEET_REQUEST:
-      onMsgLoadSpriteSheetRequest(message.data.msgData[0], message.data.msgData[1], message.data.msgData[2], message.data.msgData[3]);
+      onMsgLoadSpriteSheetRequest(message.data.msgData);
       break;
 
     case MSGID_UNLOAD_SPRITE_SHEET_REQUEST:

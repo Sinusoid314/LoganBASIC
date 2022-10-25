@@ -38,7 +38,7 @@ function spriteSheet_onLoad(event)
 
   spriteSheets.set(this.id, new SpriteSheet(this, this.dataset.columnCount, this.dataset.rowCount));
 
-  sendSpriteSheetRequestResult(["", true])
+  sendSpriteSheetRequestResult(true)
 }
 
 function spriteSheet_onError(event)
@@ -47,72 +47,76 @@ function spriteSheet_onError(event)
   this.removeEventListener("load", spriteSheet_onLoad);
   this.removeEventListener("error", spriteSheet_onError);
 
-  sendSpriteSheetRequestResult(["", false])
+  sendSpriteSheetRequestResult(false)
 }
 
-function sendSpriteSheetRequestResult(msgData)
+function sendSpriteSheetRequestResult(resultVal, errorMsg = "")
 //
 {
-  progWorker.postMessage({msgId: MSGID_SPRITE_SHEET_REQUEST_RESULT, msgData: msgData});
+  progWorker.postMessage({msgId: MSGID_SPRITE_SHEET_REQUEST_RESULT, msgData: {resultVal: resultVal, errorMsg: errorMsg}});
 }
 
-function onMsgSpriteSheetRefRequest(sheetName, spriteName)
+function onMsgSpriteSheetRefRequest(msgData)
 //
 {
   var sheet;
 
-  if(spriteSheets.has(sheetName))
+  if(spriteSheets.has(msgData.sheetName))
   {
-    sheet = spriteSheets.get(sheetName);
+    sheet = spriteSheets.get(msgData.sheetName);
     progWorker.postMessage({msgId: MSGID_SPRITE_SHEET_REF_REQUEST_RESULT,
-                            msgData: ["", spriteName, sheet.frameWidth, sheet.frameHeight, sheet.frameOffsets.length]});
+                            msgData: {errorMsg: "",
+                                      spriteName: msgData.spriteName,
+                                      frameWidth: sheet.frameWidth,
+                                      frameHeight: sheet.frameHeight,
+                                      frameCount: sheet.frameOffsets.length}});
   }
   else
     progWorker.postMessage({msgId: MSGID_SPRITE_SHEET_REF_REQUEST_RESULT,
-                            msgData: ["Sprite sheet '" + sheetName + "' has not been loaded."]});
+                            msgData: {errorMsg: "Sprite sheet '" + msgData.sheetName + "' has not been loaded."}});
 }
 
-function onMsgLoadSpriteSheetRequest(sheetName, sheetSource, columnCount, rowCount)
+function onMsgLoadSpriteSheetRequest(msgData)
 //Load a sprite sheet image
 {
   var newSheetImage;
 
-  if(!spriteSheets.has(sheetName))
+  if(!spriteSheets.has(msgData.sheetName))
   {
     newSheetImage = new Image();
 
     newSheetImage.addEventListener("load", spriteSheet_onLoad);
     newSheetImage.addEventListener("error", spriteSheet_onError);
 
-    newSheetImage.id = sheetName;
-    newSheetImage.dataset.columnCount = columnCount;
-    newSheetImage.dataset.rowCount = rowCount;
-    newSheetImage.src = sheetSource;
+    newSheetImage.id = msgData.sheetName;
+    newSheetImage.dataset.columnCount = msgData.columnCount;
+    newSheetImage.dataset.rowCount = msgData.rowCount;
+    newSheetImage.src = msgData.sheetSource;
   }
   else
-    sendSpriteSheetRequestResult(["Sprite sheet '" + sheetName + "' has already been loaded."]);
+    sendSpriteSheetRequestResult(null, "Sprite sheet '" + msgData.sheetName + "' has already been loaded.");
 }
 
-function onMsgUnloadSpriteSheetRequest(sheetName)
+function onMsgUnloadSpriteSheetRequest(msgData)
 //Unload a sprite sheet image
 {
-  if(spriteSheets.has(sheetName))
+  if(spriteSheets.has(msgData.sheetName))
   {
-    spriteSheets.delete(sheetName);
-    sendSpriteSheetRequestResult(["", 0]);
+    spriteSheets.delete(msgData.sheetName);
+    sendSpriteSheetRequestResult(0);
   }
   else
-    sendSpriteSheetRequestResult(["Sprite sheet '" + sheetName + "' has not been loaded."]);
+    sendSpriteSheetRequestResult(null, "Sprite sheet '" + msgData.sheetName + "' has not been loaded.");
 }
 
-function onMsgDrawSpriteSheetFramesRequest(drawData)
+function onMsgDrawSpriteSheetFramesRequest(msgData)
 //
 {
   var sheetName, sheet, frameIndex;
   var drawX, drawY, drawWidth, drawHeight;
   var clipX, clipY, clipWidth, clipHeight;
 
-  for(const drawItem of drawData)
+  for(const drawItem of msgData.drawData)
   {
     sheetName = drawItem[0];
     frameIndex = drawItem[1];
@@ -140,29 +144,29 @@ function onMsgDrawSpriteSheetFramesRequest(drawData)
     }
     else
     {
-      sendSpriteSheetRequestResult(["Sprite sheet '" + sheetName + "' has not been loaded."]);
+      sendSpriteSheetRequestResult(null, "Sprite sheet '" + sheetName + "' has not been loaded.");
       return;
     }
   }
 
-  sendSpriteSheetRequestResult(["", 0]);
+  sendSpriteSheetRequestResult(0);
 }
 
-function onMsgGetSpriteSheetFrameWidthRequest(sheetName)
+function onMsgGetSpriteSheetFrameWidthRequest(msgData)
 //
 {
-  if(spriteSheets.has(sheetName))
-    sendSpriteSheetRequestResult(["", spriteSheets.get(sheetName).frameWidth]);
+  if(spriteSheets.has(msgData.sheetName))
+    sendSpriteSheetRequestResult(spriteSheets.get(msgData.sheetName).frameWidth);
   else
-    sendSpriteSheetRequestResult(["Sprite sheet '" + sheetName + "' has not been loaded."]);
+    sendSpriteSheetRequestResult(null, "Sprite sheet '" + msgData.sheetName + "' has not been loaded.");
 }
 
-function onMsgGetSpriteSheetFrameHeightRequest(sheetName)
+function onMsgGetSpriteSheetFrameHeightRequest(msgData)
 //
 {
-  if(spriteSheets.has(sheetName))
-    sendSpriteSheetRequestResult(["", spriteSheets.get(sheetName).frameHeight]);
+  if(spriteSheets.has(msgData.sheetName))
+    sendSpriteSheetRequestResult(spriteSheets.get(msgData.sheetName).frameHeight);
   else
-    sendSpriteSheetRequestResult(["Sprite sheet '" + sheetName + "' has not been loaded."]);
+    sendSpriteSheetRequestResult(null, "Sprite sheet '" + msgData.sheetName + "' has not been loaded.");
 }
 

@@ -162,7 +162,7 @@ function debugCallStackList_onChange(event)
 {
   var callFrameIndex = (event.target.length - 1) - event.target.selectedIndex;
 
-  progWorker.postMessage({msgId: MSGID_DEBUG_CALL_FRAME_INFO_REQUEST, msgData: callFrameIndex});
+  progWorker.postMessage({msgId: MSGID_DEBUG_CALL_FRAME_INFO_REQUEST, msgData: {callFrameIndex: callFrameIndex}});
 }
 
 function onMsgDebugUpdateUI(msgData)

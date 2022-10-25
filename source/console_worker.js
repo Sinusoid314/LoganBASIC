@@ -14,10 +14,10 @@ function resetConsole()
   inputCallback = null;
 }
 
-function onMsgInputResult(inputStr)
+function onMsgInputResult(msgData)
 //Process input sent from the console
 {
-  inputCallback.vm.stack[inputCallback.vm.stack.length - 1] = inputStr;
+  inputCallback.vm.stack[inputCallback.vm.stack.length - 1] = msgData.inputVal;
   inputCallback.runFunc();
 }
 
