@@ -3,16 +3,19 @@ var sounds = new Map();
 function cleanupSounds()
 //Unload all sounds
 {
+  for (const [id, sound] of sounds)
+    sound.src = "";
+
   sounds.clear();
 }
 
 function sound_onLoad(event)
 //
 {
-  this.removeEventListener("canplaythrough", sound_onLoad);
-  this.removeEventListener("error", sound_onError);
+  event.target.removeEventListener("canplaythrough", sound_onLoad);
+  event.target.removeEventListener("error", sound_onError);
 
-  sounds.set(this.id, this);
+  sounds.set(event.target.id, event.target);
 
   sendSoundRequestResult(true)
 }
@@ -20,8 +23,8 @@ function sound_onLoad(event)
 function sound_onError(event)
 //
 {
-  this.removeEventListener("canplaythrough", sound_onLoad);
-  this.removeEventListener("error", sound_onError);
+  event.target.removeEventListener("canplaythrough", sound_onLoad);
+  event.target.removeEventListener("error", sound_onError);
 
   sendSoundRequestResult(false)
 }
@@ -59,8 +62,7 @@ function onMsgUnloadSoundRequest(msgData)
   if(sounds.has(msgData.soundName))
   {
     sound = sounds.get(msgData.soundName)
-    sound.pause();
-    sound.currentTime = sound.duration;
+    sound.src = "";
     sounds.delete(msgData.soundName);
 
     sendSoundRequestResult(0);

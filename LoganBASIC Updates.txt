@@ -1,3 +1,7 @@
+(October 25, 2022)
+[v2.0.58]
+	- Fixed bug with sounds not being unloaded when force-stopping a program.
+
 (October 24, 2022)
 [v2.0.57]
 	- Finished modifying worker/UI messages in main_ui module to send object with named fields.
