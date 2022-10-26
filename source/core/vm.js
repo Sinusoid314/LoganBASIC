@@ -771,13 +771,13 @@ class VM
   getCurrOpSourceLineNum(callFrame = this.currCallFrame)
   //
   {
-    return this.callFrame.func.getOpSourceLineNum(callFrame.currOpIndex);
+    return callFrame.func.getOpSourceLineNum(callFrame.currOpIndex);
   }
 
   getNextOpSourceLineNum(callFrame = this.currCallFrame)
   //Return the source line number that corresponds to the next op index
   {
-    return this.callFrame.func.getOpSourceLineNum(callFrame.nextOpIndex);
+    return callFrame.func.getOpSourceLineNum(callFrame.nextOpIndex);
   }
 
   changeStatus(newStatus)

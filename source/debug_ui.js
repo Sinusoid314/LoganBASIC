@@ -59,16 +59,17 @@ function debugClearGlobalsList()
   debugGlobalsItemValueMap.clear();
 }
 
-function debugAddVarListItem(key, value, parentList, debugItemValueMap)
+function debugAddVarListItem(key, value, parentList, itemValueMap)
 //
 {
   var listItem = document.createElement("li");
 
-  if(value instanceof Object)
+  if(value && (value instanceof Object))
   {
-    debugItemValueMap.set(listItem, value)
+    itemValueMap.set(listItem, value)
     listItem.innerHTML = key + " (" + value.type + ")";
     listItem.style.cursor = "pointer";
+    listItem.addEventListener("click", debugVarListItem_onClick);
   }
   else if(typeof value == "string")
     listItem.innerHTML = key + ' = "' + value + '"';
@@ -163,6 +164,32 @@ function debugCallStackList_onChange(event)
   var callFrameIndex = (event.target.length - 1) - event.target.selectedIndex;
 
   progWorker.postMessage({msgId: MSGID_DEBUG_CALL_FRAME_INFO_REQUEST, msgData: {callFrameIndex: callFrameIndex}});
+}
+
+function debugVarListItem_onClick(event)
+//
+{
+  var parentItem = event.target;
+  var itemValueMap = (debugLocalsItemValueMap.has(parentItem) ? debugLocalsItemValueMap : debugGlobalsItemValueMap)
+  var parentValue = itemValueMap.get(parentItem);
+  var list = parentItem.querySelector("ul");
+
+  if(list)
+  {
+    //Remove list
+  }
+  else
+  {
+    list = document.createElement("ul");
+
+    if(parentValue.type == OBJ_TYPE_STRUCT)
+    {
+      for (const [key, value] of parentValue.fieldMap)
+        debugAddVarListItem(key, value, list, itemValueMap);
+    }
+
+    parentItem.appendChild(list);
+  }
 }
 
 function onMsgDebugUpdateUI(msgData)

@@ -1,4 +1,7 @@
 (October 25, 2022)
+[v2.0.59]
+	- Modified constructor in ObjStructure to initialize fields with null instead of 0.
+	- Added ability to expand global/local Structure details in debugger.
 [v2.0.58]
 	- Fixed bug with sounds not being unloaded when force-stopping a program.
 
