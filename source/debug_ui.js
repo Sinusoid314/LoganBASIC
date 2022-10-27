@@ -63,22 +63,24 @@ function debugAddVarListItem(key, value, parentList, itemValueMap)
 //
 {
   var listItem = document.createElement("li");
+  var listItemText = document.createElement("span");
 
   if(value && (value instanceof Object))
   {
     itemValueMap.set(listItem, value)
-    listItem.innerHTML = key + " (" + value.type + ")";
-    listItem.style.cursor = "pointer";
-    listItem.addEventListener("click", debugVarListItem_onClick);
+    listItemText.innerHTML = key + " (" + value.type + ")";
+    listItemText.style.cursor = "pointer";
+    listItemText.addEventListener("click", debugVarListItem_onClick);
   }
   else if(typeof value == "string")
-    listItem.innerHTML = key + ' = "' + value + '"';
+    listItemText.innerHTML = key + ' = "' + value + '"';
   else if(value === null)
-    listItem.innerHTML = key + " = Nothing";
+    listItemText.innerHTML = key + " = Nothing";
   else
-    listItem.innerHTML = key + " = " + value;
+    listItemText.innerHTML = key + " = " + value;
 
   parentList.appendChild(listItem);
+  listItem.appendChild(listItemText);
 }
 
 function debugToggleBtn_onClick(event)
@@ -169,7 +171,7 @@ function debugCallStackList_onChange(event)
 function debugVarListItem_onClick(event)
 //
 {
-  var parentItem = event.target;
+  var parentItem = event.target.parentElement;
   var itemValueMap = (debugLocalsItemValueMap.has(parentItem) ? debugLocalsItemValueMap : debugGlobalsItemValueMap)
   var parentValue = itemValueMap.get(parentItem);
   var list = parentItem.querySelector("ul");

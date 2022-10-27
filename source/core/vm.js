@@ -725,7 +725,7 @@ class VM
     var sourceLineNum = this.getCurrOpSourceLineNum();
     var sourceName = this.currCallFrame.func.sourceName;
 
-    message = "Runtime error on line " + sourceLineNum + ": "  + message;
+    message = "Runtime error on line " + sourceLineNum + " of '" + sourceName + "': "  + message;
 
     this.error = new VMError(message, sourceLineNum, sourceName);
 
@@ -750,7 +750,7 @@ class VM
     if((currOpSourceLineNum == nextOpSourceLineNum) || (nextOpSourceLineNum == 0))
       return;
 
-    this.onSourceLineChangeHook(this, nextOpSourceLineNum)
+    this.onSourceLineChangeHook(this, nextOpSourceLineNum, this.currCallFrame.func.sourceName)
   }
 
   skipSourceLine()

@@ -14,6 +14,7 @@ importScripts('worker_msg.js',
               'sprite_worker.js');
 
 var mainVM = new VM();
+var mainSourceName = "";
 
 mainVM.addNativeFuncArray([].concat(stdNativeFuncs, consoleNativeFuncs, canvasNativeFuncs, soundNativeFuncs, spriteNativeFuncs));
 mainVM.onPrintHook = onVMPrint;
@@ -34,6 +35,8 @@ function resetMain()
   mainVM.resetActiveRunState();
   mainVM.globals.clear();
   mainVM.error = null;
+  
+  mainSourceName = "";
 }
 
 function progWorker_onMessage(message)
@@ -107,6 +110,7 @@ function onMsgStartProg(msgData)
 //Compile and run the program
 {
   resetMain();
+  mainSourceName = msgData.sourceName;
   mainVM.interpret(msgData.source, msgData.sourceName);
 }
 

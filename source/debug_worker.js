@@ -144,9 +144,12 @@ function onMsgDebugCallFrameInfoRequest(msgData)
                msgData: new DebugInfo(mainVM, sourceLineNum, msgData.callFrameIndex)});
 }
 
-function onVMSourceLineChange(vm, nextSourceLineNum)
+function onVMSourceLineChange(vm, nextSourceLineNum, sourceName)
 //
 {
+  if(sourceName == mainSourceName)
+    return;
+
   if(debugMode == DEBUG_MODE_STEP_OVER)
   {
     if(debugStepCallFrame == vm.currCallFrame)

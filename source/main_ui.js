@@ -296,7 +296,9 @@ function onMsgProgDoneSuccess()
 function onMsgProgDoneError(msgData)
 //The worker thread has signaled that the program has stopped with an error
 {
-  selectEditorLine(msgData.error.sourceLineNum);
+  if(msgData.error.sourceName == mainSourceName)
+    selectEditorLine(msgData.error.sourceLineNum);
+
   stopProg(msgData.error.message);
 }
 
