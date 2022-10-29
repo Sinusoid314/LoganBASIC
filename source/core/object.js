@@ -166,7 +166,6 @@ class ObjStructureDef
     this.type = OBJ_TYPE_STRUCT_DEF;
     this.ident = ident;
     this.fieldIdents = [];
-    this.tokens = [];
   }
 
   toString()

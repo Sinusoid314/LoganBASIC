@@ -3,10 +3,9 @@
 
 - Add ability to view Array object details in debugger.
 - Add ability to view Function details in debugger.
-- Add ability to view Structure Definition details in debugger.
 - Add ability to collapse object details in debugger.
 
-- Add ability to add/remove breakpoints in debugger.
+- Add UI support for adding/removing breakpoints in debugger.
 - Add ability to run code in debugger.
 - Add help section for debugger.
 

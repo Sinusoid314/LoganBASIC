@@ -72,6 +72,8 @@ function debugAddVarListItem(key, value, parentList, itemValueMap)
     listItemText.style.cursor = "pointer";
     listItemText.addEventListener("click", debugVarListItem_onClick);
   }
+  else if(key === null)
+    listItemText.innerHTML = value;
   else if(typeof value == "string")
     listItemText.innerHTML = key + ' = "' + value + '"';
   else if(value === null)
@@ -184,10 +186,17 @@ function debugVarListItem_onClick(event)
   {
     list = document.createElement("ul");
 
-    if(parentValue.type == OBJ_TYPE_STRUCT)
+    switch(parentValue.type)
     {
-      for (const [key, value] of parentValue.fieldMap)
-        debugAddVarListItem(key, value, list, itemValueMap);
+      case OBJ_TYPE_STRUCT:
+        for (const [key, value] of parentValue.fieldMap)
+          debugAddVarListItem(key, value, list, itemValueMap);
+        break;
+
+      case OBJ_TYPE_STRUCT_DEF:
+        for(const ident of parentValue.fieldIdents)
+          debugAddVarListItem(null, ident, list, itemValueMap);
+        break;
     }
 
     parentItem.appendChild(list);

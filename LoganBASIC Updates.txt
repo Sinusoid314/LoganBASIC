@@ -1,3 +1,8 @@
+(October 28, 2022)
+[v2.0.61]
+	- Added backend support for debugger breakpoints.
+	- Added ability to view Structure Definition details in debugger.
+
 (October 27, 2022)
 [v2.0.60]
 	- Fixed bug with non-expandable global/local list items responding to click events.

@@ -5,6 +5,7 @@ const DEBUG_MODE_STEP_OUT = 4;
 
 var debugMode = DEBUG_MODE_OFF;
 var debugStepCallFrame = null;
+var debugBreakpoints = [];
 
 class DebugInfo
 {
@@ -44,6 +45,20 @@ class DebugInfo
 
     for(var index = callFrame.stackIndex + 1; index < nextFrameStackIndex; index++)
       this.locals.set(callFrame.func.localIdents[index - (callFrame.stackIndex + 1)], vm.stack[index]);
+  }
+}
+
+class DebugBreakpoint
+{
+  constructor(sourceLineNum, sourceName)
+  {
+    this.sourceLineNum = sourceLineNum;
+    this.sourceName = sourceName;
+  }
+
+  matches(sourceLineNum, sourceName)
+  {
+    return (this.sourceLineNum == sourceLineNum) && (this.sourceName == sourceName);
   }
 }
 
@@ -147,9 +162,18 @@ function onMsgDebugCallFrameInfoRequest(msgData)
 function onVMSourceLineChange(vm, nextSourceLineNum, sourceName)
 //
 {
-  if(sourceName == mainSourceName)
+  if(sourceName != mainSourceName)
     return;
 
+  for(const breakpoint of debugBreakpoints)
+  {
+    if(breakpoint.matches(nextSourceLineNum, sourceName))
+    {
+      debugChangeMode(DEBUG_MODE_STEP);
+      break;
+    }
+  }
+  
   if(debugMode == DEBUG_MODE_STEP_OVER)
   {
     if(debugStepCallFrame == vm.currCallFrame)
