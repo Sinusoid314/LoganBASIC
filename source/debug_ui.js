@@ -119,7 +119,7 @@ function debugAddVarListItem(key, value, parentList, itemValueMap)
   listItem.appendChild(listItemText);
 }
 
-function debugAddVarListItem()
+function debugRemoveVarListItem()
 //
 {
 

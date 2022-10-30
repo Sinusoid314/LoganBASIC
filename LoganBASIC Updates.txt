@@ -1,3 +1,7 @@
+(October 30, 2022)
+[v2.0.63]
+	- Fixed bug with Locals/globals not showing in debugger when running HiLo example.
+
 (October 29, 2022)
 [v2.0.62]
 	- Added declSourceLineNum member to ObjUserFunc to track the source line number of the
