@@ -1,6 +1,6 @@
 [Bugs]
     - Undefined variable in locals list when activating debugger in the middle of HiLo example.
-    - getSpriteScroll() example not ending properly after using, then hiding, the debugger.
+    - getSpriteScroll() example not ending properly.
     - Locals list in debugger showing a variable named "undefined" durring a FOR loop.
 
 [Features]

@@ -1,4 +1,6 @@
 (October 30, 2022)
+[v2.0.64]
+	- Added debugMode check before sending MSGID_DEBUG_UPDATE_UI on program end.
 [v2.0.63]
 	- Fixed bug with Locals/globals not showing in debugger when running HiLo example.
 
