@@ -6,7 +6,7 @@ const OBJ_TYPE_STRUCT = "Structure Instance";
 
 class ObjUserFunc
 {
-  constructor(ident, sourceName, sourceLevel)
+  constructor(ident, sourceName, sourceLevel, declSourceLineNum = 0)
   {
     this.type = OBJ_TYPE_USER_FUNC;
     this.ident = ident;
@@ -17,6 +17,7 @@ class ObjUserFunc
     this.sourceLineMap = new Map();
     this.sourceName = sourceName;
     this.sourceLevel = sourceLevel;
+    this.declSourceLineNum = declSourceLineNum; 
   }
 
   toString()

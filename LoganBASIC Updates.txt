@@ -1,3 +1,10 @@
+(October 29, 2022)
+[v2.0.62]
+	- Added declSourceLineNum member to ObjUserFunc to track the source line number of the
+	  function's declaration.
+	- Added ability to view Function details in debugger.
+	- Added debugExpandVarListItem() function to debug_ui module.
+
 (October 28, 2022)
 [v2.0.61]
 	- Added backend support for debugger breakpoints.

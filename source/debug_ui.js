@@ -59,6 +59,40 @@ function debugClearGlobalsList()
   debugGlobalsItemValueMap.clear();
 }
 
+function debugExpandVarListItem(parentItem, itemValueMap, parentValue)
+//
+{
+  var list = document.createElement("ul");
+
+  switch(parentValue.type)
+  {
+    case OBJ_TYPE_USER_FUNC:
+      selectEditorLine(parentValue.declSourceLineNum);
+      break;
+
+    case OBJ_TYPE_ARRAY:
+      break;
+
+    case OBJ_TYPE_STRUCT:
+      for (const [key, value] of parentValue.fieldMap)
+        debugAddVarListItem(key, value, list, itemValueMap);
+      break;
+
+    case OBJ_TYPE_STRUCT_DEF:
+      for(const ident of parentValue.fieldIdents)
+        debugAddVarListItem(null, ident, list, itemValueMap);
+      break;
+  }
+
+  parentItem.appendChild(list);
+}
+
+function debugCollapseVarListItem()
+//
+{
+
+}
+
 function debugAddVarListItem(key, value, parentList, itemValueMap)
 //
 {
@@ -83,6 +117,12 @@ function debugAddVarListItem(key, value, parentList, itemValueMap)
 
   parentList.appendChild(listItem);
   listItem.appendChild(listItemText);
+}
+
+function debugAddVarListItem()
+//
+{
+
 }
 
 function debugToggleBtn_onClick(event)
@@ -180,26 +220,11 @@ function debugVarListItem_onClick(event)
 
   if(list)
   {
-    //Remove list
+    debugCollapseVarListItem();
   }
   else
   {
-    list = document.createElement("ul");
-
-    switch(parentValue.type)
-    {
-      case OBJ_TYPE_STRUCT:
-        for (const [key, value] of parentValue.fieldMap)
-          debugAddVarListItem(key, value, list, itemValueMap);
-        break;
-
-      case OBJ_TYPE_STRUCT_DEF:
-        for(const ident of parentValue.fieldIdents)
-          debugAddVarListItem(null, ident, list, itemValueMap);
-        break;
-    }
-
-    parentItem.appendChild(list);
+    debugExpandVarListItem(parentItem, itemValueMap, parentValue);
   }
 }
 

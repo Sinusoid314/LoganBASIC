@@ -139,7 +139,7 @@ class Compiler
       this.compileError("Expected identifier.");
 
     topUserFunc = this.currUserFunc;
-    this.currUserFunc = new ObjUserFunc(ident, this.sourceName, SOURCE_LEVEL_FUNC);
+    this.currUserFunc = new ObjUserFunc(ident, this.sourceName, SOURCE_LEVEL_FUNC, this.peekPrevToken().lineNum);
 
     this.parseParameters();
 
