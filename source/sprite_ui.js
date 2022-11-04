@@ -30,9 +30,18 @@ function cleanupSpriteSheets()
   spriteSheets.clear();
 }
 
+function sendSpriteSheetRequestResult(resultVal, errorMsg = "")
+//
+{
+  progWorker.postMessage({msgId: MSGID_SPRITE_SHEET_REQUEST_RESULT, msgData: {resultVal: resultVal, errorMsg: errorMsg}});
+}
+
 function spriteSheet_onLoad(event)
 //
 {
+  if(!isRunning)
+    return;
+
   this.removeEventListener("load", spriteSheet_onLoad);
   this.removeEventListener("error", spriteSheet_onError);
 
@@ -44,16 +53,13 @@ function spriteSheet_onLoad(event)
 function spriteSheet_onError(event)
 //
 {
+  if(!isRunning)
+    return;
+
   this.removeEventListener("load", spriteSheet_onLoad);
   this.removeEventListener("error", spriteSheet_onError);
 
   sendSpriteSheetRequestResult(false)
-}
-
-function sendSpriteSheetRequestResult(resultVal, errorMsg = "")
-//
-{
-  progWorker.postMessage({msgId: MSGID_SPRITE_SHEET_REQUEST_RESULT, msgData: {resultVal: resultVal, errorMsg: errorMsg}});
 }
 
 function onMsgSpriteSheetRefRequest(msgData)

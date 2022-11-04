@@ -19,7 +19,7 @@ class DebugInfo
     this.globals = null;
     this.funcIdents = null;
 
-    if(vm.endOfOps())
+    if(vm.callFramesEmpty())
     {
       this.globals = vm.globals;
       this.funcIdents = [];
@@ -80,7 +80,7 @@ function onMsgDebugStart()
 
   debugChangeMode(DEBUG_MODE_STEP);
 
-  if(!mainVM.endOfOps())
+  if(!mainVM.callFramesEmpty())
     postMessage({msgId: MSGID_DEBUG_UPDATE_UI, msgData: new DebugInfo(mainVM, mainVM.getCurrOpSourceLineNum())});
 }
 
@@ -101,7 +101,7 @@ function onMsgDebugStep()
   if(!mainVM.inBreakpoint)
     return;
 
-    debugChangeMode(DEBUG_MODE_STEP);
+  debugChangeMode(DEBUG_MODE_STEP);
 
   mainVM.run();
 }

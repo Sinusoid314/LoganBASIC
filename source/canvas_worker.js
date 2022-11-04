@@ -56,6 +56,9 @@ function resetCanvas()
 function onMsgImageRequestResult(msgData)
 //
 {
+  if(!imageResultCallback)
+    return;
+
   if(msgData.errorMsg != "")
     imageResultCallback.vm.runError(msgData.errorMsg);
   else
@@ -68,7 +71,7 @@ function onMsgImageRequestResult(msgData)
 function sendImageRequest(vm, msgId, msgData)
 //
 {
-  if(imageResultCallback == null)
+  if(!imageResultCallback)
     imageResultCallback = new CallbackContext(vm);
   else
     imageResultCallback.vm = vm;
@@ -89,7 +92,7 @@ function onMsgCanvasEvent(msgData)
 function onMsgDrawCanvasBufferDone()
 //
 {
-  if(drawBufferCallback == null)
+  if(!drawBufferCallback)
     return;
 
   drawBufferCallback.runFunc();
@@ -249,7 +252,7 @@ function funcDrawCanvasBuffer(vm, args)
 
   if(args.length == 0)
   {
-    if(drawBufferCallback != null)
+    if(drawBufferCallback)
       drawBufferCallback = null;
   }
   else
@@ -262,7 +265,7 @@ function funcDrawCanvasBuffer(vm, args)
     if(callbackUserFunc.paramCount != 0)
       vm.runError("Callback function for DrawCanvasBuffer() must have zero parameters.");
 
-    if(drawBufferCallback == null)
+    if(!drawBufferCallback)
     {
       drawBufferCallback = new CallbackContext(vm, callbackUserFunc);
     }

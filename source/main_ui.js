@@ -79,6 +79,9 @@ function toggle_onClick(event)
 function progUI_onMessage(message)
 //Process messages sent from the worker thread
 {
+  if(!isRunning)
+    return;
+
   switch(message.data.msgId)
   {
     case MSGID_PROG_DONE_SUCCESS:

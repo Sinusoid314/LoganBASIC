@@ -21,6 +21,9 @@ function resetSounds()
 function onMsgSoundRequestResult(msgData)
 //
 {
+  if(!soundResultCallback)
+    return;
+
   if(msgData.errorMsg != "")
     soundResultCallback.vm.runError(msgData.errorMsg);
   else
@@ -33,7 +36,7 @@ function onMsgSoundRequestResult(msgData)
 function sendSoundRequest(vm, msgId, msgData)
 //
 {
-  if(soundResultCallback == null)
+  if(!soundResultCallback)
     soundResultCallback = new CallbackContext(vm);
   else
     soundResultCallback.vm = vm;

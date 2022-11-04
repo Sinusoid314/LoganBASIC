@@ -9,9 +9,18 @@ function cleanupSounds()
   sounds.clear();
 }
 
+function sendSoundRequestResult(resultVal, errorMsg = "")
+//
+{
+  progWorker.postMessage({msgId: MSGID_SOUND_REQUEST_RESULT, msgData: {resultVal: resultVal, errorMsg: errorMsg}});
+}
+
 function sound_onLoad(event)
 //
 {
+  if(!isRunning)
+    return;
+
   event.target.removeEventListener("canplaythrough", sound_onLoad);
   event.target.removeEventListener("error", sound_onError);
 
@@ -23,16 +32,13 @@ function sound_onLoad(event)
 function sound_onError(event)
 //
 {
+  if(!isRunning)
+    return;
+
   event.target.removeEventListener("canplaythrough", sound_onLoad);
   event.target.removeEventListener("error", sound_onError);
 
   sendSoundRequestResult(false)
-}
-
-function sendSoundRequestResult(resultVal, errorMsg = "")
-//
-{
-  progWorker.postMessage({msgId: MSGID_SOUND_REQUEST_RESULT, msgData: {resultVal: resultVal, errorMsg: errorMsg}});
 }
 
 function onMsgLoadSoundRequest(msgData)

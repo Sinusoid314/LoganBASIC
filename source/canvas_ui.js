@@ -66,9 +66,18 @@ function clearCanvas()
   activeContext.clearRect(0, 0, activeContext.canvas.width, activeContext.canvas.height);
 }
 
+function sendImageRequestResult(resultVal, errorMsg = "")
+//
+{
+  progWorker.postMessage({msgId: MSGID_IMAGE_REQUEST_RESULT, msgData: {resultVal: resultVal, errorMsg: errorMsg}});
+}
+
 function image_onLoad(event)
 //
 {
+  if(!isRunning)
+    return;
+
   this.removeEventListener("load", image_onLoad);
   this.removeEventListener("error", image_onError);
 
@@ -80,24 +89,23 @@ function image_onLoad(event)
 function image_onError(event)
 //
 {
+  if(!isRunning)
+    return;
+
   this.removeEventListener("load", image_onLoad);
   this.removeEventListener("error", image_onError);
 
   sendImageRequestResult(false)
 }
 
-function sendImageRequestResult(resultVal, errorMsg = "")
-//
-{
-  progWorker.postMessage({msgId: MSGID_IMAGE_REQUEST_RESULT, msgData: {resultVal: resultVal, errorMsg: errorMsg}});
-}
-
-
 function canvas_onAnimationFrame()
 //
 {
   //var imageData = bufferCanvasContext.getImageData(0, 0, bufferCanvas.width, bufferCanvas.height);
   //progCanvasContext.putImageData(imageData, 0, 0);
+
+  if(!isRunning)
+    return;
 
   progCanvasContext.clearRect(0, 0, progCanvas.width, progCanvas.height);
   progCanvasContext.drawImage(bufferCanvas, 0, 0);
@@ -110,6 +118,9 @@ function canvas_onEvent(event)
 {
   var canvasRect;
   var pointerX, pointerY;
+
+  if(!isRunning)
+    return;
 
   if(event instanceof PointerEvent)
   {

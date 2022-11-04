@@ -150,7 +150,7 @@ class VM
   run()
   //Execute the bytecode ops
   {
-    if((this.status == VM_STATUS_RUNNING) || (this.endOfOps()))
+    if((this.status == VM_STATUS_RUNNING) || (this.callFramesEmpty()))
       return;
 
     this.error = null;
@@ -158,7 +158,7 @@ class VM
 
     try
     {
-      while((this.status == VM_STATUS_RUNNING) && (!this.endOfOps()))
+      while((this.status == VM_STATUS_RUNNING) && (!this.callFramesEmpty()))
       {
         if((!this.inBreakpoint) && (this.onSourceLineChangeHook))
         {
@@ -185,7 +185,7 @@ class VM
 
     if(this.onRunEndHook)
     {
-      if((this.endOfOps()) && (!this.error))
+      if((this.callFramesEmpty()) && (!this.error))
         this.onRunEndHook(this);
     }
   }
@@ -807,12 +807,10 @@ class VM
     this.inBreakpoint = false;
   }
 
-  endOfOps()
-  //Return true if either the next op index is out of bounds, or there are
-  //no more call frames; return false otherwise
+  callFramesEmpty()
+  //Return true if there are no more call frames; return false otherwise
   {
-    return ((this.callFrames.length == 0) ||
-            (this.currCallFrame.nextOpIndex >= this.currCallFrame.func.ops.length));
+    return (this.callFrames.length == 0);
   }
 
   addNativeFunc(ident, paramMin, paramMax, jsFunc)

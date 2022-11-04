@@ -1,4 +1,4 @@
-const lbVersion = "2.0.64";
+const lbVersion = "2.0.65";
 
 const stdNativeFuncs = [
                   new ObjNativeFunc("rnd", 0, 0, funcRnd),
@@ -49,9 +49,24 @@ var timerCallback = null;
 var pauseForCallback = null;
 var importCallback = null;
 
+function resetStd()
+//
+{
+  if(timerID != 0)
+    clearInterval(timerID);
+
+  timerID = 0;
+  timerCallback = null;
+  pauseForCallback = null;
+  importCallback = null;
+}
+
 function timer_onTick()
 //
 {
+  if(!timerCallback)
+    return;
+
   if(timerID == 0)
     return;
 
@@ -61,15 +76,23 @@ function timer_onTick()
 function pauseFor_onTimeout()
 //Continue program execution
 {
+  if(!pauseForCallback)
+    return;
+
   pauseForCallback.runFunc();
 }
 
 function import_onLoad()
 //
 {
-  var source = this.responseText;
-  var url = new URL(this.responseURL);
-  var sourceName = url.pathname.split("/").pop();
+  var source, url, sourceName;
+
+  if(!importCallback)
+    return;
+
+  source = this.responseText;
+  url = new URL(this.responseURL);
+  sourceName = url.pathname.split("/").pop();
 
   importCallback.vm.stack[importCallback.vm.stack.length - 1] = true;
   importCallback.vm.interpret(source, sourceName);
@@ -78,6 +101,9 @@ function import_onLoad()
 function import_onError()
 //
 {
+  if(!importCallback)
+    return;
+
   importCallback.vm.stack[importCallback.vm.stack.length - 1] = false;
   importCallback.runFunc();
 }

@@ -27,6 +27,7 @@ onmessage = progWorker_onMessage;
 function resetMain()
 //
 {
+  resetStd();
   resetConsole();
   resetCanvas();
   resetSounds();
@@ -109,6 +110,9 @@ function progWorker_onMessage(message)
 function onMsgStartProg(msgData)
 //Compile and run the program
 {
+  if(!mainVM.callFramesEmpty())
+    return;
+
   resetMain();
   mainSourceName = msgData.sourceName;
   mainVM.interpret(msgData.source, msgData.sourceName);

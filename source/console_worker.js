@@ -17,6 +17,9 @@ function resetConsole()
 function onMsgInputResult(msgData)
 //Process input sent from the console
 {
+  if(!inputCallback)
+    return;
+
   inputCallback.vm.stack[inputCallback.vm.stack.length - 1] = msgData.inputVal;
   inputCallback.runFunc();
 }
@@ -61,7 +64,7 @@ function funcHideConsole(vm, args)
 function funcInput(vm, args)
 //Prompt user for input from the consol
 {
-  if(inputCallback == null)
+  if(!inputCallback)
     inputCallback = new CallbackContext(vm);
   else
     inputCallback.vm = vm;

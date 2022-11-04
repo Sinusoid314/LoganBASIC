@@ -95,6 +95,9 @@ function onMsgSpriteSheetRefRequestResult(msgData)
 {
   var sprite;
 
+  if(!spriteSheetResultCallback)
+    return;
+
   if(msgData.errorMsg != "")
     spriteSheetResultCallback.vm.runError(msgData.errorMsg);
   else
@@ -112,6 +115,9 @@ function onMsgSpriteSheetRefRequestResult(msgData)
 function onMsgSpriteSheetRequestResult(msgData)
 //
 {
+  if(!spriteSheetResultCallback)
+    return;
+
   if(msgData.errorMsg != "")
     spriteSheetResultCallback.vm.runError(msgData.errorMsg);
   else
@@ -124,7 +130,7 @@ function onMsgSpriteSheetRequestResult(msgData)
 function sendSpriteSheetRequest(vm, msgId, msgData)
 //
 {
-  if(spriteSheetResultCallback == null)
+  if(!spriteSheetResultCallback)
     spriteSheetResultCallback = new CallbackContext(vm);
   else
     spriteSheetResultCallback.vm = vm;

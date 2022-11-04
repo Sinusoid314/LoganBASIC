@@ -30,6 +30,9 @@ function enterConsoleInput()
 function consoleInput_onKeydown(event)
 //Process enter key for the console input
 {
+  if(!isRunning)
+    return;
+
   if(event.key === "Enter")
   {
     enterConsoleInput();
@@ -40,6 +43,9 @@ function consoleInput_onKeydown(event)
 function consoleInputBtn_onClick(event)
 //Process the console input button click
 {
+  if(!isRunning)
+    return;
+
   enterConsoleInput();
 }
 

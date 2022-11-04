@@ -1,3 +1,11 @@
+(November 4, 2022)
+[v2.0.65]
+	- Added resetStd() function to std_funcs module.
+	- Added null checks for every function in the worker modules that reference a callback object.
+	- Added endOfOps() check at the beginning of onMsgStartProg() function in main_worker module.
+	- Added isRunning check to every callback function in the UI modules.
+	- Renamed endOfOps() method in Vm to callFramesEmpty() and removed the check in it for nextOp out-of-bounds.
+
 (October 30, 2022)
 [v2.0.64]
 	- Added debugMode check before sending MSGID_DEBUG_UPDATE_UI on program end.
