@@ -1,4 +1,4 @@
-const lbVersion = "2.0.65";
+const lbVersion = "2.0.66";
 
 const stdNativeFuncs = [
                   new ObjNativeFunc("rnd", 0, 0, funcRnd),
@@ -521,7 +521,7 @@ function funcPauseFor(vm, args)
   else
     pauseForCallback.vm = vm;
 
-  vm.changeStatus(VM_STATUS_IDLE);
+  vm.runLoopExitFlag = true;
 
   setTimeout(pauseFor_onTimeout, timeout);
 
@@ -539,7 +539,7 @@ function funcImport(vm, args)
   else
     importCallback.vm = vm;
 
-  vm.changeStatus(VM_STATUS_IDLE);
+  vm.runLoopExitFlag = true;
 
   httpReq.addEventListener("load", import_onLoad);
   httpReq.addEventListener("error", import_onError);

@@ -72,7 +72,7 @@ function funcInput(vm, args)
   postMessage({msgId: MSGID_PRINT, msgData: {printVal: args[0]}});
   postMessage({msgId: MSGID_INPUT_REQUEST});
 
-  vm.changeStatus(VM_STATUS_IDLE);
+  vm.runLoopExitFlag = true;
 
   return "";
 }

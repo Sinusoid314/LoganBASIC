@@ -1,3 +1,7 @@
+(November 5, 2022)
+[v2.0.66]
+	- Added runLoopExitFlag member to VM.
+
 (November 4, 2022)
 [v2.0.65]
 	- Added resetStd() function to std_funcs module.

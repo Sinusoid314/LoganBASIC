@@ -137,7 +137,7 @@ function sendSpriteSheetRequest(vm, msgId, msgData)
 
   postMessage({msgId: msgId, msgData: msgData});
 
-  vm.changeStatus(VM_STATUS_IDLE);
+  vm.runLoopExitFlag = true;
 }
 
 function funcLoadSpriteSheet(vm, args)

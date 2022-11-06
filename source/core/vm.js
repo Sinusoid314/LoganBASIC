@@ -80,6 +80,7 @@ class VM
     this.currCallFrame = null;
     this.currOp = null;
     this.inBreakpoint = false;
+    this.runLoopExitFlag = false;
     
     //Allow the op methods to be called by indexing into a function array using the opcode constants
     this.opFuncs = [null];
@@ -158,7 +159,9 @@ class VM
 
     try
     {
-      while((this.status == VM_STATUS_RUNNING) && (!this.callFramesEmpty()))
+      this.runLoopExitFlag = false;
+      
+      while(!this.runLoopExitFlag && !this.callFramesEmpty())
       {
         if((!this.inBreakpoint) && (this.onSourceLineChangeHook))
         {
@@ -175,6 +178,8 @@ class VM
         this.currOp = this.currCallFrame.func.ops[this.currCallFrame.currOpIndex];
         this.opFuncs[this.currOp[0]]();
       }
+
+      this.runLoopExitFlag = false;
     }
     catch(error)
     {
@@ -472,7 +477,7 @@ class VM
   //Trigger the program to end
   {
     this.resetActiveRunState();
-    this.changeStatus(VM_STATUS_IDLE);
+    this.runLoopExitFlag = true;
   }
 
   opCallFunc()
@@ -624,7 +629,7 @@ class VM
     if(this.callFrames.length == 0)
     {
       this.resetActiveRunState();
-      this.changeStatus(VM_STATUS_IDLE);
+      this.runLoopExitFlag = true;
     }
     else
     {
@@ -635,7 +640,7 @@ class VM
   opPause()
   //Pause program execution and exit from the main VM loop
   {
-    this.changeStatus(VM_STATUS_IDLE);
+    this.runLoopExitFlag = true;
   }
 
   opCreateStruct()
