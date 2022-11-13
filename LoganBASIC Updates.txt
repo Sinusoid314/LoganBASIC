@@ -1,3 +1,9 @@
+(November 12, 2022)
+[v2.0.67]
+	- Modified funcRun() function in std_funcs module to set the VM's runLoopExitFlag member to
+	  true if the interpret() method returns a compile error.
+	- Removed onRunEndHook member from VM.
+
 (November 5, 2022)
 [v2.0.66]
 	- Added runLoopExitFlag member to VM.

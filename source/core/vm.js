@@ -63,7 +63,6 @@ class VM
   constructor()
   {
     this.onStatusChangeHook = null;
-    this.onRunEndHook = null;
     this.onErrorHook = null;
     this.onPrintHook = null;
     this.onUserFuncCallHook = null;
@@ -187,12 +186,6 @@ class VM
     }
 
     this.changeStatus(VM_STATUS_IDLE);
-
-    if(this.onRunEndHook)
-    {
-      if((this.callFramesEmpty()) && (!this.error))
-        this.onRunEndHook(this);
-    }
   }
 
   opLoadNothing()

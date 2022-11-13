@@ -20,7 +20,6 @@ mainVM.addNativeFuncArray([].concat(stdNativeFuncs, consoleNativeFuncs, canvasNa
 mainVM.onPrintHook = onVMPrint;
 mainVM.onStatusChangeHook = onVMStatusChange;
 mainVM.onErrorHook = onVMError;
-mainVM.onRunEndHook = onVMRunEnd;
 
 onmessage = progWorker_onMessage;
 
@@ -113,7 +112,6 @@ function onMsgStartProg(msgData)
   if(!mainVM.callFramesEmpty())
     return;
 
-  resetMain();
   mainSourceName = msgData.sourceName;
   mainVM.interpret(msgData.source, msgData.sourceName);
 }
@@ -123,12 +121,28 @@ function onVMStatusChange(vm, prevStatus)
 {
   switch(vm.status)
   {
-    case VM_STATUS_COMPILING:
-      postMessage({msgId: MSGID_STATUS_CHANGE, msgData: {statusText: "Compiling..."}});
+    //NOT FINISHED
+    case VM_STATUS_IDLE:
+      if(!(vm.callFramesEmpty() && (prevStatus == VM_STATUS_RUNNING)))
+        break;
+      
+      if(!vm.error)
+      {
+        if(debugMode != DEBUG_MODE_OFF)
+          postMessage({msgId: MSGID_DEBUG_UPDATE_UI, msgData: new DebugInfo(vm, 0)});
+
+        postMessage({msgId: MSGID_PROG_DONE_SUCCESS});
+      }
+
+      resetMain();
       break;
 
     case VM_STATUS_RUNNING:
       postMessage({msgId: MSGID_STATUS_CHANGE, msgData: {statusText: "Running..."}});
+      break;
+
+    case VM_STATUS_COMPILING:
+      postMessage({msgId: MSGID_STATUS_CHANGE, msgData: {statusText: "Compiling..."}});
       break;
   }
 }
@@ -140,14 +154,9 @@ function onVMError(vm)
     postMessage({msgId: MSGID_DEBUG_UPDATE_UI, msgData: new DebugInfo(vm, 0)});
 
   postMessage({msgId: MSGID_PROG_DONE_ERROR, msgData: {error: vm.error}});
+
+  if(vm.status == VM_STATUS_IDLE)
+    resetMain();
+
   return false;
-}
-
-function onVMRunEnd(vm)
-//
-{
-  if(debugMode != DEBUG_MODE_OFF)
-    postMessage({msgId: MSGID_DEBUG_UPDATE_UI, msgData: new DebugInfo(vm, 0)});
-
-  postMessage({msgId: MSGID_PROG_DONE_SUCCESS});
 }
