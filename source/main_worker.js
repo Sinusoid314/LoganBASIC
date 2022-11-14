@@ -121,18 +121,20 @@ function onVMStatusChange(vm, prevStatus)
 {
   switch(vm.status)
   {
-    //NOT FINISHED
     case VM_STATUS_IDLE:
-      if(!(vm.callFramesEmpty() && (prevStatus == VM_STATUS_RUNNING)))
-        break;
-      
-      if(!vm.error)
+      if(vm.error)
       {
-        if(debugMode != DEBUG_MODE_OFF)
-          postMessage({msgId: MSGID_DEBUG_UPDATE_UI, msgData: new DebugInfo(vm, 0)});
-
-        postMessage({msgId: MSGID_PROG_DONE_SUCCESS});
+        resetMain();
+        return;
       }
+      
+      if(!(vm.callFramesEmpty() && (prevStatus == VM_STATUS_RUNNING)))
+        return;
+
+      if(debugMode != DEBUG_MODE_OFF)
+        postMessage({msgId: MSGID_DEBUG_UPDATE_UI, msgData: new DebugInfo(vm, 0)});
+
+      postMessage({msgId: MSGID_PROG_DONE_SUCCESS});
 
       resetMain();
       break;

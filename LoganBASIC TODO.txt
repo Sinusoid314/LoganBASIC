@@ -1,10 +1,9 @@
 [Bugs]
     - Undefined variable in locals list when activating debugger in the middle of HiLo example.
-    - getSpriteScroll() example not ending properly.
+    - Undefined variable in locals list when selecting <main> call frame in getSpriteScroll example.
     - Locals list in debugger showing a variable named "undefined" during a FOR loop.
 
 [Features]
-    - Finish modifying onVMStatusChange() funciton in main_worker module.
     - Test-run all example programs with the debugger on.
     - Add ability to view Array object details in debugger.
     - Add ability to collapse object details in debugger.

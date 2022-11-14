@@ -1,3 +1,8 @@
+(November 13, 2022)
+[v2.0.68]
+	- Modified main_worker module to reset the worker thread after the user's program ends instead
+	  of right before it begins.
+
 (November 12, 2022)
 [v2.0.67]
 	- Modified funcRun() function in std_funcs module to set the VM's runLoopExitFlag member to
