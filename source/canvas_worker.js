@@ -102,33 +102,35 @@ function funcShowCanvas(vm, args)
 //Tell the UI thread to show the canvas pane
 {
   postMessage({msgId: MSGID_SHOW_CANVAS});
+  return null;
 }
 
 function funcHideCanvas(vm, args)
 //Tell the UI thread to hide the canvas pane
 {
   postMessage({msgId: MSGID_HIDE_CANVAS});
+  return null;
 }
 
 function funcSetCanvasWidth(vm, args)
 //
 {
   postMessage({msgId: MSGID_SET_CANVAS_WIDTH, msgData: {newWidth: args[0]}});
-  return 0;
+  return null;
 }
 
 function funcSetCanvasHeight(vm, args)
 //
 {
   postMessage({msgId: MSGID_SET_CANVAS_HEIGHT, msgData: {newHeight: args[0]}});
-  return 0;
+  return null;
 }
 
 function funcClearCanvas(vm, args)
 //Send a message to the canvas to clear it
 {
   postMessage({msgId: MSGID_CLEAR_CANVAS});
-  return 0;
+  return null;
 }
 
 function funcLoadImage(vm, args)
@@ -235,14 +237,14 @@ function funcEnableCanvasBuffer(vm, args)
 //
 {
   postMessage({msgId: MSGID_ENABLE_CANVAS_BUFFER});
-  return 0;
+  return null;
 }
 
 function funcDisableCanvasBuffer(vm, args)
 //
 {
   postMessage({msgId: MSGID_DISABLE_CANVAS_BUFFER});
-  return 0;
+  return null;
 }
 
 function funcDrawCanvasBuffer(vm, args)
@@ -278,7 +280,7 @@ function funcDrawCanvasBuffer(vm, args)
 
   postMessage({msgId: MSGID_DRAW_CANVAS_BUFFER});
 
-  return 0;
+  return null;
 }
 
 function funcSetCanvasEvent(vm, args)
@@ -319,7 +321,7 @@ function funcSetCanvasEvent(vm, args)
     postMessage({msgId: MSGID_REMOVE_CANVAS_EVENT, msgData: {eventName: eventName}});
   }
 
-  return 0;
+  return null;
 }
 
 function funcDrawText(vm, args)
@@ -337,7 +339,7 @@ function funcDrawText(vm, args)
 
   postMessage({msgId: MSGID_DRAW_TEXT, msgData: msgData});
 
-  return 0;
+  return null;
 }
 
 function funcDrawRect(vm, args)
@@ -356,7 +358,7 @@ function funcDrawRect(vm, args)
 
   postMessage({msgId: MSGID_DRAW_RECT, msgData: msgData});
 
-  return 0;
+  return null;
 }
 
 function funcDrawCircle(vm, args)
@@ -374,7 +376,7 @@ function funcDrawCircle(vm, args)
 
   postMessage({msgId: MSGID_DRAW_CIRCLE, msgData: msgData});
 
-  return 0;
+  return null;
 }
 
 function funcDrawLine(vm, args)
@@ -389,33 +391,33 @@ function funcDrawLine(vm, args)
 
   postMessage({msgId: MSGID_DRAW_LINE, msgData: msgData});
 
-  return 0;
+  return null;
 }
 
 function funcSetTextFont(vm, args)
 //
 {
   postMessage({msgId: MSGID_SET_TEXT_FONT, msgData: {font: args[0]}});
-  return 0;
+  return null;
 }
 
 function funcSetFillColor(vm, args)
 //
 {
   postMessage({msgId: MSGID_SET_FILL_COLOR, msgData: {color: args[0]}});
-  return 0;
+  return null;
 }
 
 function funcSetLineColor(vm, args)
 //
 {
   postMessage({msgId: MSGID_SET_LINE_COLOR, msgData: {color: args[0]}});
-  return 0;
+  return null;
 }
 
 function funcSetLineSize(vm, args)
 {
   postMessage({msgId: MSGID_SET_LINE_SIZE, msgData: {size: args[0]}});
-  return 0;
+  return null;
 }
 

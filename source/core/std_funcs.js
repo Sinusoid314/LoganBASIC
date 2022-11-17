@@ -1,4 +1,4 @@
-const lbVersion = "2.0.68";
+const lbVersion = "2.0.69";
 
 const stdNativeFuncs = [
                   new ObjNativeFunc("rnd", 0, 0, funcRnd),
@@ -282,7 +282,7 @@ function funcStartTimer(vm, args)
 
   timerID = setInterval(timer_onTick, timeout);
 
-  return 0;
+  return null;
 }
 
 function funcStopTimer(vm, args)
@@ -294,7 +294,7 @@ function funcStopTimer(vm, args)
   clearInterval(timerID);
   timerID = 0;
 
-  return 0;
+  return null;
 }
 
 function funcAddArrayItem(vm, args)
@@ -316,7 +316,7 @@ function funcAddArrayItem(vm, args)
   if(errorMsg != "")
     vm.runError(errorMsg);
 
-  return 0;
+  return null;
 }
 
 function funcRemoveArrayItem(vm, args)
@@ -334,7 +334,7 @@ function funcRemoveArrayItem(vm, args)
   if(errorMsg != "")
     vm.runError(errorMsg);
 
-  return 0;
+  return null;
 }
 
 function funcClamp(vm, args)
@@ -412,7 +412,6 @@ function funcCirclesOverlap(vm, args)
   var distance = Math.pow(circleX1 - circleX2, 2) + Math.pow(circleY1 - circleY2, 2);
 
   return distance < Math.pow(circleRadius1 + circleRadius2, 2);
-
 }
 
 function funcRectOverlapsCircle(vm, args)
@@ -525,7 +524,7 @@ function funcPauseFor(vm, args)
 
   setTimeout(pauseFor_onTimeout, timeout);
 
-  return 0;
+  return null;
 }
 
 function funcImport(vm, args)
@@ -547,7 +546,7 @@ function funcImport(vm, args)
   httpReq.open("GET", sourceFile);
   httpReq.send();
 
-  return false;
+  return null;
 }
 
 function funcRun(vm, args)
@@ -561,4 +560,6 @@ function funcRun(vm, args)
 
   if(result == INTERPRET_COMPILE_ERROR)
     vm.runLoopExitFlag = true;
+
+  return null;
 }

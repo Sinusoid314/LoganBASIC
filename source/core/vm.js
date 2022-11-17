@@ -140,6 +140,8 @@ class VM
     this.stack.push(topUserFunc);
     this.callUserFunc(topUserFunc, 0, 0);
 
+    console.log(topUserFunc.toString());
+
     this.run();
     if(this.error != null)
       return INTERPRET_RUNTIME_ERROR;
@@ -613,21 +615,7 @@ class VM
   opReturn()
   //Return from the currently running user function
   {
-    if(this.onUserFuncReturnHook)
-      this.onUserFuncReturnHook(this);
-
-    this.stack.splice(this.currCallFrame.stackIndex, this.stack.length - this.currCallFrame.stackIndex - 1);
-    this.callFrames.pop();
-
-    if(this.callFrames.length == 0)
-    {
-      this.resetActiveRunState();
-      this.runLoopExitFlag = true;
-    }
-    else
-    {
-      this.currCallFrame = this.callFrames[this.callFrames.length - 1];
-    }
+    this.returnFromUserFunc();
   }
 
   opPause()
@@ -715,6 +703,27 @@ class VM
 
     if(this.onUserFuncCallHook)
       this.onUserFuncCallHook(this, func.ident);
+  }
+
+  returnFromUserFunc()
+  //Unload the current call frame, activating the previous call frame or exiting
+  //the run loop if no frames are left
+  {
+    if(this.onUserFuncReturnHook)
+      this.onUserFuncReturnHook(this);
+
+    this.stack.splice(this.currCallFrame.stackIndex, this.stack.length - this.currCallFrame.stackIndex - 1);
+    this.callFrames.pop();
+
+    if(this.callFrames.length == 0)
+    {
+      this.resetActiveRunState();
+      this.runLoopExitFlag = true;
+    }
+    else
+    {
+      this.currCallFrame = this.callFrames[this.callFrames.length - 1];
+    }
   }
 
   runError(message)

@@ -245,7 +245,7 @@ function funcRemoveSprite(vm, args)
   zOrderedSprites.splice(spriteIndex, 1)
   sprites.delete(spriteName);
 
-  return 0;
+  return null;
 }
 
 function funcSetSpriteSheet(vm, args)
@@ -310,7 +310,7 @@ function funcUpdateSprites(vm, args)
     }
   }
 
-  return 0;
+  return null;
 }
 
 function funcGetSpriteFrameCount(vm, args)
@@ -346,7 +346,7 @@ function funcSetSpriteX(vm, args)
 
   sprites.get(spriteName).x = x;
 
-  return 0;
+  return null;
 }
 
 function funcGetSpriteY(vm, args)
@@ -371,7 +371,7 @@ function funcSetSpriteY(vm, args)
 
   sprites.get(spriteName).y = y;
 
-  return 0;
+  return null;
 }
 
 function funcGetSpriteDrawWidth(vm, args)
@@ -396,7 +396,7 @@ function funcSetSpriteDrawWidth(vm, args)
 
   sprites.get(spriteName).drawWidth = drawWidth;
 
-  return 0;
+  return null;
 }
 
 function funcGetSpriteDrawHeight(vm, args)
@@ -421,7 +421,7 @@ function funcSetSpriteDrawHeight(vm, args)
 
   sprites.get(spriteName).drawHeight = drawHeight;
 
-  return 0;
+  return null;
 }
 
 function funcGetSpriteVelocityX(vm, args)
@@ -446,7 +446,7 @@ function funcSetSpriteVelocityX(vm, args)
 
   sprites.get(spriteName).velocityX = velocityX;
 
-  return 0;
+  return null;
 }
 
 function funcGetSpriteVelocityY(vm, args)
@@ -471,7 +471,7 @@ function funcSetSpriteVelocityY(vm, args)
 
   sprites.get(spriteName).velocityY = velocityY;
 
-  return 0;
+  return null;
 }
 
 function funcGetSpriteVisible(vm, args)
@@ -496,7 +496,7 @@ function funcSetSpriteVisible(vm, args)
 
   sprites.get(spriteName).isVisible = isVisible;
 
-  return 0;
+  return null;
 }
 
 function funcGetSpritePlaying(vm, args)
@@ -521,7 +521,7 @@ function funcSetSpritePlaying(vm, args)
 
   sprites.get(spriteName).isPlaying = isPlaying;
 
-  return 0;
+  return null;
 }
 
 function funcGetSpriteFrameRate(vm, args)
@@ -546,7 +546,7 @@ function funcSetSpriteFrameRate(vm, args)
 
   sprites.get(spriteName).updatesPerFrame = frameRate;
 
-  return 0;
+  return null;
 }
 
 function funcSetSpriteFrameRange(vm, args)
@@ -569,7 +569,7 @@ function funcSetSpriteFrameRange(vm, args)
   sprite.lastFrameIndex = Math.max(firstFrameIndex, lastFrameIndex);
   sprite.currFrameIndex = sprite.firstFrameIndex;
 
-  return 0;
+  return null;
 }
 
 function funcGetSpriteFrame(vm, args)
@@ -596,7 +596,7 @@ function funcSetSpriteFrame(vm, args)
   sprite = sprites.get(spriteName);
   sprite.currFrameIndex = Math.max(sprite.firstFrameIndex, Math.min(frameIndex, sprite.lastFrameIndex));;
 
-  return 0;
+  return null;
 }
 
 function funcGetSpriteCycles(vm, args)
@@ -624,7 +624,7 @@ function funcSetSpriteCycles(vm, args)
 
   sprites.get(spriteName).maxCycles = cycles;
 
-  return 0;
+  return null;
 }
 
 function funcSpritesOverlap(vm, args)
@@ -730,7 +730,7 @@ function funcSetScrollX(vm, args)
 //
 {
   scrollX = args[0];
-  return 0;
+  return null;
 }
 
 function funcGetScrollY(vm, args)
@@ -743,21 +743,21 @@ function funcSetScrollY(vm, args)
 //
 {
   scrollY = args[0];
-  return 0;
+  return null;
 }
 
 function funcShiftScrollX(vm, args)
 //
 {
   scrollX += args[0];
-  return 0;
+  return null;
 }
 
 function funcShiftScrollY(vm, args)
 //
 {
   scrollY += args[0];
-  return 0;
+  return null;
 }
 
 function funcGetSpriteScroll(vm, args)
@@ -782,7 +782,7 @@ function funcSetSpriteScroll(vm, args)
 
   sprites.get(spriteName).scroll = scroll;
 
-  return 0;
+  return null;
 }
 
 function funcSpriteToBack(vm, args)
@@ -800,7 +800,7 @@ function funcSpriteToBack(vm, args)
 
   zOrderedSprites.unshift(zOrderedSprites.splice(spriteIndex, 1)[0]);
 
-  return 0;
+  return null;
 }
 
 function funcSpriteToFront(vm, args)
@@ -818,6 +818,6 @@ function funcSpriteToFront(vm, args)
 
   zOrderedSprites.push(zOrderedSprites.splice(spriteIndex, 1)[0]);
 
-  return 0;
+  return null;
 }
 

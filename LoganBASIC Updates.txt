@@ -1,3 +1,8 @@
+(November 16, 2022)
+[v2.0.69]
+	- Modified all native functions that do not have a return value to return null instead of 0.
+	- Moved the code from opReturn() method of VM into new returnFromUserFunc() method.
+
 (November 13, 2022)
 [v2.0.68]
 	- Modified main_worker module to reset the worker thread after the user's program ends instead

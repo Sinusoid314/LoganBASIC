@@ -37,28 +37,28 @@ function funcShowEditor(vm, args)
 //Tell the UI thread to show the program editor pane
 {
   postMessage({msgId: MSGID_SHOW_EDITOR});
-  return 0;
+  return null;
 }
 
 function funcHideEditor(vm, args)
 //Tell the UI thread to hide the program editor pane
 {
   postMessage({msgId: MSGID_HIDE_EDITOR});
-  return 0;
+  return null;
 }
 
 function funcShowConsole(vm, args)
 //Tell the UI thread to show the console pane
 {
   postMessage({msgId: MSGID_SHOW_CONSOLE});
-  return 0;
+  return null;
 }
 
 function funcHideConsole(vm, args)
 //Tell the UI thread to hide the console pane
 {
   postMessage({msgId: MSGID_HIDE_CONSOLE});
-  return 0;
+  return null;
 }
 
 function funcInput(vm, args)
