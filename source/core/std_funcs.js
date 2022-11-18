@@ -1,4 +1,4 @@
-const lbVersion = "2.0.69";
+const lbVersion = "2.0.70";
 
 const stdNativeFuncs = [
                   new ObjNativeFunc("rnd", 0, 0, funcRnd),
@@ -79,6 +79,7 @@ function pauseFor_onTimeout()
   if(!pauseForCallback)
     return;
 
+  pauseForCallback.vm.stack.push(null);
   pauseForCallback.runFunc();
 }
 
@@ -94,7 +95,7 @@ function import_onLoad()
   url = new URL(this.responseURL);
   sourceName = url.pathname.split("/").pop();
 
-  importCallback.vm.stack[importCallback.vm.stack.length - 1] = true;
+  importCallback.vm.stack.push(true);
   importCallback.vm.interpret(source, sourceName);
 }
 
@@ -104,7 +105,7 @@ function import_onError()
   if(!importCallback)
     return;
 
-  importCallback.vm.stack[importCallback.vm.stack.length - 1] = false;
+  importCallback.vm.stack.push(false);
   importCallback.runFunc();
 }
 
@@ -524,7 +525,7 @@ function funcPauseFor(vm, args)
 
   setTimeout(pauseFor_onTimeout, timeout);
 
-  return null;
+  return undefined;
 }
 
 function funcImport(vm, args)
@@ -546,7 +547,7 @@ function funcImport(vm, args)
   httpReq.open("GET", sourceFile);
   httpReq.send();
 
-  return null;
+  return undefined;
 }
 
 function funcRun(vm, args)

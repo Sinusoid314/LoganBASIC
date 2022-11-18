@@ -28,7 +28,7 @@ function onMsgSoundRequestResult(msgData)
     soundResultCallback.vm.runError(msgData.errorMsg);
   else
   {
-    soundResultCallback.vm.stack[soundResultCallback.vm.stack.length - 1] = msgData.resultVal;
+    soundResultCallback.vm.stack.push(msgData.resultVal);
     soundResultCallback.runFunc();
   }
 }
@@ -50,62 +50,62 @@ function funcLoadSound(vm, args)
 //Send a message to the UI thread to load a sound
 {
   sendSoundRequest(vm, MSGID_LOAD_SOUND_REQUEST, {soundName: args[0], soundSource: args[1]});
-  return false;
+  return undefined;
 }
 
 function funcUnloadSound(vm, args)
 //Send a message to the UI thread to unload a sound
 {
   sendSoundRequest(vm, MSGID_UNLOAD_SOUND_REQUEST, {soundName: args[0]});
-  return 0;
+  return undefined;
 }
 
 function funcPlaySound(vm, args)
 //
 {
   sendSoundRequest(vm, MSGID_PLAY_SOUND_REQUEST, {soundName: args[0]});
-  return 0;
+  return undefined;
 }
 
 function funcPauseSound(vm, args)
 //
 {
   sendSoundRequest(vm, MSGID_PAUSE_SOUND_REQUEST, {soundName: args[0]});
-  return 0;
+  return undefined;
 }
 
 function funcStopSound(vm, args)
 //
 {
   sendSoundRequest(vm, MSGID_STOP_SOUND_REQUEST, {soundName: args[0]});
-  return 0;
+  return undefined;
 }
 
 function funcGetSoundLen(vm, args)
 //
 {
   sendSoundRequest(vm, MSGID_GET_SOUND_LEN_REQUEST, {soundName: args[0]});
-  return 0;
+  return undefined;
 }
 
 function funcGetSoundPos(vm, args)
 //
 {
   sendSoundRequest(vm, MSGID_GET_SOUND_POS_REQUEST, {soundName: args[0]});
-  return 0;
+  return undefined;
 }
 
 function funcSetSoundPos(vm, args)
 //
 {
   sendSoundRequest(vm, MSGID_SET_SOUND_POS_REQUEST, {soundName: args[0], soundPos: args[1]});
-  return 0;
+  return undefined;
 }
 
 function funcLoopSound(vm, args)
 //
 {
   sendSoundRequest(vm, MSGID_LOOP_SOUND_REQUEST, {soundName: args[0], isLooped: args[1]});
-  return 0;
+  return undefined;
 }
 

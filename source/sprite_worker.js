@@ -122,7 +122,7 @@ function onMsgSpriteSheetRequestResult(msgData)
     spriteSheetResultCallback.vm.runError(msgData.errorMsg);
   else
   {
-    spriteSheetResultCallback.vm.stack[spriteSheetResultCallback.vm.stack.length - 1] = msgData.resultVal;
+    spriteSheetResultCallback.vm.stack.push(msgData.resultVal);
     spriteSheetResultCallback.runFunc();
   }
 }
@@ -152,14 +152,14 @@ function funcLoadSpriteSheet(vm, args)
 
   sendSpriteSheetRequest(vm, MSGID_LOAD_SPRITE_SHEET_REQUEST, msgData);
 
-  return false;
+  return undefined;
 }
 
 function funcUnloadSpriteSheet(vm, args)
 //
 {
   sendSpriteSheetRequest(vm, MSGID_UNLOAD_SPRITE_SHEET_REQUEST, {sheetName: args[0]});
-  return 0;
+  return undefined;
 }
 
 function funcDrawSprites(vm, args)
@@ -179,7 +179,7 @@ function funcDrawSprites(vm, args)
 
   sendSpriteSheetRequest(vm, MSGID_DRAW_SPRITE_SHEET_FRAMES_REQUEST, {drawData: drawData});
 
-  return 0;
+  return undefined;
 }
 
 function funcGetSpriteFrameWidth(vm, args)
@@ -192,7 +192,7 @@ function funcGetSpriteFrameWidth(vm, args)
 
   sendSpriteSheetRequest(vm, MSGID_GET_SPRITE_SHEET_FRAME_WIDTH_REQUEST, {sheetName: sprites.get(spriteName).sheetName});
 
-  return 0;
+  return undefined;
 }
 
 function funcGetSpriteFrameHeight(vm, args)
@@ -205,7 +205,7 @@ function funcGetSpriteFrameHeight(vm, args)
 
   sendSpriteSheetRequest(vm, MSGID_GET_SPRITE_SHEET_FRAME_HEIGHT_REQUEST, {sheetName: sprites.get(spriteName).sheetName});
 
-  return 0;
+  return undefined;
 }
 
 function funcAddSprite(vm, args)
@@ -226,7 +226,7 @@ function funcAddSprite(vm, args)
 
   sendSpriteSheetRequest(vm, MSGID_SPRITE_SHEET_REF_REQUEST, {sheetName: sheetName, spriteName: spriteName});
 
-  return 0;
+  return undefined;
 }
 
 function funcRemoveSprite(vm, args)
@@ -266,7 +266,7 @@ function funcSetSpriteSheet(vm, args)
 
   sendSpriteSheetRequest(vm, MSGID_SPRITE_SHEET_REF_REQUEST, {sheetName: sheetName, spriteName: spriteName});
 
-  return 0;
+  return undefined;
 }
 
 function funcUpdateSprites(vm, args)

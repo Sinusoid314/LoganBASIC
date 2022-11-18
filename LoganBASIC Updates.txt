@@ -1,3 +1,10 @@
+(November 17, 2022)
+[v2.0.70]
+	- Modified callNativeFunc() method of VM to not push the native function's return value on the stack if
+	  it is undefined, and modified all native functions that idle the VM before returning a value to
+	  push their value on the stack right before resuming the VM.
+	- Modified HiLo example to convert the user input from a string to a number.
+
 (November 16, 2022)
 [v2.0.69]
 	- Modified all native functions that do not have a return value to return null instead of 0.

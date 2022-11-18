@@ -20,7 +20,7 @@ function onMsgInputResult(msgData)
   if(!inputCallback)
     return;
 
-  inputCallback.vm.stack[inputCallback.vm.stack.length - 1] = msgData.inputVal;
+  inputCallback.vm.stack.push(msgData.inputVal);
   inputCallback.runFunc();
 }
 
@@ -74,5 +74,5 @@ function funcInput(vm, args)
 
   vm.runLoopExitFlag = true;
 
-  return "";
+  return undefined;
 }

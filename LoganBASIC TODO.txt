@@ -1,5 +1,4 @@
 [Bugs]
-    - Undefined variable in locals list when activating debugger in the middle of HiLo example.
     - Undefined variable in locals list when selecting <main> call frame in getSpriteScroll example.
     - Locals list in debugger showing a variable named "undefined" during a FOR loop.
 

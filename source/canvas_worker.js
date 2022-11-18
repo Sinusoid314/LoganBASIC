@@ -63,7 +63,7 @@ function onMsgImageRequestResult(msgData)
     imageResultCallback.vm.runError(msgData.errorMsg);
   else
   {
-    imageResultCallback.vm.stack[imageResultCallback.vm.stack.length - 1] = msgData.resultVal;
+    imageResultCallback.vm.stack.push(msgData.resultVal);
     imageResultCallback.runFunc();
   }
 }
@@ -137,14 +137,14 @@ function funcLoadImage(vm, args)
 //Send a message to the canvas to load an image
 {
   sendImageRequest(vm, MSGID_LOAD_IMAGE_REQUEST, {imageName: args[0], imageSource: args[1]});
-  return false;
+  return undefined;
 }
 
 function funcUnloadImage(vm, args)
 //Send a message to the canvas to unload an image
 {
   sendImageRequest(vm, MSGID_UNLOAD_IMAGE_REQUEST, {imageName: args[0]});
-  return 0;
+  return undefined;
 }
 
 function funcDrawImage(vm, args)
@@ -166,7 +166,7 @@ function funcDrawImage(vm, args)
 
   sendImageRequest(vm, MSGID_DRAW_IMAGE_REQUEST, msgData);
 
-  return 0;
+  return undefined;
 }
 
 function funcDrawImageClip(vm, args)
@@ -192,7 +192,7 @@ function funcDrawImageClip(vm, args)
 
   sendImageRequest(vm, MSGID_DRAW_IMAGE_CLIP_REQUEST, msgData);
 
-  return 0;
+  return undefined;
 }
 
 function funcDrawImageTiled(vm, args)
@@ -216,21 +216,21 @@ function funcDrawImageTiled(vm, args)
 
   sendImageRequest(vm, MSGID_DRAW_IMAGE_TILED_REQUEST, msgData);
 
-  return 0;
+  return undefined;
 }
 
 function funcGetImageWidth(vm, args)
 //
 {
   sendImageRequest(vm, MSGID_GET_IMAGE_WIDTH_REQUEST, {imageName: args[0]});
-  return 0;
+  return undefined;
 }
 
 function funcGetImageHeight(vm, args)
 //
 {
   sendImageRequest(vm, MSGID_GET_IMAGE_HEIGHT_REQUEST, {imageName: args[0]});
-  return 0;
+  return undefined;
 }
 
 function funcEnableCanvasBuffer(vm, args)

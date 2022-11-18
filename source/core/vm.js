@@ -140,8 +140,6 @@ class VM
     this.stack.push(topUserFunc);
     this.callUserFunc(topUserFunc, 0, 0);
 
-    console.log(topUserFunc.toString());
-
     this.run();
     if(this.error != null)
       return INTERPRET_RUNTIME_ERROR;
@@ -687,8 +685,11 @@ class VM
 
     args = this.stack.splice(this.stack.length - argCount, argCount);
     this.stack.pop();
+    
     retVal = func.jsFunc(this, args);
-    this.stack.push(retVal);
+
+    if(retVal !== undefined)
+      this.stack.push(retVal);
   }
 
   callUserFunc(func, argCount, stackIndex)
