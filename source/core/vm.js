@@ -24,7 +24,7 @@ class CallbackContext
     this.userFunc = userFunc;
   }
 
-  runFunc(args = [])
+  resumeVM(args = [], popReturnVal = true)
   //Load the user function and arguments onto the vm's stack, call the function, and start the vm
   {
     var argCount = args.length;
@@ -40,7 +40,7 @@ class CallbackContext
       for(var argIndex = 0; argIndex < argCount; argIndex++)
         this.vm.stack.push(args[argIndex]);
 
-      this.vm.callUserFunc(this.userFunc, argCount, stackIndex);
+      this.vm.callUserFunc(this.userFunc, argCount, stackIndex, popReturnVal);
     }
 
     this.vm.run();
@@ -49,10 +49,11 @@ class CallbackContext
 
 class CallFrame
 {
-  constructor(func, stackIndex)
+  constructor(func, stackIndex, popReturnVal)
   {
     this.func = func;
     this.stackIndex = stackIndex;
+    this.popReturnVal = popReturnVal;
     this.currOpIndex = -1;
     this.nextOpIndex = 0;
   }
@@ -138,7 +139,7 @@ class VM
       return INTERPRET_COMPILE_ERROR;
     
     this.stack.push(topUserFunc);
-    this.callUserFunc(topUserFunc, 0, 0);
+    this.callUserFunc(topUserFunc, 0, 0, true);
 
     this.run();
     if(this.error != null)
@@ -483,7 +484,7 @@ class VM
     if(func instanceof ObjNativeFunc)
       this.callNativeFunc(func, argCount);
     else if(func instanceof ObjUserFunc)
-      this.callUserFunc(func, argCount, stackIndex);
+      this.callUserFunc(func, argCount, stackIndex, false);
     else
       this.runError("Can only call functions.");
   }
@@ -692,13 +693,13 @@ class VM
       this.stack.push(retVal);
   }
 
-  callUserFunc(func, argCount, stackIndex)
+  callUserFunc(func, argCount, stackIndex, popReturnVal)
   //Load a new call frame for the given user function
   {
     if(argCount != func.paramCount)
       this.runError("Wrong number of arguments for function '" + func.ident + "'.");
 
-    this.callFrames.push(new CallFrame(func, stackIndex));
+    this.callFrames.push(new CallFrame(func, stackIndex, popReturnVal));
     
     this.currCallFrame = this.callFrames[this.callFrames.length - 1];
 
@@ -714,6 +715,10 @@ class VM
       this.onUserFuncReturnHook(this);
 
     this.stack.splice(this.currCallFrame.stackIndex, this.stack.length - this.currCallFrame.stackIndex - 1);
+
+    if(this.currCallFrame.popReturnVal)
+      this.stack.pop();
+
     this.callFrames.pop();
 
     if(this.callFrames.length == 0)

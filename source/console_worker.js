@@ -21,7 +21,7 @@ function onMsgInputResult(msgData)
     return;
 
   inputCallback.vm.stack.push(msgData.inputVal);
-  inputCallback.runFunc();
+  inputCallback.resumeVM();
 }
 
 function onVMPrint(vm, printVal, replaceAll)

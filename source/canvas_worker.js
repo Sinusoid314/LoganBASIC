@@ -64,7 +64,7 @@ function onMsgImageRequestResult(msgData)
   else
   {
     imageResultCallback.vm.stack.push(msgData.resultVal);
-    imageResultCallback.runFunc();
+    imageResultCallback.resumeVM();
   }
 }
 
@@ -86,7 +86,7 @@ function onMsgCanvasEvent(msgData)
 {
   var eventIndex = canvasEvents.findIndex((event) => event.name == msgData.eventName);
 
-  canvasEvents[eventIndex].callback.runFunc(msgData.eventArgs);
+  canvasEvents[eventIndex].callback.resumeVM(msgData.eventArgs);
 }
 
 function onMsgDrawCanvasBufferDone()
@@ -95,7 +95,7 @@ function onMsgDrawCanvasBufferDone()
   if(!drawBufferCallback)
     return;
 
-  drawBufferCallback.runFunc();
+  drawBufferCallback.resumeVM();
 }
 
 function funcShowCanvas(vm, args)

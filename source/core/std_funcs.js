@@ -1,4 +1,4 @@
-const lbVersion = "2.0.70";
+const lbVersion = "2.0.71";
 
 const stdNativeFuncs = [
                   new ObjNativeFunc("rnd", 0, 0, funcRnd),
@@ -70,7 +70,7 @@ function timer_onTick()
   if(timerID == 0)
     return;
 
-  timerCallback.runFunc();
+  timerCallback.resumeVM();
 }
 
 function pauseFor_onTimeout()
@@ -80,7 +80,7 @@ function pauseFor_onTimeout()
     return;
 
   pauseForCallback.vm.stack.push(null);
-  pauseForCallback.runFunc();
+  pauseForCallback.resumeVM();
 }
 
 function import_onLoad()
@@ -106,7 +106,7 @@ function import_onError()
     return;
 
   importCallback.vm.stack.push(false);
-  importCallback.runFunc();
+  importCallback.resumeVM();
 }
 
 function funcRnd(vm, args)

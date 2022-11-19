@@ -1,5 +1,6 @@
 [Bugs]
-    - Undefined variable in locals list when selecting <main> call frame in getSpriteScroll example.
+    - Function declaration source line not selected when selecting function name in debugger
+      Globals list more than once.
     - Locals list in debugger showing a variable named "undefined" during a FOR loop.
 
 [Features]

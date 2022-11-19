@@ -1,3 +1,8 @@
+(November 18, 2022)
+[v2.0.71]
+	- Added popReturnVal member to CallFrame to support discarding the return value when a call frame ends.
+	- Rename runFunc() method of CallbackContext to resumeVM().
+
 (November 17, 2022)
 [v2.0.70]
 	- Modified callNativeFunc() method of VM to not push the native function's return value on the stack if

@@ -29,7 +29,7 @@ function onMsgSoundRequestResult(msgData)
   else
   {
     soundResultCallback.vm.stack.push(msgData.resultVal);
-    soundResultCallback.runFunc();
+    soundResultCallback.resumeVM();
   }
 }
 
