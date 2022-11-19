@@ -1,3 +1,7 @@
+(November 19, 2022)
+[v2.0.72]
+	- Fixed bug with addSprite() native function not returning a value.
+
 (November 18, 2022)
 [v2.0.71]
 	- Added popReturnVal member to CallFrame to support discarding the return value when a call frame ends.

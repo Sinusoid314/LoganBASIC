@@ -108,6 +108,7 @@ function onMsgSpriteSheetRefRequestResult(msgData)
     sprite.frameCount = msgData.frameCount;
     sprite.lastFrameIndex = sprite.frameCount - 1;
 
+    spriteSheetResultCallback.vm.stack.push(null);
     spriteSheetResultCallback.resumeVM();
   }
 }
