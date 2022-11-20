@@ -1,4 +1,7 @@
 (November 19, 2022)
+[v2.0.73]
+	- Fixed bug with function declaration source line not selected when selecting function name in debugger
+      Globals list more than once.
 [v2.0.72]
 	- Fixed bug with addSprite() native function not returning a value.
 

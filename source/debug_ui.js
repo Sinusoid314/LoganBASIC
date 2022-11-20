@@ -68,7 +68,7 @@ function debugExpandVarListItem(parentItem, itemValueMap, parentValue)
   {
     case OBJ_TYPE_USER_FUNC:
       selectEditorLine(parentValue.declSourceLineNum);
-      break;
+      return;
 
     case OBJ_TYPE_ARRAY:
       break;
