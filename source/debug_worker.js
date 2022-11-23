@@ -1,7 +1,8 @@
 const DEBUG_MODE_OFF = 1;
-const DEBUG_MODE_STEP = 2;
-const DEBUG_MODE_STEP_OVER = 3;
-const DEBUG_MODE_STEP_OUT = 4;
+const DEBUG_MODE_RESUME = 2;
+const DEBUG_MODE_STEP = 3;
+const DEBUG_MODE_STEP_OVER = 4;
+const DEBUG_MODE_STEP_OUT = 5;
 
 var debugMode = DEBUG_MODE_OFF;
 var debugStepCallFrame = null;
@@ -65,12 +66,12 @@ class DebugBreakpoint
 function debugChangeMode(newMode)
 //
 {
-  debugMode = newMode;
-
   if((newMode == DEBUG_MODE_STEP_OVER) || (newMode == DEBUG_MODE_STEP_OUT))
     debugStepCallFrame = mainVM.currCallFrame;
   else
     debugStepCallFrame = null;
+
+  debugMode = newMode;
 }
 
 function onMsgDebugStart()
@@ -95,11 +96,28 @@ function onMsgDebugStop()
     mainVM.run();
 }
 
-function onMsgDebugStep()
+function onMsgDebugResume()
 //
 {
   if(!mainVM.inBreakpoint)
     return;
+
+  debugChangeMode(DEBUG_MODE_RESUME);
+
+  mainVM.run();
+}
+
+function onMsgDebugPause()
+//
+{
+
+}
+
+function onMsgDebugStep()
+//
+{
+  //if(!mainVM.inBreakpoint)
+  //  return;
 
   debugChangeMode(DEBUG_MODE_STEP);
 
@@ -157,6 +175,18 @@ function onMsgDebugCallFrameInfoRequest(msgData)
 
   postMessage({msgId: MSGID_DEBUG_UPDATE_UI,
                msgData: new DebugInfo(mainVM, sourceLineNum, msgData.callFrameIndex)});
+}
+
+function onMsgDebugAddBreakpoint(msgData)
+//
+{
+
+}
+
+function onMsgDebugRemoveBreakpoint(msgData)
+//
+{
+
 }
 
 function onVMSourceLineChange(vm, nextSourceLineNum, sourceName)

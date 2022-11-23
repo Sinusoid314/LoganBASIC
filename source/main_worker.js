@@ -83,7 +83,15 @@ function progWorker_onMessage(message)
     case MSGID_DEBUG_STOP:
       onMsgDebugStop();
       break;
-  
+
+    case MSGID_DEBUG_RESUME:
+      onMsgDebugResume();
+      break;
+
+    case MSGID_DEBUG_PAUSE:
+      onMsgDebugPause();
+      break;
+
     case MSGID_DEBUG_STEP:
       onMsgDebugStep();
       break;
@@ -102,6 +110,14 @@ function progWorker_onMessage(message)
 
     case MSGID_DEBUG_CALL_FRAME_INFO_REQUEST:
       onMsgDebugCallFrameInfoRequest(message.data.msgData);
+      break;
+
+    case MSGID_DEBUG_ADD_BREAKPOINT:
+      onMsgDebugAddBreakpoint(message.data.msgData);
+      break;
+
+    case MSGID_DEBUG_REMOVE_BREAKPOINT:
+      onMsgDebugRemoveBreakpoint(message.data.msgData);
       break;
   }
 }

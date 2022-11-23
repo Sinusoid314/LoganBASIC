@@ -1,3 +1,8 @@
+(November 22, 2022)
+[v2.0.74]
+	- Added Resume and Pause buttons to debugger UI.
+	- Added DEBUG_RESUME, DEBUG_PAUSE, DEBUG_ADD_BREAKPOINT, DEBUG_REMOVE_BREAKPOINT, DEBUG_ON_RESUME, and DEBUG_ON_PAUSE thread messages.
+
 (November 19, 2022)
 [v2.0.73]
 	- Fixed bug with function declaration source line not selected when selecting function name in debugger

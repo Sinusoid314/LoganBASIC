@@ -283,6 +283,14 @@ function progUI_onMessage(message)
     case MSGID_GET_SPRITE_SHEET_FRAME_HEIGHT_REQUEST:
       onMsgGetSpriteSheetFrameHeightRequest(message.data.msgData);
       break;
+
+    case MSGID_DEBUG_ON_RESUME:
+      onMsgDebugOnResume();
+      break;
+
+    case MSGID_DEBUG_ON_PAUSE:
+      onMsgDebugOnPause();
+      break;
       
     case MSGID_DEBUG_UPDATE_UI:
       onMsgDebugUpdateUI(message.data.msgData);
