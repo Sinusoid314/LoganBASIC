@@ -1,3 +1,9 @@
+(December 1, 2022)
+[v2.0.75]
+	- Added MSGID_DEBUG_ON_BREAKPOINT thread message.
+	- Added DEBUG_STATUS_STANDBY constant to debug_worker module.
+	- Modified debugger to work with Resume and Pause status modes.
+
 (November 22, 2022)
 [v2.0.74]
 	- Added Resume and Pause buttons to debugger UI.

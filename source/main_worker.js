@@ -26,6 +26,12 @@ onmessage = progWorker_onMessage;
 function resetMain()
 //
 {
+  if((debugStatus != DEBUG_STATUS_OFF) && (debugStatus != DEBUG_STATUS_STANDBY))
+  {
+    debugChangeStatus(DEBUG_STATUS_STANDBY);
+    postMessage({msgId: MSGID_DEBUG_UPDATE_UI, msgData: new DebugInfo(mainVM, 0)});
+  }
+  
   resetStd();
   resetConsole();
   resetCanvas();
@@ -147,9 +153,6 @@ function onVMStatusChange(vm, prevStatus)
       if(!(vm.callFramesEmpty() && (prevStatus == VM_STATUS_RUNNING)))
         return;
 
-      if(debugMode != DEBUG_MODE_OFF)
-        postMessage({msgId: MSGID_DEBUG_UPDATE_UI, msgData: new DebugInfo(vm, 0)});
-
       postMessage({msgId: MSGID_PROG_DONE_SUCCESS});
 
       resetMain();
@@ -168,9 +171,6 @@ function onVMStatusChange(vm, prevStatus)
 function onVMError(vm)
 //
 {
-  if((debugMode != DEBUG_MODE_OFF) && (vm.status != VM_STATUS_COMPILING))
-    postMessage({msgId: MSGID_DEBUG_UPDATE_UI, msgData: new DebugInfo(vm, 0)});
-
   postMessage({msgId: MSGID_PROG_DONE_ERROR, msgData: {error: vm.error}});
 
   if(vm.status == VM_STATUS_IDLE)

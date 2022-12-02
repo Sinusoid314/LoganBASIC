@@ -30,6 +30,9 @@ function stopProg(exitStatus)
   if(!isRunning)
     return;
 
+  if(isDebugging)
+    debugDisableButtons();
+
   closeConsoleInput();
   cleanupCanvas();
   cleanupSounds();
@@ -284,12 +287,8 @@ function progUI_onMessage(message)
       onMsgGetSpriteSheetFrameHeightRequest(message.data.msgData);
       break;
 
-    case MSGID_DEBUG_ON_RESUME:
-      onMsgDebugOnResume();
-      break;
-
-    case MSGID_DEBUG_ON_PAUSE:
-      onMsgDebugOnPause();
+    case MSGID_DEBUG_ON_BREAKPOINT:
+      onMsgDebugOnBreakpoint();
       break;
       
     case MSGID_DEBUG_UPDATE_UI:

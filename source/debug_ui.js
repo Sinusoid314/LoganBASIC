@@ -32,6 +32,39 @@ debugStepOutBtn.addEventListener("click", debugStepOutBtn_onClick);
 debugSkipBtn.addEventListener("click", debugSkipBtn_onClick);
 debugCallStackList.addEventListener("change", debugCallStackList_onChange);
 
+function debugDisableButtons()
+//
+{
+  debugResumeBtn.disabled = true;
+  debugPauseBtn.disabled = true;
+  debugStepBtn.disabled = true;
+  debugStepOverBtn.disabled = true;
+  debugStepOutBtn.disabled = true;
+  debugSkipBtn.disabled = true;
+}
+
+function debugEnablePauseButton()
+//
+{
+  debugResumeBtn.disabled = true;
+  debugPauseBtn.disabled = false;
+  debugStepBtn.disabled = true;
+  debugStepOverBtn.disabled = true;
+  debugStepOutBtn.disabled = true;
+  debugSkipBtn.disabled = true;
+}
+
+function debugDisablePauseButton()
+//
+{
+  debugResumeBtn.disabled = false;
+  debugPauseBtn.disabled = true;
+  debugStepBtn.disabled = false;
+  debugStepOverBtn.disabled = false;
+  debugStepOutBtn.disabled = false;
+  debugSkipBtn.disabled = false;
+}
+
 function debugClearDisplays()
 //
 {
@@ -134,6 +167,7 @@ function debugToggleBtn_onClick(event)
 {
   if(isDebugging)
   {
+    debugDisableButtons();
     debugToggleBtn.style.border = "";
 	  debugDiv.style.display = "none";
     mainDiv.style.marginLeft = "0";
@@ -188,6 +222,8 @@ function debugResumeBtn_onClick(event)
   if(!(isDebugging && isRunning))
     return;
 
+  debugEnablePauseButton();
+
   progWorker.postMessage({msgId: MSGID_DEBUG_RESUME});
 }
 
@@ -196,6 +232,8 @@ function debugPauseBtn_onClick(event)
 {
   if(!(isDebugging && isRunning))
     return;
+
+  debugDisablePauseButton();
 
   progWorker.postMessage({msgId: MSGID_DEBUG_PAUSE});
 }
@@ -206,6 +244,8 @@ function debugStepBtn_onClick(event)
   if(!(isDebugging && isRunning))
     return;
 
+  debugEnablePauseButton();
+
   progWorker.postMessage({msgId: MSGID_DEBUG_STEP});
 }
 
@@ -215,6 +255,8 @@ function debugStepOverBtn_onClick(event)
   if(!(isDebugging && isRunning))
     return;
 
+  debugEnablePauseButton();
+
   progWorker.postMessage({msgId: MSGID_DEBUG_STEP_OVER});
 }
 
@@ -223,6 +265,8 @@ function debugStepOutBtn_onClick(event)
 {
   if(!(isDebugging && isRunning))
     return;
+  
+  debugEnablePauseButton();
 
   progWorker.postMessage({msgId: MSGID_DEBUG_STEP_OUT});
 }
@@ -232,6 +276,8 @@ function debugSkipBtn_onClick(event)
 {
   if(!(isDebugging && isRunning))
     return;
+
+  debugEnablePauseButton();
 
   progWorker.postMessage({msgId: MSGID_DEBUG_SKIP});
 }
@@ -267,16 +313,10 @@ function debugVarListItem_onClick(event)
   }
 }
 
-function onMsgDebugOnResume()
+function onMsgDebugOnBreakpoint()
 //
 {
-
-}
-
-function onMsgDebugOnPause()
-//
-{
-
+  debugDisablePauseButton();
 }
 
 function onMsgDebugUpdateUI(msgData)
