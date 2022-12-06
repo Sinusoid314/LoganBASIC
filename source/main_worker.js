@@ -26,9 +26,9 @@ onmessage = progWorker_onMessage;
 function resetMain()
 //
 {
-  if((debugStatus != DEBUG_STATUS_OFF) && (debugStatus != DEBUG_STATUS_STANDBY))
+  if(debugEnabled)
   {
-    debugChangeStatus(DEBUG_STATUS_STANDBY);
+    debugLineChangeAction = DEBUG_ACTION_BREAK;
     postMessage({msgId: MSGID_DEBUG_UPDATE_UI, msgData: new DebugInfo(mainVM, 0)});
   }
   
@@ -82,12 +82,12 @@ function progWorker_onMessage(message)
       onMsgSpriteSheetRequestResult(message.data.msgData);
       break;
 
-    case MSGID_DEBUG_START:
-      onMsgDebugStart();
+    case MSGID_DEBUG_ENABLE:
+      onMsgDebugEnable();
       break;
 
-    case MSGID_DEBUG_STOP:
-      onMsgDebugStop();
+    case MSGID_DEBUG_DISABLE:
+      onMsgDebugDisable();
       break;
 
     case MSGID_DEBUG_RESUME:

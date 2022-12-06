@@ -1,5 +1,4 @@
 [Bugs]
-    - Debugger UI buttons not synching properly with worker thread.
     - Locals list in debugger showing a variable named "undefined" during a FOR loop.
 
 [Features]

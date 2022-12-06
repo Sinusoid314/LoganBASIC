@@ -68,7 +68,7 @@ function stopBtn_onClick(event)
   progWorker.onmessage = progUI_onMessage;
 
   if(isDebugging)
-    progWorker.postMessage({msgId: MSGID_DEBUG_START});
+    progWorker.postMessage({msgId: MSGID_DEBUG_ENABLE});
 
   stopProg("Program stopped.");
 }
@@ -287,8 +287,8 @@ function progUI_onMessage(message)
       onMsgGetSpriteSheetFrameHeightRequest(message.data.msgData);
       break;
 
-    case MSGID_DEBUG_ON_BREAKPOINT:
-      onMsgDebugOnBreakpoint();
+    case MSGID_DEBUG_ON_USER_BREAKPOINT:
+      onMsgDebugOnUserBreakpoint();
       break;
       
     case MSGID_DEBUG_UPDATE_UI:

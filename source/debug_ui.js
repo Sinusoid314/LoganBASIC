@@ -168,19 +168,23 @@ function debugToggleBtn_onClick(event)
   if(isDebugging)
   {
     debugDisableButtons();
+    
     debugToggleBtn.style.border = "";
 	  debugDiv.style.display = "none";
     mainDiv.style.marginLeft = "0";
     
-    progWorker.postMessage({msgId: MSGID_DEBUG_STOP});
+    progWorker.postMessage({msgId: MSGID_DEBUG_DISABLE});
   }
   else
   {
+    if(isRunning)
+      debugDisablePauseButton();
+
     debugToggleBtn.style.border = "inset 2px";
 	  debugDiv.style.display = "block";
     mainDiv.style.marginLeft = debugDiv.clientWidth + "px";
 
-    progWorker.postMessage({msgId: MSGID_DEBUG_START});
+    progWorker.postMessage({msgId: MSGID_DEBUG_ENABLE});
   }
 
   isDebugging = !isDebugging;
@@ -244,8 +248,6 @@ function debugStepBtn_onClick(event)
   if(!(isDebugging && isRunning))
     return;
 
-  debugEnablePauseButton();
-
   progWorker.postMessage({msgId: MSGID_DEBUG_STEP});
 }
 
@@ -254,8 +256,6 @@ function debugStepOverBtn_onClick(event)
 {
   if(!(isDebugging && isRunning))
     return;
-
-  debugEnablePauseButton();
 
   progWorker.postMessage({msgId: MSGID_DEBUG_STEP_OVER});
 }
@@ -266,8 +266,6 @@ function debugStepOutBtn_onClick(event)
   if(!(isDebugging && isRunning))
     return;
   
-  debugEnablePauseButton();
-
   progWorker.postMessage({msgId: MSGID_DEBUG_STEP_OUT});
 }
 
@@ -276,8 +274,6 @@ function debugSkipBtn_onClick(event)
 {
   if(!(isDebugging && isRunning))
     return;
-
-  debugEnablePauseButton();
 
   progWorker.postMessage({msgId: MSGID_DEBUG_SKIP});
 }
@@ -313,7 +309,7 @@ function debugVarListItem_onClick(event)
   }
 }
 
-function onMsgDebugOnBreakpoint()
+function onMsgDebugOnUserBreakpoint()
 //
 {
   debugDisablePauseButton();

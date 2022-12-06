@@ -1,12 +1,10 @@
-const DEBUG_STATUS_OFF = 1;
-const DEBUG_STATUS_STANDBY = 2;
-const DEBUG_STATUS_PAUSE = 3;
-const DEBUG_STATUS_RESUME = 4;
-const DEBUG_STATUS_STEP = 5;
-const DEBUG_STATUS_STEP_OVER = 6;
-const DEBUG_STATUS_STEP_OUT = 7;
+const DEBUG_ACTION_CONTINUE = 1;
+const DEBUG_ACTION_BREAK = 2;
+const DEBUG_ACTION_STEP_OVER = 3;
+const DEBUG_ACTION_STEP_OUT = 4;
 
-var debugStatus = DEBUG_STATUS_OFF;
+var debugEnabled = false;
+var debugLineChangeAction = DEBUG_ACTION_BREAK;
 var debugStepCallFrame = null;
 var debugBreakpoints = [];
 
@@ -65,81 +63,75 @@ class DebugBreakpoint
   }
 }
 
-function debugChangeStatus(newStatus)
+function debugEnterBreakpoint(vm, nextSourceLineNum)
 //
 {
-  if((newStatus == DEBUG_STATUS_STEP_OVER) || (newStatus == DEBUG_STATUS_STEP_OUT))
-    debugStepCallFrame = mainVM.currCallFrame;
-  else
-      debugStepCallFrame = null;
+  if(debugStepCallFrame)
+    debugStepCallFrame = null;
 
-  debugStatus = newStatus;
+  postMessage({msgId: MSGID_DEBUG_UPDATE_UI, msgData: new DebugInfo(vm, nextSourceLineNum)});
+
+  vm.inBreakpoint = true;
 }
 
-function onMsgDebugStart()
+function onMsgDebugEnable()
 //
 {
-  if(debugStatus != DEBUG_STATUS_OFF)
+  if(debugEnabled)
     return;
   
   mainVM.onSourceLineChangeHook = onVMSourceLineChange;
+  debugEnabled = true;
+  debugLineChangeAction = DEBUG_ACTION_BREAK;
 
   if(!mainVM.callFramesEmpty())
-  {
-    debugChangeStatus(DEBUG_STATUS_PAUSE);
     postMessage({msgId: MSGID_DEBUG_UPDATE_UI, msgData: new DebugInfo(mainVM, mainVM.getCurrOpSourceLineNum())});
-  }
-  else
-  {
-    debugChangeStatus(DEBUG_STATUS_STANDBY);
-  }
 }
 
-function onMsgDebugStop()
+function onMsgDebugDisable()
 //
 {
-  var prevStatus = debugStatus;
-
-  if(debugStatus == DEBUG_STATUS_OFF)
+  if(!debugEnabled)
     return;
 
   mainVM.onSourceLineChangeHook = null;
-  
-  debugChangeStatus(DEBUG_STATUS_OFF);
+  debugEnabled = false;
 
-  if(prevStatus == DEBUG_STATUS_PAUSE)
+  if(mainVM.inBreakpoint)
     mainVM.run();
 }
 
 function onMsgDebugResume()
 //
 {
-  if(debugStatus != DEBUG_STATUS_PAUSE)
+  if(!debugEnabled || mainVM.callFramesEmpty())
     return;
+  
+  debugLineChangeAction = DEBUG_ACTION_CONTINUE;
 
-  debugChangeStatus(DEBUG_STATUS_RESUME);
-
-  mainVM.run();
+  if(mainVM.inBreakpoint)
+    mainVM.run();
 }
 
 function onMsgDebugPause()
 //
 {
-  if(debugStatus == DEBUG_STATUS_PAUSE)
+  if(!debugEnabled || mainVM.callFramesEmpty())
     return;
 
-  debugChangeStatus(DEBUG_STATUS_PAUSE);
+  debugLineChangeAction = DEBUG_ACTION_BREAK;
 
-  mainVM.run();
+  if(mainVM.inBreakpoint)
+    mainVM.run();
 }
 
 function onMsgDebugStep()
 //
 {
-  if(debugStatus != DEBUG_STATUS_PAUSE)
+  if((!debugEnabled || mainVM.callFramesEmpty()) || !mainVM.inBreakpoint)
     return;
 
-  debugChangeStatus(DEBUG_STATUS_STEP);
+  debugLineChangeAction = DEBUG_ACTION_BREAK;
 
   mainVM.run();
 }
@@ -147,10 +139,11 @@ function onMsgDebugStep()
 function onMsgDebugStepOver()
 //
 {
-  if(debugStatus != DEBUG_STATUS_PAUSE)
+  if((!debugEnabled || mainVM.callFramesEmpty()) || !mainVM.inBreakpoint)
     return;
 
-  debugChangeStatus(DEBUG_STATUS_STEP_OVER);
+  debugLineChangeAction = DEBUG_ACTION_STEP_OVER;
+  debugStepCallFrame = mainVM.currCallFrame;
 
   mainVM.run();
 }
@@ -158,13 +151,11 @@ function onMsgDebugStepOver()
 function onMsgDebugStepOut()
 //
 {
-  if(debugStatus != DEBUG_STATUS_PAUSE)
+  if((!debugEnabled || mainVM.callFramesEmpty()) || !mainVM.inBreakpoint)
     return;
 
-  if(mainVM.currCallFrame.func.sourceLevel == SOURCE_LEVEL_TOP)
-    return;
-
-  debugChangeStatus(DEBUG_STATUS_STEP_OUT);
+  debugLineChangeAction = DEBUG_ACTION_STEP_OUT;
+  debugStepCallFrame = mainVM.currCallFrame;
 
   mainVM.run();
 }
@@ -172,7 +163,7 @@ function onMsgDebugStepOut()
 function onMsgDebugSkip()
 //
 {
-  if(debugStatus != DEBUG_STATUS_PAUSE)
+  if((!debugEnabled || mainVM.callFramesEmpty()) || !mainVM.inBreakpoint)
     return;
 
   mainVM.skipSourceLine();
@@ -219,36 +210,29 @@ function onVMSourceLineChange(vm, nextSourceLineNum, sourceName)
   {
     if(breakpoint.matches(nextSourceLineNum, sourceName))
     {
-      debugChangeStatus(DEBUG_STATUS_PAUSE);
+      if(debugLineChangeAction == DEBUG_ACTION_CONTINUE)
+        postMessage({msgId: MSGID_DEBUG_ON_USER_BREAKPOINT});
+
+      debugEnterBreakpoint(vm, nextSourceLineNum);
+
       break;
     }
   }
   
-  switch(debugStatus)
+  switch(debugLineChangeAction)
   {
-    case DEBUG_STATUS_STANDBY:
-      debugChangeStatus(DEBUG_STATUS_PAUSE);
-      break;
-  
-    case DEBUG_STATUS_STEP:
-      debugChangeStatus(DEBUG_STATUS_PAUSE);
+    case DEBUG_ACTION_BREAK:
+      debugEnterBreakpoint(vm, nextSourceLineNum);
       break;
 
-    case DEBUG_STATUS_STEP_OVER:
+    case DEBUG_ACTION_STEP_OVER:
       if(debugStepCallFrame == vm.currCallFrame)
-        debugChangeStatus(DEBUG_STATUS_PAUSE);
+        debugEnterBreakpoint(vm, nextSourceLineNum);
       break;
 
-    case DEBUG_STATUS_STEP_OUT:
+    case DEBUG_ACTION_STEP_OUT:
       if(debugStepCallFrame != vm.currCallFrame)
-        debugChangeStatus(DEBUG_STATUS_PAUSE);
+        debugEnterBreakpoint(vm, nextSourceLineNum);
       break;
-  }
-
-  if(debugStatus == DEBUG_STATUS_PAUSE)
-  {
-    postMessage({msgId: MSGID_DEBUG_ON_BREAKPOINT});
-    postMessage({msgId: MSGID_DEBUG_UPDATE_UI, msgData: new DebugInfo(vm, nextSourceLineNum)});
-    vm.inBreakpoint = true;
   }
 }

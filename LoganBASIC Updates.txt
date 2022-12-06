@@ -1,3 +1,9 @@
+(December 6, 2022)
+[v2.0.76]
+	- Renamed MSGID_DEBUG_ON_BREAKPOINT to MSGID_DEBUG_ON_USER_BREAKPOINT.
+	- Renamed MSGID_DEBUG_START to MSGID_DEBUG_ENABLE and MSGID_DEBUG_STOP to MSGID_DEBUG_DISABLE.
+	- Replaced DEBUG_STATUS state constants and debugStatus with DEBUG_ACTION intruction constants and debugLineChangeAction.	
+
 (December 1, 2022)
 [v2.0.75]
 	- Added MSGID_DEBUG_ON_BREAKPOINT thread message.
