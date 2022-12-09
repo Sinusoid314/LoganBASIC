@@ -1,3 +1,10 @@
+(December 8, 2022)
+[v2.0.77]
+	- Removed MSGID_DEBUG_ON_USER_BREAKPOINT message.
+	- Added resumeBtnEnabled and pauseBtnEnabled members to DebugInfo class and modified onMsgDebugUpdateUI() function
+	  in debug_ui module to use them.
+	- Implemented onMsgDebugAddBreakpoint() and onMsgDebugRemoveBreakpoint() functions in debug_worker module.
+
 (December 6, 2022)
 [v2.0.76]
 	- Renamed MSGID_DEBUG_ON_BREAKPOINT to MSGID_DEBUG_ON_USER_BREAKPOINT.

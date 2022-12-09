@@ -166,9 +166,7 @@ function debugToggleBtn_onClick(event)
 //
 {
   if(isDebugging)
-  {
-    debugDisableButtons();
-    
+  { 
     debugToggleBtn.style.border = "";
 	  debugDiv.style.display = "none";
     mainDiv.style.marginLeft = "0";
@@ -177,9 +175,6 @@ function debugToggleBtn_onClick(event)
   }
   else
   {
-    if(isRunning)
-      debugDisablePauseButton();
-
     debugToggleBtn.style.border = "inset 2px";
 	  debugDiv.style.display = "block";
     mainDiv.style.marginLeft = debugDiv.clientWidth + "px";
@@ -226,8 +221,6 @@ function debugResumeBtn_onClick(event)
   if(!(isDebugging && isRunning))
     return;
 
-  debugEnablePauseButton();
-
   progWorker.postMessage({msgId: MSGID_DEBUG_RESUME});
 }
 
@@ -236,8 +229,6 @@ function debugPauseBtn_onClick(event)
 {
   if(!(isDebugging && isRunning))
     return;
-
-  debugDisablePauseButton();
 
   progWorker.postMessage({msgId: MSGID_DEBUG_PAUSE});
 }
@@ -309,16 +300,17 @@ function debugVarListItem_onClick(event)
   }
 }
 
-function onMsgDebugOnUserBreakpoint()
-//
-{
-  debugDisablePauseButton();
-}
-
 function onMsgDebugUpdateUI(msgData)
 //
 {
   selectEditorLine(msgData.sourceLineNum);
+
+  if(msgData.resumeBtnEnabled)
+    debugDisablePauseButton();
+  else if(msgData.pauseBtnEnabled)
+    debugEnablePauseButton();
+  else
+    debugDisableButtons();
 
   if(msgData.funcIdents)
   {

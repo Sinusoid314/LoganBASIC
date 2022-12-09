@@ -19,10 +19,19 @@ class DebugInfo
     this.locals = new Map();
     this.globals = null;
     this.funcIdents = null;
+    this.resumeBtnEnabled = (vm.inBreakpoint && !vm.callFramesEmpty());
+    this.pauseBtnEnabled = (!vm.inBreakpoint && !vm.callFramesEmpty());
 
     if(vm.callFramesEmpty())
     {
       this.globals = vm.globals;
+      this.funcIdents = [];
+      return;
+    }
+
+    if(this.pauseBtnEnabled)
+    {
+      this.globals = new Map();
       this.funcIdents = [];
       return;
     }
@@ -69,9 +78,9 @@ function debugEnterBreakpoint(vm, nextSourceLineNum)
   if(debugStepCallFrame)
     debugStepCallFrame = null;
 
-  postMessage({msgId: MSGID_DEBUG_UPDATE_UI, msgData: new DebugInfo(vm, nextSourceLineNum)});
-
   vm.inBreakpoint = true;
+
+  postMessage({msgId: MSGID_DEBUG_UPDATE_UI, msgData: new DebugInfo(vm, nextSourceLineNum)});
 }
 
 function onMsgDebugEnable()
@@ -84,8 +93,10 @@ function onMsgDebugEnable()
   debugEnabled = true;
   debugLineChangeAction = DEBUG_ACTION_BREAK;
 
+  /*
   if(!mainVM.callFramesEmpty())
     postMessage({msgId: MSGID_DEBUG_UPDATE_UI, msgData: new DebugInfo(mainVM, mainVM.getCurrOpSourceLineNum())});
+  */
 }
 
 function onMsgDebugDisable()
@@ -104,25 +115,21 @@ function onMsgDebugDisable()
 function onMsgDebugResume()
 //
 {
-  if(!debugEnabled || mainVM.callFramesEmpty())
+  if((!debugEnabled || mainVM.callFramesEmpty()) || !mainVM.inBreakpoint)
     return;
   
   debugLineChangeAction = DEBUG_ACTION_CONTINUE;
 
-  if(mainVM.inBreakpoint)
-    mainVM.run();
+  mainVM.run();
 }
 
 function onMsgDebugPause()
 //
 {
-  if(!debugEnabled || mainVM.callFramesEmpty())
+  if((!debugEnabled || mainVM.callFramesEmpty()) || mainVM.inBreakpoint)
     return;
 
   debugLineChangeAction = DEBUG_ACTION_BREAK;
-
-  if(mainVM.inBreakpoint)
-    mainVM.run();
 }
 
 function onMsgDebugStep()
@@ -191,13 +198,21 @@ function onMsgDebugCallFrameInfoRequest(msgData)
 function onMsgDebugAddBreakpoint(msgData)
 //
 {
+  if(debugBreakpoints.findIndex(breakpoint => breakpoint.matches(msgData.sourceLineNum, msgData.sourceName)) > -1)
+    return;
 
+  debugBreakpoints.push(new DebugBreakpoint(msgData.sourceLineNum, msgData.sourceName));
 }
 
 function onMsgDebugRemoveBreakpoint(msgData)
 //
 {
+  var breakpointIndex = debugBreakpoints.findIndex(breakpoint => breakpoint.matches(msgData.sourceLineNum, msgData.sourceName));
 
+  if(breakpointIndex == -1)
+    return;
+
+  debugBreakpoints.splice(breakpointIndex, 1);
 }
 
 function onVMSourceLineChange(vm, nextSourceLineNum, sourceName)
@@ -210,11 +225,7 @@ function onVMSourceLineChange(vm, nextSourceLineNum, sourceName)
   {
     if(breakpoint.matches(nextSourceLineNum, sourceName))
     {
-      if(debugLineChangeAction == DEBUG_ACTION_CONTINUE)
-        postMessage({msgId: MSGID_DEBUG_ON_USER_BREAKPOINT});
-
       debugEnterBreakpoint(vm, nextSourceLineNum);
-
       break;
     }
   }
