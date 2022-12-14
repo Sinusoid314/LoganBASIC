@@ -1,0 +1,108 @@
+#barDiv
+{
+  height: 100%;
+  width: 250px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: rgb(231, 241, 241);
+  overflow-x: hidden;
+  display: none;
+}
+
+#barResizer
+{
+  width: 3px;
+  height: 100%;
+  padding: 0;
+  cursor: ew-resize;
+  display: block;
+  background-color: lightsteelblue;
+  float: right;
+}
+
+#barWrapper
+{
+  display: block;
+  margin-left: 10px;
+  margin-right: 13px;
+}
+
+#listBox
+{
+  background: white;
+  color: black;
+  border: solid 1px;
+  padding: 1px;
+  width: 100%;
+  height: 100px;
+  overflow: hidden;
+  overflow-y: scroll;
+}
+
+#listBox li
+{
+  list-style-type: none;
+  cursor: pointer;
+}
+
+#mainDiv
+{
+  padding: 20px;
+}
+
+#editorWrapper
+{
+  
+  height: 50%;
+  width: 100%;
+  display: flex;
+  overflow-y: hidden;
+  resize: vertical;
+  
+  margin-top: 0px;
+  gap: 1px;
+  font-family: monospace;
+  border: 1px solid;
+}
+
+#editorGutter
+{
+  width: 30px;
+  height: 100%;
+  position: relative;
+  
+  line-height: 15px;
+  text-align: right;
+  padding-right: 6px;
+  background: lightgray;
+  margin-right: 5px;
+}
+
+#editorGutter span
+{
+  counter-increment: lineNumber;
+}
+
+#editorGutter span::before
+{
+  content: counter(lineNumber);
+  display: block;
+}
+
+#editor
+{
+  width: 100%;
+  
+  line-height: 15px;
+  padding: 0;
+  border: 1px solid;
+  outline: none;
+  resize: none;
+}
+
+#other
+{
+  display: block;
+}
+
