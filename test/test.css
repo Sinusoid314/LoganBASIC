@@ -51,6 +51,31 @@
   padding: 20px;
 }
 
+.editorGutterItem
+{
+  counter-increment: lineNumber;
+  display: block;
+}
+
+.editorBreakpoint
+{
+}
+
+.editorBreakpoint::before
+{
+  content: "•";
+  color: #b83b3b;
+}
+
+.editorLineNumber
+{
+}
+
+.editorLineNumber::before
+{
+  content: counter(lineNumber);
+}
+
 #editorWrapper
 {
   
@@ -59,44 +84,33 @@
   display: flex;
   overflow-y: hidden;
   resize: vertical;
-  
-  margin-top: 0px;
   gap: 1px;
   font-family: monospace;
   border: 1px solid;
+  
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 #editorGutter
 {
-  width: 30px;
+  width: 40px;
   height: 100%;
   position: relative;
-  
   line-height: 15px;
   text-align: right;
-  padding-right: 6px;
-  background: lightgray;
+  border: 1px inset;
+  padding-right: 5px;
   margin-right: 5px;
+  background: lightgray;
 }
 
-#editorGutter span
-{
-  counter-increment: lineNumber;
-}
-
-#editorGutter span::before
-{
-  content: counter(lineNumber);
-  display: block;
-}
-
-#editor
+#editorCode
 {
   width: 100%;
-  
   line-height: 15px;
   padding: 0;
-  border: 1px solid;
+  border: 0px solid;
   outline: none;
   resize: none;
 }

@@ -6,7 +6,7 @@ var barDiv = document.getElementById("barDiv");
 var barResizer = document.getElementById("barResizer");
 var mainDiv = document.getElementById("mainDiv");
 var listBox = document.getElementById("listBox");
-var editor = document.getElementById("editor");
+var editorCode = document.getElementById("editorCode");
 var editorGutter = document.getElementById("editorGutter");
 var other = document.getElementById("other");
 
@@ -15,21 +15,41 @@ document.addEventListener("mousedown", document_onMouseDown);
 document.addEventListener("mousemove", document_onMouseMove);
 document.addEventListener("mouseup", document_onMouseUp);
 listBox.addEventListener("click", listBox_onClick);
-editor.addEventListener("input", editor_onInput);
-editor.addEventListener("scroll", editor_onScroll);
+editorCode.addEventListener("input", editor_onInput);
+editorCode.addEventListener("scroll", editor_onScroll);
 other.addEventListener("click", other_onClick);
 
 function updateEditorGutter()
 {
-  var currLineCount = editor.value.split("\n").length;
+  var currLineCount = editorCode.value.split("\n").length;
   var lineCountDelta = currLineCount - prevLineCount;
+  var editorGutterItem, editorBreakpoint, editorLineNumber;
 
   if(lineCountDelta == 0)
     return;
   else if(lineCountDelta > 0)
   {
     for(var n = 0; n < lineCountDelta; n++)
-      editorGutter.appendChild(document.createElement("span"));
+    {
+	/*
+      editorGutterItem = document.createElement("div");
+      editorBreakpoint = document.createElement("span");
+      editorLineNumber = document.createElement("span");
+
+      editorGutterItem.classList.toggle("editorGutterItem");
+      editorBreakpoint.classList.toggle("editorBreakpoint");
+      editorLineNumber.classList.toggle("editorLineNumber");
+
+      editorGutter.append(editorGutterItem);
+      editorGutterItem.append(editorBreakpoint);
+      editorGutterItem.append(editorLineNumber);
+    */
+
+      editorGutter.innerHTML += `<div class="editorGutterItem">
+      <span class="editorBreakpoint"></span>
+      <span class="editorLineNumber"></span>
+      </div>`;
+    }
   }
   else if(lineCountDelta < 0)
   {
@@ -104,13 +124,13 @@ function editor_onInput(event)
 
 function editor_onScroll(event)
 {
-  editorGutter.style.top = "-" + editor.scrollTop + "px";
+  editorGutter.style.top = "-" + editorCode.scrollTop + "px";
 }
 
 function other_onClick(event)
 {
   for(var n = 0; n < 40; n++)
-    editor.value += "llasdkfjndgjnasdl432890742374092374903242097gkndsklgnasldkg\n";
+    editorCode.value += "llasdkfjndgjnasdl432890742374092374903242097gkndsklgnasldkg\n";
 
   updateEditorGutter();
 }
