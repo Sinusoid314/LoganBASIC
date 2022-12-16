@@ -51,34 +51,25 @@
   padding: 20px;
 }
 
+.editorBreakpoint
+{
+  background: darkred;
+  color: white;
+}
+
 .editorGutterItem
 {
   counter-increment: lineNumber;
   display: block;
 }
 
-.editorBreakpoint
-{
-}
-
-.editorBreakpoint::before
-{
-  content: "•";
-  color: #b83b3b;
-}
-
-.editorLineNumber
-{
-}
-
-.editorLineNumber::before
+.editorGutterItem::before
 {
   content: counter(lineNumber);
 }
 
 #editorWrapper
 {
-  
   height: 50%;
   width: 100%;
   display: flex;
@@ -118,5 +109,6 @@
 #other
 {
   display: block;
+  cursor: pointer;
 }
 

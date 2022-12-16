@@ -19,37 +19,19 @@ editorCode.addEventListener("input", editor_onInput);
 editorCode.addEventListener("scroll", editor_onScroll);
 other.addEventListener("click", other_onClick);
 
+addEditorGutterItem();
+
 function updateEditorGutter()
 {
   var currLineCount = editorCode.value.split("\n").length;
   var lineCountDelta = currLineCount - prevLineCount;
-  var editorGutterItem, editorBreakpoint, editorLineNumber;
 
   if(lineCountDelta == 0)
     return;
   else if(lineCountDelta > 0)
   {
     for(var n = 0; n < lineCountDelta; n++)
-    {
-	/*
-      editorGutterItem = document.createElement("div");
-      editorBreakpoint = document.createElement("span");
-      editorLineNumber = document.createElement("span");
-
-      editorGutterItem.classList.toggle("editorGutterItem");
-      editorBreakpoint.classList.toggle("editorBreakpoint");
-      editorLineNumber.classList.toggle("editorLineNumber");
-
-      editorGutter.append(editorGutterItem);
-      editorGutterItem.append(editorBreakpoint);
-      editorGutterItem.append(editorLineNumber);
-    */
-
-      editorGutter.innerHTML += `<div class="editorGutterItem">
-      <span class="editorBreakpoint"></span>
-      <span class="editorLineNumber"></span>
-      </div>`;
-    }
+      addEditorGutterItem();
   }
   else if(lineCountDelta < 0)
   {
@@ -59,6 +41,16 @@ function updateEditorGutter()
 
   editorGutter.style.height = editorGutter.scrollHeight + "px";
   prevLineCount = currLineCount;
+}
+
+function addEditorGutterItem()
+{
+  var editorGutterItem;
+
+  editorGutterItem = document.createElement("div");
+  editorGutterItem.classList.add("editorGutterItem")
+  editorGutterItem.addEventListener("click", editorGutterItem_onClick);
+  editorGutter.appendChild(editorGutterItem);
 }
 
 function barToggle_onClick()
@@ -125,6 +117,19 @@ function editor_onInput(event)
 function editor_onScroll(event)
 {
   editorGutter.style.top = "-" + editorCode.scrollTop + "px";
+}
+
+function editorGutterItem_onClick(event)
+{
+  var lineNum = Array.from(document.querySelectorAll(".editorGutterItem")).indexOf(event.target) + 1;
+
+  if(event.target.classList.contains("editorBreakpoint"))
+    other.innerText = "Removed";
+  else
+    other.innerText = "Added";
+
+  other.innerText += " breakpoint on line " + lineNum;
+  event.target.classList.toggle("editorBreakpoint");
 }
 
 function other_onClick(event)
