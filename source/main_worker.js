@@ -6,7 +6,7 @@ importScripts('./core/object.js',
               './core/compiler.js',
               './core/vm.js');
 
-importScripts('worker_msg.js',
+importScripts('thread_common.js',
               'debug_worker.js',
               'console_worker.js',
               'canvas_worker.js',

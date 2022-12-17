@@ -61,6 +61,8 @@
 {
   counter-increment: lineNumber;
   display: block;
+  padding-right: 5px;
+  border-radius: 30%;
 }
 
 .editorGutterItem::before
@@ -93,7 +95,7 @@
   border: 1px inset;
   padding-right: 5px;
   margin-right: 5px;
-  background: lightgray;
+  background: #bfd5d0;
 }
 
 #editorCode

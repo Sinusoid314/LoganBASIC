@@ -5,6 +5,7 @@ var debugCurrLocals = null;
 var debugCurrGlobals = null;
 var debugLocalsItemValueMap = new Map;
 var debugGlobalsItemValueMap = new Map;
+var debugBreakpointBackups = [];
 
 var mainDiv = document.getElementById("mainDiv");
 var debugToggleBtn = document.getElementById("debugToggleBtn");

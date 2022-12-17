@@ -58,20 +58,6 @@ class DebugInfo
   }
 }
 
-class DebugBreakpoint
-{
-  constructor(sourceLineNum, sourceName)
-  {
-    this.sourceLineNum = sourceLineNum;
-    this.sourceName = sourceName;
-  }
-
-  matches(sourceLineNum, sourceName)
-  {
-    return (this.sourceLineNum == sourceLineNum) && (this.sourceName == sourceName);
-  }
-}
-
 function debugEnterBreakpoint(vm, nextSourceLineNum)
 //
 {

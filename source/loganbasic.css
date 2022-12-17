@@ -63,11 +63,59 @@ button
   margin-bottom: 15px;
 }
 
-#progEditor
+.editorBreakpoint
 {
+  background: darkred;
+  color: white;
+}
+
+.editorGutterItem
+{
+  counter-increment: lineNumber;
   display: block;
-  margin-top: 5px;
+  padding-right: 5px;
+  border-radius: 30%;
+}
+
+.editorGutterItem::before
+{
+  content: counter(lineNumber);
+}
+
+#editorWrapper
+{
+  height: 50%;
   width: 100%;
+  display: flex;
+  overflow-y: hidden;
+  resize: vertical;
+  gap: 1px;
+  font-family: monospace;
+  border: 1px solid;
+  margin-top: 5px;
+}
+
+#editorGutter
+{
+  width: 40px;
+  height: 100%;
+  position: relative;
+  line-height: 15px;
+  text-align: right;
+  border: 1px inset;
+  padding-right: 5px;
+  margin-right: 5px;
+  background: #bfd5d0;
+}
+
+#editorCode
+{
+  width: 100%;
+  line-height: 15px;
+  padding: 0;
+  border: 0px solid;
+  outline: none;
+  resize: none;
 }
 
 #commandBar

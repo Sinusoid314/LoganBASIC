@@ -5,7 +5,6 @@
     - Test-run all example programs with the debugger on.
     - Add ability to view Array object details in debugger.
     - Add ability to collapse object details in debugger.
-    - Add UI support for adding/removing breakpoints in debugger.
     - Add help section for debugger.
 
     - Add ability to run code in debugger.

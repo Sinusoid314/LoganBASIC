@@ -20,7 +20,7 @@ function switchMode()
 {
   runBtn.disabled = !runBtn.disabled;
   stopBtn.disabled = !stopBtn.disabled;
-  progEditor.readOnly = !progEditor.readOnly;
+  editorCode.readOnly = !editorCode.readOnly;
   isRunning = !isRunning;
 }
 
@@ -47,7 +47,7 @@ function runBtn_onClick(event)
   if(isRunning)
     return;
 
-  editorStr = progEditor.value;
+  editorStr = editorCode.value;
   clearConsoleOutput();
   resetCanvas();
   debugClearDisplays();
@@ -63,6 +63,10 @@ function stopBtn_onClick(event)
   progWorker.terminate();
   progWorker = new Worker('main_worker.js');
   progWorker.onmessage = progUI_onMessage;
+
+  //Reload saved breakpoints into the worker thread
+  for(const breakpoint of debugBreakpointBackups)
+    progWorker.postMessage({msgId: MSGID_DEBUG_ADD_BREAKPOINT, msgData: breakpoint});
 
   if(isDebugging)
     progWorker.postMessage({msgId: MSGID_DEBUG_ENABLE});

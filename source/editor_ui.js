@@ -5,7 +5,8 @@ var saveBtn = document.getElementById("saveBtn");
 var examplesBtn = document.getElementById("examplesBtn");
 var helpBtn = document.getElementById("helpBtn");
 var aboutBtn = document.getElementById("aboutBtn");
-var progEditor = document.getElementById("progEditor");
+var editorCode = document.getElementById("editorCode");
+var editorGutter = document.getElementById("editorGutter");
 
 window.addEventListener("load", window_onLoad);
 newBtn.addEventListener("click", newBtn_onClick);
@@ -15,17 +16,53 @@ saveBtn.addEventListener("click", saveBtn_onClick);
 examplesBtn.addEventListener("click", examplesBtn_onClick);
 helpBtn.addEventListener("click", helpBtn_onClick);
 aboutBtn.addEventListener("click", aboutBtn_onClick);
+editorCode.addEventListener("input", editor_onInput);
+editorCode.addEventListener("scroll", editor_onScroll);
+
+addEditorGutterItem();
+
+function updateEditorGutter()
+{
+  var currLineCount = editorCode.value.split("\n").length;
+  var lineCountDelta = currLineCount - prevLineCount;
+
+  if(lineCountDelta == 0)
+    return;
+  else if(lineCountDelta > 0)
+  {
+    for(var n = 0; n < lineCountDelta; n++)
+      addEditorGutterItem();
+  }
+  else if(lineCountDelta < 0)
+  {
+    for(var n = lineCountDelta; n < 0; n++)
+      editorGutter.removeChild(editorGutter.lastChild);
+  }
+
+  editorGutter.style.height = editorGutter.scrollHeight + "px";
+  prevLineCount = currLineCount;
+}
+
+function addEditorGutterItem()
+{
+  var editorGutterItem;
+
+  editorGutterItem = document.createElement("div");
+  editorGutterItem.classList.add("editorGutterItem")
+  editorGutterItem.addEventListener("click", editorGutterItem_onClick);
+  editorGutter.appendChild(editorGutterItem);
+}
 
 function selectEditorLine(selLine)
 //Select the given editor line number
 {
-  var lines = progEditor.value.split("\n");
+  var lines = editorCode.value.split("\n");
   var startPos = 0, endPos = 0;
 
   if((selLine < 1) || (selLine > lines.length))
   {
-    progEditor.focus();
-    progEditor.setSelectionRange(0, 0);
+    editorCode.focus();
+    editorCode.setSelectionRange(0, 0);
     return;
   }
 
@@ -36,9 +73,9 @@ function selectEditorLine(selLine)
 
   endPos = startPos + lines[selLine].length;
 
-  progEditor.focus();
-  progEditor.setSelectionRange(startPos, endPos);
-  progEditor.scrollTop = ((progEditor.scrollHeight / lines.length) * selLine) - (progEditor.clientHeight / 2);
+  editorCode.focus();
+  editorCode.setSelectionRange(startPos, endPos);
+  editorCode.scrollTop = ((editorCode.scrollHeight / lines.length) * selLine) - (editorCode.clientHeight / 2);
 }
 
 function window_onLoad(event)
@@ -61,7 +98,7 @@ function window_onLoad(event)
 
     if(fileText != null)
     {
-      progEditor.value = fileText;
+      editorCode.value = fileText;
       statusBar.innerHTML = "Ready.";
     }
     else
@@ -75,7 +112,7 @@ function window_onLoad(event)
 
     httpReq.onload = function()
     {
-      progEditor.value = this.responseText;
+      editorCode.value = this.responseText;
       statusBar.innerHTML = "Ready.";
     };
 
@@ -120,7 +157,7 @@ function openURLBtn_onClick(event)
 function saveBtn_onClick(event)
 //Save the current source code to disk
 {
-  var blob = new Blob([progEditor.value], {type: 'text/plain'});
+  var blob = new Blob([editorCode.value], {type: 'text/plain'});
   var url = URL.createObjectURL(blob);
   var fileLink = document.createElement("a");
 
@@ -146,6 +183,36 @@ function aboutBtn_onClick(event)
 //Open the About page
 {
   window.open("../about.html", "_blank");
+}
+
+function editor_onInput(event)
+{
+  updateEditorGutter();
+}
+
+function editor_onScroll(event)
+{
+  editorGutter.style.top = "-" + editorCode.scrollTop + "px";
+}
+
+function editorGutterItem_onClick(event)
+{
+  var lineNum = Array.from(document.querySelectorAll(".editorGutterItem")).indexOf(event.target) + 1;
+  var breakpointIndex;
+
+  if(event.target.classList.contains("editorBreakpoint"))
+  {
+    progWorker.postMessage({msgId: MSGID_DEBUG_REMOVE_BREAKPOINT, msgData: {sourceLineNum: lineNum, sourceName: mainSourceName}});
+    breakpointIndex = debugBreakpointBackups.findIndex(breakpoint => breakpoint.matches(lineNum, mainSourceName));
+    debugBreakpointBackups.splice(breakpointIndex, 1);
+  }
+  else
+  {
+    progWorker.postMessage({msgId: MSGID_DEBUG_ADD_BREAKPOINT, msgData: {sourceLineNum: lineNum, sourceName: mainSourceName}});
+    debugBreakpointBackups.push(new DebugBreakpoint(lineNum, mainSourceName));
+  }
+
+  event.target.classList.toggle("editorBreakpoint");
 }
 
 function onMsgShowEditor()

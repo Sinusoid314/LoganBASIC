@@ -1,3 +1,9 @@
+(December 16, 2022)
+[v2.0.78]
+	- Renamed worker_msg module to thread_common.
+	- Moved DebugBreakpoint class from debug_worker module to thread_common module.
+	- Added UI support for adding/removing breakpoints in debugger.
+
 (December 8, 2022)
 [v2.0.77]
 	- Removed MSGID_DEBUG_ON_USER_BREAKPOINT message.
