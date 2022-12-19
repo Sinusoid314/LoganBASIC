@@ -1,3 +1,7 @@
+(December 18, 2022)
+[v2.0.0.79]
+	- Fixed bug with editor gutter not updating when loading a source file.
+
 (December 16, 2022)
 [v2.0.78]
 	- Renamed worker_msg module to thread_common.

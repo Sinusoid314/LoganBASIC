@@ -1,3 +1,5 @@
+var prevLineCount = 1;
+
 var newBtn = document.getElementById("newBtn");
 var openFileBtn = document.getElementById("openFileBtn");
 var openURLBtn = document.getElementById("openURLBtn");
@@ -99,6 +101,7 @@ function window_onLoad(event)
     if(fileText != null)
     {
       editorCode.value = fileText;
+      updateEditorGutter();
       statusBar.innerHTML = "Ready.";
     }
     else
@@ -113,6 +116,7 @@ function window_onLoad(event)
     httpReq.onload = function()
     {
       editorCode.value = this.responseText;
+      updateEditorGutter();
       statusBar.innerHTML = "Ready.";
     };
 
