@@ -1,3 +1,8 @@
+(December 19, 2022)
+[v2.0.0.80]
+	- Fixed bug with editor automatically resizing when typing/loading new text.
+	- Created empty debugger help pages.
+
 (December 18, 2022)
 [v2.0.0.79]
 	- Fixed bug with editor gutter not updating when loading a source file.

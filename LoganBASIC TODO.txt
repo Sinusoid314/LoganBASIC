@@ -1,5 +1,4 @@
 [Bugs]
-    - Editor automatically resizing when typing/loading new text.
     - Locals list in debugger showing a variable named "undefined" during a FOR loop.
 
 [Features]
