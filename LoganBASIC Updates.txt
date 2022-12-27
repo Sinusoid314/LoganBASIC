@@ -1,3 +1,7 @@
+(December 27, 2022)
+[v2.0.0.81]
+	- Added getIndexes() method to ObjArray class.
+
 (December 19, 2022)
 [v2.0.0.80]
 	- Fixed bug with editor automatically resizing when typing/loading new text.

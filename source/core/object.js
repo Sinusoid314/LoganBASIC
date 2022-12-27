@@ -105,25 +105,46 @@ class ObjArray
     return true;
   }
 
-  getLinearIndex(indexList)
+  getLinearIndex(indexes)
   //Convert the given index list to a linear index
   {
     var linearIndex = 0;
     var multiplier = 1;
 
-    if(indexList.length != this.dimSizes.length)
+    if(indexes.length != this.dimSizes.length)
       return -1;
 
     for(var n = 0; n < this.dimSizes.length; n++)
     {
-      if((indexList[n] < 0) || (indexList[n] >= this.dimSizes[n]))
+      if((indexes[n] < 0) || (indexes[n] >= this.dimSizes[n]))
         return -1;
 
-      linearIndex += indexList[n] * multiplier;
+      linearIndex += indexes[n] * multiplier;
       multiplier *= this.dimSizes[n];
     }
 
     return linearIndex;
+  }
+
+  getIndexes(linearIndex)
+  //Convert the given linear index to an index list 
+  {
+    var indexes = [];
+    var index, dividend;
+
+    if(linearIndex >= this.items.length)
+      return null;
+
+    dividend = linearIndex;
+
+    for(var n = 0; n < this.dimSizes.length; n++)
+    {
+      index = dividend % this.dimSizes[n];
+      dividend = (dividend - index) / this.dimSizes[n];
+      indexes.push(index);
+    }
+
+    return indexes;
   }
 
   addItem(newVal, beforeIndex = -1)
