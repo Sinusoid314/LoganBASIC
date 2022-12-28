@@ -9,6 +9,7 @@ var listBox = document.getElementById("listBox");
 var editorCode = document.getElementById("editorCode");
 var editorGutter = document.getElementById("editorGutter");
 var other = document.getElementById("other");
+var arrayTestBtn = document.getElementById("arrayTestBtn");
 
 barToggle.addEventListener("click", barToggle_onClick);
 document.addEventListener("mousedown", document_onMouseDown);
@@ -18,6 +19,7 @@ listBox.addEventListener("click", listBox_onClick);
 editorCode.addEventListener("input", editor_onInput);
 editorCode.addEventListener("scroll", editor_onScroll);
 other.addEventListener("click", other_onClick);
+arrayTestBtn.addEventListener("click", arrayTestBtn_onClick);
 
 addEditorGutterItem();
 
@@ -138,4 +140,26 @@ function other_onClick(event)
     editorCode.value += "llasdkfjndgjnasdl432890742374092374903242097gkndsklgnasldkg\n";
 
   updateEditorGutter();
+}
+
+function arrayTestBtn_onClick(event)
+{
+  var array = new ObjArray();
+  var inputIndexes, linearIndex, outputIndexes;
+
+  array.reDim([2, 3, 4]);
+
+  for(var c = 0; c < array.dimSizes[2]; c++)
+  {
+    for(var b = 0; b < array.dimSizes[1]; b++)
+    {
+      for(var a = 0; a < array.dimSizes[0]; a++)
+      {
+        inputIndexes = [a, b, c];
+        linearIndex = array.getLinearIndex(inputIndexes);
+        outputIndexes = array.getIndexes(linearIndex);
+        console.log(inputIndexes + "  -  " + linearIndex + "  -  " + outputIndexes);
+      }
+    }
+  }
 }

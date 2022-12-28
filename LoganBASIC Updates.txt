@@ -1,4 +1,6 @@
 (December 27, 2022)
+[v2.0.0.82]
+	- Modified reDim() method of ObjArray class to fill the array with null values instead of zeros.
 [v2.0.0.81]
 	- Added getIndexes() method to ObjArray class.
 

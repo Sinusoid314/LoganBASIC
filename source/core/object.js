@@ -100,7 +100,7 @@ class ObjArray
     }
 
     this.dimSizes = newDimSizeList;
-    this.items = new Array(newLinearSize).fill(0);
+    this.items = new Array(newLinearSize).fill(null);
 
     return true;
   }
