@@ -100,6 +100,7 @@ function debugClearGlobalsList()
 function debugExpandVarListItem(parentItem, itemValueMap, parentValue)
 //
 {
+  var key, value;
   var list = document.createElement("ul");
 
   switch(parentValue.type)
@@ -109,10 +110,18 @@ function debugExpandVarListItem(parentItem, itemValueMap, parentValue)
       return;
 
     case OBJ_TYPE_ARRAY:
+      for(var linearIndex = 0; linearIndex < parentValue.items.length; linearIndex++)
+      {
+        value = parentValue.items[linearIndex];
+        if(value === null)
+          continue;
+        key = "[" + parentValue.getIndexes(linearIndex).join() + "]";
+        debugAddVarListItem(key, value, list, itemValueMap);
+      }
       break;
 
     case OBJ_TYPE_STRUCT:
-      for (const [key, value] of parentValue.fieldMap)
+      for ([key, value] of parentValue.fieldMap)
         debugAddVarListItem(key, value, list, itemValueMap);
       break;
 

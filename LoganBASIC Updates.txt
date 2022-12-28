@@ -1,3 +1,7 @@
+(December 28, 2022)
+[v2.0.0.83]
+	- Added ability to view Array object details in debugger.
+
 (December 27, 2022)
 [v2.0.0.82]
 	- Modified reDim() method of ObjArray class to fill the array with null values instead of zeros.
