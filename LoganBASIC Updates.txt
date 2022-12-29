@@ -1,3 +1,7 @@
+(December 29, 2022)
+[v2.0.0.84]
+	- Fixed bug with getIndexes() method of ObjArray class not being accessable in the UI thread.
+
 (December 28, 2022)
 [v2.0.0.83]
 	- Added ability to view Array object details in debugger.

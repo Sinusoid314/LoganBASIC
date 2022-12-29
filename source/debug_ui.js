@@ -115,7 +115,7 @@ function debugExpandVarListItem(parentItem, itemValueMap, parentValue)
         value = parentValue.items[linearIndex];
         if(value === null)
           continue;
-        key = "[" + parentValue.getIndexes(linearIndex).join() + "]";
+        key = "[" + ObjArray.prototype.getIndexes.call(parentValue, linearIndex).join() + "]";
         debugAddVarListItem(key, value, list, itemValueMap);
       }
       break;

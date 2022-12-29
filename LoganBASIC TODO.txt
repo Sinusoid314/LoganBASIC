@@ -1,5 +1,4 @@
 [Bugs]
-    - Fix bug with getIndexes() method of ObjArray class not being accessable in the UI thread.
     - Locals list in debugger showing a variable named "undefined" during a FOR loop.
 
 [Features]
