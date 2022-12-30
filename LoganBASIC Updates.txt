@@ -1,3 +1,7 @@
+(December 30, 2022)
+[v2.0.0.85]
+	- Added ability to collapse object details in debugger.
+
 (December 29, 2022)
 [v2.0.0.84]
 	- Fixed bug with getIndexes() method of ObjArray class not being accessable in the UI thread.

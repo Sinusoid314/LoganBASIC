@@ -97,11 +97,18 @@ function debugClearGlobalsList()
   debugGlobalsItemValueMap.clear();
 }
 
-function debugExpandVarListItem(parentItem, itemValueMap, parentValue)
+function debugExpandVarListItem(parentItem, itemValueMap, parentValue, list)
 //
 {
   var key, value;
-  var list = document.createElement("ul");
+  
+  if(list)
+  {
+    list.style.display = "block";
+    return;
+  }
+  
+  list = document.createElement("ul");
 
   switch(parentValue.type)
   {
@@ -113,8 +120,7 @@ function debugExpandVarListItem(parentItem, itemValueMap, parentValue)
       for(var linearIndex = 0; linearIndex < parentValue.items.length; linearIndex++)
       {
         value = parentValue.items[linearIndex];
-        if(value === null)
-          continue;
+        if(value === null) continue;
         key = "[" + ObjArray.prototype.getIndexes.call(parentValue, linearIndex).join() + "]";
         debugAddVarListItem(key, value, list, itemValueMap);
       }
@@ -134,10 +140,28 @@ function debugExpandVarListItem(parentItem, itemValueMap, parentValue)
   parentItem.appendChild(list);
 }
 
-function debugCollapseVarListItem()
-//
+function debugCollapseVarListItem(list)
+//If any of the items in the given list have sublists of their own, just hide
+//the given list; otherwise, remove it and any entries it has in the itemValueMap
 {
+  var listItems = list.getElementsByTagName("li");
 
+  for(const item of listItems)
+  {
+    if(item.querySelector("ul"))
+    {
+      list.style.display = "none";
+      return;
+    }
+  }
+
+  for(const item of listItems)
+  {
+    if(itemValueMap.has(item))
+      itemValueMap.delete(item);
+  }
+
+  list.remove();
 }
 
 function debugAddVarListItem(key, value, parentList, itemValueMap)
@@ -300,13 +324,13 @@ function debugVarListItem_onClick(event)
   var parentValue = itemValueMap.get(parentItem);
   var list = parentItem.querySelector("ul");
 
-  if(list)
+  if(list && (list.style.display != "none"))
   {
-    debugCollapseVarListItem();
+    debugCollapseVarListItem(list);
   }
   else
   {
-    debugExpandVarListItem(parentItem, itemValueMap, parentValue);
+    debugExpandVarListItem(parentItem, itemValueMap, parentValue, list);
   }
 }
 
