@@ -4,6 +4,7 @@
 [Features]
     - Test-run all example programs with the debugger on.
     - Add help section for debugger.
+    - Add ability to automatically load example code from the help pages into the editor.
 
     - Add variable display persistence between breakpoints in debugger.
     - Add ability to run code in debugger.

@@ -140,7 +140,7 @@ function debugExpandVarListItem(parentItem, itemValueMap, parentValue, list)
   parentItem.appendChild(list);
 }
 
-function debugCollapseVarListItem(list)
+function debugCollapseVarListItem(itemValueMap, list)
 //If any of the items in the given list have sublists of their own, just hide
 //the given list; otherwise, remove it and any entries it has in the itemValueMap
 {
@@ -188,12 +188,6 @@ function debugAddVarListItem(key, value, parentList, itemValueMap)
 
   parentList.appendChild(listItem);
   listItem.appendChild(listItemText);
-}
-
-function debugRemoveVarListItem()
-//
-{
-
 }
 
 function debugToggleBtn_onClick(event)
@@ -325,13 +319,9 @@ function debugVarListItem_onClick(event)
   var list = parentItem.querySelector("ul");
 
   if(list && (list.style.display != "none"))
-  {
-    debugCollapseVarListItem(list);
-  }
+    debugCollapseVarListItem(itemValueMap, list);
   else
-  {
     debugExpandVarListItem(parentItem, itemValueMap, parentValue, list);
-  }
 }
 
 function onMsgDebugUpdateUI(msgData)

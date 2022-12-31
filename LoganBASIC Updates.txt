@@ -1,3 +1,7 @@
+(December 31, 2022)
+[v2.0.0.86]
+	- Fixed bug with variable display in debugger crashing when collapsing an expanded item.
+
 (December 30, 2022)
 [v2.0.0.85]
 	- Added ability to collapse object details in debugger.
