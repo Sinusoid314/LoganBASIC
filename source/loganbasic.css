@@ -176,14 +176,26 @@ button
   padding: 1px;
   width: 100%;
   height: 160px;
-  overflow: hidden;
-  overflow-y: scroll;
+  overflow: scroll;
   margin: 0;
+  resize: vertical;
 }
 
 .debugVarList li
 {
   list-style-type: none;
+  font-family: monospace;
+  white-space: nowrap;
+}
+
+.debugVarListItem-expanded::before
+{
+  content: "\25BE";
+}
+
+.debugVarListItem-collapsed::before
+{
+  content: "\25B8";
 }
 
 #debugDiv
@@ -222,4 +234,8 @@ button
   padding: 1px;
   width: 100%;
   border: solid 1px;
+  overflow: scroll;
+  resize: vertical;
+  font-family: monospace;
+  white-space: nowrap;
 }

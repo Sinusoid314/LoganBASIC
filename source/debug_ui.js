@@ -97,18 +97,21 @@ function debugClearGlobalsList()
   debugGlobalsItemValueMap.clear();
 }
 
-function debugExpandVarListItem(parentItem, itemValueMap, parentValue, list)
+function debugExpandVarListItem(parentItem, itemValueMap, childList)
 //
 {
   var key, value;
+  var parentValue = itemValueMap.get(parentItem);
+
+  parentItem.classList.replace("debugVarListItem-collapsed", "debugVarListItem-expanded");
   
-  if(list)
+  if(childList)
   {
-    list.style.display = "block";
+    childList.style.display = "block";
     return;
   }
   
-  list = document.createElement("ul");
+  childList = document.createElement("ul");
 
   switch(parentValue.type)
   {
@@ -122,46 +125,48 @@ function debugExpandVarListItem(parentItem, itemValueMap, parentValue, list)
         value = parentValue.items[linearIndex];
         if(value === null) continue;
         key = "[" + ObjArray.prototype.getIndexes.call(parentValue, linearIndex).join() + "]";
-        debugAddVarListItem(key, value, list, itemValueMap);
+        debugAddVarListItem(key, value, childList, itemValueMap);
       }
       break;
 
     case OBJ_TYPE_STRUCT:
       for ([key, value] of parentValue.fieldMap)
-        debugAddVarListItem(key, value, list, itemValueMap);
+        debugAddVarListItem(key, value, childList, itemValueMap);
       break;
 
     case OBJ_TYPE_STRUCT_DEF:
       for(const ident of parentValue.fieldIdents)
-        debugAddVarListItem(null, ident, list, itemValueMap);
+        debugAddVarListItem(null, ident, childList, itemValueMap);
       break;
   }
 
-  parentItem.appendChild(list);
+  parentItem.appendChild(childList);
 }
 
-function debugCollapseVarListItem(itemValueMap, list)
-//If any of the items in the given list have sublists of their own, just hide
+function debugCollapseVarListItem(parentItem, itemValueMap, childList)
+//If any of the items in the given child list have child lists of their own, just hide
 //the given list; otherwise, remove it and any entries it has in the itemValueMap
 {
-  var listItems = list.getElementsByTagName("li");
+  var childListItems = childList.getElementsByTagName("li");
 
-  for(const item of listItems)
+  parentItem.classList.replace("debugVarListItem-expanded", "debugVarListItem-collapsed");
+
+  for(const item of childListItems)
   {
     if(item.querySelector("ul"))
     {
-      list.style.display = "none";
+      childList.style.display = "none";
       return;
     }
   }
 
-  for(const item of listItems)
+  for(const item of childListItems)
   {
     if(itemValueMap.has(item))
       itemValueMap.delete(item);
   }
 
-  list.remove();
+  childList.remove();
 }
 
 function debugAddVarListItem(key, value, parentList, itemValueMap)
@@ -176,6 +181,7 @@ function debugAddVarListItem(key, value, parentList, itemValueMap)
     listItemText.innerHTML = key + " (" + value.type + ")";
     listItemText.style.cursor = "pointer";
     listItemText.addEventListener("click", debugVarListItem_onClick);
+    listItem.classList.add("debugVarListItem-collapsed");
   }
   else if(key === null)
     listItemText.innerHTML = value;
@@ -315,13 +321,12 @@ function debugVarListItem_onClick(event)
 {
   var parentItem = event.target.parentElement;
   var itemValueMap = (debugLocalsItemValueMap.has(parentItem) ? debugLocalsItemValueMap : debugGlobalsItemValueMap)
-  var parentValue = itemValueMap.get(parentItem);
-  var list = parentItem.querySelector("ul");
+  var childList = parentItem.querySelector("ul");
 
-  if(list && (list.style.display != "none"))
-    debugCollapseVarListItem(itemValueMap, list);
+  if(childList && (childList.style.display != "none"))
+    debugCollapseVarListItem(parentItem, itemValueMap, childList);
   else
-    debugExpandVarListItem(parentItem, itemValueMap, parentValue, list);
+    debugExpandVarListItem(parentItem, itemValueMap, childList);
 }
 
 function onMsgDebugUpdateUI(msgData)
