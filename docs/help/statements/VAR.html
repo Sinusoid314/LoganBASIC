@@ -1,37 +1,28 @@
 <html>
 
 <head>
-  <title>While...Wend Statement</title>
+  <title>Var Statement</title>
   <link rel="stylesheet" type="text/css" href="../reference_doc.css"></link>
   <script defer="defer" type="text/javascript" src="../reference_doc.js"></script>
 </head>
 
 <body>
 
-<h3>While expression
-  statements
-Wend</h3>
+<h3>Var varName1 [ = expression1 ]  [ , varName2 [ = expression2 ] ... ]</h3>
 
 <h4>Description</h4>
 <p id="description">
-Executes a block of statements repeatedly until <i>expression</i> equals false.
+Creates one or more variables and, optionally, assigns them each an initial value.
 </p>
 
 <h4>Usage</h4>
 <code id="usageCode">
-var num = 0
+<b>var firstName, lastName</b>
 
-<b>while num &lt; 10</b>
-     num = num + 2
-     print num
-<b>wend</b>
+firstName = input("Enter your first name: ")
+lastName = input("Enter your last name: ")
 
-'output:
-'2
-'4
-'6
-'8
-'10
+print "Hello " + firstName + " " + lastName + "!"
 </code>
 
 <a id="usageOpen" href="">Open in Code Editor</a>

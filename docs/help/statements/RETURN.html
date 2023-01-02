@@ -1,37 +1,34 @@
 <html>
 
 <head>
-  <title>While...Wend Statement</title>
+  <title>Return Statement</title>
   <link rel="stylesheet" type="text/css" href="../reference_doc.css"></link>
   <script defer="defer" type="text/javascript" src="../reference_doc.js"></script>
 </head>
 
 <body>
 
-<h3>While expression
-  statements
-Wend</h3>
+<h3>Return [ expression ]</h3>
 
 <h4>Description</h4>
 <p id="description">
-Executes a block of statements repeatedly until <i>expression</i> equals false.
+Ends execution of the current function and returns control to the function's caller.
+The optional <i>expression</i> provides a value to return to the caller.
 </p>
 
 <h4>Usage</h4>
 <code id="usageCode">
-var num = 0
+print timesFive(6)
+print timesFive(7)
 
-<b>while num &lt; 10</b>
-     num = num + 2
-     print num
-<b>wend</b>
+function timesFive(num)
+  var result = num * 5
+  <b>return result</b>
+end function
 
 'output:
-'2
-'4
-'6
-'8
-'10
+'30
+'35
 </code>
 
 <a id="usageOpen" href="">Open in Code Editor</a>

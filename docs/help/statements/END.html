@@ -1,37 +1,28 @@
 <html>
 
 <head>
-  <title>While...Wend Statement</title>
+  <title>End Statement</title>
   <link rel="stylesheet" type="text/css" href="../reference_doc.css"></link>
   <script defer="defer" type="text/javascript" src="../reference_doc.js"></script>
 </head>
 
 <body>
 
-<h3>While expression
-  statements
-Wend</h3>
+<h3>End</h3>
 
 <h4>Description</h4>
 <p id="description">
-Executes a block of statements repeatedly until <i>expression</i> equals false.
+Ends the program.
 </p>
 
 <h4>Usage</h4>
 <code id="usageCode">
-var num = 0
+var key
 
-<b>while num &lt; 10</b>
-     num = num + 2
-     print num
-<b>wend</b>
-
-'output:
-'2
-'4
-'6
-'8
-'10
+while true
+  key = input("Enter some text, or 'q' to quit: ")
+  if key = "q" then <b>end</b>
+wend
 </code>
 
 <a id="usageOpen" href="">Open in Code Editor</a>

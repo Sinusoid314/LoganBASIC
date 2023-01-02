@@ -1,37 +1,32 @@
 <html>
 
 <head>
-  <title>While...Wend Statement</title>
+  <title>Redim Statement</title>
   <link rel="stylesheet" type="text/css" href="../reference_doc.css"></link>
   <script defer="defer" type="text/javascript" src="../reference_doc.js"></script>
 </head>
 
 <body>
 
-<h3>While expression
-  statements
-Wend</h3>
+<h3>Redim arrayName[dimSize1, dimSize2, ...]</h3>
 
 <h4>Description</h4>
 <p id="description">
-Executes a block of statements repeatedly until <i>expression</i> equals false.
+Resizes an array to the given dimensions. Each expression specifies
+the total number of elements for that dimension of the array.
 </p>
 
 <h4>Usage</h4>
 <code id="usageCode">
-var num = 0
+array names[3]
 
-<b>while num &lt; 10</b>
-     num = num + 2
-     print num
-<b>wend</b>
+print len(names)
+'output: 3
 
-'output:
-'2
-'4
-'6
-'8
-'10
+<b>redim names[5]</b>
+
+print len(names)
+'output: 5
 </code>
 
 <a id="usageOpen" href="">Open in Code Editor</a>
