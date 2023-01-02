@@ -81,7 +81,7 @@ function selectEditorLine(selLine)
 }
 
 function window_onLoad(event)
-//Load a slource file into the editor if one if provided
+//Load a slource file into the editor if one is provided
 {
   var urlParams = new URLSearchParams(window.location.search);
   var fileURL;
