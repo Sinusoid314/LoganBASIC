@@ -8,16 +8,16 @@
 
 <body>
 
-<h3>unloadSound(soundName)</h3>
+<h3>getSoundLen(soundName)</h3>
 
 <h4>Description</h4>
 <p id="description">
-Unloads a sound, specified by <i>soundName</i>, that was loaded using <a href="loadsound.html">LoadSound<a>.
+Returns the length of the sound specified by <i>soundName</i>.
 </p>
 
 <h4>Usage</h4>
 <code id="usageCode">
-var choice
+var length
 
 print "Loading sound file..."
 
@@ -27,21 +27,12 @@ if not loadSound("mac", "../examples/sounds/mac.wav") then
 end if
 
 print "Sound loaded."
-
-do
-  print ""
-  print "Enter 'play', 'pause', 'stop', or 'q' to quit."
-  choice = input(": ")
-
-  if choice = "play" then playSound("mac")
-  if choice = "pause" then pauseSound("mac")
-  if choice = "stop" then stopSound("mac")
-loop while choice <> "q"
-
-<b>unloadSound("mac")</b>
-
 print ""
-print "Done."
+
+length = <b>getSoundLen("mac")</b>
+print "Sound length: " + length
+
+unloadSound("mac")
 </code>
 
 <a id="usageOpen" href="">Open in Code Editor</a>

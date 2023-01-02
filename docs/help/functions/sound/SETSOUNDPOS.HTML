@@ -8,16 +8,17 @@
 
 <body>
 
-<h3>unloadSound(soundName)</h3>
+<h3>setSoundPos(soundName, position)</h3>
 
 <h4>Description</h4>
 <p id="description">
-Unloads a sound, specified by <i>soundName</i>, that was loaded using <a href="loadsound.html">LoadSound<a>.
+Sets the <i>position</i> to start play from in the sound specified by <i>soundName</i>. The <i>position</i> can
+be any number between 0 and the length of the sound. To get the sound's length, use <a href="getsoundlen.html">GetSoundLen<a>.
 </p>
 
 <h4>Usage</h4>
 <code id="usageCode">
-var choice
+var position
 
 print "Loading sound file..."
 
@@ -27,21 +28,17 @@ if not loadSound("mac", "../examples/sounds/mac.wav") then
 end if
 
 print "Sound loaded."
-
-do
-  print ""
-  print "Enter 'play', 'pause', 'stop', or 'q' to quit."
-  choice = input(": ")
-
-  if choice = "play" then playSound("mac")
-  if choice = "pause" then pauseSound("mac")
-  if choice = "stop" then stopSound("mac")
-loop while choice <> "q"
-
-<b>unloadSound("mac")</b>
-
 print ""
-print "Done."
+
+playSound("mac")
+
+position = input("Enter a position to jump to: ")
+
+<b>setSoundPos("mac", position)</b>
+
+input("Press enter to quit...")
+
+unloadSound("mac")
 </code>
 
 <a id="usageOpen" href="">Open in Code Editor</a>

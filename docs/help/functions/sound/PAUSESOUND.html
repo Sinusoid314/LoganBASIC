@@ -8,11 +8,11 @@
 
 <body>
 
-<h3>unloadSound(soundName)</h3>
+<h3>pauseSound(soundName)</h3>
 
 <h4>Description</h4>
 <p id="description">
-Unloads a sound, specified by <i>soundName</i>, that was loaded using <a href="loadsound.html">LoadSound<a>.
+Pauses play of the sound specified by <i>soundName</i>.
 </p>
 
 <h4>Usage</h4>
@@ -34,11 +34,11 @@ do
   choice = input(": ")
 
   if choice = "play" then playSound("mac")
-  if choice = "pause" then pauseSound("mac")
+  if choice = "pause" then <b>pauseSound("mac")</b>
   if choice = "stop" then stopSound("mac")
 loop while choice <> "q"
 
-<b>unloadSound("mac")</b>
+unloadSound("mac")
 
 print ""
 print "Done."
