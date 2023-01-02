@@ -8,24 +8,22 @@
 
 <body>
 
-<h3>unloadImage(imageName)</h3>
+<h3>drawText(text, drawX, drawY [ ,isFilled ])</h3>
 
 <h4>Description</h4>
 <p id="description">
-Unloads an image, specified by <i>imageName</i>, that was loaded using <a href="loadimage.html">LoadImage<a>.
+Draws <i>text</i> to the canvas, or the canvas buffer if it is enabled, at the position <i>(drawX, drawY)</i>.
+If <i>isFilled</i> is true, then the text is filled with the current fill color. If not specified,
+<i>isFilled</i> defaults to true.
 </p>
 
 <h4>Usage</h4>
 <code id="usageCode">
-loadImage("ship", "../examples/images/ship1.png")
+var n
 
-input("Press enter to draw image...")
-drawImage("ship", 10, 10)
-
-input("Press enter to unload image...")
-<b>unloadImage("ship")</b>
-
-print "Done."
+for n = 10 to 100 step 10
+  <b>drawText("Hello, world!", n, n)</b>
+next n
 </code>
 
 <a id="usageOpen" href="">Open in Code Editor</a>
