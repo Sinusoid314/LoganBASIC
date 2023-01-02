@@ -8,18 +8,30 @@
 
 <body>
 
-<h3>version()</h3>
+<h3>stopTimer()</h3>
 
 <h4>Description</h4>
 <p id="description">
-Returns the current Logan BASIC version as a string.
+Stops the timer that was started with <a href="starttimer.html">StartTimer</a>.
 </p>
 
 <h4>Usage</h4>
 <code id="usageCode">
-print <b>version()</b>
+var tickCount = 0
 
-'output: 1.8.5
+startTimer(1000, onTick)
+
+wait
+
+function onTick()
+  tickCount = tickCount + 1
+  print "Tick " + tickCount + " at " + time()
+  if tickCount = 5 then
+    <b>stopTimer()</b>
+    print "Done."
+    end
+  end if
+end function
 </code>
 
 <a id="usageOpen" href="">Open in Code Editor</a>

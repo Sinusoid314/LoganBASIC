@@ -1,25 +1,27 @@
 <html>
 
 <head>
-  <title></title>
+  <title>Input function</title>
   <link rel="stylesheet" type="text/css" href="../../reference_doc.css"></link>
   <script defer="defer" type="text/javascript" src="../../reference_doc.js"></script>
 </head>
 
 <body>
 
-<h3>version()</h3>
+<h3>input(prompt)</h3>
 
 <h4>Description</h4>
 <p id="description">
-Returns the current Logan BASIC version as a string.
+Prints <i>prompt</i> to the console and prompts the user for input from the consol.
 </p>
 
 <h4>Usage</h4>
 <code id="usageCode">
-print <b>version()</b>
+var name
 
-'output: 1.8.5
+name = <b>input("Enter your name: ")</b>
+
+print "Hello, " + name + "!"
 </code>
 
 <a id="usageOpen" href="">Open in Code Editor</a>

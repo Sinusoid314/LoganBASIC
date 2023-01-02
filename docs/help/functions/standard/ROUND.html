@@ -8,18 +8,28 @@
 
 <body>
 
-<h3>version()</h3>
+<h3>round(number, [ places ])</h3>
 
 <h4>Description</h4>
 <p id="description">
-Returns the current Logan BASIC version as a string.
+Returns <i>number</i> rounded to the <i>places</i><sup>th</sup> decimal place, or to the nearest integer if
+<i>places</i> is omitted.
 </p>
 
 <h4>Usage</h4>
 <code id="usageCode">
-print <b>version()</b>
+var num = 3.14159
 
-'output: 1.8.5
+print <b>round(num)</b>
+print <b>round(num, 1)</b>
+print <b>round(num, 2)</b>
+print <b>round(num, 3)</b>
+
+'output:
+'3
+'3.1
+'3.14
+'3.142
 </code>
 
 <a id="usageOpen" href="">Open in Code Editor</a>

@@ -8,18 +8,21 @@
 
 <body>
 
-<h3>version()</h3>
+<h3>tan(angle)</h3>
 
 <h4>Description</h4>
 <p id="description">
-Returns the current Logan BASIC version as a string.
+Returns the tangent of <i>angle</i> specified in radians.
 </p>
 
 <h4>Usage</h4>
 <code id="usageCode">
-print <b>version()</b>
+var PI = 3.14
 
-'output: 1.8.5
+print "tan(0) = " + round(<b>tan(0)</b>, 2)
+print "tan(PI / 2) = " + round(<b>tan(PI / 2)</b>, 2)
+print "tan(PI) = " + round(<b>tan(PI)</b>, 2)
+print "tan(PI * 3 / 2) = " + round(<b>tan(PI * 3 / 2)</b>, 2)
 </code>
 
 <a id="usageOpen" href="">Open in Code Editor</a>

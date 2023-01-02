@@ -8,18 +8,21 @@
 
 <body>
 
-<h3>version()</h3>
+<h3>len(string | arrayName)</h3>
 
 <h4>Description</h4>
 <p id="description">
-Returns the current Logan BASIC version as a string.
+Returns the number of characters in <i>string</i>, or the linear size of an array given by <i>arrayName</i>.
 </p>
 
 <h4>Usage</h4>
 <code id="usageCode">
-print <b>version()</b>
+array test[10]
+print <b>len(test)</b>
+'output: 10
 
-'output: 1.8.5
+print <b>len("abcde")</b>
+'output: 5
 </code>
 
 <a id="usageOpen" href="">Open in Code Editor</a>
