@@ -1,0 +1,52 @@
+<html>
+
+<head>
+  <title></title>
+  <link rel="stylesheet" type="text/css" href="../../reference_doc.css"></link>
+  <script defer="defer" type="text/javascript" src="../../reference_doc.js"></script>
+</head>
+
+<body>
+
+<h3>setCanvasEvent(eventName, [ functionName ])</h3>
+
+<h4>Description</h4>
+<p id="description">
+Sets up a callback function, given by <i>functionName</i>, that will be called whenever a
+user input event, given by <i>eventName</i>, occurs. If <i>functionName</i> is not specified, then
+the input event will be removed and no longer trigger a callback. The following is a list
+of acceptable values for eventName:
+<ul>
+  <li><b>"pointerdown"</b> - Occurs when a pointer becomes active.</li>
+  <li><b>"pointerup"</b> - Occurs when a pointer is no longer active.</li>
+  <li><b>"pointermove"</b> - Occurs when a pointer changes coordinates.</li>
+  <li><b>"keydown"</b> - Occurs when a keyboard key is pressed down.</li>
+  <li><b>"keyup"</b> - Occurs when a keyboard key is released.</li>
+</ul>
+</p>
+
+<h4>Usage</h4>
+<code id="usageCode">
+loadImage("ship", "../examples/images/ship1.png")
+
+<b>setCanvasEvent("pointerup", onPointerUp)</b>
+<b>setCanvasEvent("keyup", onKeyUp)</b>
+
+wait
+
+function onPointerUp(pointerX, pointerY)
+  drawImage("ship", pointerX, pointerY)
+end function
+
+function onKeyUp(key)
+  if key = "q" then
+    unloadImage("ship")
+    end
+  end if
+end function
+</code>
+
+<a id="usageOpen" href="../../../../">Open in Code Editor</a>
+
+</body>
+</html>
