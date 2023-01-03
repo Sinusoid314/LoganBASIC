@@ -1,0 +1,47 @@
+<html>
+
+<head>
+  <title></title>
+  <link rel="stylesheet" type="text/css" href="../../reference_doc.css"></link>
+  <script defer="defer" type="text/javascript" src="../../reference_doc.js"></script>
+</head>
+
+<body>
+
+<h3>setSoundPos(soundName, position)</h3>
+
+<h4>Description</h4>
+<p id="description">
+Sets the <i>position</i> to start play from in the sound specified by <i>soundName</i>. The <i>position</i> can
+be any number between 0 and the length of the sound. To get the sound's length, use <a href="getsoundlen.html">GetSoundLen<a>.
+</p>
+
+<h4>Usage</h4>
+<code id="usageCode">
+var position
+
+print "Loading sound file..."
+
+if not loadSound("mac", "../examples/sounds/mac.wav") then
+  print "Sound failed to load."
+  end
+end if
+
+print "Sound loaded."
+print ""
+
+playSound("mac")
+
+position = input("Enter a position to jump to: ")
+
+<b>setSoundPos("mac", position)</b>
+
+input("Press enter to quit...")
+
+unloadSound("mac")
+</code>
+
+<a id="usageOpen" href="../../../../">Open in Code Editor</a>
+
+</body>
+</html>

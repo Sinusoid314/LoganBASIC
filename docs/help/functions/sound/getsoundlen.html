@@ -1,0 +1,41 @@
+<html>
+
+<head>
+  <title></title>
+  <link rel="stylesheet" type="text/css" href="../../reference_doc.css"></link>
+  <script defer="defer" type="text/javascript" src="../../reference_doc.js"></script>
+</head>
+
+<body>
+
+<h3>getSoundLen(soundName)</h3>
+
+<h4>Description</h4>
+<p id="description">
+Returns the length of the sound specified by <i>soundName</i>.
+</p>
+
+<h4>Usage</h4>
+<code id="usageCode">
+var length
+
+print "Loading sound file..."
+
+if not loadSound("mac", "../examples/sounds/mac.wav") then
+  print "Sound failed to load."
+  end
+end if
+
+print "Sound loaded."
+print ""
+
+length = <b>getSoundLen("mac")</b>
+print "Sound length: " + length
+
+unloadSound("mac")
+</code>
+
+<a id="usageOpen" href="../../../../">Open in Code Editor</a>
+
+</body>
+</html>
