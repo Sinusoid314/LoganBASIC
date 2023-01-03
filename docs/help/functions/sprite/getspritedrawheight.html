@@ -1,0 +1,52 @@
+<html>
+
+<head>
+  <title></title>
+  <link rel="stylesheet" type="text/css" href="../../reference_doc.css"></link>
+  <script defer="defer" type="text/javascript" src="../../reference_doc.js"></script>
+</head>
+
+<body>
+
+<h3>getSpriteDrawHeight(spriteName)</h3>
+
+<h4>Description</h4>
+<p id="description">
+Returns the display height of <i>spriteName</i>.
+</p>
+
+<h4>Usage</h4>
+<code id="usageCode">
+hideConsole()
+enableCanvasBuffer()
+
+loadSpriteSheet("bubba-sheet", "../examples/images/bubba.png", 5, 2)
+
+addSprite("bubba", "bubba-sheet", 10, 10)
+setSpriteFrameRange("bubba", 0, 0)
+
+mainLoop()
+
+wait
+
+function mainLoop()
+  if <b>getSpriteDrawHeight("bubba")</b> >= 270 then
+    removeSprite("bubba")
+    unloadSpriteSheet("bubba-sheet")
+    end
+  end if
+
+  setSpriteDrawHeight("bubba", <b>getSpriteDrawHeight("bubba")</b> + 1)
+
+  clearCanvas()
+
+  drawSprites()
+
+  drawCanvasBuffer(mainLoop)
+end function
+</code>
+
+<a id="usageOpen" href="../../../../">Open in Code Editor</a>
+
+</body>
+</html>

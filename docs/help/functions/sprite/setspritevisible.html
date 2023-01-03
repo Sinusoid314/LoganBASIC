@@ -1,0 +1,73 @@
+<html>
+
+<head>
+  <title></title>
+  <link rel="stylesheet" type="text/css" href="../../reference_doc.css"></link>
+  <script defer="defer" type="text/javascript" src="../../reference_doc.js"></script>
+</head>
+
+<body>
+
+<h3>setSpriteVisible(spriteName, isVisible)</h3>
+
+<h4>Description</h4>
+<p id="description">
+Shows <i>spriteName</i> if <i>isVisible</i> is true, and hides it if <i>isVisible</i> is false.
+</p>
+
+<h4>Usage</h4>
+<code id="usageCode">
+var isDone = false
+var rectX, rectY, rectWidth, rectHeight
+
+hideConsole()
+enableCanvasBuffer()
+
+loadSpriteSheet("bubba-sheet", "../examples/images/bubba.png", 5, 2)
+
+addSprite("bubba", "bubba-sheet", 50, 50)
+setSpriteFrameRange("bubba", 0, 3)
+setSpriteFrameRate("bubba", 8)
+
+rectX = getSpriteX("bubba") - 1
+rectY = getSpriteY("bubba") - 1
+rectWidth = getSpriteDrawWidth("bubba") + 2
+rectHeight = getSpriteDrawHeight("bubba") + 2
+
+setCanvasEvent("pointerup", onPointerUp)
+
+mainLoop()
+
+wait
+
+function mainLoop()
+  if isDone then
+    removeSprite("bubba")
+    unloadSpriteSheet("bubba-sheet")
+    end
+  end if
+
+  updateSprites()
+
+  clearCanvas()
+
+  drawRect(rectX, rectY, rectWidth, rectHeight, false)
+
+  drawSprites()
+
+  drawCanvasBuffer(mainLoop)
+end function
+
+function onPointerUp(pointerX, pointerY)
+  if pointInSprite("bubba", pointerX, pointerY) then
+    <b>setSpriteVisible("bubba", not getSpriteVisible("bubba"))</b>
+  else
+    isDone = true
+  end if
+end function
+</code>
+
+<a id="usageOpen" href="../../../../">Open in Code Editor</a>
+
+</body>
+</html>

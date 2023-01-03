@@ -1,0 +1,60 @@
+<html>
+
+<head>
+  <title></title>
+  <link rel="stylesheet" type="text/css" href="../../reference_doc.css"></link>
+  <script defer="defer" type="text/javascript" src="../../reference_doc.js"></script>
+</head>
+
+<body>
+
+<h3>pointInSprite(spriteName, pointX, pointY)</h3>
+
+<h4>Description</h4>
+<p id="description">
+Returns true if the point <i>(pointX, pointY)</i> is within the sprite
+<i>spriteName</i>, and false otherwise.
+</p>
+
+<h4>Usage</h4>
+<code id="usageCode">
+var isDone = false
+
+hideConsole()
+enableCanvasBuffer()
+
+loadSpriteSheet("bubba-sheet", "../examples/images/bubba.png", 5, 2)
+
+addSprite("bubba", "bubba-sheet", 50, 50)
+setSpriteFrameRange("bubba", 0, 0)
+setSpriteFrameRate("bubba", 8)
+
+setCanvasEvent("pointerup", onPointerUp)
+
+mainLoop()
+
+wait
+
+function mainLoop()
+  if isDone then
+    removeSprite("bubba")
+    unloadSpriteSheet("bubba-sheet")
+    end
+  end if
+
+  clearCanvas()
+
+  drawSprites()
+
+  drawCanvasBuffer(mainLoop)
+end function
+
+function onPointerUp(pointerX, pointerY)
+  if <b>pointInSprite("bubba", pointerX, pointerY)</b> then isDone = true
+end function
+</code>
+
+<a id="usageOpen" href="../../../../">Open in Code Editor</a>
+
+</body>
+</html>

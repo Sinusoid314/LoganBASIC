@@ -1,0 +1,56 @@
+<html>
+
+<head>
+  <title></title>
+  <link rel="stylesheet" type="text/css" href="../../reference_doc.css"></link>
+  <script defer="defer" type="text/javascript" src="../../reference_doc.js"></script>
+</head>
+
+<body>
+
+<h3>getSpriteFrameWidth(spriteName)</h3>
+
+<h4>Description</h4>
+<p id="description">
+Returns the width of <i>spriteName</i>'s animation frames.
+</p>
+
+<h4>Usage</h4>
+<code id="usageCode">
+var scale = 0
+
+hideConsole()
+enableCanvasBuffer()
+
+loadSpriteSheet("bubba-sheet", "../examples/images/bubba.png", 5, 2)
+
+addSprite("bubba", "bubba-sheet", 10, 10)
+setSpriteFrameRange("bubba", 0, 0)
+
+mainLoop()
+
+wait
+
+function mainLoop()
+  if getSpriteDrawWidth("bubba") >= 150 then
+    removeSprite("bubba")
+    unloadSpriteSheet("bubba-sheet")
+    end
+  end if
+
+  scale = scale + 0.1
+
+  setSpriteDrawWidth("bubba", <b>getSpriteFrameWidth("bubba")</b> * scale)
+
+  clearCanvas()
+
+  drawSprites()
+
+  drawCanvasBuffer(mainLoop)
+end function
+</code>
+
+<a id="usageOpen" href="../../../../">Open in Code Editor</a>
+
+</body>
+</html>

@@ -1,0 +1,68 @@
+<html>
+
+<head>
+  <title></title>
+  <link rel="stylesheet" type="text/css" href="../../reference_doc.css"></link>
+  <script defer="defer" type="text/javascript" src="../../reference_doc.js"></script>
+</head>
+
+<body>
+
+<h3>setSpriteSheet(spriteName, sheetName)</h3>
+
+<h4>Description</h4>
+<p id="description">
+Sets the <a href="spritesheet.html">sprite sheet</a> used by <i>spriteName</i> to <i>sheetName</i>. The sprite's current animation frame index is
+reset to zero, its draw size is set to the size of the sheet's frames, and its frame range is reset to encompass all of the sheet's frames.
+</p>
+
+<h4>Usage</h4>
+<code id="usageCode">
+var deltaTime, prevTime
+
+hideConsole()
+enableCanvasBuffer()
+
+loadSpriteSheet("bubba-sheet", "../examples/images/bubba.png", 5, 2)
+loadSpriteSheet("ship-sheet", "../examples/images/ship-sheet.png", 2, 1)
+
+addSprite("sprite", "bubba-sheet", 10, 100)
+setSpriteFrameRange("sprite", 0, 3)
+setSpriteVelocityX("sprite", 60)
+setSpriteFrameRate("sprite", 8)
+
+prevTime = time()
+
+mainLoop()
+
+wait
+
+function mainLoop()
+  deltaTime = (time() - prevTime) / 1000
+  prevTime = time()
+
+  if getSpriteX("sprite") >= 150 then
+    <b>setSpriteSheet("sprite", "ship-sheet")</b>
+  end if
+
+  if getSpriteX("sprite") >= 300 then
+    removeSprite("sprite")
+    unloadSpriteSheet("bubba-sheet")
+    unloadSpriteSheet("ship-sheet")
+    end
+  end if
+
+  updateSprites(deltaTime)
+
+  clearCanvas()
+
+  drawSprites()
+
+  drawCanvasBuffer(mainLoop)
+end function
+</code>
+
+<a id="usageOpen" href="../../../../">Open in Code Editor</a>
+
+</body>
+</html>

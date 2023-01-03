@@ -1,0 +1,61 @@
+<html>
+
+<head>
+  <title></title>
+  <link rel="stylesheet" type="text/css" href="../../reference_doc.css"></link>
+  <script defer="defer" type="text/javascript" src="../../reference_doc.js"></script>
+</head>
+
+<body>
+
+<h3>unloadSpriteSheet(sheetName)</h3>
+
+<h4>Description</h4>
+<p id="description">
+Unloads a <a href="spritesheet.html">sprite sheet</a>, specified by <i>sheetName</i>, that was loaded using <a href="loadspritesheet.html">loadSpriteSheet</a>.
+</p>
+
+<h4>Usage</h4>
+<code id="usageCode">
+var deltaTime, prevTime
+
+hideConsole()
+enableCanvasBuffer()
+
+loadSpriteSheet("bubba-sheet", "../examples/images/bubba.png", 5, 2)
+
+addSprite("bubba", "bubba-sheet", 10, 100)
+setSpriteFrameRange("bubba", 0, 3)
+setSpriteVelocityX("bubba", 60)
+setSpriteFrameRate("bubba", 8)
+
+prevTime = time()
+
+mainLoop()
+
+wait
+
+function mainLoop()
+  deltaTime = (time() - prevTime) / 1000
+  prevTime = time()
+
+  if getSpriteX("bubba") >= 300 then
+    removeSprite("bubba")
+    <b>unloadSpriteSheet("bubba-sheet")</b>
+    end
+  end if
+
+  updateSprites(deltaTime)
+
+  clearCanvas()
+
+  drawSprites()
+
+  drawCanvasBuffer(mainLoop)
+end function
+</code>
+
+<a id="usageOpen" href="../../../../">Open in Code Editor</a>
+
+</body>
+</html>

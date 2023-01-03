@@ -1,0 +1,75 @@
+<html>
+
+<head>
+  <title></title>
+  <link rel="stylesheet" type="text/css" href="../../reference_doc.css"></link>
+  <script defer="defer" type="text/javascript" src="../../reference_doc.js"></script>
+</head>
+
+<body>
+
+<h3>spriteOverlapsRect(spriteName, rectX, rectY, rectWidth, rectHeight)</h3>
+
+<h4>Description</h4>
+<p id="description">
+Returns true if the sprite <i>spriteName</i> and the rectangle <i>(rectX, rectY, rectWidth, rectHeight)</i>
+overlap, and false otherwise.
+</p>
+
+<h4>Usage</h4>
+<code id="usageCode">
+var deltaTime, prevTime
+var rectX = 200
+var rectY = 50
+var rectWidth = 100
+var rectHeight = 100
+var isDone = false
+
+hideConsole()
+enableCanvasBuffer()
+
+loadSpriteSheet("bubba-sheet", "../examples/images/bubba.png", 5, 2)
+
+addSprite("bubba", "bubba-sheet", 10, 20)
+setSpriteFrameRange("bubba", 0, 3)
+setSpriteVelocityX("bubba", 60)
+setSpriteFrameRate("bubba", 8)
+
+prevTime = time()
+
+mainLoop()
+
+wait
+
+function mainLoop()
+  if isDone then
+    removeSprite("bubba")
+    unloadSpriteSheet("bubba-sheet")
+    end
+  end if
+
+  deltaTime = (time() - prevTime) / 1000
+  prevTime = time()
+
+  updateSprites(deltaTime)
+
+  if <b>spriteOverlapsRect("bubba", rectX, rectY, rectWidth, rectHeight)</b> then
+    setSpriteX("bubba", rectX - getSpriteDrawWidth("bubba"))
+    setSpriteFrameRange("bubba", 0, 0)
+    isDone = true
+  end if
+
+  clearCanvas()
+
+  drawRect(rectX, rectY, rectWidth, rectHeight)
+
+  drawSprites()
+
+  drawCanvasBuffer(mainLoop)
+end function
+</code>
+
+<a id="usageOpen" href="../../../../">Open in Code Editor</a>
+
+</body>
+</html>

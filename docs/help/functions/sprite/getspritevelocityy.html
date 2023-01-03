@@ -1,0 +1,67 @@
+<html>
+
+<head>
+  <title></title>
+  <link rel="stylesheet" type="text/css" href="../../reference_doc.css"></link>
+  <script defer="defer" type="text/javascript" src="../../reference_doc.js"></script>
+</head>
+
+<body>
+
+<h3>getSpriteVelocityY(spriteName)</h3>
+
+<h4>Description</h4>
+<p id="description">
+Returns the vertical part of the velocity of <i>spriteName</i>.
+</p>
+
+<h4>Usage</h4>
+<code id="usageCode">
+var deltaTime, prevTime
+var accelX = -100
+var accelY = 100
+
+hideConsole()
+enableCanvasBuffer()
+
+loadSpriteSheet("bubba-sheet", "../examples/images/bubba.png", 5, 2)
+
+addSprite("bubba", "bubba-sheet", 10, 100)
+
+setSpriteFrameRange("bubba", 4, 4)
+setSpriteVelocityX("bubba", 100)
+setSpriteVelocityY("bubba", -100)
+
+prevTime = time()
+
+mainLoop()
+
+wait
+
+function mainLoop()
+  deltaTime = (time() - prevTime) / 1000
+  prevTime = time()
+
+  setSpriteVelocityX("bubba", getSpriteVelocityX("bubba") + (accelX * deltaTime))
+  setSpriteVelocityY("bubba", <b>getSpriteVelocityY("bubba")</b> + (accelY * deltaTime))
+
+  updateSprites(deltaTime)
+
+  if getSpriteY("bubba") > 100 then
+    removeSprite("bubba")
+    unloadSpriteSheet("bubba-sheet")
+    end
+  end if
+
+  clearCanvas()
+
+  drawSprites()
+
+  drawCanvasBuffer(mainLoop)
+end function
+</code>
+
+<a id="usageOpen" href="../../../../">Open in Code Editor</a>
+
+</body>
+</html>
