@@ -1,6 +1,5 @@
 [Bugs]
     - Locals list in debugger showing a variable named "undefined" during a FOR loop.
-    - usageOpen_onClick() in reference_doc.js not using an absolute path when opening example code.
 
 [Features]
     - Test-run all example programs with the debugger on.
