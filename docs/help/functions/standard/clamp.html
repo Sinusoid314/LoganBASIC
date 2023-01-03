@@ -1,0 +1,43 @@
+<html>
+
+<head>
+  <title></title>
+  <link rel="stylesheet" type="text/css" href="../../reference_doc.css"></link>
+  <script defer="defer" type="text/javascript" src="../../reference_doc.js"></script>
+</head>
+
+<body>
+
+<h3>clamp(number, min, max)</h3>
+
+<h4>Description</h4>
+<p id="description">
+Returns <i>min</i> if <i>number</i> is less than <i>min</i>, <i>max</i> if
+<i>number</i> is greater than <i>max</i>, or <i>number</i> otherwise.
+</p>
+
+<h4>Usage</h4>
+<code id="usageCode">
+array nums[4]
+var index
+
+nums[0] = 1
+nums[1] = 4
+nums[2] = 6
+nums[3] = 12
+
+for index = 0 to 3
+  print clamp(nums[index], 2, 10)
+next index
+
+'output:
+2
+4
+6
+10
+</code>
+
+<a id="usageOpen" href="../../../../">Open in Code Editor</a>
+
+</body>
+</html>

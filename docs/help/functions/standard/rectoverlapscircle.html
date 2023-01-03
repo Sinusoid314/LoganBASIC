@@ -1,0 +1,65 @@
+<html>
+
+<head>
+  <title></title>
+  <link rel="stylesheet" type="text/css" href="../../reference_doc.css"></link>
+  <script defer="defer" type="text/javascript" src="../../reference_doc.js"></script>
+</head>
+
+<body>
+
+<h3>rectOverlapsCircle(rectX, rectY, rectWidth, rectHeight, circleX, circleY, circleRadius)</h3>
+
+<h4>Description</h4>
+<p id="description">
+Returns true if the rectangle <i>(rectX, rectY, rectWidth, rectHeight)</i> and
+the circle <i>(circleX, circleY, circleRadius)</i> overlap, and false otherwise.
+</p>
+
+<h4>Usage</h4>
+<code id="usageCode">
+var circleX = 50
+var circleY = 50
+var circleRadius = 50
+var rectX = 300
+var rectY = 100
+var rectWidth = 100
+var rectHeight = 100
+
+hideConsole()
+
+enableCanvasBuffer()
+
+setFillColor("red")
+setLineSize(2)
+drawCircle(circleX, circleY, circleRadius, false)
+drawRect(rectX, rectY, rectWidth, rectHeight, false)
+
+mainLoop()
+
+wait
+
+function mainLoop()
+  circleX = circleX + 2
+  rectX = rectX - 2
+
+  clearCanvas()
+
+  if <b>rectOverlapsCircle(rectX, rectY, rectWidth, rectHeight, circleX, circleY, circleRadius)</b> then
+    drawCircle(circleX, circleY, circleRadius, true)
+    drawRect(rectX, rectY, rectWidth, rectHeight, true)
+  else
+    drawCircle(circleX, circleY, circleRadius, false)
+    drawRect(rectX, rectY, rectWidth, rectHeight, false)
+  end if
+
+  if rectX = 0 then end
+
+  drawCanvasBuffer(mainLoop)
+end function
+</code>
+
+<a id="usageOpen" href="../../../../">Open in Code Editor</a>
+
+</body>
+</html>

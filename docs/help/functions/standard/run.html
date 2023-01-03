@@ -1,0 +1,35 @@
+<html>
+
+<head>
+  <title>Run function</title>
+  <link rel="stylesheet" type="text/css" href="../../reference_doc.css"></link>
+  <script defer="defer" type="text/javascript" src="../../reference_doc.js"></script>
+</head>
+
+<body>
+
+<h3>eval(source)</h3>
+
+<h4>Description</h4>
+<p id="description">
+Compiles and runs the source code contained in <i>source</i>. If the <i>source</i> fails to
+either compile or run properly, an error is raised; otherwise the function waits
+for the code to finish running before returning. <i>source</i> is compiled and run in
+the global context, so it does not have access to any local variables, even if the <b>eval()</b>
+function is called within a function.
+</p>
+
+<h4>Usage</h4>
+<code id="usageCode">
+var greeting = "Hello, world!"
+
+<b>run("print greeting")</b>
+
+'output:
+'Hello, world!
+</code>
+
+<a id="usageOpen" href="../../../../">Open in Code Editor</a>
+
+</body>
+</html>
