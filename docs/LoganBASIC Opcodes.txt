@@ -1,3 +1,7 @@
+LOAD_NOTHING
+  stack: [] -> [nothing]
+  Push 'null' onto the stack.
+
 LOAD_TRUE
   stack: [] -> [true]
   Push 'true' onto the stack.
@@ -12,13 +16,14 @@ LOAD_INT
   Push an integer value onto the stack.
 
 LOAD_NATIVE_FUNC
-  operands: functionIndex
-  stack: [] -> [functionReference]
-  Push a reference to the given native function object onto the stack.
+  operands: literalIndex
+  stack: [] -> [functionObject]
+  Push a reference to a native function object, given by the identifier
+  referenced by literalIndex, onto the stack.
 
 LOAD_USER_FUNC
   operands: functionIndex
-  stack: [] -> [functionReference]
+  stack: [] -> [functionObject]
   Push a reference to the given user function object onto the stack.
 
 LOAD_LIT
@@ -30,29 +35,40 @@ LOAD_VAR
   operands: variableScope, ( localIndex | literalIndex )
   stack: [] -> [value]
   Push the value of the given variable onto the stack.
-  If variableScope is SCOPE_GLOBAL, literalIndex is used to reference the
-  variable's identifier in the globals tablel; if SCOPE_LOCAL, localIndex
-  is used to directly reference the variable in the current call frame.
+  If variableScope is SCOPE_GLOBAL, literalIndex refers to the variable's
+  identifier in the root function's literal list; if SCOPE_LOCAL, localIndex
+  directly refers to the variable in the current call frame.
 
 STORE_VAR
   operands: variableScope, ( localIndex | literalIndex )
   stack: [value] -> []
   Pop value from the stack and store it in the given variable.
-  If variableScope is SCOPE_GLOBAL, literalIndex is used to reference the
-  variable's identifier in the globals tablel; if SCOPE_LOCAL, localIndex
-  is used to directly reference the variable in the current call frame.
+  If variableScope is SCOPE_GLOBAL, literalIndex refers to the variable's
+  identifier in the root function's literal list; if SCOPE_LOCAL, localIndex
+  directly refers to the variable in the current call frame.
 
 STORE_VAR_PERSIST
   operands: variableScope, ( localIndex | literalIndex )
   stack: [value] -> no change
   Store value from top of the stack in the given variable, keeping value on the stack.
-  If variableScope is SCOPE_GLOBAL, literalIndex is used to reference the
-  variable's identifier in the globals tablel; if SCOPE_LOCAL, localIndex
-  is used to directly reference the variable in the current call frame.
+  If variableScope is SCOPE_GLOBAL, literalIndex refers to the variable's
+  identifier in the root function's literal list; if SCOPE_LOCAL, localIndex
+  directly refers to the variable in the current call frame.
 
 POP
   stack: [value] -> []
   Pop value from the stack and discard it.
+
+DEFINE_GLOBAL_VAR
+  operands: literalIndex
+  stack: [initialValue] -> []
+  Add an entry to the globals table and set its value to intialValue. The variable's
+  identifier is given by the literal refered to by literalIndex.
+
+DEFINE_LOCAL_VAR
+  stack: [initialValue] -> [initialValue]
+  Increase the locals count of the current call frame by one. The stack item that contains
+  initialValue will then become the new local variable.
 
 SUB
   stack: [value1, value2] -> [result]
@@ -131,12 +147,12 @@ END
 
 CALL_FUNC
   operands: argumentCount
-  stack: [functionReference, argument1, argument2, ...] -> [returnValue]
+  stack: [functionObject, argument1, argument2, ...] -> [returnValue]
   Call the given function object with the given arguments.
 
 CREATE_ARRAY
   operands: dimCount
-  stack: [dimValue1, dimValue2, ...] -> [arrayReference]
+  stack: [dimValue1, dimValue2, ...] -> [arrayObject]
   Create an array with the given dimensions.
 
 REDIM_ARRAY
@@ -174,9 +190,10 @@ PAUSE
   Pause program execution and exit from the main runtime loop.
 
 CREATE_STRUCT
-  operands: structureDefIndex
+  operands: literalIndex
   stack: [] -> [structureReference]
-  Create an instance of the given structure definition.
+  Create an instance of a structure definition given by the identifier
+  referenced by literalIndex.
 
 LOAD_STRUCT_FIELD
   operands: fieldLiteralIndex
