@@ -12,7 +12,7 @@ class DebugInfo
 {
   constructor(vm, sourceLineNum, callFrameIndex = -1)
   {
-    var callFrame, nextFrameStackIndex;
+    var callFrame;
 
     this.sourceLineNum = sourceLineNum;
     this.sourceName = null;
@@ -46,15 +46,11 @@ class DebugInfo
     }
 
     callFrame = vm.callFrames[callFrameIndex];
-    if(callFrame == vm.currCallFrame)
-      nextFrameStackIndex = vm.stack.length;
-    else
-      nextFrameStackIndex = vm.callFrames[callFrameIndex + 1].stackIndex;
 
     this.sourceName = callFrame.func.sourceName;
 
-    for(var index = callFrame.stackIndex + 1; index < nextFrameStackIndex; index++)
-      this.locals.set(callFrame.func.localIdents[index - (callFrame.stackIndex + 1)], vm.stack[index]);
+    for(var localIndex = 0; localIndex < callFrame.localsCount; localIndex++)
+      this.locals.set(callFrame.func.localIdents[localIndex], vm.stack[callFrame.stackIndex + localIndex + 1]);
   }
 }
 

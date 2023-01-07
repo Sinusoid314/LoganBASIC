@@ -1,3 +1,10 @@
+(January 6, 2023)
+[v2.0.0.90]
+	- Added localsCount member to CallFrame class to keep track of the number of local variables currently declared
+	  in the current call frame.
+	- Added DEFINE_LOCAL_VAR opcode, and modified addVariable() method of Compiler class to emit it.
+	- Modified constructor of DebugInfo class to use localsCount member of CallFrame to access the current local variables.
+
 (January 2, 2023)
 [v2.0.0.89]
 	- Fixed bug with usageOpen_onClick() in reference_doc.js not using an absolute path when opening example code.

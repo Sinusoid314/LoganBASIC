@@ -49,10 +49,11 @@ class CallbackContext
 
 class CallFrame
 {
-  constructor(func, stackIndex, popReturnVal)
+  constructor(func, stackIndex, localsCount, popReturnVal)
   {
     this.func = func;
     this.stackIndex = stackIndex;
+    this.localsCount = localsCount;
     this.popReturnVal = popReturnVal;
     this.currOpIndex = -1;
     this.nextOpIndex = 0;
@@ -95,6 +96,7 @@ class VM
     this.opFuncs[OPCODE_STORE_VAR_PERSIST] = this.opStoreVarPersist.bind(this);
     this.opFuncs[OPCODE_POP] = this.opPop.bind(this);
     this.opFuncs[OPCODE_DEFINE_GLOBAL_VAR] = this.opDefineGlobalVar.bind(this);
+    this.opFuncs[OPCODE_DEFINE_LOCAL_VAR] = this.opDefineLocalVar.bind(this);
     this.opFuncs[OPCODE_SUB] = this.opSub.bind(this);
     this.opFuncs[OPCODE_ADD] = this.opAdd.bind(this);
     this.opFuncs[OPCODE_DIV] = this.opDiv.bind(this);
@@ -311,6 +313,12 @@ class VM
     var initVal = this.stack.pop();
 
     this.globals.set(ident, initVal)
+  }
+
+  opDefineLocalVar()
+  //Increase the locals count of the current call frame by one
+  {
+    this.currCallFrame.localsCount++;
   }
 
   opSub()
@@ -699,7 +707,7 @@ class VM
     if(argCount != func.paramCount)
       this.runError("Wrong number of arguments for function '" + func.ident + "'.");
 
-    this.callFrames.push(new CallFrame(func, stackIndex, popReturnVal));
+    this.callFrames.push(new CallFrame(func, stackIndex, argCount, popReturnVal));
     
     this.currCallFrame = this.callFrames[this.callFrames.length - 1];
 

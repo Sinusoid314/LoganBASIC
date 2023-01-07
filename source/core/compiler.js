@@ -999,8 +999,8 @@ class Compiler
   }
 
   addVariable(varIdent, hoistOp = false)
-  //Add a local variable identifier to the current user function, or a definition
-  //opcode if global variable
+  //Add a local variable identifier and definition opcocde to the current user function,
+  //or a definition opcode if global variable
   {
     var litIndex;
 
@@ -1020,6 +1020,7 @@ class Compiler
           this.compileError("Variable '" + varIdent + "' already declared.");
       }
       this.currUserFunc.localIdents.push(varIdent);
+      this.addOp([OPCODE_DEFINE_LOCAL_VAR], hoistOp);
     }
   }
 
