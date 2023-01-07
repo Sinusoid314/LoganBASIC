@@ -1,5 +1,5 @@
 [Bugs]
-    - Locals list in debugger showing a variable named "undefined" during a FOR loop.
+    - 
 
 [Features]
     - Test-run all example programs with the debugger on.
