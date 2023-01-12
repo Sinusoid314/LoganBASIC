@@ -1,3 +1,7 @@
+(January 11, 2023)
+[v2.0.0.91]
+	- Fixed bug with STEP_OVER and STEP_OUT debug actions not breaking properly.
+
 (January 6, 2023)
 [v2.0.0.90]
 	- Added localsCount member to CallFrame class to keep track of the number of local variables currently declared

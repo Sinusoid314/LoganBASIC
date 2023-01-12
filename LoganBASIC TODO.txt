@@ -1,10 +1,11 @@
 [Bugs]
-    - 
+    - sourceLineMap in ObjUserFunc getting a beginning entry for IndexRange {0,0}.
 
 [Features]
     - Test-run all example programs with the debugger on.
     - Add help section for debugger.
 
+    - Add breakpoint display to debugger pane.
     - Add variable display persistence between breakpoints in debugger.
     - Add ability to run code in debugger.
     - Add ability to display different sources in debugger.

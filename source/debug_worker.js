@@ -219,12 +219,12 @@ function onVMSourceLineChange(vm, nextSourceLineNum, sourceName)
       break;
 
     case DEBUG_ACTION_STEP_OVER:
-      if(debugStepCallFrame == vm.currCallFrame)
+      if((debugStepCallFrame == vm.currCallFrame) || (!vm.callFrames.includes(debugStepCallFrame)))
         debugEnterBreakpoint(vm, nextSourceLineNum);
       break;
 
     case DEBUG_ACTION_STEP_OUT:
-      if(debugStepCallFrame != vm.currCallFrame)
+      if(!vm.callFrames.includes(debugStepCallFrame))
         debugEnterBreakpoint(vm, nextSourceLineNum);
       break;
   }
