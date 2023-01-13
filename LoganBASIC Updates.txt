@@ -1,3 +1,8 @@
+(January 12, 2023)
+[v2.0.0.92]
+	- Fixed bug with function parameter variables being counted twice in the localsCount property of CallFrame class by adding
+	  isParameter flag to the addVariable() method of Compiler class.
+
 (January 11, 2023)
 [v2.0.0.91]
 	- Fixed bug with STEP_OVER and STEP_OUT debug actions not breaking properly.

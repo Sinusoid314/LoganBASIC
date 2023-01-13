@@ -125,7 +125,7 @@ class Compiler
 
     litIndex = this.getLiteralIndex(structDef);
     this.addOp([OPCODE_LOAD_LIT, litIndex], true);
-    this.addVariable(ident, true);
+    this.addVariable(ident, false, true);
   }
 
   funcDecl()
@@ -156,7 +156,7 @@ class Compiler
 
     litIndex = this.getLiteralIndex(newFunc);
     this.addOp([OPCODE_LOAD_LIT, litIndex], true);
-    this.addVariable(ident, true);
+    this.addVariable(ident, false, true);
   }
 
   parseDeclaration()
@@ -195,7 +195,7 @@ class Compiler
       else
         this.addOp([OPCODE_LOAD_NOTHING]);
 
-      this.addVariable(varIdent);
+      this.addVariable(varIdent, false);
     }
     while(this.matchToken(TOKEN_COMMA));
   }
@@ -222,7 +222,7 @@ class Compiler
 
     this.addOp([OPCODE_CREATE_ARRAY, dimCount]);
 
-    this.addVariable(varIdent);
+    this.addVariable(varIdent, false);
   }
 
   parseStatement(requireTerminator = true)
@@ -985,7 +985,7 @@ class Compiler
       if(!this.matchToken(TOKEN_IDENTIFIER))
         this.compileError("Expected identifier for function parameter.");
 
-      this.addVariable(this.peekPrevToken().lexeme);
+      this.addVariable(this.peekPrevToken().lexeme, true);
     }
     while(this.matchToken(TOKEN_COMMA));
 
@@ -998,7 +998,7 @@ class Compiler
     this.currUserFunc.paramCount = this.currUserFunc.localIdents.length;
   }
 
-  addVariable(varIdent, hoistOp = false)
+  addVariable(varIdent, isParameter, hoistOp = false)
   //Add a local variable identifier and definition opcocde to the current user function,
   //or a definition opcode if global variable
   {
@@ -1014,13 +1014,13 @@ class Compiler
     }
     else
     {
-      for(var varIndex = 0; varIndex < this.currUserFunc.localIdents.length; varIndex++)
-      {
-        if(this.currUserFunc.localIdents[varIndex] == varIdent)
-          this.compileError("Variable '" + varIdent + "' already declared.");
-      }
+      if(this.currUserFunc.localIdents.includes(varIdent))
+        this.compileError("Variable '" + varIdent + "' already declared.");
+  
       this.currUserFunc.localIdents.push(varIdent);
-      this.addOp([OPCODE_DEFINE_LOCAL_VAR], hoistOp);
+
+      if(!isParameter)
+        this.addOp([OPCODE_DEFINE_LOCAL_VAR], hoistOp);
     }
   }
 
