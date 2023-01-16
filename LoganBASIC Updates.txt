@@ -1,3 +1,7 @@
+(January 15, 2023)
+[v2.0.0.93]
+	- Modified Bouncing Sprites example to use a maxDeltaTime to keep the sprites from jumping too far after resuming from a debug break.
+
 (January 12, 2023)
 [v2.0.0.92]
 	- Fixed bug with function parameter variables being counted twice in the localsCount property of CallFrame class by adding

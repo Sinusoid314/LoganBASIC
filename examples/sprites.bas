@@ -5,6 +5,7 @@
 array spriteNames[3]
 var prevTime
 var deltaTime
+var maxDeltaTime = 0.25
 var canvasWidth = 600
 var canvasHeight = 450
 
@@ -80,7 +81,7 @@ end function
 
 'Main update & draw loop
 function mainLoop()
-  deltaTime = (time() - prevTime) / 1000
+  deltaTime = min(((time() - prevTime) / 1000), maxDeltaTime)
   prevTime = time()
   
   updateSprites(deltaTime)

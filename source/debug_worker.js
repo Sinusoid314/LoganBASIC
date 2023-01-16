@@ -74,11 +74,6 @@ function onMsgDebugEnable()
   mainVM.onSourceLineChangeHook = onVMSourceLineChange;
   debugEnabled = true;
   debugLineChangeAction = DEBUG_ACTION_BREAK;
-
-  /*
-  if(!mainVM.callFramesEmpty())
-    postMessage({msgId: MSGID_DEBUG_UPDATE_UI, msgData: new DebugInfo(mainVM, mainVM.getCurrOpSourceLineNum())});
-  */
 }
 
 function onMsgDebugDisable()
@@ -101,6 +96,8 @@ function onMsgDebugResume()
     return;
   
   debugLineChangeAction = DEBUG_ACTION_CONTINUE;
+
+  postMessage({msgId: MSGID_DEBUG_UPDATE_UI, msgData: new DebugInfo(mainVM, 0)});
 
   mainVM.run();
 }
