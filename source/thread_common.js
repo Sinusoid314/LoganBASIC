@@ -84,6 +84,10 @@ const MSGID_DEBUG_UPDATE_UI = 80;
 
 
 //Debug modules
+const DEBUG_UI_STATUS_DISABLED = 1;
+const DEBUG_UI_STATUS_PAUSED = 2;
+const DEBUG_UI_STATUS_RESUMED = 3;
+
 class DebugBreakpoint
 {
   constructor(sourceLineNum, sourceName)

@@ -29,7 +29,7 @@ function resetMain()
   if(debugEnabled)
   {
     debugLineChangeAction = DEBUG_ACTION_BREAK;
-    postMessage({msgId: MSGID_DEBUG_UPDATE_UI, msgData: new DebugInfo(mainVM, 0)});
+    postMessage({msgId: MSGID_DEBUG_UPDATE_UI, msgData: new DebugInfo(mainVM, 0, DEBUG_UI_STATUS_DISABLED)});
   }
   
   resetStd();

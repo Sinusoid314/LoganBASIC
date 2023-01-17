@@ -10,7 +10,7 @@ var debugBreakpoints = [];
 
 class DebugInfo
 {
-  constructor(vm, sourceLineNum, callFrameIndex = -1)
+  constructor(vm, sourceLineNum, uiStatus, callFrameIndex = -1)
   {
     var callFrame;
 
@@ -19,8 +19,7 @@ class DebugInfo
     this.locals = new Map();
     this.globals = null;
     this.funcIdents = null;
-    this.resumeBtnEnabled = (vm.inBreakpoint && !vm.callFramesEmpty());
-    this.pauseBtnEnabled = (!vm.inBreakpoint && !vm.callFramesEmpty());
+    this.uiStatus = uiStatus;
 
     if(vm.callFramesEmpty())
     {
@@ -29,7 +28,7 @@ class DebugInfo
       return;
     }
 
-    if(this.pauseBtnEnabled)
+    if(uiStatus == DEBUG_UI_STATUS_RESUMED)
     {
       this.globals = new Map();
       this.funcIdents = [];
@@ -62,7 +61,7 @@ function debugEnterBreakpoint(vm, nextSourceLineNum)
 
   vm.inBreakpoint = true;
 
-  postMessage({msgId: MSGID_DEBUG_UPDATE_UI, msgData: new DebugInfo(vm, nextSourceLineNum)});
+  postMessage({msgId: MSGID_DEBUG_UPDATE_UI, msgData: new DebugInfo(vm, nextSourceLineNum, DEBUG_UI_STATUS_PAUSED)});
 }
 
 function onMsgDebugEnable()
@@ -97,7 +96,7 @@ function onMsgDebugResume()
   
   debugLineChangeAction = DEBUG_ACTION_CONTINUE;
 
-  postMessage({msgId: MSGID_DEBUG_UPDATE_UI, msgData: new DebugInfo(mainVM, 0)});
+  postMessage({msgId: MSGID_DEBUG_UPDATE_UI, msgData: new DebugInfo(mainVM, 0, DEBUG_UI_STATUS_RESUMED)});
 
   mainVM.run();
 }
@@ -171,7 +170,7 @@ function onMsgDebugCallFrameInfoRequest(msgData)
     sourceLineNum = mainVM.getCurrOpSourceLineNum(mainVM.callFrames[msgData.callFrameIndex]);
 
   postMessage({msgId: MSGID_DEBUG_UPDATE_UI,
-               msgData: new DebugInfo(mainVM, sourceLineNum, msgData.callFrameIndex)});
+               msgData: new DebugInfo(mainVM, sourceLineNum, DEBUG_UI_STATUS_PAUSED, msgData.callFrameIndex)});
 }
 
 function onMsgDebugAddBreakpoint(msgData)

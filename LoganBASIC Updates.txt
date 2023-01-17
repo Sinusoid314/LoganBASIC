@@ -1,3 +1,9 @@
+(January 16, 2023)
+[v2.0.0.94]
+	- Replaced resumeBtnEnabled and pauseBtnEnabled members of DebugInfo class with uiStatus member and constants
+	  DEBUG_UI_STATUS_DISABLED, DEBUG_UI_STATUS_PAUSED, and DEBUG_UI_STATUS_RESUMED.
+	- Replaced functions for enabling/disabling debugger buttons in debug_ui module with debugChangeUIStatus() function.
+
 (January 15, 2023)
 [v2.0.0.93]
 	- Modified Bouncing Sprites example to use a maxDeltaTime to keep the sprites from jumping too far after resuming from a debug break.

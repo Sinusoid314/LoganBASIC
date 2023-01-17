@@ -1,4 +1,4 @@
-const lbVersion = "2.0.0.93";
+const lbVersion = "2.0.0.94";
 
 const stdNativeFuncs = [
                   new ObjNativeFunc("rnd", 0, 0, funcRnd),

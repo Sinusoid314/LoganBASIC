@@ -33,37 +33,17 @@ debugStepOutBtn.addEventListener("click", debugStepOutBtn_onClick);
 debugSkipBtn.addEventListener("click", debugSkipBtn_onClick);
 debugCallStackList.addEventListener("change", debugCallStackList_onChange);
 
-function debugDisableButtons()
+function debugChangeUIStatus(newStatus)
 //
 {
-  debugResumeBtn.disabled = true;
-  debugPauseBtn.disabled = true;
-  debugStepBtn.disabled = true;
-  debugStepOverBtn.disabled = true;
-  debugStepOutBtn.disabled = true;
-  debugSkipBtn.disabled = true;
-}
+  debugPauseBtn.disabled = (newStatus == DEBUG_UI_STATUS_PAUSED) || (newStatus == DEBUG_UI_STATUS_DISABLED);
 
-function debugEnablePauseButton()
-//
-{
-  debugResumeBtn.disabled = true;
-  debugPauseBtn.disabled = false;
-  debugStepBtn.disabled = true;
-  debugStepOverBtn.disabled = true;
-  debugStepOutBtn.disabled = true;
-  debugSkipBtn.disabled = true;
-}
-
-function debugDisablePauseButton()
-//
-{
-  debugResumeBtn.disabled = false;
-  debugPauseBtn.disabled = true;
-  debugStepBtn.disabled = false;
-  debugStepOverBtn.disabled = false;
-  debugStepOutBtn.disabled = false;
-  debugSkipBtn.disabled = false;
+  debugResumeBtn.disabled
+  = debugStepBtn.disabled
+  = debugStepOverBtn.disabled
+  = debugStepOutBtn.disabled
+  = debugSkipBtn.disabled
+  = (newStatus == DEBUG_UI_STATUS_RESUMED) || (newStatus == DEBUG_UI_STATUS_DISABLED);
 }
 
 function debugClearDisplays()
@@ -334,12 +314,7 @@ function onMsgDebugUpdateUI(msgData)
 {
   selectEditorLine(msgData.sourceLineNum);
 
-  if(msgData.resumeBtnEnabled)
-    debugDisablePauseButton();
-  else if(msgData.pauseBtnEnabled)
-    debugEnablePauseButton();
-  else
-    debugDisableButtons();
+  debugChangeUIStatus(msgData.uiStatus);
 
   if(msgData.funcIdents)
   {
