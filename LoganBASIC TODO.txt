@@ -1,5 +1,5 @@
 [Bugs]
-    - Resume command in debugger not updating the UI to enable the Pause button.
+    - 
 
 [Features]
     - Test-run all example programs with the debugger on.

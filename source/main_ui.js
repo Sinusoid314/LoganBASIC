@@ -34,6 +34,8 @@ function stopProg(exitStatus)
   cleanupCanvas();
   cleanupSounds();
   cleanupSpriteSheets();
+  debugChangeUIStatus(DEBUG_UI_STATUS_DISABLED);
+  
   statusBar.innerHTML = exitStatus;
 
   switchMode();

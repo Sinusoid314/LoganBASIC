@@ -36,6 +36,9 @@ debugCallStackList.addEventListener("change", debugCallStackList_onChange);
 function debugChangeUIStatus(newStatus)
 //
 {
+  if(!isDebugging)
+    return;
+
   debugPauseBtn.disabled = (newStatus == DEBUG_UI_STATUS_PAUSED) || (newStatus == DEBUG_UI_STATUS_DISABLED);
 
   debugResumeBtn.disabled
@@ -184,6 +187,7 @@ function debugToggleBtn_onClick(event)
     debugToggleBtn.style.border = "";
 	  debugDiv.style.display = "none";
     mainDiv.style.marginLeft = "0";
+    debugChangeUIStatus(DEBUG_UI_STATUS_DISABLED);
     
     progWorker.postMessage({msgId: MSGID_DEBUG_DISABLE});
   }

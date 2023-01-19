@@ -1,3 +1,9 @@
+(January 18, 2023)
+[v2.0.0.95]
+	- Added resetDebug() function to debug_worker module and modified resetMain() function in main_worker module to call it.
+	- Fixed bug with debugger buttons not being disabled on program end by calling debugChangeUIStatus() function in
+	  stopProg() function in main_ui module.
+
 (January 16, 2023)
 [v2.0.0.94]
 	- Replaced resumeBtnEnabled and pauseBtnEnabled members of DebugInfo class with uiStatus member and constants

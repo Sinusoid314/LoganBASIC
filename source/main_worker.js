@@ -25,18 +25,13 @@ onmessage = progWorker_onMessage;
 
 function resetMain()
 //
-{
-  if(debugEnabled)
-  {
-    debugLineChangeAction = DEBUG_ACTION_BREAK;
-    postMessage({msgId: MSGID_DEBUG_UPDATE_UI, msgData: new DebugInfo(mainVM, 0, DEBUG_UI_STATUS_DISABLED)});
-  }
-  
+{ 
   resetStd();
   resetConsole();
   resetCanvas();
   resetSounds();
   resetSprites();
+  resetDebug();
   
   mainVM.resetActiveRunState();
   mainVM.globals.clear();

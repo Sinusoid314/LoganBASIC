@@ -4,9 +4,9 @@ const DEBUG_ACTION_STEP_OVER = 3;
 const DEBUG_ACTION_STEP_OUT = 4;
 
 var debugEnabled = false;
+var debugBreakpoints = [];
 var debugLineChangeAction = DEBUG_ACTION_BREAK;
 var debugStepCallFrame = null;
-var debugBreakpoints = [];
 
 class DebugInfo
 {
@@ -51,6 +51,13 @@ class DebugInfo
     for(var localIndex = 0; localIndex < callFrame.localsCount; localIndex++)
       this.locals.set(callFrame.func.localIdents[localIndex], vm.stack[callFrame.stackIndex + localIndex + 1]);
   }
+}
+
+function resetDebug()
+//
+{
+  debugLineChangeAction = DEBUG_ACTION_BREAK;
+  debugStepCallFrame = null;
 }
 
 function debugEnterBreakpoint(vm, nextSourceLineNum)
