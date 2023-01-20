@@ -35,7 +35,6 @@ function resetMain()
   
   mainVM.resetActiveRunState();
   mainVM.globals.clear();
-  mainVM.error = null;
   
   mainSourceName = "";
 }

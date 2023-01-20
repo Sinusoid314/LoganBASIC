@@ -185,7 +185,7 @@ class VM
     }
     catch(error)
     {
-      console.log(error);
+      //console.log(error);
     }
 
     this.changeStatus(VM_STATUS_IDLE);

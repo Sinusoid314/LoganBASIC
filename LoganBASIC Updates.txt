@@ -1,3 +1,7 @@
+(January 19, 2023)
+[v2.0.0.96]
+	- Modified resetMain() function in main_worker module to not clear the VM's error property.
+
 (January 18, 2023)
 [v2.0.0.95]
 	- Added resetDebug() function to debug_worker module and modified resetMain() function in main_worker module to call it.
