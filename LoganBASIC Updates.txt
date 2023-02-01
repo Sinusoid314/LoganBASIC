@@ -1,3 +1,10 @@
+(February 1, 2023)
+[v2.0.0.97]
+	- Renamed stackIndex member of CallFrame class to funcStackIndex.
+	- Removed parameters 'func' and 'funcStackIndex' from callUserFunc() method in VM and moved their retrieval into the
+	  method itself. Did the same with the 'func' parameter of callNativeFunc() method in VM.
+	- Added localsStackIndex member to CallFrame class.
+
 (January 19, 2023)
 [v2.0.0.96]
 	- Modified resetMain() function in main_worker module to not clear the VM's error property.

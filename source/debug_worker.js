@@ -49,7 +49,7 @@ class DebugInfo
     this.sourceName = callFrame.func.sourceName;
 
     for(var localIndex = 0; localIndex < callFrame.localsCount; localIndex++)
-      this.locals.set(callFrame.func.localIdents[localIndex], vm.stack[callFrame.stackIndex + localIndex + 1]);
+      this.locals.set(callFrame.func.localIdents[localIndex], vm.stack[callFrame.localsStackIndex + localIndex]);
   }
 }
 
