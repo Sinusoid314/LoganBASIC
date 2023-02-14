@@ -1,3 +1,7 @@
+(February 13, 2023)
+[v2.0.0.98]
+	- Fixed bug with funcRun() in std_funcs module pushing its return value inside the eval function's stack frame.
+
 (February 1, 2023)
 [v2.0.0.97]
 	- Renamed stackIndex member of CallFrame class to funcStackIndex.

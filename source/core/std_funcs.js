@@ -1,4 +1,4 @@
-const lbVersion = "2.0.0.97";
+const lbVersion = "2.0.0.98";
 
 const stdNativeFuncs = [
                   new ObjNativeFunc("rnd", 0, 0, funcRnd),
@@ -557,10 +557,12 @@ function funcRun(vm, args)
   var sourceName = vm.currCallFrame.func.sourceName  + ":" + vm.getCurrOpSourceLineNum() + ":eval";
   var result;
 
+  vm.stack.push(null);
+
   result = vm.interpret(source, sourceName);
 
   if(result == INTERPRET_COMPILE_ERROR)
     vm.runLoopExitFlag = true;
 
-  return null;
+  return undefined;
 }
