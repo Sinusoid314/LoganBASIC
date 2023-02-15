@@ -1,3 +1,7 @@
+(February 15, 2023)
+[v2.0.0.99]
+	- Added all user-facing updates in v2 to updates.html.
+
 (February 13, 2023)
 [v2.0.0.98]
 	- Fixed bug with funcRun() in std_funcs module pushing its return value inside the eval function's stack frame.
