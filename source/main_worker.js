@@ -92,8 +92,8 @@ function progWorker_onMessage(message)
       onMsgDebugPause();
       break;
 
-    case MSGID_DEBUG_STEP:
-      onMsgDebugStep();
+    case MSGID_DEBUG_STEP_INTO:
+      onMsgDebugStepInto();
       break;
 
     case MSGID_DEBUG_STEP_OVER:

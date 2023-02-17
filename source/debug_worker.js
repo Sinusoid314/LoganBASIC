@@ -117,7 +117,7 @@ function onMsgDebugPause()
   debugLineChangeAction = DEBUG_ACTION_BREAK;
 }
 
-function onMsgDebugStep()
+function onMsgDebugStepInto()
 //
 {
   if((!debugEnabled || mainVM.callFramesEmpty()) || !mainVM.inBreakpoint)

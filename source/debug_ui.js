@@ -13,7 +13,7 @@ var debugDiv = document.getElementById("debugDiv");
 var debugResizer = document.getElementById("debugResizer");
 var debugResumeBtn = document.getElementById("debugResumeBtn");
 var debugPauseBtn = document.getElementById("debugPauseBtn");
-var debugStepBtn = document.getElementById("debugStepBtn");
+var debugStepIntoBtn = document.getElementById("debugStepIntoBtn");
 var debugStepOverBtn = document.getElementById("debugStepOverBtn");
 var debugStepOutBtn = document.getElementById("debugStepOutBtn");
 var debugSkipBtn = document.getElementById("debugSkipBtn");
@@ -27,7 +27,7 @@ document.addEventListener("mousemove", document_onMouseMove);
 document.addEventListener("mouseup", document_onMouseUp);
 debugResumeBtn.addEventListener("click", debugResumeBtn_onClick);
 debugPauseBtn.addEventListener("click", debugPauseBtn_onClick);
-debugStepBtn.addEventListener("click", debugStepBtn_onClick);
+debugStepIntoBtn.addEventListener("click", debugStepIntoBtn_onClick);
 debugStepOverBtn.addEventListener("click", debugStepOverBtn_onClick);
 debugStepOutBtn.addEventListener("click", debugStepOutBtn_onClick);
 debugSkipBtn.addEventListener("click", debugSkipBtn_onClick);
@@ -42,7 +42,7 @@ function debugChangeUIStatus(newStatus)
   debugPauseBtn.disabled = (newStatus == DEBUG_UI_STATUS_PAUSED) || (newStatus == DEBUG_UI_STATUS_DISABLED);
 
   debugResumeBtn.disabled
-  = debugStepBtn.disabled
+  = debugStepIntoBtn.disabled
   = debugStepOverBtn.disabled
   = debugStepOutBtn.disabled
   = debugSkipBtn.disabled
@@ -251,13 +251,13 @@ function debugPauseBtn_onClick(event)
   progWorker.postMessage({msgId: MSGID_DEBUG_PAUSE});
 }
 
-function debugStepBtn_onClick(event)
+function debugStepIntoBtn_onClick(event)
 //
 {
   if(!(isDebugging && isRunning))
     return;
 
-  progWorker.postMessage({msgId: MSGID_DEBUG_STEP});
+  progWorker.postMessage({msgId: MSGID_DEBUG_STEP_INTO});
 }
 
 function debugStepOverBtn_onClick(event)
