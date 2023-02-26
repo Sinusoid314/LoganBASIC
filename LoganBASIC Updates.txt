@@ -1,6 +1,7 @@
 (February 25, 2023)
 [v2.0.0.101]
 	- Removed showEditor() and hideEditor() native funcitons.
+	- Moved mainSourceName constant to thread_common module.
 
 (February 16, 2023)
 [v2.0.0.100]

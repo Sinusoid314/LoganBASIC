@@ -1,3 +1,5 @@
+const mainSourceName = "<main>";
+
 //UI -> Worker messages
 const MSGID_START_PROG = 1;
 

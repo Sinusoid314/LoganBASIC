@@ -14,7 +14,6 @@ importScripts('thread_common.js',
               'sprite_worker.js');
 
 var mainVM = new VM();
-var mainSourceName = "";
 
 mainVM.addNativeFuncArray([].concat(stdNativeFuncs, consoleNativeFuncs, canvasNativeFuncs, soundNativeFuncs, spriteNativeFuncs));
 mainVM.onPrintHook = onVMPrint;
@@ -35,8 +34,6 @@ function resetMain()
   
   mainVM.resetActiveRunState();
   mainVM.globals.clear();
-  
-  mainSourceName = "";
 }
 
 function progWorker_onMessage(message)
@@ -128,8 +125,7 @@ function onMsgStartProg(msgData)
   if(!mainVM.callFramesEmpty())
     return;
 
-  mainSourceName = msgData.sourceName;
-  mainVM.interpret(msgData.source, msgData.sourceName);
+  mainVM.interpret(msgData.source, mainSourceName);
 }
 
 function onVMStatusChange(vm, prevStatus)
