@@ -10,36 +10,51 @@
 <h3>Debugger Commands</h3>
 
 <p>
+The debugger commands let you tell the debugger when and how to step through your
+program. They are located at the top of the debugger pane:
 </p>
+
+<img src="" alt="" width="" height="">
 
 <h4>Resume</h4>
 
 <p>
+Runs the program at regular speed without pausing, unless a breakpoint is encountered.
 </p>
 
 <h4>Pause</h4>
 
 <p>
+Pauses the program execution, highlights the next line of code to be run, and updates
+the variable and call stack displays.
 </p>
 
 <h4>Step Into</h4>
 
 <p>
+Runs the highlighted line of code, updates the variable and call stack displays, and
+highlights the next line of code to be run. If the highlighted line contains any function
+calls, the debugger will pause at the beginning of each function call.
 </p>
 
 <h4>Step Over</h4>
 
 <p>
+Same as Step Into, except the debugger will run through every function call in the line
+without pausing.
 </p>
 
 <h4>Step Out</h4>
 
 <p>
+Runs all the code from the currently highlighted line to the end of the current function,
+pausing only after the function returns.
 </p>
 
 <h4>Skip</h4>
 
 <p>
+Skips over the currently highlighted line without running any of its code.
 </p>
 
 </body>
