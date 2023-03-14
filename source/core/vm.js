@@ -185,7 +185,7 @@ class VM
     }
     catch(error)
     {
-      //console.log(error);
+      console.log(error);
     }
 
     this.changeStatus(VM_STATUS_IDLE);
@@ -486,11 +486,13 @@ class VM
   //Call the given function object with the given arguments
   {
     var argCount = this.currOp[1];
+    var funcStackIndex = this.stack.length - argCount - 1;
+    var func = this.stack[funcStackIndex];
 
     if(func instanceof ObjNativeFunc)
-      this.callNativeFunc(argCount);
+      this.callNativeFunc(argCount, funcStackIndex, func);
     else if(func instanceof ObjUserFunc)
-      this.callUserFunc(argCount, false);
+      this.callUserFunc(argCount, funcStackIndex, func, false);
     else
       this.runError("Can only call functions.");
   }
@@ -682,11 +684,9 @@ class VM
     this.stack.push(fieldVal);
   }
 
-  callNativeFunc(argCount)
+  callNativeFunc(argCount, funcStackIndex, func)
   //Call the given native function
   {
-    var funcStackIndex = this.stack.length - argCount - 1;
-    var func = this.stack[funcStackIndex];
     var args, retVal;
 
     if((argCount < func.paramMin) || (argCount > func.paramMax))
@@ -701,11 +701,9 @@ class VM
       this.stack.push(retVal);
   }
 
-  callUserFunc(argCount, popReturnVal)
+  callUserFunc(argCount, funcStackIndex, func, popReturnVal)
   //Load a new call frame for the given user function
   {
-    var funcStackIndex = this.stack.length - argCount - 1;
-    var func = this.stack[funcStackIndex];
     var localsStackIndex = funcStackIndex + 1;
 
     if(argCount != func.paramCount)

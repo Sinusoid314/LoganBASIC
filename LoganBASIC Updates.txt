@@ -1,3 +1,7 @@
+(March 13, 2023)
+[v2.0.0.103]
+	- Added image to debugger Overview help page.
+
 (March 11, 2023)
 [v2.0.0.102]
 	- Added the text portions of the debugger help pages.

@@ -58,7 +58,7 @@ class Compiler
     catch(error)
     {
       this.currUserFunc = null;
-      //console.log(error);
+      console.log(error);
     }
 
     this.vm.changeStatus(prevStatus);
