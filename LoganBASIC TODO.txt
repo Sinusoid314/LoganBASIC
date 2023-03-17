@@ -1,5 +1,5 @@
 [Bugs]
-    - callUserFunc() method of VM being called with missing arguments.
+    - 
 
 [Features]
     - Test-run all example programs with the debugger on.
