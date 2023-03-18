@@ -1,3 +1,7 @@
+(March 18, 2023)
+[v2.0.0.105]
+	- Completed debugger help pages.
+
 (March 16, 2023)
 [v2.0.0.104]
 	- Fixed bug with opCallFunc() method of VM not setting 'func' variable.

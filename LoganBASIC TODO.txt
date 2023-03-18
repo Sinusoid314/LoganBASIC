@@ -3,7 +3,6 @@
 
 [Features]
     - Test-run all example programs with the debugger on.
-    - Add help section for debugger.
 
     - Add breakpoint display to debugger pane.
     - Add variable display persistence between breakpoints in debugger.
