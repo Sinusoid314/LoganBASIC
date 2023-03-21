@@ -179,6 +179,24 @@ function debugAddVarListItem(key, value, parentList, itemValueMap)
   listItem.appendChild(listItemText);
 }
 
+function debugAddBreakpoint(sourceLineNum, sourceName)
+//
+{
+  var newBreakpoint = new DebugBreakpoint(sourceLineNum, sourceName);
+
+  debugBreakpointBackups.push(newBreakpoint);
+  progWorker.postMessage({msgId: MSGID_DEBUG_ADD_BREAKPOINT, msgData: newBreakpoint});
+}
+
+function debugRemoveBreakpoint(sourceLineNum, sourceName)
+//
+{
+  var breakpointIndex = debugBreakpointBackups.findIndex(breakpoint => breakpoint.matches(lineNum, mainSourceName));
+  
+  debugBreakpointBackups.splice(breakpointIndex, 1);
+  progWorker.postMessage({msgId: MSGID_DEBUG_REMOVE_BREAKPOINT, msgData: {sourceLineNum: sourceLineNum, sourceName: sourceName}});
+}
+
 function debugToggleBtn_onClick(event)
 //
 {

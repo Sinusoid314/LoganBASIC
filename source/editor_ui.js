@@ -38,7 +38,7 @@ function updateEditorGutter()
   else if(lineCountDelta < 0)
   {
     for(var n = lineCountDelta; n < 0; n++)
-      editorGutter.removeChild(editorGutter.lastChild);
+      removeEditorGutterItem();
   }
 
   editorGutter.style.height = editorGutter.scrollHeight + "px";
@@ -46,6 +46,7 @@ function updateEditorGutter()
 }
 
 function addEditorGutterItem()
+//
 {
   var editorGutterItem;
 
@@ -53,6 +54,21 @@ function addEditorGutterItem()
   editorGutterItem.classList.add("editorGutterItem")
   editorGutterItem.addEventListener("click", editorGutterItem_onClick);
   editorGutter.appendChild(editorGutterItem);
+}
+
+function removeEditorGutterItem()
+//
+{
+  var editorGutterItem = editorGutter.lastChild;
+  var lineNum;
+
+  if(editorGutterItem.classList.contains("editorBreakpoint"))
+  {
+    lineNum = Array.from(document.querySelectorAll(".editorGutterItem")).length;
+    debugRemoveBreakpoint(lineNum, mainSourceName);
+  }
+
+  editorGutter.removeChild(editorGutterItem);
 }
 
 function selectEditorLine(selLine)
@@ -202,19 +218,11 @@ function editor_onScroll(event)
 function editorGutterItem_onClick(event)
 {
   var lineNum = Array.from(document.querySelectorAll(".editorGutterItem")).indexOf(event.target) + 1;
-  var breakpointIndex;
 
   if(event.target.classList.contains("editorBreakpoint"))
-  {
-    progWorker.postMessage({msgId: MSGID_DEBUG_REMOVE_BREAKPOINT, msgData: {sourceLineNum: lineNum, sourceName: mainSourceName}});
-    breakpointIndex = debugBreakpointBackups.findIndex(breakpoint => breakpoint.matches(lineNum, mainSourceName));
-    debugBreakpointBackups.splice(breakpointIndex, 1);
-  }
+    debugRemoveBreakpoint(lineNum, mainSourceName);
   else
-  {
-    progWorker.postMessage({msgId: MSGID_DEBUG_ADD_BREAKPOINT, msgData: {sourceLineNum: lineNum, sourceName: mainSourceName}});
-    debugBreakpointBackups.push(new DebugBreakpoint(lineNum, mainSourceName));
-  }
+    debugAddBreakpoint(lineNum, mainSourceName);
 
   event.target.classList.toggle("editorBreakpoint");
 }

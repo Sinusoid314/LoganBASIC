@@ -1,3 +1,9 @@
+(March 20, 2023)
+[v2.0.0.106]
+	- Added debugAddBreakpoint() and debugRemoveBreakpoint() functions to debug_ui module.
+	- Added removeEditorGutterItem() function to editor_ui module.
+	- Fixed bug with breakpoints not being removed with their associated editor gutter item.
+
 (March 18, 2023)
 [v2.0.0.105]
 	- Completed debugger help pages.
