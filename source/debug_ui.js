@@ -191,7 +191,7 @@ function debugAddBreakpoint(sourceLineNum, sourceName)
 function debugRemoveBreakpoint(sourceLineNum, sourceName)
 //
 {
-  var breakpointIndex = debugBreakpointBackups.findIndex(breakpoint => breakpoint.matches(lineNum, mainSourceName));
+  var breakpointIndex = debugBreakpointBackups.findIndex(breakpoint => breakpoint.matches(sourceLineNum, mainSourceName));
   
   debugBreakpointBackups.splice(breakpointIndex, 1);
   progWorker.postMessage({msgId: MSGID_DEBUG_REMOVE_BREAKPOINT, msgData: {sourceLineNum: sourceLineNum, sourceName: sourceName}});
