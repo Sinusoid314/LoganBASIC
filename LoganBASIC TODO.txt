@@ -1,5 +1,5 @@
 [Bugs]
-    - 
+    - setCanvasEvent() example not resuming after stepping through canvas event functions.
 
 [Features]
     - Test-run all example programs with the debugger on.
