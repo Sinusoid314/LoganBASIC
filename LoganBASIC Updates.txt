@@ -1,3 +1,8 @@
+(March 27, 2023)
+[v2.0.0.108]
+	- Fixed bug with program hanging when stepping into Wait statement after initial drawCanvasBuffer() call.
+	- Fixed bug with import() function help page not opening code example properly.
+
 (March 21, 2023)
 [v2.0.0.107]
 	- Fixed bug with editor crashing when removing breakpoints.

@@ -1,6 +1,5 @@
 [Bugs]
-    - circlesOverlap() example freezing when stepping past drawCanvasBuffer() call.
-    - import() function help page not opening code example properly.
+    - 
 
 [Features]
     - Test-run all example programs with the debugger on.

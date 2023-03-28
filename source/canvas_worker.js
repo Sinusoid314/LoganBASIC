@@ -95,7 +95,10 @@ function onMsgDrawCanvasBufferDone()
   if(!drawBufferCallback)
     return;
 
-  drawBufferCallback.resumeVM();
+  if(drawBufferCallback.vm.inBreakpoint)
+    postMessage({msgId: MSGID_DRAW_CANVAS_BUFFER});
+  else
+    drawBufferCallback.resumeVM();
 }
 
 function funcShowCanvas(vm, args)
