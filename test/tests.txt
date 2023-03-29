@@ -2,6 +2,6 @@
 (X) Statements
 (X) Standard Functions
 (X) Canvas Functions
-( ) Sprite Functions
+(X) Sprite Functions
 (X) Sound Functions
 (X) Expression Operators
