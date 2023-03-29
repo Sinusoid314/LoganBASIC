@@ -1,5 +1,7 @@
 [Bugs]
     - setCanvasEvent() example not resuming after stepping through canvas event functions.
+    - Sprites in getSpriteCycles() and setSpriteCycles() examples not replaying when cycles is changed.
+    - deltaTime in sprite examples not clamping.
 
 [Features]
     - Test-run all example programs with the debugger on.
