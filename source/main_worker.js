@@ -140,12 +140,22 @@ function onVMStatusChange(vm, prevStatus)
         return;
       }
       
-      if(!(vm.callFramesEmpty() && (prevStatus == VM_STATUS_RUNNING)))
+      if(prevStatus != VM_STATUS_RUNNING)
         return;
 
-      postMessage({msgId: MSGID_PROG_DONE_SUCCESS});
+      if(vm.callFramesEmpty())
+      {
+        postMessage({msgId: MSGID_PROG_DONE_SUCCESS});
+        resetMain();
+        return;
+      }
+      
+      if(debugEnabled && !vm.inBreakpoint)
+      {
+        //debugLineChangeAction = DEBUG_ACTION_CONTINUE;
+        //postMessage({msgId: MSGID_DEBUG_UPDATE_UI, msgData: new DebugInfo(vm, 0, DEBUG_UI_STATUS_RESUMED)});
+      }
 
-      resetMain();
       break;
 
     case VM_STATUS_RUNNING:

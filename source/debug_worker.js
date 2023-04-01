@@ -28,7 +28,7 @@ class DebugInfo
       return;
     }
 
-    if(uiStatus == DEBUG_UI_STATUS_RESUMED)
+    if(uiStatus != DEBUG_UI_STATUS_PAUSED)
     {
       this.globals = new Map();
       this.funcIdents = [];
@@ -98,23 +98,24 @@ function onMsgDebugDisable()
 function onMsgDebugResume()
 //
 {
-  if((!debugEnabled || mainVM.callFramesEmpty()) || !mainVM.inBreakpoint)
+  if((!debugEnabled || mainVM.callFramesEmpty()))
     return;
   
   debugLineChangeAction = DEBUG_ACTION_CONTINUE;
-
   postMessage({msgId: MSGID_DEBUG_UPDATE_UI, msgData: new DebugInfo(mainVM, 0, DEBUG_UI_STATUS_RESUMED)});
 
-  mainVM.run();
+  if(mainVM.inBreakpoint)
+    mainVM.run();
 }
 
 function onMsgDebugPause()
 //
 {
-  if((!debugEnabled || mainVM.callFramesEmpty()) || mainVM.inBreakpoint)
+  if((!debugEnabled || mainVM.callFramesEmpty()))
     return;
 
   debugLineChangeAction = DEBUG_ACTION_BREAK;
+  postMessage({msgId: MSGID_DEBUG_UPDATE_UI, msgData: new DebugInfo(mainVM, 0, DEBUG_UI_STATUS_DISABLED)});
 }
 
 function onMsgDebugStepInto()

@@ -1,3 +1,10 @@
+(March 31, 2023)
+[v2.0.0.109]
+	- Modified onMsgDebugResume() function in debug_worker module by moving the inBreakpoint flag check from the
+	  beginning of the function to right before running the VM.
+	- Modified onMsgDebugPause() function in debug_worker module by removing the inBreakpoint flag check and changing
+	  the debug UI status to DISABLED.
+
 (March 27, 2023)
 [v2.0.0.108]
 	- Fixed bug with program hanging when stepping into Wait statement after initial drawCanvasBuffer() call.
