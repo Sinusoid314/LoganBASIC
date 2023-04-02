@@ -1,10 +1,10 @@
 [Bugs]
-    - setCanvasEvent() example not resuming after stepping through canvas event functions.
-    - Sprites in getSpriteCycles() and setSpriteCycles() examples not replaying when cycles is changed.
     - deltaTime in sprite examples not clamping.
 
 [Features]
     - Test-run all example programs with the debugger on.
+    - Modify debugger to not automatically pause when enabled while a program is running, and modify
+      debugger help page to reflect this.
 
     - Add breakpoint display to debugger pane.
     - Add variable display persistence between breakpoints in debugger.

@@ -39,14 +39,15 @@ function debugChangeUIStatus(newStatus)
   if(!isDebugging)
     return;
 
-  debugPauseBtn.disabled = (newStatus == DEBUG_UI_STATUS_PAUSED) || (newStatus == DEBUG_UI_STATUS_DISABLED);
+  debugResumeBtn.disabled = !((newStatus == DEBUG_UI_STATUS_PAUSED) || (newStatus == DEBUG_UI_STATUS_BREAKPOINT));
 
-  debugResumeBtn.disabled
-  = debugStepIntoBtn.disabled
+  debugPauseBtn.disabled = !(newStatus == DEBUG_UI_STATUS_RESUMED);
+  
+  debugStepIntoBtn.disabled
   = debugStepOverBtn.disabled
   = debugStepOutBtn.disabled
   = debugSkipBtn.disabled
-  = (newStatus == DEBUG_UI_STATUS_RESUMED) || (newStatus == DEBUG_UI_STATUS_DISABLED);
+  = !(newStatus == DEBUG_UI_STATUS_BREAKPOINT);
 }
 
 function debugClearDisplays()
