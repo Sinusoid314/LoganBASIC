@@ -54,6 +54,7 @@ end function
 function onPointerUp(pointerX, pointerY)
   if pointInSprite("bubba", pointerX, pointerY) then
     <b>setSpriteCycles("bubba", (getSpriteCycles("bubba") + 1) % 6)</b>
+    setSpritePlaying("bubba", true)
   else
     isDone = true
   end if
