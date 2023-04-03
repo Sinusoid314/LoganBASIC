@@ -128,6 +128,7 @@ button
 {
   display: inline;
   margin-left: 2px;
+  white-space: pre-wrap;
 }
 
 #consoleOutput

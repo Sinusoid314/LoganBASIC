@@ -79,7 +79,14 @@ function onMsgDebugEnable()
   
   mainVM.onSourceLineChangeHook = onVMSourceLineChange;
   debugEnabled = true;
-  debugLineChangeAction = DEBUG_ACTION_BREAK;
+
+  if(mainVM.callFramesEmpty())
+    debugLineChangeAction = DEBUG_ACTION_BREAK;
+  else
+  {
+    debugLineChangeAction = DEBUG_ACTION_CONTINUE;
+    postMessage({msgId: MSGID_DEBUG_UPDATE_UI, msgData: new DebugInfo(mainVM, 0, DEBUG_UI_STATUS_RESUMED)});
+  }
 }
 
 function onMsgDebugDisable()
@@ -108,6 +115,7 @@ function onMsgDebugResume()
     mainVM.run();
 }
 
+/*
 function onMsgDebugPause()
 //
 {
@@ -117,29 +125,31 @@ function onMsgDebugPause()
   debugLineChangeAction = DEBUG_ACTION_BREAK;
   postMessage({msgId: MSGID_DEBUG_UPDATE_UI, msgData: new DebugInfo(mainVM, 0, DEBUG_UI_STATUS_PAUSED)});
 }
+*/
 
 function onMsgDebugStepInto()
 //
 {
-  if((!debugEnabled || mainVM.callFramesEmpty()) || !mainVM.inBreakpoint)
+  if(!debugEnabled || mainVM.callFramesEmpty())
     return;
 
   debugLineChangeAction = DEBUG_ACTION_BREAK;
-  postMessage({msgId: MSGID_DEBUG_UPDATE_UI, msgData: new DebugInfo(mainVM, 0, DEBUG_UI_STATUS_RESUMED)});
+  postMessage({msgId: MSGID_DEBUG_UPDATE_UI, msgData: new DebugInfo(mainVM, 0, DEBUG_UI_STATUS_STEPPING)});
 
-  mainVM.run();
+  if(mainVM.inBreakpoint)
+    mainVM.run();
 }
 
 function onMsgDebugStepOver()
 //
 {
-  if((!debugEnabled || mainVM.callFramesEmpty()) || !mainVM.inBreakpoint)
+  if(!debugEnabled || mainVM.callFramesEmpty() || !mainVM.inBreakpoint)
     return;
 
   debugStepCallFrame = mainVM.currCallFrame;
 
   debugLineChangeAction = DEBUG_ACTION_STEP_OVER;
-  postMessage({msgId: MSGID_DEBUG_UPDATE_UI, msgData: new DebugInfo(mainVM, 0, DEBUG_UI_STATUS_RESUMED)});
+  postMessage({msgId: MSGID_DEBUG_UPDATE_UI, msgData: new DebugInfo(mainVM, 0, DEBUG_UI_STATUS_STEPPING)});
 
   mainVM.run();
 }
@@ -147,13 +157,13 @@ function onMsgDebugStepOver()
 function onMsgDebugStepOut()
 //
 {
-  if((!debugEnabled || mainVM.callFramesEmpty()) || !mainVM.inBreakpoint)
+  if(!debugEnabled || mainVM.callFramesEmpty() || !mainVM.inBreakpoint)
     return;
 
   debugStepCallFrame = mainVM.currCallFrame;
 
   debugLineChangeAction = DEBUG_ACTION_STEP_OUT;
-  postMessage({msgId: MSGID_DEBUG_UPDATE_UI, msgData: new DebugInfo(mainVM, 0, DEBUG_UI_STATUS_RESUMED)});
+  postMessage({msgId: MSGID_DEBUG_UPDATE_UI, msgData: new DebugInfo(mainVM, 0, DEBUG_UI_STATUS_STEPPING)});
 
   mainVM.run();
 }
@@ -161,13 +171,13 @@ function onMsgDebugStepOut()
 function onMsgDebugSkip()
 //
 {
-  if((!debugEnabled || mainVM.callFramesEmpty()) || !mainVM.inBreakpoint)
+  if(!debugEnabled || mainVM.callFramesEmpty() || !mainVM.inBreakpoint)
     return;
 
   mainVM.skipSourceLine();
   mainVM.inBreakpoint = false;
 
-  postMessage({msgId: MSGID_DEBUG_UPDATE_UI, msgData: new DebugInfo(mainVM, 0, DEBUG_UI_STATUS_RESUMED)});
+  postMessage({msgId: MSGID_DEBUG_UPDATE_UI, msgData: new DebugInfo(mainVM, 0, DEBUG_UI_STATUS_STEPPING)});
 
   mainVM.run();
 }

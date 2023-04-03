@@ -12,7 +12,7 @@ var debugToggleBtn = document.getElementById("debugToggleBtn");
 var debugDiv = document.getElementById("debugDiv");
 var debugResizer = document.getElementById("debugResizer");
 var debugResumeBtn = document.getElementById("debugResumeBtn");
-var debugPauseBtn = document.getElementById("debugPauseBtn");
+//var debugPauseBtn = document.getElementById("debugPauseBtn");
 var debugStepIntoBtn = document.getElementById("debugStepIntoBtn");
 var debugStepOverBtn = document.getElementById("debugStepOverBtn");
 var debugStepOutBtn = document.getElementById("debugStepOutBtn");
@@ -26,7 +26,7 @@ document.addEventListener("mousedown", document_onMouseDown);
 document.addEventListener("mousemove", document_onMouseMove);
 document.addEventListener("mouseup", document_onMouseUp);
 debugResumeBtn.addEventListener("click", debugResumeBtn_onClick);
-debugPauseBtn.addEventListener("click", debugPauseBtn_onClick);
+//debugPauseBtn.addEventListener("click", debugPauseBtn_onClick);
 debugStepIntoBtn.addEventListener("click", debugStepIntoBtn_onClick);
 debugStepOverBtn.addEventListener("click", debugStepOverBtn_onClick);
 debugStepOutBtn.addEventListener("click", debugStepOutBtn_onClick);
@@ -39,12 +39,13 @@ function debugChangeUIStatus(newStatus)
   if(!isDebugging)
     return;
 
-  debugResumeBtn.disabled = !((newStatus == DEBUG_UI_STATUS_PAUSED) || (newStatus == DEBUG_UI_STATUS_BREAKPOINT));
+  debugResumeBtn.disabled = !((newStatus == DEBUG_UI_STATUS_STEPPING) || (newStatus == DEBUG_UI_STATUS_BREAKPOINT));
 
-  debugPauseBtn.disabled = !(newStatus == DEBUG_UI_STATUS_RESUMED);
+  //debugPauseBtn.disabled = !(newStatus == DEBUG_UI_STATUS_RESUMED);
   
-  debugStepIntoBtn.disabled
-  = debugStepOverBtn.disabled
+  debugStepIntoBtn.disabled = !((newStatus == DEBUG_UI_STATUS_RESUMED) || (newStatus == DEBUG_UI_STATUS_BREAKPOINT));
+  
+  debugStepOverBtn.disabled
   = debugStepOutBtn.disabled
   = debugSkipBtn.disabled
   = !(newStatus == DEBUG_UI_STATUS_BREAKPOINT);
@@ -261,6 +262,7 @@ function debugResumeBtn_onClick(event)
   progWorker.postMessage({msgId: MSGID_DEBUG_RESUME});
 }
 
+/*
 function debugPauseBtn_onClick(event)
 //
 {
@@ -269,6 +271,7 @@ function debugPauseBtn_onClick(event)
 
   progWorker.postMessage({msgId: MSGID_DEBUG_PAUSE});
 }
+*/
 
 function debugStepIntoBtn_onClick(event)
 //

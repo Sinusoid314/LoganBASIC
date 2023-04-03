@@ -85,9 +85,11 @@ function progWorker_onMessage(message)
       onMsgDebugResume();
       break;
 
+    /*
     case MSGID_DEBUG_PAUSE:
       onMsgDebugPause();
       break;
+    */
 
     case MSGID_DEBUG_STEP_INTO:
       onMsgDebugStepInto();
