@@ -2,6 +2,7 @@
 [v2.0.0.111]
 	- Removed Pause button from debugger pane.
 	- Modified debugger to not automatically break when enabled while a program is running.
+	- Modified debugger help pages to reflect pause/stepping changes.
 
 (April 2, 2023)
 [v2.0.0.110]

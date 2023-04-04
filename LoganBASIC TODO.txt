@@ -3,7 +3,6 @@
 
 [Features]
     - Test-run all example programs with the debugger on.
-    - Modify debugger help pages to reflect pause/stepping changes.
 
     - Add breakpoint display to debugger pane.
     - Add variable display persistence between breakpoints in debugger.
