@@ -1,5 +1,5 @@
 [Bugs]
-    - deltaTime in sprite examples not clamping.
+    - 
 
 [Features]
     - Test-run all example programs with the debugger on.
