@@ -26,6 +26,7 @@ If <i>deltaTime</i> is not specified, its value defaults to zero.
 <h4>Usage</h4>
 <code id="usageCode">
 var deltaTime, prevTime
+var maxDeltaTime = 0.03
 
 hideConsole()
 enableCanvasBuffer()
@@ -44,7 +45,7 @@ mainLoop()
 wait
 
 function mainLoop()
-  deltaTime = (time() - prevTime) / 1000
+  deltaTime = min(((time() - prevTime) / 1000), maxDeltaTime)
   prevTime = time()
 
   if getSpriteX("bubba") >= 300 then

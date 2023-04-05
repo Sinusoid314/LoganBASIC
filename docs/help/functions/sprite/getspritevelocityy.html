@@ -18,6 +18,7 @@ Returns the vertical part of the velocity of <i>spriteName</i>.
 <h4>Usage</h4>
 <code id="usageCode">
 var deltaTime, prevTime
+var maxDeltaTime = 0.03
 var accelX = -100
 var accelY = 100
 
@@ -39,7 +40,7 @@ mainLoop()
 wait
 
 function mainLoop()
-  deltaTime = (time() - prevTime) / 1000
+  deltaTime = min(((time() - prevTime) / 1000), maxDeltaTime)
   prevTime = time()
 
   setSpriteVelocityX("bubba", getSpriteVelocityX("bubba") + (accelX * deltaTime))

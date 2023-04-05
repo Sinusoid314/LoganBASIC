@@ -19,6 +19,7 @@ overlap, and false otherwise.
 <h4>Usage</h4>
 <code id="usageCode">
 var deltaTime, prevTime
+var maxDeltaTime = 0.03
 var rectX = 200
 var rectY = 50
 var rectWidth = 100
@@ -48,7 +49,7 @@ function mainLoop()
     end
   end if
 
-  deltaTime = (time() - prevTime) / 1000
+  deltaTime = min(((time() - prevTime) / 1000), maxDeltaTime)
   prevTime = time()
 
   updateSprites(deltaTime)

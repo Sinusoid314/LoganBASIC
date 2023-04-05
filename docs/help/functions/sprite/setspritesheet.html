@@ -19,6 +19,7 @@ reset to zero, its draw size is set to the size of the sheet's frames, and its f
 <h4>Usage</h4>
 <code id="usageCode">
 var deltaTime, prevTime
+var maxDeltaTime = 0.03
 
 hideConsole()
 enableCanvasBuffer()
@@ -38,7 +39,7 @@ mainLoop()
 wait
 
 function mainLoop()
-  deltaTime = (time() - prevTime) / 1000
+  deltaTime = min(((time() - prevTime) / 1000), maxDeltaTime)
   prevTime = time()
 
   if getSpriteX("sprite") >= 150 then

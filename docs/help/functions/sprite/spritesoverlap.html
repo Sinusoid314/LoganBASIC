@@ -18,6 +18,7 @@ Returns true if the sprites <i>spriteName1</i> and <i>spriteName2</i> overlap, a
 <h4>Usage</h4>
 <code id="usageCode">
 var deltaTime, prevTime
+var maxDeltaTime = 0.03
 var isDone = false
 
 hideConsole()
@@ -50,7 +51,7 @@ function mainLoop()
     end
   end if
 
-  deltaTime = (time() - prevTime) / 1000
+  deltaTime = min(((time() - prevTime) / 1000), maxDeltaTime)
   prevTime = time()
 
   updateSprites(deltaTime)

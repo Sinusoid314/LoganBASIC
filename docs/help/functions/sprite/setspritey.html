@@ -18,6 +18,7 @@ Sets the vertical position of <i>spriteName</i> to <i>y</i>.
 <h4>Usage</h4>
 <code id="usageCode">
 var deltaTime, prevTime
+var maxDeltaTime = 0.03
 
 hideConsole()
 enableCanvasBuffer()
@@ -35,7 +36,7 @@ mainLoop()
 wait
 
 function mainLoop()
-  deltaTime = (time() - prevTime) / 1000
+  deltaTime = min(((time() - prevTime) / 1000), maxDeltaTime)
   prevTime = time()
 
   if getSpriteY("bubba") = 100 then
