@@ -39,6 +39,7 @@ var ballVelY = 70
 var ballColor = "red"
 
 var prevTime
+var maxDeltaTime = 0.03
 
 hideConsole()
 showCanvas()
@@ -88,7 +89,7 @@ end function
 
 'Update the ball and paddle positions based of their velocities
 function update()
-  var deltaTime = (time() - prevTime) / 1000
+  var deltaTime = min(((time() - prevTime) / 1000), maxDeltaTime)
   prevTime = time()
   
   ballX = ballX + (ballVelX * deltaTime)
