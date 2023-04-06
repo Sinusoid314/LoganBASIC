@@ -1,3 +1,7 @@
+(April 5, 2023)
+[v2.0.0.113]
+	- Fixed typos in getSpriteFrameHeight(), clamp(), and run() help pages.
+	
 (April 4, 2023)
 [v2.0.0.112]
 	- Fixed bug with deltaTime in sprite examples not clamping.
