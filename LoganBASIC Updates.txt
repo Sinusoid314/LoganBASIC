@@ -1,3 +1,7 @@
+(April 11, 2023)
+[v2.0.0.114]
+	- Created BAS files for Space Shooter and Discrete Fourier Transform examples.
+
 (April 5, 2023)
 [v2.0.0.113]
 	- Fixed typos in getSpriteFrameHeight(), clamp(), and run() help pages.
