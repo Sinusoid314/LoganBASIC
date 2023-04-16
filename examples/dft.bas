@@ -1,6 +1,7 @@
 structure ComplexNumber
   real
-  imaginary
+  imag
+  magnitude
 end structure
 
 var PI = 3.14159
@@ -23,8 +24,9 @@ next index
 calcDFT(timeSeries, freqSeries)
 
 for index = 0 to len(freqSeries) - 1
-    print freqSeries[index].real
-    print freqSeries[index].imaginary
+    'print freqSeries[index].real
+    'print freqSeries[index].imag
+    print freqSeries[index].magnitude
     print ""
 next index
 
@@ -35,7 +37,7 @@ function createComplexNumber(compNumString)
 
   compNum.real = val(compNumParts[0])
   
-  if len(compNumParts) > 1 then compNum.imaginary = val(compNumParts[1])
+  if len(compNumParts) > 1 then compNum.imag = val(compNumParts[1])
 
   return compNum
 end function
@@ -43,7 +45,7 @@ end function
 function calcDFT(timeSeries, freqSeries)
   var timeIndex, freqIndex
   var realSum, imagSum
-  var radians
+  var radians, sinVal, cosVal
   var seriesLength = len(timeSeries)
 
   redim freqSeries[seriesLength]
@@ -54,11 +56,15 @@ function calcDFT(timeSeries, freqSeries)
 
     for timeIndex = 0 to seriesLength - 1
       radians = 2 * PI * timeIndex * freqIndex / seriesLength
-      realSum = realSum + (timeSeries[timeIndex].real * cos(radians) + timeSeries[timeIndex].imaginary * sin(radians))
-      imagSum = imagSum + (-timeSeries[timeIndex].real * sin(radians) + timeSeries[timeIndex].imaginary * cos(radians))
+      sinVal = round(sin(radians), 2)
+      cosVal = round(cos(radians), 2)
+      realSum = realSum + (timeSeries[timeIndex].real * cosVal + timeSeries[timeIndex].imag * sinVal)
+      imagSum = imagSum + (-timeSeries[timeIndex].real * sinVal + timeSeries[timeIndex].imag * cosVal)
     next timeIndex
 
-    freqSeries[freqIndex].real = realSum
-    freqSeries[freqIndex].imaginary = imagSum
+    freqSeries[freqIndex] = new ComplexNumber
+    freqSeries[freqIndex].real = round(realSum, 2)
+    freqSeries[freqIndex].imag = round(imagSum, 2)
+    freqSeries[freqIndex].magnitude = round(sqr(realSum^2 + imagSum^2), 2)
   next freqIndex
 end function

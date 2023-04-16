@@ -1,3 +1,7 @@
+(April 16, 2023)
+[v2.0.0.116]
+	- Updated Discrete Fourier Transform example and renamed it to DFT.
+
 (April 15, 2023)
 [v2.0.0.115]
 	- Finished first draft of Discrete Fourier Transform example.
