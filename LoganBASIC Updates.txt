@@ -1,3 +1,7 @@
+(April 22, 2023)
+[v2.0.0.117]
+	- Finished first draft of Space Shooter example.
+
 (April 16, 2023)
 [v2.0.0.116]
 	- Updated Discrete Fourier Transform example and renamed it to DFT.
