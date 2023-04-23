@@ -2,6 +2,7 @@
     - 
 
 [Features]
+    - Allow declaring one-dimensional zero-length arrays.
     - Add more example programs.
 
     - Add breakpoint display to debugger pane.

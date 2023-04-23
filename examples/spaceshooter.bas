@@ -11,11 +11,18 @@ var bgScrollSpeedX = 3
 var playerVelocityX = 200
 var playerVelocityY = 200
 
+var upKey = "ArrowUp"
+var downKey = "ArrowDown"
+var leftKey = "ArrowLeft"
+var rightKey = "ArrowRight"
+var shootKey = " "
 var upKeyDown = false
 var downKeyDown = false
 var leftKeyDown = false
 var rightKeyDown = false
-var spaceKeyDown = false
+var shootKeyDown = false
+
+array bulletNames[0]
 
 setup()
 
@@ -47,7 +54,6 @@ function setup()
   bgImageHeight = getImageHeight("bg")
 
   addSprite("player-ship", "player-ship-sheet", 50, 50)
-  addSprite("bullet", "bullet-sheet", 100, 100)
 
   hideConsole()
   showCanvas()
@@ -94,30 +100,66 @@ function onKeyDown(key)
     return
   end if
 
-  if key = "ArrowUp" then
+  if (key = upKey) and (not upKeyDown) then
+    upKeyDown = true
     setSpriteVelocityY("player-ship", -playerVelocityY)
     return
   end if
 
-  if key = "ArrowDown" then
+  if (key = downKey) and (not downKeyDown) then
+    downKeyDown = true
     setSpriteVelocityY("player-ship", playerVelocityY)
     return
   end if
 
-  if key = "ArrowLeft" then
+  if (key = leftKey) and (not leftKeyDown) then
+    leftKeyDown = true
     setSpriteVelocityX("player-ship", -playerVelocityX)
     return
   end if
 
-  if key = "ArrowRight" then
+  if (key = rightKey) and (not rightKeyDown) then
+    rightKeyDown = true
     setSpriteVelocityX("player-ship", playerVelocityX)
+    return
+  end if
+
+  if (key = shootKey) and (not shootKeyDown) then
+    shootKeyDown = true
+    addBullet()
     return
   end if
 end function
 
 function onKeyUp(key)
-  if (key = "ArrowUp") or (key = "ArrowDown") then setSpriteVelocityY("player-ship", 0)
-  if (key = "ArrowLeft") or (key = "ArrowRight") then setSpriteVelocityX("player-ship", 0)
+  if key = upKey then
+    upKeyDown = false
+    setSpriteVelocityY("player-ship", 0)
+    return
+  end if
+  
+  if key = downKey then
+    downKeyDown = false
+    setSpriteVelocityY("player-ship", 0)
+    return
+  end if
+
+  if key = leftKey then
+    leftKeyDown = false
+    setSpriteVelocityX("player-ship", 0)
+    return
+  end if
+  
+  if key = rightKey then
+    rightKeyDown = false
+    setSpriteVelocityX("player-ship", 0)
+    return
+  end if
+
+  if key = shootKey then
+    shootKeyDown = false
+    return
+  end if
 end function
 
 function updatePhysics()
@@ -127,10 +169,27 @@ function updatePhysics()
 end function
   
 function checkCollisions()
+  var bulletIndex
+
+  for bulletIndex = 0 to len(bulletNames) - 1
+    if not spriteOverlapsRect(bulletNames[bulletIndex], 0, 0, canvasWidth, canvasHeight) then
+      setSpriteX(bulletNames[bulletIndex], -getSpriteDrawWidth(bulletNames[bulletIndex]))
+    end if
+  next bulletIndex
 end function
 
 function drawBG()
   drawImageTiled("bg", 0, 0, canvasWidth, canvasHeight, -bgOffsetX, 0)
   if bgOffsetX >= canvasWidth then bgOffsetX = bgOffsetX % canvasWidth
   bgOffsetX = bgOffsetX + bgScrollSpeedX
+end function
+
+function addBullet()
+  var newBulletName = "bullet" + str(len(bulletNames))
+  var newBulletX = getSpriteX("player-ship") + getSpriteDrawWidth("player-ship")
+  var newBulletY = getSpriteY("player-ship")
+
+  addSprite(newBulletName, "bullet-sheet", newBulletX, newBulletY)
+  setSpriteVelocityX(newBulletName, 400)
+  addArrayItem(bulletNames, newBulletName)
 end function

@@ -91,12 +91,17 @@ class ObjArray
   {
     var newLinearSize = 1;
 
-    for(var n = 0; n < newDimSizeList.length; n++)
+    if((newDimSizeList.length == 1) && (newDimSizeList[0] == 0))
+      newLinearSize = 0;
+    else
     {
-      if(newDimSizeList[n] <= 0)
-        return false;
+      for(var n = 0; n < newDimSizeList.length; n++)
+      {
+        if(newDimSizeList[n] <= 0)
+          return false;
 
-      newLinearSize *= newDimSizeList[n];
+        newLinearSize *= newDimSizeList[n];
+      }
     }
 
     this.dimSizes = newDimSizeList;
