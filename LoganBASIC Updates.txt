@@ -1,4 +1,6 @@
 (April 23, 2023)
+[v2.0.0.119]
+	- Modified array handling to allow declaring zero-length arrays.
 [v2.0.0.118]
 	- Updated Space Shooter example.
 

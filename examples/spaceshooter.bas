@@ -70,6 +70,13 @@ function setup()
 end function
 
 function cleanup()
+  var bulletIndex
+
+  for bulletIndex = 0 to len(bulletNames) - 1
+    removeSprite(bulletNames[bulletIndex])
+  next bulletIndex
+  redim bulletNames[0]
+
   removeSprite("player-ship")
   unloadSpriteSheet("player-ship-sheet")
   unloadImage("bg")
@@ -171,9 +178,9 @@ end function
 function checkCollisions()
   var bulletIndex
 
-  for bulletIndex = 0 to len(bulletNames) - 1
+  for bulletIndex = len(bulletNames) - 1 to 0 step -1
     if not spriteOverlapsRect(bulletNames[bulletIndex], 0, 0, canvasWidth, canvasHeight) then
-      setSpriteX(bulletNames[bulletIndex], -getSpriteDrawWidth(bulletNames[bulletIndex]))
+      removeBullet(bulletIndex)
     end if
   next bulletIndex
 end function
@@ -185,11 +192,20 @@ function drawBG()
 end function
 
 function addBullet()
-  var newBulletName = "bullet" + str(len(bulletNames))
+  var newBulletName = "bullet" + str(len(bulletNames) + 1)
   var newBulletX = getSpriteX("player-ship") + getSpriteDrawWidth("player-ship")
   var newBulletY = getSpriteY("player-ship")
 
   addSprite(newBulletName, "bullet-sheet", newBulletX, newBulletY)
   setSpriteVelocityX(newBulletName, 400)
   addArrayItem(bulletNames, newBulletName)
+
+  print "Added " + newBulletName
+end function
+
+function removeBullet(bulletIndex)
+  print "Removed " + bulletNames[bulletIndex]
+  
+  removeSprite(bulletNames[bulletIndex])
+  removeArrayItem(bulletNames, bulletIndex)
 end function

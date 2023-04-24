@@ -1,8 +1,7 @@
 [Bugs]
-    - 
+    - Space Shooter example having name collisions with bullet sprite names.
 
 [Features]
-    - Allow declaring one-dimensional zero-length arrays.
     - Add more example programs.
 
     - Add breakpoint display to debugger pane.

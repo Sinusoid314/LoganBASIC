@@ -99,7 +99,7 @@ class ObjArray
       {
         if(newDimSizeList[n] <= 0)
           return false;
-
+        
         newLinearSize *= newDimSizeList[n];
       }
     }
@@ -159,9 +159,9 @@ class ObjArray
       return "Can only add items to a one-dimensional array.";
 
     if(beforeIndex == -1)
-      beforeIndex = this.items.length - 1;
+      beforeIndex = this.items.length;
 
-    if((beforeIndex < 0) || (beforeIndex >= this.items.length))
+    if((beforeIndex < 0) || (beforeIndex > this.items.length))
       return "Array index '" + beforeIndex + "' out of bounds.";
 
     this.items.splice(beforeIndex, 0, newVal);
