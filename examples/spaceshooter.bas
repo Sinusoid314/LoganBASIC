@@ -27,11 +27,13 @@ var enemyShipCounter = 0
 array enemyShips[0]
 var enemyVelocityX = -300
 array enemyBullets[0]
+var enemyExplosionCounter = 0
 array enemyExplosions[0]
-var enemySpawnTimer = "enemy-spawn"
+var enemySpawnAccumulator = 0
 var enemySpawnDelay = 5000
-var enemyFireTimer = "enemy-fire"
+var enemyFireAccumulator = 0
 var enemyFireDelay = 1000
+var enemyFireRate = 0.6
 
 var upKey = "ArrowUp"
 var downKey = "ArrowDown"
@@ -103,15 +105,30 @@ function setup()
 end function
 
 function cleanup()
-  var bulletIndex
+  var index
 
-  for bulletIndex = 0 to len(bulletNames) - 1
-    removeSprite(bulletNames[bulletIndex])
-  next bulletIndex
-  redim bulletNames[0]
+  for index = len(enemyShips) - 1 to 0 step -1
+    removeEnemyShip(index)
+  next index
+
+  for index = len(enemyExplosions) - 1 to 0 step -1
+    removeEnemyExplosion(index)
+  next index
+
+  for index = len(enemyBullets) - 1 to 0 step -1
+    removeEnemyBullet(index)
+  next index
+
+  for index = len(playerBullets) - 1 to 0 step -1
+    removePlayerBullet(index)
+  next index
 
   removeSprite(playerShip)
+  removeSprite(playerExplosion)
   unloadSpriteSheet(playerShipSheet)
+  unloadSpriteSheet(enemyShipSheet)
+  unloadSpriteSheet(bulletSheet)
+  unloadSpriteSheet(explosionSheet)
   unloadImage(bgImage)
 end function
 
@@ -124,17 +141,14 @@ function mainLoop()
   updatePhysics()
   
   checkInBounds()
-
   checkCollisions()
-
   checkExplosions()
+  triggerEnemyFire()
+  spawnEnemy()
   
   clearCanvas()
-  
   drawBG()
-  
   drawSprites()
-
   drawCanvasBuffer(mainLoop)
 end function
 
@@ -206,12 +220,6 @@ function onKeyUp(key)
   end if
 end function
 
-function onEnemyFireTimer()
-end function
-
-function onSpawnEnemyTimer()
-end function
-
 function updatePhysics()
   deltaTime = min(((time() - prevTime) / 1000), maxDeltaTime)
   prevTime = time()
@@ -219,19 +227,84 @@ function updatePhysics()
 end function
 
 function checkInBounds()
+  checkEnemyShipsInBounds()
+  checkEnemyBulletsInBounds()
+  checkPlayerBulletsInBounds()
+  checkPlayerShipInBounds()
 end function
-  
-function checkCollisions()
+
+function checkEnemyShipsInBounds()
+  var shipIndex
+
+  for shipIndex = len(enemyShips) - 1 to 0 step -1
+    if not spriteOverlapsRect(enemyShips[shipIndex], 0, 0, canvasWidth, canvasHeight) then
+      removeEnemyShip(shipIndex)
+    end if
+  next shipIndex
+end function
+
+function checkEnemyBulletsInBounds()
   var bulletIndex
 
-  for bulletIndex = len(bulletNames) - 1 to 0 step -1
-    if not spriteOverlapsRect(bulletNames[bulletIndex], 0, 0, canvasWidth, canvasHeight) then
-      removeBullet(bulletIndex)
+  for bulletIndex = len(enemyBullets) - 1 to 0 step -1
+    if not spriteOverlapsRect(enemyBullets[bulletIndex], 0, 0, canvasWidth, canvasHeight) then
+      removeEnemyBullet(bulletIndex)
     end if
   next bulletIndex
 end function
 
+function checkPlayerBulletsInBounds()
+  var bulletIndex
+
+  for bulletIndex = len(playerBullets) - 1 to 0 step -1
+    if not spriteOverlapsRect(playerBullets[bulletIndex], 0, 0, canvasWidth, canvasHeight) then
+      removePlayerBullet(bulletIndex)
+    end if
+  next bulletIndex
+end function
+
+function checkPlayerShipInBounds()
+  var newX, newY
+
+  if not getSpriteVisible(playerShip) then return
+
+  newX = clamp(getSpriteX(playerShip), 0, canvasWidth - getSpriteDrawWidth(playerShip))
+  newY = clamp(getSpriteY(playerShip), 0, canvasHeight - getSpriteDrawHeight(playerShip))
+  setSpriteX(playerShip, newX)
+  setSpriteY(playerShip, newY)
+end function
+  
+function checkCollisions()
+end function
+
 function checkExplosions()
+end function
+
+function spawnEnemy()
+  var enemyShip = "enemy" + str(enemyShipCounter)
+
+  enemyShipCounter = enemyShipCounter + 1
+
+  enemySpawnAccumulator = enemySpawnAccumulator + deltaTime
+  if enemySpawnAccumulator < enemySpawnDelay then return
+  enemySpawnAccumulator = 0
+
+  addArrayItem(enemyShips, enemyShip)
+  addSprite(enemyShip, enemyShipSheet, canvasWidth - 1, 0)
+  setSpriteX(enemyShip, int(rnd() * (canvasHeight - getSpriteDrawHeight(enemyShip))))
+  setSpriteVelocityX(enemyShip, enemyVelocityX)
+end function
+
+function triggerEnemyFire()
+  var shipIndex
+
+  enemyFireAccumulator = enemyFireAccumulator + deltaTime
+  if enemyFireAccumulator < enemyFireDelay then return
+  enemyFireAccumulator = 0
+
+  for shipIndex = 0 to len(enemyShips) - 1
+    if rnd() <= enemyFireRate then fireEnemyBullet(enemyShips[shipIndex])
+  next enemyIndex
 end function
 
 function drawBG()
@@ -249,35 +322,28 @@ end function
 function fireEnemyBullet()
 end function
 
-function removeEnemyBullet()
-end function
-
 function firePlayerBullet()
 end function
 
-function removePlayerBullet()
+function removeEnemyShip(shipIndex)
+  removeSprite(enemyShips[shipIndex])
+  removeArrayItem(enemyShips, shipIndex)
+end function
+
+function removeEnemyExplosion(explosionIndex)
+  removeSprite(enemyExplosions[explosionIndex])
+  removeArrayItem(enemyExplosions, explosionIndex)
+end function
+
+function removeEnemyBullet(bulletIndex)
+  removeSprite(enemyBullets[bulletIndex])
+  removeArrayItem(enemyBullets, bulletIndex)
+end function
+
+function removePlayerBullet(bulletIndex)
+  removeSprite(playerBullets[bulletIndex])
+  removeArrayItem(playerBullets, bulletIndex)
 end function
 
 function endGame()
 end function
-
-'function addBullet()
-'  var newBulletName = "bullet" + str(len(bulletNames) + 1)
-'  var newBulletX = getSpriteX(playerShip) + getSpriteDrawWidth(playerShip)
-'  var newBulletY = getSpriteY(playerShip)
-'
-'  addSprite(newBulletName, bulletSheet, newBulletX, newBulletY)
-'  setSpriteVelocityX(newBulletName, 400)
-'  addArrayItem(bulletNames, newBulletName)
-'
-'  print "Added " + newBulletName
-'end function
-
-'function removeBullet(bulletIndex)
-'  print "Removed " + bulletNames[bulletIndex]
-'  
-'  removeSprite(bulletNames[bulletIndex])
-'  removeArrayItem(bulletNames, bulletIndex)
-'end function
-
-
