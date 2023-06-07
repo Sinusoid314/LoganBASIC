@@ -89,6 +89,7 @@ function setup()
 
   addSprite(playerExplosion, explosionSheet, 0, 0)
   setSpriteVisible(playerExplosion, false)
+  setSpriteCycles(playerExplosion, 1)
 
   hideConsole()
   showCanvas()
@@ -144,7 +145,7 @@ function mainLoop()
   checkCollisions()
   checkExplosions()
   triggerEnemyFire()
-  spawnEnemy()
+  spawnEnemyShip()
   
   clearCanvas()
   drawBG()
@@ -157,6 +158,8 @@ function onKeyDown(key)
     isDone = true
     return
   end if
+
+  if not getSpriteVisible(playerShip) then return
 
   if (key = upKey) and (not upKeyDown) then
     upKeyDown = true
@@ -184,7 +187,7 @@ function onKeyDown(key)
 
   if (key = shootKey) and (not shootKeyDown) then
     shootKeyDown = true
-    addBullet()
+    firePlayerBullet()
     return
   end if
 end function
@@ -275,12 +278,60 @@ function checkPlayerShipInBounds()
 end function
   
 function checkCollisions()
+  checkEnemyShipCollisions()
+  checkPlayerShipCollisions()
+end function
+
+function checkEnemyShipCollisions()
+  var shipIndex, bulletIndex
+
+  for shipIndex = len(enemyShips) - 1 to 0 step -1
+    for bulletIndex = 0 to len(playerBullets) - 1
+      if spritesOverlap(enemyShips[shipIndex], playerBullets[bulletIndex]) then
+        removePlayerBullet(bulletIndex)
+        explodeEnemyShip(shipIndex)
+        exit for
+      end if
+    next bulletIndex
+  next shipIndex
+end function
+
+function checkPlayerShipCollisions()
+  var shipIndex, bulletIndex
+
+  if not getSpriteVisible(playerShip) then return
+
+  for bulletIndex = 0 to len(enemyBullets) - 1
+    if spritesOverlap(playerShip, enemyBullets[bulletIndex]) then
+      removeEnemyBullet(bulletIndex)
+      explodePlayerShip()
+      return
+    end if
+  next bulletIndex
+
+  for shipIndex = 0 to len(enemyShips) - 1
+    if spritesOverlap(playerShip, enemyShips[shipIndex]) then
+      explodeEnemyShip(shipIndex)
+      explodePlayerShip()
+      return
+    end if
+  next shipIndex
 end function
 
 function checkExplosions()
+  var explosionIndex
+
+  for explosionIndex = len(enemyExplosions) - 1 to 0 step -1
+    if not getSpritePlaying(enemyExplosions[explosionIndex]) then
+      removeEnemyExplosion(explosionIndex)
+    end if
+  next explosionIndex
+
+  if not getSpriteVisible(playerExplosion) then return
+  if not getSpritePlaying(playerExplosion) then endGame()
 end function
 
-function spawnEnemy()
+function spawnEnemyShip()
   var enemyShip = "enemy" + str(enemyShipCounter)
 
   enemyShipCounter = enemyShipCounter + 1
@@ -313,16 +364,52 @@ function drawBG()
   bgOffsetX = bgOffsetX + bgScrollSpeedX
 end function
 
-function explodePlayer()
+function explodeEnemyShip(shipIndex)
+  var explosionX = getSpriteX(enemyShips[shipIndex])
+  var explosionY = getSpriteY(enemyShips[shipIndex])
+  var explosion = "explosion" + str(enemyExplosionCounter)
+
+  enemyExplosionCounter = enemyExplosionCounter + 1
+  addArrayItem(enemyExplosions, explosion)
+  addSprite(explosion, explosionX, explosionY)
+  setSpriteCycles(explosion, 1)
+  setSpritePlaying(explosion, true)
+
+  removeEnemyShip(shipIndex)
 end function
 
-function explodeEnemy()
+function explodePlayerShip()
+  setSpriteX(playerExplosion, getSpriteX(playerShip))
+  setSpriteY(playerExplosion, getSpriteY(playerShip))
+  setSpriteVisible(playerExplosion, true)
+  setSpritePlaying(playerExplosion, true)
+
+  setSpriteVelocityX(playerShip, 0)
+  setSpriteVelocityY(playerShip, 0)'
+  setSpriteVisible(playerShip, false)
 end function
 
-function fireEnemyBullet()
+function fireEnemyBullet(enemyShip)
+  var bulletX = getSpriteX(enemyShip)
+  var bulletY = getSpriteY(enemyShip)
+  var bullet = "bullet" + str(bulletCounter)
+
+  bulletCounter = bulletCounter + 1
+  addArrayItem(enemyBullets, bullet)
+  addSprite(bullet, bulletSheet, bulletX, bulletY)
+  setSpriteVelocityX(bullet, -bulletSpeed)
+  setSpriteX(bullet, bulletX - getSpriteDrawWidth(bullet))
 end function
 
 function firePlayerBullet()
+  var bulletX = getSpriteX(playerShip) + getSpriteDrawWidth(playerShip)
+  var bulletY = getSpriteY(playerShip)
+  var bullet = "bullet" + str(bulletCounter)
+
+  bulletCounter = bulletCounter + 1
+  addArrayItem(playerBullets, bullet)
+  addSprite(bullet, bulletSheet, bulletX, bulletY)
+  setSpriteVelocityX(bullet, bulletSpeed)
 end function
 
 function removeEnemyShip(shipIndex)
@@ -346,4 +433,8 @@ function removePlayerBullet(bulletIndex)
 end function
 
 function endGame()
+  setTextFont("30px system-ui")
+  setLineColor("red")
+  setFillColor("white")
+  drawText("Game Over", int(canvasWidth / 2), int(canvasHeight / 2))
 end function
