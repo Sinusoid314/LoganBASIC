@@ -6,7 +6,7 @@ var bgScrollSpeedX = 3
 var bgImageWidth, bgImageHeight
 var canvasWidth = 600
 var canvasHeight = 400
-var isDone = false
+var gameOver = false
 
 var bgImage = "bg-image"
 var playerShipSheet = "player-ship-sheet"
@@ -30,10 +30,10 @@ array enemyBullets[0]
 var enemyExplosionCounter = 0
 array enemyExplosions[0]
 var enemySpawnAccumulator = 0
-var enemySpawnDelay = 5000
+var enemySpawnDelay = 1
 var enemyFireAccumulator = 0
-var enemyFireDelay = 1000
-var enemyFireRate = 0.6
+var enemyFireDelay = 1
+var enemyFireRate = 0.8
 
 var upKey = "ArrowUp"
 var downKey = "ArrowDown"
@@ -75,7 +75,7 @@ function setup()
     end
   end if
 
-  if not loadSpriteSheet(explosionSheet, "../examples/images/explosion-sheet.png", 1, 1) then
+  if not loadSpriteSheet(explosionSheet, "../examples/images/explosion-sheet.png", 4, 1) then
     print "Failed to load image 'explosion-sheet.png'."
     end
   end if
@@ -90,6 +90,7 @@ function setup()
   addSprite(playerExplosion, explosionSheet, 0, 0)
   setSpriteVisible(playerExplosion, false)
   setSpriteCycles(playerExplosion, 1)
+  setSpriteFrameRate(playerExplosion, 3)
 
   hideConsole()
   showCanvas()
@@ -134,11 +135,6 @@ function cleanup()
 end function
 
 function mainLoop()
-  if isDone then
-    cleanup()
-    end
-  end if
-
   updatePhysics()
   
   checkInBounds()
@@ -150,13 +146,16 @@ function mainLoop()
   clearCanvas()
   drawBG()
   drawSprites()
+
+  if gameOver then displayGameOver()
+
   drawCanvasBuffer(mainLoop)
 end function
 
 function onKeyDown(key)
   if key = "q" then
-    isDone = true
-    return
+    cleanup()
+    end
   end if
 
   if not getSpriteVisible(playerShip) then return
@@ -328,21 +327,25 @@ function checkExplosions()
   next explosionIndex
 
   if not getSpriteVisible(playerExplosion) then return
-  if not getSpritePlaying(playerExplosion) then endGame()
+  if not getSpritePlaying(playerExplosion) then
+    setSpriteVisible(playerExplosion, false)
+    gameOver = true
+  end if
 end function
 
 function spawnEnemyShip()
-  var enemyShip = "enemy" + str(enemyShipCounter)
-
-  enemyShipCounter = enemyShipCounter + 1
+  var enemyShip
 
   enemySpawnAccumulator = enemySpawnAccumulator + deltaTime
   if enemySpawnAccumulator < enemySpawnDelay then return
   enemySpawnAccumulator = 0
 
+  enemyShip = "enemy" + str(enemyShipCounter)
+  enemyShipCounter = enemyShipCounter + 1
+
   addArrayItem(enemyShips, enemyShip)
   addSprite(enemyShip, enemyShipSheet, canvasWidth - 1, 0)
-  setSpriteX(enemyShip, int(rnd() * (canvasHeight - getSpriteDrawHeight(enemyShip))))
+  setSpriteY(enemyShip, int(rnd() * (canvasHeight - getSpriteDrawHeight(enemyShip))))
   setSpriteVelocityX(enemyShip, enemyVelocityX)
 end function
 
@@ -355,7 +358,7 @@ function triggerEnemyFire()
 
   for shipIndex = 0 to len(enemyShips) - 1
     if rnd() <= enemyFireRate then fireEnemyBullet(enemyShips[shipIndex])
-  next enemyIndex
+  next shipIndex
 end function
 
 function drawBG()
@@ -371,7 +374,7 @@ function explodeEnemyShip(shipIndex)
 
   enemyExplosionCounter = enemyExplosionCounter + 1
   addArrayItem(enemyExplosions, explosion)
-  addSprite(explosion, explosionX, explosionY)
+  addSprite(explosion, explosionSheet, explosionX, explosionY)
   setSpriteCycles(explosion, 1)
   setSpritePlaying(explosion, true)
 
@@ -432,9 +435,9 @@ function removePlayerBullet(bulletIndex)
   removeArrayItem(playerBullets, bulletIndex)
 end function
 
-function endGame()
+function displayGameOver()
   setTextFont("30px system-ui")
   setLineColor("red")
   setFillColor("white")
-  drawText("Game Over", int(canvasWidth / 2), int(canvasHeight / 2))
+  drawText("Game Over", int((canvasWidth - 150) / 2) , int(canvasHeight / 2))
 end function
