@@ -13,6 +13,8 @@ importScripts('thread_common.js',
               'sound_worker.js',
               'sprite_worker.js');
 
+var expectedResultMessageID = 0;
+var pendingMessages = [];
 var mainVM = new VM();
 
 mainVM.addNativeFuncArray([].concat(stdNativeFuncs, consoleNativeFuncs, canvasNativeFuncs, soundNativeFuncs, spriteNativeFuncs));
@@ -38,6 +40,32 @@ function resetMain()
 
 function progWorker_onMessage(message)
 //Process messages sent from the UI thread
+{
+  if(!expectedResultMessageID)
+  {
+    dispatchMessage(message);
+    return;
+  }
+
+  if(message.data.msgId == expectedResultMessageID)
+  {
+    expectedResultMessageID = 0;
+
+    dispatchMessage(message);
+    if(expectedResultMessageID) return;
+
+    while(pendingMessages.length)
+    {
+      dispatchMessage(pendingMessages.shift());
+      if(expectedResultMessageID) return;
+    }
+  }
+  else
+    pendingMessages.push(message);
+}
+
+function dispatchMessage(message)
+//Call the appropriate message-handling function
 {
   switch(message.data.msgId)
   {

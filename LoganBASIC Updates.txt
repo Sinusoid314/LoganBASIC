@@ -1,3 +1,9 @@
+(June 13, 2023)
+[v2.0.0.124]
+	- Added expectedResultMessageID variable, pendingMessages array, and dispatchMessage() function to
+	  main_worker module to keep the worker thread from being interrupted by UI event messages while waiting
+	  for a specific UI response message.
+
 (June 9, 2023)
 [v2.0.0.123]
 	- Added to Space Shooter example.

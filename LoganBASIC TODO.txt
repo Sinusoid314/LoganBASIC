@@ -1,8 +1,8 @@
 [Bugs]
-    - Runtime error when firing player bullets in Space Shooter example.
+    - UI event messages interrupting the worker thread while it waits for a specific UI response message.
 
 [Features]
-    - Test all examples that use arrays.
+    - Test all examples.
     - Finish DFT and Space Shooter examples
 
     - Add getSpriteSheetFrameWith() and getSpriteSheetFrameHeight() native functions.
