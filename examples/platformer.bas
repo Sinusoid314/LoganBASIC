@@ -92,12 +92,12 @@ function setup()
   
   addSprite("car", "car-sheet", 1000, 0)
   setSpriteY("car", getSpriteY("curb1") - getSpriteDrawHeight("car"))
-    
-  hideConsole()
-  showCanvas()
   
   setCanvasWidth(canvasWidth)
   setCanvasHeight(canvasHeight)
+  
+  hideConsole()
+  showCanvas()
   
   enableCanvasBuffer()
   

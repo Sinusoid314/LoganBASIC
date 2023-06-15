@@ -1,4 +1,7 @@
 (June 14, 2023)
+[v2.0.0.126]
+	- Added a score display to Space Shooter example.
+	- Modified Scrolling Platformer example to resize the canvas before showing it in order to make it scroll completely into view.
 [v2.0.0.125]
 	- Modified Space Shooter example to resize the canvas before showing it in order to make it scroll completely into view.
 	- Modified sendImageRequest() in canvas_worker module, funcInput() in console_worker module, sendSoundRequest()

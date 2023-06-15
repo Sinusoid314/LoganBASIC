@@ -7,6 +7,7 @@ var bgImageWidth, bgImageHeight
 var canvasWidth = 600
 var canvasHeight = 400
 var gameOver = false
+var score = 0
 
 var bgImage = "bg-image"
 var playerShipSheet = "player-ship-sheet"
@@ -97,7 +98,7 @@ function setup()
 
   hideConsole()
   showCanvas()
-  
+
   enableCanvasBuffer()
 
   setCanvasEvent("keydown", onKeyDown)
@@ -147,6 +148,7 @@ function mainLoop()
   drawBG()
   drawSprites()
 
+  displayScore()
   if gameOver then displayGameOver()
 
   drawCanvasBuffer(mainLoop)
@@ -379,6 +381,8 @@ function explodeEnemyShip(shipIndex)
   setSpritePlaying(explosion, true)
 
   removeEnemyShip(shipIndex)
+
+  score = score + 1
 end function
 
 function explodePlayerShip()
@@ -435,9 +439,14 @@ function removePlayerBullet(bulletIndex)
   removeArrayItem(playerBullets, bulletIndex)
 end function
 
+function displayScore()
+  setTextFont("12px system-ui")
+  setFillColor("white")
+  drawText("Score: " + str(score), 10, 15)
+end function
+
 function displayGameOver()
   setTextFont("30px system-ui")
-  setLineColor("red")
-  setFillColor("white")
+  setFillColor("red")
   drawText("Game Over", int((canvasWidth - 150) / 2) , int(canvasHeight / 2))
 end function
