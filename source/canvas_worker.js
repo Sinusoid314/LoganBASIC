@@ -78,6 +78,7 @@ function sendImageRequest(vm, msgId, msgData)
 
   postMessage({msgId: msgId, msgData: msgData});
 
+  expectedResultMessageID = MSGID_IMAGE_REQUEST_RESULT;
   vm.runLoopExitFlag = true;
 }
 

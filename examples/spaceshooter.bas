@@ -92,11 +92,11 @@ function setup()
   setSpriteCycles(playerExplosion, 1)
   setSpriteFrameRate(playerExplosion, 3)
 
-  hideConsole()
-  showCanvas()
-  
   setCanvasWidth(canvasWidth)
   setCanvasHeight(canvasHeight)
+
+  hideConsole()
+  showCanvas()
   
   enableCanvasBuffer()
 

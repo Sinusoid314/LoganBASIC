@@ -1,5 +1,5 @@
 [Bugs]
-    - UI event messages interrupting the worker thread while it waits for a specific UI response message.
+    - 
 
 [Features]
     - Test all examples.

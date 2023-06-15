@@ -43,6 +43,7 @@ function sendSoundRequest(vm, msgId, msgData)
 
   postMessage({msgId: msgId, msgData: msgData});
 
+  expectedResultMessageID = MSGID_SOUND_REQUEST_RESULT;
   vm.runLoopExitFlag = true;
 }
 

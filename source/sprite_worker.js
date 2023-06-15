@@ -138,6 +138,11 @@ function sendSpriteSheetRequest(vm, msgId, msgData)
 
   postMessage({msgId: msgId, msgData: msgData});
 
+  if(msgId == MSGID_SPRITE_SHEET_REF_REQUEST)
+    expectedResultMessageID = MSGID_SPRITE_SHEET_REF_REQUEST_RESULT;
+  else
+    expectedResultMessageID = MSGID_SPRITE_SHEET_REQUEST_RESULT;
+  
   vm.runLoopExitFlag = true;
 }
 

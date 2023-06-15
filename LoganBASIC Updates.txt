@@ -1,3 +1,10 @@
+(June 14, 2023)
+[v2.0.0.125]
+	- Modified Space Shooter example to resize the canvas before showing it in order to make it scroll completely into view.
+	- Modified sendImageRequest() in canvas_worker module, funcInput() in console_worker module, sendSoundRequest()
+	  in sound_worker module, and sendSpriteSheetRequest() in sprite_worker module to set expectedResultMessageID
+	  to the appropriate expected result message.
+
 (June 13, 2023)
 [v2.0.0.124]
 	- Added expectedResultMessageID variable, pendingMessages array, and dispatchMessage() function to
