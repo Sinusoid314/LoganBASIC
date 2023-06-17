@@ -1,3 +1,9 @@
+(June 16, 2023)
+[v2.0.0.127]
+	- Modified resetMain() in main_worker module to reset expectedResultMessageID and pendingMessages.
+	- Removed setting of expectedResultMessageID in funcInput() in console_worker module.
+	- Edited the explosion sprite in Space Shooter example to be rounded at the edges.
+
 (June 14, 2023)
 [v2.0.0.126]
 	- Added a score display to Space Shooter example.

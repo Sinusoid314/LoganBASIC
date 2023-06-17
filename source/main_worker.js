@@ -36,11 +36,19 @@ function resetMain()
   
   mainVM.resetActiveRunState();
   mainVM.globals.clear();
+
+  expectedResultMessageID = 0;
+  pendingMessages = [];
 }
 
 function progWorker_onMessage(message)
 //Process messages sent from the UI thread
 {
+  console.clear();
+  console.log(expectedResultMessageID);
+  console.log(message.data.msgId);
+  pendingMessages.forEach(msg => console.log(msg.data.msgId));
+
   if(!expectedResultMessageID)
   {
     dispatchMessage(message);

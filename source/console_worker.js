@@ -56,7 +56,6 @@ function funcInput(vm, args)
   postMessage({msgId: MSGID_PRINT, msgData: {printVal: args[0]}});
   postMessage({msgId: MSGID_INPUT_REQUEST});
 
-  expectedResultMessageID = MSGID_INPUT_RESULT;
   vm.runLoopExitFlag = true;
 
   return undefined;
