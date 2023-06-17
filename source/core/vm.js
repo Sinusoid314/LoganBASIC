@@ -6,6 +6,13 @@ const INTERPRET_COMPILE_ERROR = 1;
 const INTERPRET_RUNTIME_ERROR = 2;
 const INTERPRET_SUCCESS = 3;
 
+const CALLFRAME_FLAG_POP_RETURN_VAL = 0x0001;
+const CALLFRAME_FLAG_EXIT_ON_RETURN = 0x0010;
+const CALLFRAME_FLAG_IS_UNWIND_ROOT = 0x0100;
+const CALLFRAME_FLAG_OPCALL_DEFAULT = 0x0000;
+const CALLFRAME_FLAG_INTERPRET_DEFAULT = CALLFRAME_FLAG_POP_RETURN_VAL | CALLFRAME_FLAG_EXIT_ON_RETURN | CALLFRAME_FLAG_IS_UNWIND_ROOT;
+const CALLFRAME_FLAG_CALLBACK_DEFAULT = CALLFRAME_FLAG_POP_RETURN_VAL | CALLFRAME_FLAG_EXIT_ON_RETURN;
+
 class VMError
 {
   constructor(message, sourceLineNum, sourceName)
@@ -18,13 +25,14 @@ class VMError
 
 class CallbackContext
 {
-  constructor(vm, userFunc = null)
+  constructor(vm, userFunc = null, callFrameFlags = CALLFRAME_FLAG_CALLBACK_DEFAULT)
   {
     this.vm = vm;
     this.userFunc = userFunc;
+    this.callFrameFlags = callFrameFlags;
   }
 
-  resumeVM(args = [], popReturnVal = true)
+  resumeVM(args = [])
   //Load the user function and arguments onto the vm's stack, call the function, and start the vm
   {
     var argCount = args.length;
@@ -39,7 +47,7 @@ class CallbackContext
       for(var argIndex = 0; argIndex < argCount; argIndex++)
         this.vm.stack.push(args[argIndex]);
 
-      this.vm.callUserFunc(argCount, popReturnVal);
+      this.vm.callUserFunc(argCount, this.callFrameFlags);
     }
 
     this.vm.run();
@@ -48,13 +56,13 @@ class CallbackContext
 
 class CallFrame
 {
-  constructor(func, funcStackIndex, localsStackIndex, localsCount, popReturnVal)
+  constructor(func, funcStackIndex, localsStackIndex, localsCount, flags)
   {
     this.func = func;
     this.funcStackIndex = funcStackIndex;
     this.localsStackIndex = localsStackIndex;
     this.localsCount = localsCount;
-    this.popReturnVal = popReturnVal;
+    this.flags = flags;
     this.currOpIndex = -1;
     this.nextOpIndex = 0;
   }
@@ -130,7 +138,7 @@ class VM
     this.opFuncs[OPCODE_STORE_STRUCT_FIELD_PERSIST] = this.opStoreStructFieldPersist.bind(this);
   }
 
-  interpret(source, sourceName = "")
+  interpret(source, sourceName = "", callFrameFlags = CALLFRAME_FLAG_INTERPRET_DEFAULT)
   //Compile and run the given source code
   {
     var topUserFunc;
@@ -141,7 +149,7 @@ class VM
       return INTERPRET_COMPILE_ERROR;
     
     this.stack.push(topUserFunc);
-    this.callUserFunc(0, true);
+    this.callUserFunc(0, callFrameFlags);
 
     this.run();
     if(this.error != null)
@@ -491,7 +499,7 @@ class VM
     if(func instanceof ObjNativeFunc)
       this.callNativeFunc(argCount);
     else if(func instanceof ObjUserFunc)
-      this.callUserFunc(argCount, false);
+      this.callUserFunc(argCount, CALLFRAME_FLAG_OPCALL_DEFAULT);
     else
       this.runError("Can only call functions.");
   }
@@ -702,7 +710,7 @@ class VM
       this.stack.push(retVal);
   }
 
-  callUserFunc(argCount, popReturnVal)
+  callUserFunc(argCount, callFrameFlags)
   //Load a new call frame for the given user function
   {
     var funcStackIndex = this.stack.length - argCount - 1;
@@ -712,7 +720,7 @@ class VM
     if(argCount != func.paramCount)
       this.runError("Wrong number of arguments for function '" + func.ident + "'.");
 
-    this.callFrames.push(new CallFrame(func, funcStackIndex, localsStackIndex, argCount, popReturnVal));
+    this.callFrames.push(new CallFrame(func, funcStackIndex, localsStackIndex, argCount, callFrameFlags));
     
     this.currCallFrame = this.callFrames[this.callFrames.length - 1];
 
@@ -729,18 +737,20 @@ class VM
 
     this.stack.splice(this.currCallFrame.funcStackIndex, this.stack.length - this.currCallFrame.funcStackIndex - 1);
 
-    if(this.currCallFrame.popReturnVal)
+    if(this.currCallFrame.flags & CALLFRAME_FLAG_POP_RETURN_VAL)
       this.stack.pop();
 
-    this.callFrames.pop();
-
-    if(this.callFrames.length == 0)
+    if(this.callFrames.length == 1)
     {
       this.resetActiveRunState();
       this.runLoopExitFlag = true;
     }
     else
     {
+      if(this.currCallFrame.flags & CALLFRAME_FLAG_EXIT_ON_RETURN)
+        this.runLoopExitFlag = true;
+
+      this.callFrames.pop();
       this.currCallFrame = this.callFrames[this.callFrames.length - 1];
     }
   }

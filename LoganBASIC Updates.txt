@@ -1,3 +1,9 @@
+(June 17, 2023)
+[v2.0.0.128]
+	- Replaced 'popReturnVal' property of CallFrame class with 'flags' bitmask that can contain any combination of
+	  POP_RETURN_VAL, EXIT_ON_RETURN, and IS_UNWIND_ROOT; also modified VM and CallbackContext classes to support
+	  this new property.
+
 (June 16, 2023)
 [v2.0.0.127]
 	- Modified resetMain() in main_worker module to reset expectedResultMessageID and pendingMessages.
