@@ -18,7 +18,12 @@ array nextCells[cellCountX, cellCountY]
 var updateTime = 200
 var prevTime = time()
 
+setCanvasWidth(cellCountX * cellSize)
+setCanvasHeight(cellCountY * cellSize)
+
 hideConsole()
+showCanvas()
+
 enableCanvasBuffer()
 
 setupCells()
@@ -31,9 +36,6 @@ wait
 'Generate the initial cells
 function setupCells()
   var cellX, cellY
-
-  setCanvasWidth(cellCountX * cellSize)
-  setCanvasHeight(cellCountY * cellSize)
 
   for cellY = 0 to cellCountY - 1
     for cellX = 0 to cellCountX - 1

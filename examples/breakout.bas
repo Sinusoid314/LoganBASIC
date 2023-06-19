@@ -41,10 +41,12 @@ var ballColor = "red"
 var prevTime
 var maxDeltaTime = 0.03
 
-hideConsole()
-showCanvas()
 setCanvasWidth(canvasWidth)
 setCanvasHeight(canvasHeight)
+
+hideConsole()
+showCanvas()
+
 enableCanvasBuffer()
 
 setupBricks()

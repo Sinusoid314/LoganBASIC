@@ -66,10 +66,11 @@ function setup()
     setSpriteFrameRate(name, int(rnd()*50) + 1)
   next index
 
-  hideConsole()
-  
   setCanvasWidth(canvasWidth)
   setCanvasHeight(canvasHeight)
+
+  hideConsole()
+  showCanvas()
   
   enableCanvasBuffer()
   

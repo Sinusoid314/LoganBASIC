@@ -1,3 +1,9 @@
+(June 19, 2023)
+[v2.0.0.129]
+	- Modified Game of Life, Bouncing Sprites, and Breakout examples to resize the canvas before showing it in order
+	  to make it scroll completely into view.
+	- Tested example programs.
+
 (June 17, 2023)
 [v2.0.0.128]
 	- Replaced 'popReturnVal' property of CallFrame class with 'flags' bitmask that can contain any combination of

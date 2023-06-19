@@ -1,4 +1,4 @@
-( ) Examples
+(X) Examples
 ( ) Statements
 ( ) Standard Functions
 ( ) Canvas Functions
