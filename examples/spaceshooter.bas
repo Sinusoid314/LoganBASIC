@@ -1,3 +1,12 @@
+'Space Shooter
+'
+'A simple demo of a scrolling space ship shooter game.
+'Left arrow key => Move ship left
+'Right arrow key => Move ship right
+'Up arrow key => Move ship up
+'Down arrow key => Move ship down
+'Space bar => Shoot
+
 var prevTime
 var deltaTime
 var maxDeltaTime = 0.03
@@ -53,6 +62,8 @@ mainLoop()
 
 wait
 
+
+'Load the images and sounds, and create the sprites
 function setup()
   print "Loading images..."
 
@@ -107,6 +118,8 @@ function setup()
   prevTime = time()
 end function
 
+
+'Unload all the sprites, images, and sounds
 function cleanup()
   var index
 
@@ -135,6 +148,8 @@ function cleanup()
   unloadImage(bgImage)
 end function
 
+
+'Main update & draw loop
 function mainLoop()
   updatePhysics()
   
@@ -154,6 +169,8 @@ function mainLoop()
   drawCanvasBuffer(mainLoop)
 end function
 
+
+'Move the ship or shoot when the appropriate key is pressed down
 function onKeyDown(key)
   if key = "q" then
     cleanup()
@@ -193,6 +210,8 @@ function onKeyDown(key)
   end if
 end function
 
+
+'Stop moving the ship, or allow the ship to shoot again, when the appropriate key is released
 function onKeyUp(key)
   if key = upKey then
     upKeyDown = false
@@ -224,12 +243,16 @@ function onKeyUp(key)
   end if
 end function
 
+
+'Apply each sprite's velocity to its position
 function updatePhysics()
   deltaTime = min(((time() - prevTime) / 1000), maxDeltaTime)
   prevTime = time()
   updateSprites(deltaTime)
 end function
 
+
+'Check for any ships or bullets that have moved off screen
 function checkInBounds()
   checkEnemyShipsInBounds()
   checkEnemyBulletsInBounds()
@@ -237,6 +260,8 @@ function checkInBounds()
   checkPlayerShipInBounds()
 end function
 
+
+'If any enemy ships have moved off screen, remove them
 function checkEnemyShipsInBounds()
   var shipIndex
 
@@ -247,6 +272,8 @@ function checkEnemyShipsInBounds()
   next shipIndex
 end function
 
+
+'If any enemy bullets have moved off screen, remove them
 function checkEnemyBulletsInBounds()
   var bulletIndex
 
@@ -257,6 +284,8 @@ function checkEnemyBulletsInBounds()
   next bulletIndex
 end function
 
+
+'If any player bullets have moved off screen, remove them
 function checkPlayerBulletsInBounds()
   var bulletIndex
 
@@ -267,6 +296,8 @@ function checkPlayerBulletsInBounds()
   next bulletIndex
 end function
 
+
+'Make sure the player ship stays within the screen bounds
 function checkPlayerShipInBounds()
   var newX, newY
 
@@ -277,12 +308,17 @@ function checkPlayerShipInBounds()
   setSpriteX(playerShip, newX)
   setSpriteY(playerShip, newY)
 end function
-  
+
+
+'React to any sprites that are touching
 function checkCollisions()
   checkEnemyShipCollisions()
   checkPlayerShipCollisions()
 end function
 
+
+'If any enemy ships have collided with a player bullet, remove the player bullet
+'and explode the enemy ship
 function checkEnemyShipCollisions()
   var shipIndex, bulletIndex
 
@@ -297,6 +333,9 @@ function checkEnemyShipCollisions()
   next shipIndex
 end function
 
+
+'If the player ship has collided with either an enemy ship or enemy bullet, remove
+'the enemy ship/bullet and explode the player ship
 function checkPlayerShipCollisions()
   var shipIndex, bulletIndex
 
@@ -319,6 +358,9 @@ function checkPlayerShipCollisions()
   next shipIndex
 end function
 
+
+'If any enemy explosions are done playing, remove them. If the player explosion
+'is done playing, hide the player ship and set the gameOver flag
 function checkExplosions()
   var explosionIndex
 
@@ -335,6 +377,8 @@ function checkExplosions()
   end if
 end function
 
+
+'Create a new enemy ship after a set interval
 function spawnEnemyShip()
   var enemyShip
 
@@ -351,6 +395,8 @@ function spawnEnemyShip()
   setSpriteVelocityX(enemyShip, enemyVelocityX)
 end function
 
+
+'Randomly trigger enemy fire after a set interval
 function triggerEnemyFire()
   var shipIndex
 
@@ -363,12 +409,16 @@ function triggerEnemyFire()
   next shipIndex
 end function
 
+
+'Draw the background image
 function drawBG()
   drawImageTiled(bgImage, 0, 0, canvasWidth, canvasHeight, -bgOffsetX, 0)
   if bgOffsetX >= canvasWidth then bgOffsetX = bgOffsetX % canvasWidth
   bgOffsetX = bgOffsetX + bgScrollSpeedX
 end function
 
+
+'Remove the given enemy ship and create an explosion in its place
 function explodeEnemyShip(shipIndex)
   var explosionX = getSpriteX(enemyShips[shipIndex])
   var explosionY = getSpriteY(enemyShips[shipIndex])
@@ -385,6 +435,8 @@ function explodeEnemyShip(shipIndex)
   score = score + 1
 end function
 
+
+'Hide the player ship and show an explosion in its place
 function explodePlayerShip()
   setSpriteX(playerExplosion, getSpriteX(playerShip))
   setSpriteY(playerExplosion, getSpriteY(playerShip))
@@ -396,6 +448,8 @@ function explodePlayerShip()
   setSpriteVisible(playerShip, false)
 end function
 
+
+'Create a new enemy bullet
 function fireEnemyBullet(enemyShip)
   var bulletX = getSpriteX(enemyShip)
   var bulletY = getSpriteY(enemyShip)
@@ -408,6 +462,8 @@ function fireEnemyBullet(enemyShip)
   setSpriteX(bullet, bulletX - getSpriteDrawWidth(bullet))
 end function
 
+
+'Create a new player bullet
 function firePlayerBullet()
   var bulletX = getSpriteX(playerShip) + getSpriteDrawWidth(playerShip)
   var bulletY = getSpriteY(playerShip)
@@ -419,32 +475,44 @@ function firePlayerBullet()
   setSpriteVelocityX(bullet, bulletSpeed)
 end function
 
+
+'Delete the given enemy ship
 function removeEnemyShip(shipIndex)
   removeSprite(enemyShips[shipIndex])
   removeArrayItem(enemyShips, shipIndex)
 end function
 
+
+'Delete the given enemy explosion
 function removeEnemyExplosion(explosionIndex)
   removeSprite(enemyExplosions[explosionIndex])
   removeArrayItem(enemyExplosions, explosionIndex)
 end function
 
+
+'Delete the given enemy bullet
 function removeEnemyBullet(bulletIndex)
   removeSprite(enemyBullets[bulletIndex])
   removeArrayItem(enemyBullets, bulletIndex)
 end function
 
+
+'Delete the given player bullet
 function removePlayerBullet(bulletIndex)
   removeSprite(playerBullets[bulletIndex])
   removeArrayItem(playerBullets, bulletIndex)
 end function
 
+
+'Print the player's score on the screen
 function displayScore()
   setTextFont("12px system-ui")
   setFillColor("white")
   drawText("Score: " + str(score), 10, 15)
 end function
 
+
+'Print the "Game Over" message on the screen
 function displayGameOver()
   setTextFont("30px system-ui")
   setFillColor("red")

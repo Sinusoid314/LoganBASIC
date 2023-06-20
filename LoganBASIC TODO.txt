@@ -3,7 +3,6 @@
 
 [Features]
     - Test all examples.
-    - Finish DFT and Space Shooter examples
 
     - Add getSpriteSheetFrameWith() and getSpriteSheetFrameHeight() native functions.
     - Add breakpoint display to debugger pane.

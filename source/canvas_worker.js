@@ -49,6 +49,7 @@ var drawBufferCallback = null;
 function resetCanvas()
 //
 {
+  canvasEvents.forEach(event => event.callback = null);
   imageResultCallback = null;
   drawBufferCallback = null;
 }
@@ -87,6 +88,9 @@ function onMsgCanvasEvent(msgData)
 {
   var eventIndex = canvasEvents.findIndex((event) => event.name == msgData.eventName);
 
+  if(!canvasEvents[eventIndex].callback)
+    return;
+  
   canvasEvents[eventIndex].callback.resumeVM(msgData.eventArgs);
 }
 

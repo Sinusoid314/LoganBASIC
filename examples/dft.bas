@@ -1,3 +1,10 @@
+'Discrete Fourier Transform
+'
+'Calculates the frequency series from a time series of complex numbers.
+'Enter a list of complex numbers seperated by a '|' character. Seperate the
+'real and imaginary parts of each number with a ',' character. If the imaginary
+'part of a number is zero, it can be omitted.
+
 structure ComplexNumber
   real
   imag
@@ -31,6 +38,7 @@ for index = 0 to len(freqSeries) - 1
 next index
 
 
+'Parse the given string into a complex number structure
 function createComplexNumber(compNumString)
   var compNumParts = splitStr(compNumString, ",")
   var compNum = new ComplexNumber
@@ -42,6 +50,7 @@ function createComplexNumber(compNumString)
   return compNum
 end function
 
+'Calculate the frequncy series from the given time series
 function calcDFT(timeSeries, freqSeries)
   var timeIndex, freqIndex
   var realSum, imagSum

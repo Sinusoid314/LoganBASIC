@@ -1,3 +1,9 @@
+(June 20, 2023)
+[v2.0.0.130]
+	- Modified resetCanvas() and onMsgCanvasEvent() funcitons in canvas_worker module to clear canvasEvents and
+	  check for null event callbacks.
+	- Commented DFT and Space Shooter examples.
+
 (June 19, 2023)
 [v2.0.0.129]
 	- Modified Game of Life, Bouncing Sprites, and Breakout examples to resize the canvas before showing it in order
