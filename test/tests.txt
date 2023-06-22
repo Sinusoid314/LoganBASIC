@@ -1,5 +1,5 @@
 (X) Examples
-( ) Statements
+(X) Statements
 ( ) Standard Functions
 ( ) Canvas Functions
 ( ) Sprite Functions

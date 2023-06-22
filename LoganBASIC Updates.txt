@@ -1,3 +1,7 @@
+(June 21, 2023)
+[v2.0.0.130]
+	- Tested Statement usage examples.
+
 (June 20, 2023)
 [v2.0.0.130]
 	- Modified resetCanvas() and onMsgCanvasEvent() funcitons in canvas_worker module to clear canvasEvents and
