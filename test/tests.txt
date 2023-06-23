@@ -3,5 +3,5 @@
 ( ) Standard Functions
 ( ) Canvas Functions
 ( ) Sprite Functions
-( ) Sound Functions
-( ) Expression Operators
+(X) Sound Functions
+(X) Expression Operators
