@@ -1,4 +1,4 @@
-const lbVersion = "2.0.0.130";
+const lbVersion = "2.0.0.131";
 
 const stdNativeFuncs = [
                   new ObjNativeFunc("rnd", 0, 0, funcRnd),
@@ -96,7 +96,7 @@ function import_onLoad()
   sourceName = url.pathname.split("/").pop();
 
   importCallback.vm.stack.push(true);
-  importCallback.vm.interpret(source, sourceName);
+  importCallback.vm.interpret(source, sourceName, CALLFRAME_FLAG_POP_RETURN_VAL);
 }
 
 function import_onError()
@@ -559,7 +559,7 @@ function funcRun(vm, args)
 
   vm.stack.push(null);
 
-  result = vm.interpret(source, sourceName);
+  result = vm.interpret(source, sourceName, CALLFRAME_FLAG_POP_RETURN_VAL | CALLFRAME_FLAG_IS_UNWIND_ROOT);
 
   if(result == INTERPRET_COMPILE_ERROR)
     vm.runLoopExitFlag = true;

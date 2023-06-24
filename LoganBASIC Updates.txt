@@ -1,3 +1,8 @@
+(June 24, 2023)
+[v2.0.0.131]
+	- Modified import_onLoad() and funcRun() functions in std_funcs module to call vm::interpret() without
+	  CALLFRAME_FLAG_EXIT_ON_RETURN flag.
+
 (June 22, 2023)
 [v2.0.0.130]
 	- Tested Sound and Expression usage examples.
