@@ -1,0 +1,41 @@
+<html>
+
+<head>
+  <title></title>
+  <link rel="stylesheet" type="text/css" href="../../reference_doc.css"></link>
+  <script defer="defer" type="text/javascript" src="../../reference_doc.js"></script>
+</head>
+
+<body>
+
+<h3>disableCanvasBuffer()</h3>
+
+<h4>Description</h4>
+<p id="description">
+Disables drawing to the canvas' offscreen buffer. Any subsequent graphics will be drawn to the visible canvas.
+</p>
+
+<h4>Usage</h4>
+<code id="usageCode">
+loadImage("ship", "../examples/images/ship1.png")
+enableCanvasBuffer()
+
+input("Press enter to draw image to buffer...")
+drawImage("ship", 10, 10)
+
+input("Press enter to draw image to canvas...")
+<b>disableCanvasBuffer()</b>
+drawImage("ship", 50, 50)
+
+input("Press enter to draw buffer to canvas...")
+drawCanvasBuffer()
+
+unloadImage("ship")
+
+print "Done."
+</code>
+
+<a id="usageOpen" href="../../../../">Open in Code Editor</a>
+
+</body>
+</html>
