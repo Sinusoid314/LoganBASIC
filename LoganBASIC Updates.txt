@@ -1,5 +1,10 @@
+(June 25, 2023)
+[v2.0.0.131]
+	- Tested Canvas usage examples.
+
 (June 24, 2023)
 [v2.0.0.131]
+	- Tested Standard and Sprite usage examples.
 	- Modified import_onLoad() and funcRun() functions in std_funcs module to call vm::interpret() without
 	  CALLFRAME_FLAG_EXIT_ON_RETURN flag.
 
