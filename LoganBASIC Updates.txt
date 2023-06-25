@@ -1,4 +1,6 @@
 (June 25, 2023)
+[v2.0.0.132]
+	- Added sound effects and background music to Space Shooter example.
 [v2.0.0.131]
 	- Tested Canvas usage examples.
 

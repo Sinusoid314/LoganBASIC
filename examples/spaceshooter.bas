@@ -24,6 +24,11 @@ var enemyShipSheet = "enemy-ship-sheet"
 var bulletSheet = "bullet-sheet"
 var explosionSheet = "explosion-sheet"
 
+var bgSound = "bg-sound"
+var playerFireSound = "player-fire-sound"
+var enemyFireSound = "enemy-fire-sound"
+var explosionSound = "explosion-sound"
+
 var bulletSpeed = 400
 var bulletCounter = 0
 
@@ -94,8 +99,33 @@ function setup()
 
   print "Images loaded."
 
+  if not loadSound(bgSound, "../examples/sounds/bg-sound.mp3") then
+    print "Failed to load sound 'bg-sound.mp3'."
+    end
+  end if
+
+  if not loadSound(playerFireSound, "../examples/sounds/player-fire.mp3") then
+    print "Failed to load sound 'player-fire.mp3'."
+    end
+  end if
+
+  if not loadSound(enemyFireSound, "../examples/sounds/enemy-fire.mp3") then
+    print "Failed to load sound 'enemy-fire.mp3'."
+    end
+  end if
+
+  if not loadSound(explosionSound, "../examples/sounds/explosion.mp3") then
+    print "Failed to load sound 'explosion.mp3'."
+    end
+  end if
+
+  print "Sounds loaded."
+
   bgImageWidth = getImageWidth(bgImage)
   bgImageHeight = getImageHeight(bgImage)
+
+  loopSound(bgSound, true)
+  playSound(bgSound)
 
   addSprite(playerShip, playerShipSheet, 50, 50)
 
@@ -141,6 +171,12 @@ function cleanup()
 
   removeSprite(playerShip)
   removeSprite(playerExplosion)
+
+  unloadSound(explosionSound)
+  unloadSound(enemyFireSound)
+  unloadSound(playerFireSound)
+  unloadSound(bgSound)
+
   unloadSpriteSheet(playerShipSheet)
   unloadSpriteSheet(enemyShipSheet)
   unloadSpriteSheet(bulletSheet)
@@ -433,6 +469,8 @@ function explodeEnemyShip(shipIndex)
   removeEnemyShip(shipIndex)
 
   score = score + 1
+
+  playSound(explosionSound)
 end function
 
 
@@ -446,6 +484,8 @@ function explodePlayerShip()
   setSpriteVelocityX(playerShip, 0)
   setSpriteVelocityY(playerShip, 0)'
   setSpriteVisible(playerShip, false)
+
+  playSound(explosionSound)
 end function
 
 
@@ -460,6 +500,8 @@ function fireEnemyBullet(enemyShip)
   addSprite(bullet, bulletSheet, bulletX, bulletY)
   setSpriteVelocityX(bullet, -bulletSpeed)
   setSpriteX(bullet, bulletX - getSpriteDrawWidth(bullet))
+
+  playSound(enemyFireSound)
 end function
 
 
@@ -473,6 +515,8 @@ function firePlayerBullet()
   addArrayItem(playerBullets, bullet)
   addSprite(bullet, bulletSheet, bulletX, bulletY)
   setSpriteVelocityX(bullet, bulletSpeed)
+
+  playSound(playerFireSound)
 end function
 
 
