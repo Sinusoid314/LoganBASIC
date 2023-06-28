@@ -10,6 +10,7 @@
     - Add ability to run code in debugger.
     - Add ability to display different sources in debugger.
     - Add a "deploy" mode to run a pre-compiled ObjUserFunc object from a JSON file.
+    - Add callback option for native functions that download resources.
     - Add HTTP GET/POST native functions.
     - Add onError user function support.
     - Possibly use willReadFrequently with canvas.
