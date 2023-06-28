@@ -4,6 +4,8 @@
 'Enter a list of complex numbers seperated by a '|' character. Seperate the
 'real and imaginary parts of each number with a ',' character. If the imaginary
 'part of a number is zero, it can be omitted.
+'
+'Example: 2,4 | 3,9 | 5 | 5,11 | 1,3
 
 structure ComplexNumber
   real
