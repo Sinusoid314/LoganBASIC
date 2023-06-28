@@ -44,15 +44,6 @@ function resetMain()
 function progWorker_onMessage(message)
 //Process messages sent from the UI thread
 {
-  console.clear();
-  console.log(expectedResultMessageID);
-  console.log(message.data.msgId);
-  pendingMessages.forEach(msg => console.log(msg.data.msgId));
-  console.log('\n');
-
-  mainVM.stack.forEach(item => console.log(item));
-
-
   if(!expectedResultMessageID)
   {
     dispatchMessage(message);
