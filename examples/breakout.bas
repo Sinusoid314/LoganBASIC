@@ -26,16 +26,16 @@ var canvasHeight = ((brickHeight + brickPadding) * brickRows) + gapHeight
 var paddleWidth = 80
 var paddleHeight = 10
 var paddleX = (canvasWidth - paddleWidth) / 2
-var paddleY = canvasHeight - paddleHeight - 10
+var paddleY = canvasHeight - paddleHeight - 20
 var paddleVelX = 0
-var paddleVelXMax = 70
+var paddleVelXMax = 250
 var paddleColor = "blue"
 
 var ballRadius = 10
 var ballX = canvasWidth / 2
 var ballY = canvasHeight - gapHeight + 20
 var ballVelX = 0
-var ballVelY = 70
+var ballVelY = 250
 var ballColor = "red"
 
 var prevTime
@@ -86,6 +86,7 @@ function mainLoop()
   update()
   checkCollisions()
   draw()
+  displayControls()
 end function
 
 
@@ -158,7 +159,7 @@ end function
 function ballHitPaddle()
   if ballHitRect(paddleX, paddleY, paddleWidth, paddleHeight) then
     if ballVelY > 0 then
-      ballVelX = paddleVelX
+      if paddleVelX <> 0 then ballVelX = paddleVelX
       ballVelY = -ballVelY
     end if
     return true
@@ -230,4 +231,11 @@ function ballHitRect(x, y, width, height)
   var distance = (distanceX ^ 2) + (distanceY ^ 2)
   
   return distance < (ballRadius ^ 2)
+end function
+
+'Display the control intstructions on the screen
+function displayControls()
+  setTextFont("12px system-ui")
+  setFillColor("black")
+  drawText("Controls:    Left/right arrow keys = Move paddle left/right", 10, canvasHeight - 5)
 end function

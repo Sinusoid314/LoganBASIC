@@ -200,6 +200,7 @@ function mainLoop()
   drawSprites()
 
   displayScore()
+  displayControls()
   if gameOver then displayGameOver()
 
   drawCanvasBuffer(mainLoop)
@@ -553,6 +554,13 @@ function displayScore()
   setTextFont("12px system-ui")
   setFillColor("white")
   drawText("Score: " + str(score), 10, 15)
+end function
+
+'Display the control intstructions on the screen
+function displayControls()
+  setTextFont("12px system-ui")
+  setFillColor("white")
+  drawText("Controls:    Arrow keys = Move ship,    Spacebar = Shoot,    Q = Quit", 110, 15)
 end function
 
 

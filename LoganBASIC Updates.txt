@@ -1,3 +1,8 @@
+(July 3, 2023)
+[v2.0.1.0]
+	- Added on-screen control instructions to Space Shooter, Scrolling Platformer, Breakout, and DFT examples.
+	- Tweaked the contact physics and speeds of the ball and paddle in Breakout example.
+
 (June 25, 2023)
 [v2.0.0.132]
 	- Added sound effects and background music to Space Shooter example.

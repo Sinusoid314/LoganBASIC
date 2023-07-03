@@ -1,11 +1,7 @@
 'Discrete Fourier Transform
 '
 'Calculates the frequency series from a time series of complex numbers.
-'Enter a list of complex numbers seperated by a '|' character. Seperate the
-'real and imaginary parts of each number with a ',' character. If the imaginary
-'part of a number is zero, it can be omitted.
-'
-'Example: 2,4 | 3,9 | 5 | 5,11 | 1,3
+
 
 structure ComplexNumber
   real
@@ -19,6 +15,13 @@ var compNumStrings
 var index
 array timeSeries[0]
 array freqSeries[0]
+
+print "Enter a list of complex numbers seperated by a '|' character. Seperate the"
+print "real and imaginary parts of each number with a ',' character. If the imaginary"
+print "part of a number is zero, it can be omitted."
+print ""
+print  "Example: 2,4 | 3,9 | 5 | 5,11 | 1,3"
+print ""
 
 inputString = input(">> ")
 

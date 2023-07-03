@@ -2,9 +2,8 @@
     - 
 
 [Features]
-    - Test all examples.
-
-    - Add getSpriteSheetFrameWith() and getSpriteSheetFrameHeight() native functions.
+    - Add getTextWidth() and getTextHeight() canvas native functions.
+    - Add getSpriteSheetFrameWith() and getSpriteSheetFrameHeight() sprite native functions.
     - Add breakpoint display to debugger pane.
     - Add variable display persistence between breakpoints in debugger.
     - Add ability to run code in debugger.

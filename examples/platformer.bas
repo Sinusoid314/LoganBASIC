@@ -148,6 +148,8 @@ function mainLoop()
   
   drawText(str(deltaTime * 1000) + " ms", 10, 10)
   drawText(str(getSpriteVelocityX("bubba")) + ", " + str(getSpriteVelocityY("bubba")), 10, 20)
+
+  displayControls()
   
   drawCanvasBuffer(mainLoop)
 end function
@@ -418,4 +420,11 @@ function getSpriteContact(spriteName1, spriteName2, totalTime, contactRef)
       contactRef.normalX = contactNormalX
     end if
   end if
+end function
+
+'Display the control intstructions on the screen
+function displayControls()
+  setTextFont("12px system-ui")
+  setFillColor("black")
+  drawText("Controls:    Left/right arrow keys = Move left/right,    Spacebar (tap) = Short jump,    Spacebar (hold) = High jump,    Q = Quit", 10, canvasHeight - 5)
 end function
