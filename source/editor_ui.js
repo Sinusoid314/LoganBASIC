@@ -227,7 +227,7 @@ function editorGutterItem_onClick(event)
   event.target.classList.toggle("editorBreakpoint");
 }
 
-function onMsgShowEditor()
+function onMsgShowEditor(msgData)
 //Show the program editor pane
 {
   var toggle = document.getElementById("editorToggle");
@@ -240,7 +240,7 @@ function onMsgShowEditor()
   }
 }
 
-function onMsgHideEditor()
+function onMsgHideEditor(msgData)
 //Hide the program editor pane
 {
   var toggle = document.getElementById("editorToggle");

@@ -26,7 +26,7 @@ function onVMPrint(vm, printVal, replaceAll)
 //
 {
   if(replaceAll)
-    postMessage({msgId: MSGID_CLEAR_CONSOLE});
+    postMessage({msgId: MSGID_CLEAR_CONSOLE, msgData: null});
   else
     postMessage({msgId: MSGID_PRINT, msgData: {printVal: printVal}});
 }
@@ -34,14 +34,14 @@ function onVMPrint(vm, printVal, replaceAll)
 function funcShowConsole(vm, args)
 //Tell the UI thread to show the console pane
 {
-  postMessage({msgId: MSGID_SHOW_CONSOLE});
+  postMessage({msgId: MSGID_SHOW_CONSOLE, msgData: null});
   return null;
 }
 
 function funcHideConsole(vm, args)
 //Tell the UI thread to hide the console pane
 {
-  postMessage({msgId: MSGID_HIDE_CONSOLE});
+  postMessage({msgId: MSGID_HIDE_CONSOLE, msgData: null});
   return null;
 }
 
@@ -54,7 +54,7 @@ function funcInput(vm, args)
     inputCallback.vm = vm;
 
   postMessage({msgId: MSGID_PRINT, msgData: {printVal: args[0]}});
-  postMessage({msgId: MSGID_INPUT_REQUEST});
+  postMessage({msgId: MSGID_INPUT_REQUEST, msgData: null});
 
   vm.runLoopExitFlag = true;
 

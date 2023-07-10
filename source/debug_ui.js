@@ -209,7 +209,7 @@ function debugToggleBtn_onClick(event)
     mainDiv.style.marginLeft = "0";
     debugChangeUIStatus(DEBUG_UI_STATUS_DISABLED);
     
-    progWorker.postMessage({msgId: MSGID_DEBUG_DISABLE});
+    progWorker.postMessage({msgId: MSGID_DEBUG_DISABLE, msgData: null});
   }
   else
   {
@@ -217,7 +217,7 @@ function debugToggleBtn_onClick(event)
 	  debugDiv.style.display = "block";
     mainDiv.style.marginLeft = debugDiv.clientWidth + "px";
 
-    progWorker.postMessage({msgId: MSGID_DEBUG_ENABLE});
+    progWorker.postMessage({msgId: MSGID_DEBUG_ENABLE, msgData: null});
   }
 
   isDebugging = !isDebugging;
@@ -259,7 +259,7 @@ function debugResumeBtn_onClick(event)
   if(!(isDebugging && isRunning))
     return;
 
-  progWorker.postMessage({msgId: MSGID_DEBUG_RESUME});
+  progWorker.postMessage({msgId: MSGID_DEBUG_RESUME, msgData: null});
 }
 
 /*
@@ -269,7 +269,7 @@ function debugPauseBtn_onClick(event)
   if(!(isDebugging && isRunning))
     return;
 
-  progWorker.postMessage({msgId: MSGID_DEBUG_PAUSE});
+  progWorker.postMessage({msgId: MSGID_DEBUG_PAUSE, msgData: null});
 }
 */
 
@@ -279,7 +279,7 @@ function debugStepIntoBtn_onClick(event)
   if(!(isDebugging && isRunning))
     return;
 
-  progWorker.postMessage({msgId: MSGID_DEBUG_STEP_INTO});
+  progWorker.postMessage({msgId: MSGID_DEBUG_STEP_INTO, msgData: null});
 }
 
 function debugStepOverBtn_onClick(event)
@@ -288,7 +288,7 @@ function debugStepOverBtn_onClick(event)
   if(!(isDebugging && isRunning))
     return;
 
-  progWorker.postMessage({msgId: MSGID_DEBUG_STEP_OVER});
+  progWorker.postMessage({msgId: MSGID_DEBUG_STEP_OVER, msgData: null});
 }
 
 function debugStepOutBtn_onClick(event)
@@ -297,7 +297,7 @@ function debugStepOutBtn_onClick(event)
   if(!(isDebugging && isRunning))
     return;
   
-  progWorker.postMessage({msgId: MSGID_DEBUG_STEP_OUT});
+  progWorker.postMessage({msgId: MSGID_DEBUG_STEP_OUT, msgData: null});
 }
 
 function debugSkipBtn_onClick(event)
@@ -306,7 +306,7 @@ function debugSkipBtn_onClick(event)
   if(!(isDebugging && isRunning))
     return;
 
-  progWorker.postMessage({msgId: MSGID_DEBUG_SKIP});
+  progWorker.postMessage({msgId: MSGID_DEBUG_SKIP, msgData: null});
 }
 
 function debugCallStackList_onChange(event)

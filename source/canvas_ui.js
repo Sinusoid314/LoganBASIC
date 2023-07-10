@@ -110,7 +110,7 @@ function canvas_onAnimationFrame()
   progCanvasContext.clearRect(0, 0, progCanvas.width, progCanvas.height);
   progCanvasContext.drawImage(bufferCanvas, 0, 0);
 
-  progWorker.postMessage({msgId: MSGID_DRAW_CANVAS_BUFFER_DONE});
+  progWorker.postMessage({msgId: MSGID_DRAW_CANVAS_BUFFER_DONE, msgData: null});
 }
 
 function canvas_onEvent(event)
@@ -137,7 +137,7 @@ function canvas_onEvent(event)
   event.preventDefault();
 }
 
-function onMsgShowCanvas()
+function onMsgShowCanvas(msgData)
 //Show the canvas pane
 {
   var toggle = document.getElementById("canvasToggle");
@@ -152,7 +152,7 @@ function onMsgShowCanvas()
   }
 }
 
-function onMsgHideCanvas()
+function onMsgHideCanvas(msgData)
 //Hide the canvas pane
 {
   var toggle = document.getElementById("canvasToggle");
@@ -177,7 +177,7 @@ function onMsgSetCanvasHeight(msgData)
   setCanvasHeight(msgData.newHeight);
 }
 
-function onMsgClearCanvas()
+function onMsgClearCanvas(msgData)
 //
 {
   clearCanvas();
@@ -312,19 +312,19 @@ function onMsgGetImageHeightRequest(msgData)
     sendImageRequestResult(null, "Image '" + msgData.imageName + "' has not been loaded.");
 }
 
-function onMsgEnableCanvasBuffer()
+function onMsgEnableCanvasBuffer(msgData)
 //
 {
   activeContext = bufferCanvasContext;
 }
 
-function onMsgDisableCanvasBuffer()
+function onMsgDisableCanvasBuffer(msgData)
 //
 {
   activeContext = progCanvasContext;
 }
 
-function onMsgDrawCanvasBuffer()
+function onMsgDrawCanvasBuffer(msgData)
 //
 {
   window.requestAnimationFrame(canvas_onAnimationFrame);

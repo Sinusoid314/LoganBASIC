@@ -71,7 +71,7 @@ function debugEnterBreakpoint(vm, nextSourceLineNum)
   postMessage({msgId: MSGID_DEBUG_UPDATE_UI, msgData: new DebugInfo(vm, nextSourceLineNum, DEBUG_UI_STATUS_BREAKPOINT)});
 }
 
-function onMsgDebugEnable()
+function onMsgDebugEnable(msgData)
 //
 {
   if(debugEnabled)
@@ -89,7 +89,7 @@ function onMsgDebugEnable()
   }
 }
 
-function onMsgDebugDisable()
+function onMsgDebugDisable(msgData)
 //
 {
   if(!debugEnabled)
@@ -102,7 +102,7 @@ function onMsgDebugDisable()
     mainVM.run();
 }
 
-function onMsgDebugResume()
+function onMsgDebugResume(msgData)
 //
 {
   if((!debugEnabled || mainVM.callFramesEmpty()))
@@ -115,19 +115,7 @@ function onMsgDebugResume()
     mainVM.run();
 }
 
-/*
-function onMsgDebugPause()
-//
-{
-  if((!debugEnabled || mainVM.callFramesEmpty()))
-    return;
-
-  debugLineChangeAction = DEBUG_ACTION_BREAK;
-  postMessage({msgId: MSGID_DEBUG_UPDATE_UI, msgData: new DebugInfo(mainVM, 0, DEBUG_UI_STATUS_PAUSED)});
-}
-*/
-
-function onMsgDebugStepInto()
+function onMsgDebugStepInto(msgData)
 //
 {
   if(!debugEnabled || mainVM.callFramesEmpty())
@@ -140,7 +128,7 @@ function onMsgDebugStepInto()
     mainVM.run();
 }
 
-function onMsgDebugStepOver()
+function onMsgDebugStepOver(msgData)
 //
 {
   if(!debugEnabled || mainVM.callFramesEmpty() || !mainVM.inBreakpoint)
@@ -154,7 +142,7 @@ function onMsgDebugStepOver()
   mainVM.run();
 }
 
-function onMsgDebugStepOut()
+function onMsgDebugStepOut(msgData)
 //
 {
   if(!debugEnabled || mainVM.callFramesEmpty() || !mainVM.inBreakpoint)
@@ -168,7 +156,7 @@ function onMsgDebugStepOut()
   mainVM.run();
 }
 
-function onMsgDebugSkip()
+function onMsgDebugSkip(msgData)
 //
 {
   if(!debugEnabled || mainVM.callFramesEmpty() || !mainVM.inBreakpoint)

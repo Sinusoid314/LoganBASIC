@@ -69,7 +69,7 @@ function stopBtn_onClick(event)
     progWorker.postMessage({msgId: MSGID_DEBUG_ADD_BREAKPOINT, msgData: breakpoint});
 
   if(isDebugging)
-    progWorker.postMessage({msgId: MSGID_DEBUG_ENABLE});
+    progWorker.postMessage({msgId: MSGID_DEBUG_ENABLE, msgData: null});
 
   stopProg("Program stopped.");
 }
@@ -89,7 +89,7 @@ function progUI_onMessage(message)
   switch(message.data.msgId)
   {
     case MSGID_PROG_DONE_SUCCESS:
-      onMsgProgDoneSuccess();
+      onMsgProgDoneSuccess(message.data.msgData);
       break;
 
     case MSGID_PROG_DONE_ERROR:
@@ -101,19 +101,19 @@ function progUI_onMessage(message)
       break;
 
     case MSGID_SHOW_EDITOR:
-      onMsgShowEditor();
+      onMsgShowEditor(message.data.msgData);
       break;
 
     case MSGID_HIDE_EDITOR:
-      onMsgHideEditor();
+      onMsgHideEditor(message.data.msgData);
       break;
 
     case MSGID_SHOW_CONSOLE:
-      onMsgShowConsole();
+      onMsgShowConsole(message.data.msgData);
       break;
 
     case MSGID_HIDE_CONSOLE:
-      onMsgHideConsole();
+      onMsgHideConsole(message.data.msgData);
       break;
 
     case MSGID_PRINT:
@@ -121,19 +121,19 @@ function progUI_onMessage(message)
       break;
 
     case MSGID_INPUT_REQUEST:
-      onMsgInputRequest();
+      onMsgInputRequest(message.data.msgData);
       break;
 
     case MSGID_CLEAR_CONSOLE:
-      onMsgClearConsole();
+      onMsgClearConsole(message.data.msgData);
       break;
 
     case MSGID_SHOW_CANVAS:
-      onMsgShowCanvas();
+      onMsgShowCanvas(message.data.msgData);
       break;
 
     case MSGID_HIDE_CANVAS:
-      onMsgHideCanvas();
+      onMsgHideCanvas(message.data.msgData);
       break;
 
     case MSGID_SET_CANVAS_WIDTH:
@@ -145,7 +145,7 @@ function progUI_onMessage(message)
       break;
 
     case MSGID_CLEAR_CANVAS:
-      onMsgClearCanvas();
+      onMsgClearCanvas(message.data.msgData);
       break;
 
     case MSGID_LOAD_IMAGE_REQUEST:
@@ -177,15 +177,15 @@ function progUI_onMessage(message)
       break;
 
     case MSGID_ENABLE_CANVAS_BUFFER:
-      onMsgEnableCanvasBuffer();
+      onMsgEnableCanvasBuffer(message.data.msgData);
       break;
 
     case MSGID_DISABLE_CANVAS_BUFFER:
-      onMsgDisableCanvasBuffer();
+      onMsgDisableCanvasBuffer(message.data.msgData);
       break;
 
     case MSGID_DRAW_CANVAS_BUFFER:
-      onMsgDrawCanvasBuffer();
+      onMsgDrawCanvasBuffer(message.data.msgData);
       break;
 
     case MSGID_ADD_CANVAS_EVENT:
@@ -294,7 +294,7 @@ function progUI_onMessage(message)
   }
 }
 
-function onMsgProgDoneSuccess()
+function onMsgProgDoneSuccess(msgData)
 //The worker thread has signaled that the program has completed successfully
 {
   stopProg("Program run successfully.");

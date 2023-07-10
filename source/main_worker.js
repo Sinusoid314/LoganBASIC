@@ -15,6 +15,7 @@ importScripts('thread_common.js',
 
 var expectedResultMessageID = 0;
 var pendingMessages = [];
+var workerMsgFuncs = new Map();
 var mainVM = new VM();
 
 mainVM.addNativeFuncArray([].concat(stdNativeFuncs, consoleNativeFuncs, canvasNativeFuncs, soundNativeFuncs, spriteNativeFuncs));
@@ -22,6 +23,7 @@ mainVM.onPrintHook = onVMPrint;
 mainVM.onStatusChangeHook = onVMStatusChange;
 mainVM.onErrorHook = onVMError;
 
+initWorkerMsgFuncs();
 onmessage = progWorker_onMessage;
 
 function resetMain()
@@ -39,6 +41,29 @@ function resetMain()
 
   expectedResultMessageID = 0;
   pendingMessages = [];
+}
+
+function initWorkerMsgFuncs()
+//
+{
+  workerMsgFuncs.set(MSGID_START_PROG, onMsgStartProg);
+  workerMsgFuncs.set(MSGID_INPUT_RESULT, onMsgInputResult);
+  workerMsgFuncs.set(MSGID_IMAGE_REQUEST_RESULT, onMsgImageRequestResult);
+  workerMsgFuncs.set(MSGID_CANVAS_EVENT, onMsgCanvasEvent);
+  workerMsgFuncs.set(MSGID_DRAW_CANVAS_BUFFER_DONE, onMsgDrawCanvasBufferDone);
+  workerMsgFuncs.set(MSGID_SOUND_REQUEST_RESULT, onMsgSoundRequestResult);
+  workerMsgFuncs.set(MSGID_SPRITE_SHEET_REF_REQUEST_RESULT, onMsgSpriteSheetRefRequestResult);
+  workerMsgFuncs.set(MSGID_SPRITE_SHEET_REQUEST_RESULT, onMsgSpriteSheetRequestResult);
+  workerMsgFuncs.set(MSGID_DEBUG_ENABLE, onMsgDebugEnable);
+  workerMsgFuncs.set(MSGID_DEBUG_DISABLE, onMsgDebugDisable);
+  workerMsgFuncs.set(MSGID_DEBUG_RESUME, onMsgDebugResume);
+  workerMsgFuncs.set(MSGID_DEBUG_STEP_INTO, onMsgDebugStepInto);
+  workerMsgFuncs.set(MSGID_DEBUG_STEP_OVER, onMsgDebugStepOver);
+  workerMsgFuncs.set(MSGID_DEBUG_STEP_OUT, onMsgDebugStepOut);
+  workerMsgFuncs.set(MSGID_DEBUG_SKIP, onMsgDebugSkip);
+  workerMsgFuncs.set(MSGID_DEBUG_CALL_FRAME_INFO_REQUEST, onMsgDebugCallFrameInfoRequest);
+  workerMsgFuncs.set(MSGID_DEBUG_ADD_BREAKPOINT, onMsgDebugAddBreakpoint);
+  workerMsgFuncs.set(MSGID_DEBUG_REMOVE_BREAKPOINT, onMsgDebugRemoveBreakpoint);
 }
 
 function progWorker_onMessage(message)
@@ -70,6 +95,9 @@ function progWorker_onMessage(message)
 function dispatchMessage(message)
 //Call the appropriate message-handling function
 {
+  workerMsgFuncs.get(message.data.msgId)(message.data.msgData);
+
+/*
   switch(message.data.msgId)
   {
     case MSGID_START_PROG:
@@ -89,7 +117,7 @@ function dispatchMessage(message)
       break;
 
     case MSGID_DRAW_CANVAS_BUFFER_DONE:
-      onMsgDrawCanvasBufferDone();
+      onMsgDrawCanvasBufferDone(message.data.msgData);
       break;
 
     case MSGID_SOUND_REQUEST_RESULT:
@@ -105,37 +133,31 @@ function dispatchMessage(message)
       break;
 
     case MSGID_DEBUG_ENABLE:
-      onMsgDebugEnable();
+      onMsgDebugEnable(message.data.msgData);
       break;
 
     case MSGID_DEBUG_DISABLE:
-      onMsgDebugDisable();
+      onMsgDebugDisable(message.data.msgData);
       break;
 
     case MSGID_DEBUG_RESUME:
-      onMsgDebugResume();
+      onMsgDebugResume(message.data.msgData);
       break;
-
-    /*
-    case MSGID_DEBUG_PAUSE:
-      onMsgDebugPause();
-      break;
-    */
 
     case MSGID_DEBUG_STEP_INTO:
-      onMsgDebugStepInto();
+      onMsgDebugStepInto(message.data.msgData);
       break;
 
     case MSGID_DEBUG_STEP_OVER:
-      onMsgDebugStepOver();
+      onMsgDebugStepOver(message.data.msgData);
       break;
 
     case MSGID_DEBUG_STEP_OUT:
-      onMsgDebugStepOut();
+      onMsgDebugStepOut(message.data.msgData);
       break;
     
     case MSGID_DEBUG_SKIP:
-      onMsgDebugSkip();
+      onMsgDebugSkip(message.data.msgData);
       break;
 
     case MSGID_DEBUG_CALL_FRAME_INFO_REQUEST:
@@ -150,6 +172,7 @@ function dispatchMessage(message)
       onMsgDebugRemoveBreakpoint(message.data.msgData);
       break;
   }
+*/
 }
 
 function onMsgStartProg(msgData)
@@ -175,7 +198,7 @@ function onVMStatusChange(vm, prevStatus)
       
       if((prevStatus == VM_STATUS_RUNNING) && (vm.callFramesEmpty()))
       {
-        postMessage({msgId: MSGID_PROG_DONE_SUCCESS});
+        postMessage({msgId: MSGID_PROG_DONE_SUCCESS, msgData: null});
         resetMain();
         return;
       }

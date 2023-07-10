@@ -94,14 +94,14 @@ function onMsgCanvasEvent(msgData)
   canvasEvents[eventIndex].callback.resumeVM(msgData.eventArgs);
 }
 
-function onMsgDrawCanvasBufferDone()
+function onMsgDrawCanvasBufferDone(msgData)
 //
 {
   if(!drawBufferCallback)
     return;
 
   if(drawBufferCallback.vm.inBreakpoint)
-    postMessage({msgId: MSGID_DRAW_CANVAS_BUFFER});
+    postMessage({msgId: MSGID_DRAW_CANVAS_BUFFER, msgData: null});
   else
     drawBufferCallback.resumeVM();
 }
@@ -109,14 +109,14 @@ function onMsgDrawCanvasBufferDone()
 function funcShowCanvas(vm, args)
 //Tell the UI thread to show the canvas pane
 {
-  postMessage({msgId: MSGID_SHOW_CANVAS});
+  postMessage({msgId: MSGID_SHOW_CANVAS, msgData: null});
   return null;
 }
 
 function funcHideCanvas(vm, args)
 //Tell the UI thread to hide the canvas pane
 {
-  postMessage({msgId: MSGID_HIDE_CANVAS});
+  postMessage({msgId: MSGID_HIDE_CANVAS, msgData: null});
   return null;
 }
 
@@ -137,7 +137,7 @@ function funcSetCanvasHeight(vm, args)
 function funcClearCanvas(vm, args)
 //Send a message to the canvas to clear it
 {
-  postMessage({msgId: MSGID_CLEAR_CANVAS});
+  postMessage({msgId: MSGID_CLEAR_CANVAS, msgData: null});
   return null;
 }
 
@@ -244,14 +244,14 @@ function funcGetImageHeight(vm, args)
 function funcEnableCanvasBuffer(vm, args)
 //
 {
-  postMessage({msgId: MSGID_ENABLE_CANVAS_BUFFER});
+  postMessage({msgId: MSGID_ENABLE_CANVAS_BUFFER, msgData: null});
   return null;
 }
 
 function funcDisableCanvasBuffer(vm, args)
 //
 {
-  postMessage({msgId: MSGID_DISABLE_CANVAS_BUFFER});
+  postMessage({msgId: MSGID_DISABLE_CANVAS_BUFFER, msgData: null});
   return null;
 }
 
@@ -286,7 +286,7 @@ function funcDrawCanvasBuffer(vm, args)
     }
   }
 
-  postMessage({msgId: MSGID_DRAW_CANVAS_BUFFER});
+  postMessage({msgId: MSGID_DRAW_CANVAS_BUFFER, msgData: null});
 
   return null;
 }

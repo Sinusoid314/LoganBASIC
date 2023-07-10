@@ -1,3 +1,12 @@
+(July 10, 2023)
+[v2.0.2.1]
+	- Modified all thread message-handling functions to accept a message-data argument.
+	- Modified main_worker module to use a Map to dispatch thread messages to their handling functions.
+
+(July 7, 2023)
+[v2.0.2.0]
+	- Seperated status bar from command  bar.
+
 (July 3, 2023)
 [v2.0.1.0]
 	- Added on-screen control instructions to Space Shooter, Scrolling Platformer, Breakout, and DFT examples.

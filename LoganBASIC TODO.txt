@@ -2,6 +2,7 @@
     - 
 
 [Features]
+    - Add "Contact Us" link to main page.
     - Add getTextWidth() and getTextHeight() canvas native functions.
     - Add getSpriteSheetFrameWith() and getSpriteSheetFrameHeight() sprite native functions.
     - Add breakpoint display to debugger pane.

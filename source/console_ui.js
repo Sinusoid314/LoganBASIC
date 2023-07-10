@@ -49,7 +49,7 @@ function consoleInputBtn_onClick(event)
   enterConsoleInput();
 }
 
-function onMsgShowConsole()
+function onMsgShowConsole(msgData)
 //Show the console pane
 {
   var toggle = document.getElementById("consoleToggle");
@@ -62,7 +62,7 @@ function onMsgShowConsole()
   }
 }
 
-function onMsgHideConsole()
+function onMsgHideConsole(msgData)
 //Hide the console pane
 {
   var toggle = document.getElementById("consoleToggle");
@@ -82,13 +82,13 @@ function onMsgPrint(msgData)
   consoleOutput.scrollTop = consoleOutput.scrollHeight;
 }
 
-function onMsgClearConsole()
+function onMsgClearConsole(msgData)
 //
 {
   clearConsoleOutput();
 }
 
-function onMsgInputRequest()
+function onMsgInputRequest(msgData)
 //
 {
   consoleInputDiv.style.display = "block";

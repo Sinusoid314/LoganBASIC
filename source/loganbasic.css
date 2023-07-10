@@ -121,14 +121,18 @@ button
 #commandBar
 {
   margin-top: 10px;
-  margin-bottom: 20px;
+  margin-bottom: 0px;
 }
 
 #statusBar
 {
-  display: inline;
-  margin-left: 2px;
+  margin-bottom: 20px;
+  padding-top: 1px;
+  padding-bottom: 1px;
+  padding-left: 2px;
+  border: inset 2px;
   white-space: pre-wrap;
+  background-color: rgb(231, 241, 241);
 }
 
 #consoleOutput
