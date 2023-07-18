@@ -1,3 +1,13 @@
+(July 17, 2023)
+[v2.0.2.4]
+	- Moved window_onLoad() function to main_ui module and moved code that loads a source file
+	  into new loadSourceFile() function in editor_ui module.
+	- Moved command bar to editor_ui module and decoupled its button events from the program start/stop functionality.
+
+(July 14, 2023)
+[v2.0.2.3]
+	- Renamed stopProg() to cleanupUI() in main_ui module.
+
 (July 12, 2023)
 [v2.0.2.2]
 	- Modified main_ui module to use a Map to dispatch thread messages to their handling functions.

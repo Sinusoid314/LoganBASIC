@@ -9,8 +9,9 @@ var helpBtn = document.getElementById("helpBtn");
 var aboutBtn = document.getElementById("aboutBtn");
 var editorCode = document.getElementById("editorCode");
 var editorGutter = document.getElementById("editorGutter");
+var runBtn = document.getElementById("runBtn");
+var stopBtn = document.getElementById("stopBtn");
 
-window.addEventListener("load", window_onLoad);
 newBtn.addEventListener("click", newBtn_onClick);
 openFileBtn.addEventListener("click", openFileBtn_onClick);
 openURLBtn.addEventListener("click", openURLBtn_onClick);
@@ -20,6 +21,8 @@ helpBtn.addEventListener("click", helpBtn_onClick);
 aboutBtn.addEventListener("click", aboutBtn_onClick);
 editorCode.addEventListener("input", editor_onInput);
 editorCode.addEventListener("scroll", editor_onScroll);
+runBtn.addEventListener("click", runBtn_onClick);
+stopBtn.addEventListener("click", stopBtn_onClick);
 
 addEditorGutterItem();
 
@@ -96,18 +99,12 @@ function selectEditorLine(selLine)
   editorCode.scrollTop = ((editorCode.scrollHeight / lines.length) * selLine) - (editorCode.clientHeight / 2);
 }
 
-function window_onLoad(event)
-//Load a slource file into the editor if one is provided
+function loadSourceFile(fileURL)
+//Load a slource file into the editor
 {
-  var urlParams = new URLSearchParams(window.location.search);
-  var fileURL;
   var httpReq;
   var fileText;
 
-  if(!urlParams.has("open"))
-    return;
-
-  fileURL = urlParams.get("open");
   statusBar.innerHTML = "Loading file...";
 
   if(fileURL == "local")
@@ -225,6 +222,18 @@ function editorGutterItem_onClick(event)
     debugAddBreakpoint(lineNum, mainSourceName);
 
   event.target.classList.toggle("editorBreakpoint");
+}
+
+function runBtn_onClick(event)
+//
+{
+  startProg(editorCode.value);
+}
+
+function stopBtn_onClick(event)
+//
+{
+  stopProg();
 }
 
 function onMsgShowEditor(msgData)

@@ -262,17 +262,6 @@ function debugResumeBtn_onClick(event)
   progWorker.postMessage({msgId: MSGID_DEBUG_RESUME, msgData: null});
 }
 
-/*
-function debugPauseBtn_onClick(event)
-//
-{
-  if(!(isDebugging && isRunning))
-    return;
-
-  progWorker.postMessage({msgId: MSGID_DEBUG_PAUSE, msgData: null});
-}
-*/
-
 function debugStepIntoBtn_onClick(event)
 //
 {
