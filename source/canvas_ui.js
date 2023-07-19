@@ -8,6 +8,39 @@ var images = new Map();
 bufferCanvas.width = progCanvas.width;
 bufferCanvas.width = progCanvas.height;
 
+addCanvasUIMessages();
+
+
+function addCanvasUIMessages()
+//
+{
+  uiMessageMap.set(MSGID_SHOW_CANVAS, onMsgShowCanvas);
+  uiMessageMap.set(MSGID_HIDE_CANVAS, onMsgHideCanvas);
+  uiMessageMap.set(MSGID_SET_CANVAS_WIDTH, onMsgSetCanvasWidth);
+  uiMessageMap.set(MSGID_SET_CANVAS_HEIGHT, onMsgSetCanvasHeight);
+  uiMessageMap.set(MSGID_CLEAR_CANVAS, onMsgClearCanvas);
+  uiMessageMap.set(MSGID_LOAD_IMAGE_REQUEST, onMsgLoadImageRequest);
+  uiMessageMap.set(MSGID_UNLOAD_IMAGE_REQUEST, onMsgUnloadImageRequest);
+  uiMessageMap.set(MSGID_DRAW_IMAGE_REQUEST, onMsgDrawImageRequest);
+  uiMessageMap.set(MSGID_DRAW_IMAGE_CLIP_REQUEST, onMsgDrawImageClipRequest);
+  uiMessageMap.set(MSGID_DRAW_IMAGE_TILED_REQUEST, onMsgDrawImageTiledRequest);
+  uiMessageMap.set(MSGID_GET_IMAGE_WIDTH_REQUEST, onMsgGetImageWidthRequest);
+  uiMessageMap.set(MSGID_GET_IMAGE_HEIGHT_REQUEST, onMsgGetImageHeightRequest);
+  uiMessageMap.set(MSGID_ENABLE_CANVAS_BUFFER, onMsgEnableCanvasBuffer);
+  uiMessageMap.set(MSGID_DISABLE_CANVAS_BUFFER, onMsgDisableCanvasBuffer);
+  uiMessageMap.set(MSGID_DRAW_CANVAS_BUFFER, onMsgDrawCanvasBuffer);
+  uiMessageMap.set(MSGID_ADD_CANVAS_EVENT, onMsgAddCanvasEvent);
+  uiMessageMap.set(MSGID_REMOVE_CANVAS_EVENT, onMsgRemoveCanvasEvent);
+  uiMessageMap.set(MSGID_DRAW_TEXT, onMsgDrawText);
+  uiMessageMap.set(MSGID_DRAW_RECT, onMsgDrawRect);
+  uiMessageMap.set(MSGID_DRAW_CIRCLE, onMsgDrawCircle);
+  uiMessageMap.set(MSGID_DRAW_LINE, onMsgDrawLine);
+  uiMessageMap.set(MSGID_SET_TEXT_FONT, onMsgSetTextFont);
+  uiMessageMap.set(MSGID_SET_FILL_COLOR, onMsgSetFillColor);
+  uiMessageMap.set(MSGID_SET_LINE_COLOR, onMsgSetLineColor);
+  uiMessageMap.set(MSGID_SET_LINE_SIZE, onMsgSetLineSize);
+}
+
 function resetCanvas()
 //Set the canvas back to its initial state
 {

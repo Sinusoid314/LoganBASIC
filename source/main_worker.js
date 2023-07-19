@@ -15,7 +15,7 @@ importScripts('thread_common.js',
 
 var expectedResultMessageID = 0;
 var pendingMessages = [];
-var workerMsgFuncs = new Map();
+var workerMessageMap = new Map();
 var mainVM = new VM();
 
 mainVM.addNativeFuncArray([].concat(stdNativeFuncs, consoleNativeFuncs, canvasNativeFuncs, soundNativeFuncs, spriteNativeFuncs));
@@ -23,7 +23,7 @@ mainVM.onPrintHook = onVMPrint;
 mainVM.onStatusChangeHook = onVMStatusChange;
 mainVM.onErrorHook = onVMError;
 
-initWorkerMsgFuncs();
+initworkerMessageMap();
 onmessage = progWorker_onMessage;
 
 function resetMain()
@@ -43,27 +43,27 @@ function resetMain()
   pendingMessages = [];
 }
 
-function initWorkerMsgFuncs()
+function initworkerMessageMap()
 //
 {
-  workerMsgFuncs.set(MSGID_START_PROG, onMsgStartProg);
-  workerMsgFuncs.set(MSGID_INPUT_RESULT, onMsgInputResult);
-  workerMsgFuncs.set(MSGID_IMAGE_REQUEST_RESULT, onMsgImageRequestResult);
-  workerMsgFuncs.set(MSGID_CANVAS_EVENT, onMsgCanvasEvent);
-  workerMsgFuncs.set(MSGID_DRAW_CANVAS_BUFFER_DONE, onMsgDrawCanvasBufferDone);
-  workerMsgFuncs.set(MSGID_SOUND_REQUEST_RESULT, onMsgSoundRequestResult);
-  workerMsgFuncs.set(MSGID_SPRITE_SHEET_REF_REQUEST_RESULT, onMsgSpriteSheetRefRequestResult);
-  workerMsgFuncs.set(MSGID_SPRITE_SHEET_REQUEST_RESULT, onMsgSpriteSheetRequestResult);
-  workerMsgFuncs.set(MSGID_DEBUG_ENABLE, onMsgDebugEnable);
-  workerMsgFuncs.set(MSGID_DEBUG_DISABLE, onMsgDebugDisable);
-  workerMsgFuncs.set(MSGID_DEBUG_RESUME, onMsgDebugResume);
-  workerMsgFuncs.set(MSGID_DEBUG_STEP_INTO, onMsgDebugStepInto);
-  workerMsgFuncs.set(MSGID_DEBUG_STEP_OVER, onMsgDebugStepOver);
-  workerMsgFuncs.set(MSGID_DEBUG_STEP_OUT, onMsgDebugStepOut);
-  workerMsgFuncs.set(MSGID_DEBUG_SKIP, onMsgDebugSkip);
-  workerMsgFuncs.set(MSGID_DEBUG_CALL_FRAME_INFO_REQUEST, onMsgDebugCallFrameInfoRequest);
-  workerMsgFuncs.set(MSGID_DEBUG_ADD_BREAKPOINT, onMsgDebugAddBreakpoint);
-  workerMsgFuncs.set(MSGID_DEBUG_REMOVE_BREAKPOINT, onMsgDebugRemoveBreakpoint);
+  workerMessageMap.set(MSGID_START_PROG, onMsgStartProg);
+  workerMessageMap.set(MSGID_INPUT_RESULT, onMsgInputResult);
+  workerMessageMap.set(MSGID_IMAGE_REQUEST_RESULT, onMsgImageRequestResult);
+  workerMessageMap.set(MSGID_CANVAS_EVENT, onMsgCanvasEvent);
+  workerMessageMap.set(MSGID_DRAW_CANVAS_BUFFER_DONE, onMsgDrawCanvasBufferDone);
+  workerMessageMap.set(MSGID_SOUND_REQUEST_RESULT, onMsgSoundRequestResult);
+  workerMessageMap.set(MSGID_SPRITE_SHEET_REF_REQUEST_RESULT, onMsgSpriteSheetRefRequestResult);
+  workerMessageMap.set(MSGID_SPRITE_SHEET_REQUEST_RESULT, onMsgSpriteSheetRequestResult);
+  workerMessageMap.set(MSGID_DEBUG_ENABLE, onMsgDebugEnable);
+  workerMessageMap.set(MSGID_DEBUG_DISABLE, onMsgDebugDisable);
+  workerMessageMap.set(MSGID_DEBUG_RESUME, onMsgDebugResume);
+  workerMessageMap.set(MSGID_DEBUG_STEP_INTO, onMsgDebugStepInto);
+  workerMessageMap.set(MSGID_DEBUG_STEP_OVER, onMsgDebugStepOver);
+  workerMessageMap.set(MSGID_DEBUG_STEP_OUT, onMsgDebugStepOut);
+  workerMessageMap.set(MSGID_DEBUG_SKIP, onMsgDebugSkip);
+  workerMessageMap.set(MSGID_DEBUG_CALL_FRAME_INFO_REQUEST, onMsgDebugCallFrameInfoRequest);
+  workerMessageMap.set(MSGID_DEBUG_ADD_BREAKPOINT, onMsgDebugAddBreakpoint);
+  workerMessageMap.set(MSGID_DEBUG_REMOVE_BREAKPOINT, onMsgDebugRemoveBreakpoint);
 }
 
 function progWorker_onMessage(message)
@@ -103,7 +103,7 @@ function progWorker_onMessage(message)
 function dispatchMessage(message)
 //Call the appropriate message-handling function
 {
-  workerMsgFuncs.get(message.data.msgId)(message.data.msgData);
+  workerMessageMap.get(message.data.msgId)(message.data.msgData);
 }
 
 function onMsgStartProg(msgData)

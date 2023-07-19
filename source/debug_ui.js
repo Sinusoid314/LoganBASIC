@@ -33,6 +33,15 @@ debugStepOutBtn.addEventListener("click", debugStepOutBtn_onClick);
 debugSkipBtn.addEventListener("click", debugSkipBtn_onClick);
 debugCallStackList.addEventListener("change", debugCallStackList_onChange);
 
+addDebugUIMessages();
+
+
+function addDebugUIMessages()
+//
+{
+  uiMessageMap.set(MSGID_DEBUG_UPDATE_UI, onMsgDebugUpdateUI);
+}
+
 function debugChangeUIStatus(newStatus)
 //
 {

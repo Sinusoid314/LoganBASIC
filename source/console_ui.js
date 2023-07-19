@@ -6,6 +6,19 @@ var consoleInputDiv = document.getElementById("consoleInputDiv");
 consoleInput.addEventListener("keydown", consoleInput_onKeydown);
 consoleInputBtn.addEventListener("click", consoleInputBtn_onClick);
 
+addConsoleUIMessages();
+
+
+function addConsoleUIMessages()
+//
+{
+  uiMessageMap.set(MSGID_SHOW_CONSOLE, onMsgShowConsole);
+  uiMessageMap.set(MSGID_HIDE_CONSOLE, onMsgHideConsole);
+  uiMessageMap.set(MSGID_PRINT, onMsgPrint);
+  uiMessageMap.set(MSGID_INPUT_REQUEST, onMsgInputRequest);
+  uiMessageMap.set(MSGID_CLEAR_CONSOLE, onMsgClearConsole);
+}
+
 function clearConsoleOutput()
 //Clear the console
 {

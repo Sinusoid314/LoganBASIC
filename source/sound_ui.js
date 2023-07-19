@@ -1,5 +1,22 @@
 var sounds = new Map();
 
+addSoundUIMessages();
+
+
+function addSoundUIMessages()
+//
+{
+  uiMessageMap.set(MSGID_LOAD_SOUND_REQUEST, onMsgLoadSoundRequest);
+  uiMessageMap.set(MSGID_UNLOAD_SOUND_REQUEST, onMsgUnloadSoundRequest);
+  uiMessageMap.set(MSGID_PLAY_SOUND_REQUEST, onMsgPlaySoundRequest);
+  uiMessageMap.set(MSGID_PAUSE_SOUND_REQUEST, onMsgPauseSoundRequest);
+  uiMessageMap.set(MSGID_STOP_SOUND_REQUEST, onMsgStopSoundRequest);
+  uiMessageMap.set(MSGID_GET_SOUND_LEN_REQUEST, onMsgGetSoundLenRequest);
+  uiMessageMap.set(MSGID_GET_SOUND_POS_REQUEST, onMsgGetSoundPosRequest);
+  uiMessageMap.set(MSGID_SET_SOUND_POS_REQUEST, onMsgSetSoundPosRequest);
+  uiMessageMap.set(MSGID_LOOP_SOUND_REQUEST, onMsgLoopSoundRequest);
+}
+
 function cleanupSounds()
 //Unload all sounds
 {

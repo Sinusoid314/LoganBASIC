@@ -1,3 +1,11 @@
+(July 18, 2023)
+[v2.0.2.5]
+	- Renamed initUIMsgFuncs() in main_ui module to addMainUIMessages().
+	- Removed MSGID_SHOW_EDITOR and MSGID_HIDE_EDITOR messages.
+	- Added functions for adding thread messages to all UI modules.
+	- Moved the <script> tag for loading main_ui module in loganbasic.html to load before the other UI modules.
+	- Renamed uiMsgFuncs to uiMessageMap in main_ui module and workerMsgFuncs to workerMessageMap in main_worker module.
+
 (July 17, 2023)
 [v2.0.2.4]
 	- Moved window_onLoad() function to main_ui module and moved code that loads a source file
