@@ -1,3 +1,14 @@
+(July 20, 2023)
+[v2.0.2.7]
+	- Modified each worker module to register its own native functions with the VM.
+	- Split thread_common module into seperate files for each UI/worker module.
+	- Split loganbasic.css into seperate files for each UI module.
+
+(July 19, 2023)
+[v2.0.2.6]
+	- Moved code for adding thread messages in UI modules from function-level to the top-level.
+	- Moved code for adding thread messages in worker modules from function-level to the top-level.
+
 (July 18, 2023)
 [v2.0.2.5]
 	- Renamed initUIMsgFuncs() in main_ui module to addMainUIMessages().

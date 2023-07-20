@@ -6,6 +6,11 @@ const consoleNativeFuncs = [
 
 var inputCallback = null;
 
+workerMessageMap.set(MSGID_INPUT_RESULT, onMsgInputResult);
+
+mainVM.addNativeFuncArray(consoleNativeFuncs);
+
+
 function resetConsole()
 //
 {

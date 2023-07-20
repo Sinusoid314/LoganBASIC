@@ -1,30 +1,39 @@
-importScripts('./core/object.js',
-              './core/token.js',
-              './core/bytecode.js',
-              './core/std_funcs.js',
-              './core/scanner.js',
-              './core/compiler.js',
-              './core/vm.js');
-
-importScripts('thread_common.js',
-              'debug_worker.js',
-              'console_worker.js',
-              'canvas_worker.js',
-              'sound_worker.js',
-              'sprite_worker.js');
+importScripts('main_common.js');
 
 var expectedResultMessageID = 0;
 var pendingMessages = [];
 var workerMessageMap = new Map();
-var mainVM = new VM();
+var mainVM;
 
-mainVM.addNativeFuncArray([].concat(stdNativeFuncs, consoleNativeFuncs, canvasNativeFuncs, soundNativeFuncs, spriteNativeFuncs));
+importScripts('./core/object.js', './core/token.js', './core/bytecode.js', './core/std_funcs.js',
+              './core/scanner.js', './core/compiler.js', './core/vm.js');
+
+mainVM = new VM();
 mainVM.onPrintHook = onVMPrint;
 mainVM.onStatusChangeHook = onVMStatusChange;
 mainVM.onErrorHook = onVMError;
 
-initworkerMessageMap();
 onmessage = progWorker_onMessage;
+
+workerMessageMap.set(MSGID_START_PROG, onMsgStartProg);
+
+mainVM.addNativeFuncArray(stdNativeFuncs);
+
+importScripts('debug_common.js');
+importScripts('debug_worker.js');
+
+importScripts('console_common.js');
+importScripts('console_worker.js');
+
+importScripts('canvas_common.js');
+importScripts('canvas_worker.js');
+
+importScripts('sound_common.js');
+importScripts('sound_worker.js');
+
+importScripts('sprite_common.js');
+importScripts('sprite_worker.js');
+
 
 function resetMain()
 //
@@ -41,29 +50,6 @@ function resetMain()
 
   expectedResultMessageID = 0;
   pendingMessages = [];
-}
-
-function initworkerMessageMap()
-//
-{
-  workerMessageMap.set(MSGID_START_PROG, onMsgStartProg);
-  workerMessageMap.set(MSGID_INPUT_RESULT, onMsgInputResult);
-  workerMessageMap.set(MSGID_IMAGE_REQUEST_RESULT, onMsgImageRequestResult);
-  workerMessageMap.set(MSGID_CANVAS_EVENT, onMsgCanvasEvent);
-  workerMessageMap.set(MSGID_DRAW_CANVAS_BUFFER_DONE, onMsgDrawCanvasBufferDone);
-  workerMessageMap.set(MSGID_SOUND_REQUEST_RESULT, onMsgSoundRequestResult);
-  workerMessageMap.set(MSGID_SPRITE_SHEET_REF_REQUEST_RESULT, onMsgSpriteSheetRefRequestResult);
-  workerMessageMap.set(MSGID_SPRITE_SHEET_REQUEST_RESULT, onMsgSpriteSheetRequestResult);
-  workerMessageMap.set(MSGID_DEBUG_ENABLE, onMsgDebugEnable);
-  workerMessageMap.set(MSGID_DEBUG_DISABLE, onMsgDebugDisable);
-  workerMessageMap.set(MSGID_DEBUG_RESUME, onMsgDebugResume);
-  workerMessageMap.set(MSGID_DEBUG_STEP_INTO, onMsgDebugStepInto);
-  workerMessageMap.set(MSGID_DEBUG_STEP_OVER, onMsgDebugStepOver);
-  workerMessageMap.set(MSGID_DEBUG_STEP_OUT, onMsgDebugStepOut);
-  workerMessageMap.set(MSGID_DEBUG_SKIP, onMsgDebugSkip);
-  workerMessageMap.set(MSGID_DEBUG_CALL_FRAME_INFO_REQUEST, onMsgDebugCallFrameInfoRequest);
-  workerMessageMap.set(MSGID_DEBUG_ADD_BREAKPOINT, onMsgDebugAddBreakpoint);
-  workerMessageMap.set(MSGID_DEBUG_REMOVE_BREAKPOINT, onMsgDebugRemoveBreakpoint);
 }
 
 function progWorker_onMessage(message)

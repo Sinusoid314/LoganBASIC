@@ -1,13 +1,3 @@
-const DEBUG_ACTION_CONTINUE = 1;
-const DEBUG_ACTION_BREAK = 2;
-const DEBUG_ACTION_STEP_OVER = 3;
-const DEBUG_ACTION_STEP_OUT = 4;
-
-var debugEnabled = false;
-var debugBreakpoints = [];
-var debugLineChangeAction = DEBUG_ACTION_BREAK;
-var debugStepCallFrame = null;
-
 class DebugInfo
 {
   constructor(vm, sourceLineNum, uiStatus, callFrameIndex = -1)
@@ -52,6 +42,28 @@ class DebugInfo
       this.locals.set(callFrame.func.localIdents[localIndex], vm.stack[callFrame.localsStackIndex + localIndex]);
   }
 }
+
+const DEBUG_ACTION_CONTINUE = 1;
+const DEBUG_ACTION_BREAK = 2;
+const DEBUG_ACTION_STEP_OVER = 3;
+const DEBUG_ACTION_STEP_OUT = 4;
+
+var debugEnabled = false;
+var debugBreakpoints = [];
+var debugLineChangeAction = DEBUG_ACTION_BREAK;
+var debugStepCallFrame = null;
+
+workerMessageMap.set(MSGID_DEBUG_ENABLE, onMsgDebugEnable);
+workerMessageMap.set(MSGID_DEBUG_DISABLE, onMsgDebugDisable);
+workerMessageMap.set(MSGID_DEBUG_RESUME, onMsgDebugResume);
+workerMessageMap.set(MSGID_DEBUG_STEP_INTO, onMsgDebugStepInto);
+workerMessageMap.set(MSGID_DEBUG_STEP_OVER, onMsgDebugStepOver);
+workerMessageMap.set(MSGID_DEBUG_STEP_OUT, onMsgDebugStepOut);
+workerMessageMap.set(MSGID_DEBUG_SKIP, onMsgDebugSkip);
+workerMessageMap.set(MSGID_DEBUG_CALL_FRAME_INFO_REQUEST, onMsgDebugCallFrameInfoRequest);
+workerMessageMap.set(MSGID_DEBUG_ADD_BREAKPOINT, onMsgDebugAddBreakpoint);
+workerMessageMap.set(MSGID_DEBUG_REMOVE_BREAKPOINT, onMsgDebugRemoveBreakpoint);
+
 
 function resetDebug()
 //

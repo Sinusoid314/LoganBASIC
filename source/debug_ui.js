@@ -12,7 +12,6 @@ var debugToggleBtn = document.getElementById("debugToggleBtn");
 var debugDiv = document.getElementById("debugDiv");
 var debugResizer = document.getElementById("debugResizer");
 var debugResumeBtn = document.getElementById("debugResumeBtn");
-//var debugPauseBtn = document.getElementById("debugPauseBtn");
 var debugStepIntoBtn = document.getElementById("debugStepIntoBtn");
 var debugStepOverBtn = document.getElementById("debugStepOverBtn");
 var debugStepOutBtn = document.getElementById("debugStepOutBtn");
@@ -26,21 +25,14 @@ document.addEventListener("mousedown", document_onMouseDown);
 document.addEventListener("mousemove", document_onMouseMove);
 document.addEventListener("mouseup", document_onMouseUp);
 debugResumeBtn.addEventListener("click", debugResumeBtn_onClick);
-//debugPauseBtn.addEventListener("click", debugPauseBtn_onClick);
 debugStepIntoBtn.addEventListener("click", debugStepIntoBtn_onClick);
 debugStepOverBtn.addEventListener("click", debugStepOverBtn_onClick);
 debugStepOutBtn.addEventListener("click", debugStepOutBtn_onClick);
 debugSkipBtn.addEventListener("click", debugSkipBtn_onClick);
 debugCallStackList.addEventListener("change", debugCallStackList_onChange);
 
-addDebugUIMessages();
+uiMessageMap.set(MSGID_DEBUG_UPDATE_UI, onMsgDebugUpdateUI);
 
-
-function addDebugUIMessages()
-//
-{
-  uiMessageMap.set(MSGID_DEBUG_UPDATE_UI, onMsgDebugUpdateUI);
-}
 
 function debugChangeUIStatus(newStatus)
 //

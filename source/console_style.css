@@ -1,0 +1,18 @@
+#consoleOutput
+{
+  display: block;
+  margin-top: 5px;
+  width: 100%;
+}
+
+#consoleInputDiv
+{
+  display: none;
+  margin-top: 5px;
+  width: 100%;
+}
+
+#consoleDiv
+{
+  margin-bottom: 20px;
+}

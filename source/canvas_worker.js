@@ -46,6 +46,13 @@ var canvasEvents = [
 var imageResultCallback = null;
 var drawBufferCallback = null;
 
+workerMessageMap.set(MSGID_IMAGE_REQUEST_RESULT, onMsgImageRequestResult);
+workerMessageMap.set(MSGID_CANVAS_EVENT, onMsgCanvasEvent);
+workerMessageMap.set(MSGID_DRAW_CANVAS_BUFFER_DONE, onMsgDrawCanvasBufferDone);
+
+mainVM.addNativeFuncArray(canvasNativeFuncs);
+
+
 function resetCanvas()
 //
 {

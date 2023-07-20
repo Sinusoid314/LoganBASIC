@@ -9,16 +9,10 @@ window.addEventListener("load", window_onLoad);
 for(var i = 0; i < toggles.length; i++)
   toggles[i].addEventListener("click", toggle_onClick);
 
-addMainUIMessages();
+uiMessageMap.set(MSGID_PROG_DONE_SUCCESS, onMsgProgDoneSuccess);
+uiMessageMap.set(MSGID_PROG_DONE_ERROR, onMsgProgDoneError);
+uiMessageMap.set(MSGID_STATUS_CHANGE, onMsgStatusChange);
 
-
-function addMainUIMessages()
-//
-{
-  uiMessageMap.set(MSGID_PROG_DONE_SUCCESS, onMsgProgDoneSuccess);
-  uiMessageMap.set(MSGID_PROG_DONE_ERROR, onMsgProgDoneError);
-  uiMessageMap.set(MSGID_STATUS_CHANGE, onMsgStatusChange);
-}
 
 function switchMode()
 //Switch between run and edit modes
