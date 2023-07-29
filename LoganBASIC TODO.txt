@@ -1,5 +1,6 @@
 [Bugs]
-    - 
+    - Move 'Debug' button to editor_ui module.
+    - Load HTML for each component synchronously.
 
 [Features]
     - Add "Contact Us" link to main page.

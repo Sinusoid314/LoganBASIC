@@ -1,3 +1,21 @@
+(July 29, 2023)
+[v2.0.2.11]
+	- Split loganbasic.html into seperate HTML files for each UI module, modified each UI module to load its own
+	  CSS/HTML/JavaScript, and modified main_ui module to load the UI modules for each component.
+
+(July 28, 2023)
+[v2.0.2.10]
+	- Added loadCSS(), loadScript(), and loadHTML() functions to main_ui module.
+
+(July 27, 2023)
+[v2.0.2.9]
+	- Moved the importScripts() calls for each common module into their respective worker modules.
+	- Removed the "_style" postfix from each module's CSS file name.
+
+(July 24, 2023)
+[v2.0.2.8]
+	- Moved the setting of mainVM.onPrintHook from main_worker module to console_worker module.
+
 (July 20, 2023)
 [v2.0.2.7]
 	- Modified each worker module to register its own native functions with the VM.
