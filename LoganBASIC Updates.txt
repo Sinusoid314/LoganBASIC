@@ -1,3 +1,16 @@
+(August 3, 2023)
+[v2.0.2.13]
+	- Renamed switchMode() to switchEditorMode() and moved it from main_ui module to editor_ui module.
+	- Removed loadHTML() function from main_ui module.
+	- Added initUI() function to main_ui module to be called from window_onLoad().
+	- Moved all loadCSS() and loadScript() calls from each UI module to main_ui module.
+
+(July 31, 2023)
+[v2.0.2.12]
+	- Modified loadScript() in main_ui module to load the script synchronously.
+	- Modified loadHTML() in main_ui module to take in an HTML string instead of a URL.
+	- Replaced each component's HTML file with a JavaScript file that loads the component's HTML.
+
 (July 29, 2023)
 [v2.0.2.11]
 	- Split loganbasic.html into seperate HTML files for each UI module, modified each UI module to load its own
