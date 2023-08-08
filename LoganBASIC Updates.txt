@@ -1,3 +1,16 @@
+(August 8, 2023)
+[v2.0.2.15]
+	- Modified editor_ui module to check for empty paramFileURL before calling loadSourceFile().
+	- Moved 'Debug' button to editor_ui module.
+	- Added resetUI() and initWorker() functions to main_ui module.
+	- Added debugResyncWorker() function to debug_ui module.
+	- Replaced all references to loganbasic.html with main.html.
+
+(August 7, 2023)
+[v2.0.2.14]
+	- Removed initUI() function from main_ui module and moved initialization code back to top-level of main_ui module.
+	- Modified HTML modules for each component to insert the component's HTML into the DOM.
+
 (August 3, 2023)
 [v2.0.2.13]
 	- Renamed switchMode() to switchEditorMode() and moved it from main_ui module to editor_ui module.
