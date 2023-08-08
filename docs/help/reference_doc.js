@@ -9,7 +9,7 @@ function usageOpen_onClick(event)
   var fileText = usageCode.innerText;
 
   window.localStorage.setItem("fileText", fileText);
-  window.open(event.target.href + "source/loganbasic.html?open=local", "_blank");
+  window.open(event.target.href + "source/main.html?open=local", "_blank");
 
   event.preventDefault();
 }
