@@ -1,4 +1,4 @@
-const versionHTML = `<div id="version">Version 2.0.2.15 - <a href="../updates.html" target="_blank">Updates</a></div>`;
+const versionHTML = `<div id="version">Version 2.0.2.16 - <a href="../updates.html" target="_blank">Updates</a></div>`;
 
 var isRunning = false;
 var mainDiv = document.getElementById("mainDiv");
@@ -68,7 +68,7 @@ function loadScript(fileURL)
 }
 
 function initWorker()
-//
+//Terminate and restart the worker thread
 {
   if(progWorker)
     progWorker.terminate();
@@ -77,12 +77,9 @@ function initWorker()
   progWorker.onmessage = progUI_onMessage;
 }
 
-function cleanupUI(exitStatus)
+function onProgEnd(exitStatus)
 //Set the UI to reflect that the program has stopped running
 {
-  if(!isRunning)
-    return;
-
   closeConsoleInput();
   cleanupCanvas();
   cleanupSounds();
@@ -95,36 +92,11 @@ function cleanupUI(exitStatus)
   isRunning = false;
 }
 
-function resetUI()
-//
-{
-  clearConsoleOutput();
-  resetCanvas();
-  debugClearDisplays();
-  switchEditorMode();
-}
-
 function startProg(source)
-//Reset the UI and signal the worker thread to start the program
+//Signal the worker thread to start the program
 {
-  if(isRunning)
-    return;
-
-  resetUI();
-  
   progWorker.postMessage({msgId: MSGID_START_PROG, msgData: {source: source}});
-
   isRunning = true;
-}
-
-function stopProg()
-//Terminate and restart the worker thread
-{
-  initWorker();
-
-  debugResyncWorker();
-
-  cleanupUI("Program stopped.");
 }
 
 function window_onLoad(event)
@@ -150,7 +122,7 @@ function progUI_onMessage(message)
 function onMsgProgDoneSuccess(msgData)
 //The worker thread has signaled that the program has completed successfully
 {
-  cleanupUI("Program run successfully.");
+  onProgEnd("Program run successfully.");
 }
 
 function onMsgProgDoneError(msgData)
@@ -159,7 +131,7 @@ function onMsgProgDoneError(msgData)
   if(msgData.error.sourceName == mainSourceName)
     selectEditorLine(msgData.error.sourceLineNum);
 
-  cleanupUI(msgData.error.message);
+  onProgEnd(msgData.error.message);
 }
 
 function onMsgStatusChange(msgData)

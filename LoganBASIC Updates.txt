@@ -1,3 +1,9 @@
+(August 10, 2023)
+[v2.0.2.16]
+	- Renamed cleanupUI() to onProgEnd().
+	- Removed resetUI() function from main_ui module and moved its functionality to runBtn_onClick() in editor_ui module.
+	- Removed stopProg() from main_ui module and moved its functionality to stopBtn_onClick() in  editor_ui module.
+
 (August 8, 2023)
 [v2.0.2.15]
 	- Modified editor_ui module to check for empty paramFileURL before calling loadSourceFile().

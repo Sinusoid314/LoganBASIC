@@ -240,13 +240,27 @@ function editorGutterItem_onClick(event)
 function runBtn_onClick(event)
 //
 {
+  if(isRunning)
+    return;
+
+  clearConsoleOutput();
+  resetCanvas();
+  debugClearDisplays();
+  switchEditorMode();
+  
   startProg(editorCode.value);
 }
 
 function stopBtn_onClick(event)
 //
 {
-  stopProg();
+  if(!isRunning)
+    return;
+
+  initWorker();
+  debugResyncWorker();
+
+  onProgEnd("Program stopped.");
 }
 
 function debugToggleBtn_onClick(event)
