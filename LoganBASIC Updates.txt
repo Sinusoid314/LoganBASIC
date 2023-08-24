@@ -1,3 +1,24 @@
+(August 23, 2023)
+[v2.0.2.20]
+	- Moved CSS and HTML insertion code for debugger component into debug_ui module.
+
+(August 22, 2023)
+[v2.0.2.19]
+	- Moved CSS and HTML insertion code for editor component into editor_ui module.
+
+(August 17, 2023)
+[v2.0.2.18]
+	- Modified onVMStatusChange() in main_worker module to send and empty object instead of null when sending
+	  the MSGID_PROG_DONE_SUCCESS message.
+	- Combined the MSGID_PROG_DONE_SUCCESS and MSGID_PROG_DONE_ERROR messages into the MSGID_PROG_DONE message.
+
+(August 16, 2023)
+[v2.0.2.17]
+	- Added loadDebugUI(), loadEditorUI(), loadConsoleUI(), loadCanvasUI(), loadSoundUI(), loadSpriteUI(), and setMainEvents()
+	  functions to main_ui module.
+	- Added MAIN_MODE_EDIT and MAIN_MODE_DEPLOY constants and mainMode variable to main_common module.
+	- Modified main_worker module and initWorker() in main_ui module to use mainMode.
+
 (August 10, 2023)
 [v2.0.2.16]
 	- Renamed cleanupUI() to onProgEnd().
