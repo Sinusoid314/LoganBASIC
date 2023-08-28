@@ -1,3 +1,24 @@
+(August 28, 2023)
+[v2.0.2.23]
+	- Added PROG_EXIT_STATUS_SUCCESS, PROG_EXIT_STATUS_ERROR, and PROG_EXIT_STATUS_TERMINATED constants,
+	  along with onProgStartHandlers and onProgEndHandlers arrays, to main_ui module to support each
+	  component having its own handler code for program start/end events.
+	- Modified editor_ui, debug_ui, console_ui, canvas_ui, sound_ui, and sprite_ui modules to register
+	  their own respective program start/end event handlers.
+
+(August 25, 2023)
+[v2.0.2.22]
+	- Moved main CSS and HTML into main_ui module.
+	- Modified reference_doc.js, examples.html, and editor_ui.js files to reference index.html.
+
+(August 24, 2023)
+[v2.0.2.21]
+	- Moved CSS and HTML insertion code for canvas component into canvas_ui module.
+	- Moved CSS and HTML insertion code for console component into console_ui module.
+	- Moved the importScripts() calls to each component's common modules from their respective worker modules
+	  to the main_worker module.
+	- Moved each component's source files into their own respective directories.
+
 (August 23, 2023)
 [v2.0.2.20]
 	- Moved CSS and HTML insertion code for debugger component into debug_ui module.
