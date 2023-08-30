@@ -88,36 +88,45 @@ document.body.insertAdjacentHTML("afterbegin",
 `);
 
 
-const versionHTML = `<div id="version">Version 2.0.2.23 - <a href="updates.html" target="_blank">Updates</a></div>`;
-var mainDiv = document.getElementById("mainDiv");
-var statusBar = document.getElementById("statusBar");
-
 const PROG_EXIT_STATUS_SUCCESS = 1;
 const PROG_EXIT_STATUS_ERROR = 2;
 const PROG_EXIT_STATUS_TERMINATED = 3;
+
+const versionHTML = `<div id="version">Version 2.0.2.24 - <a href="updates.html" target="_blank">Updates</a></div>`;
+var mainDiv = document.getElementById("mainDiv");
+var statusBar = document.getElementById("statusBar");
 
 var isRunning = false;
 var onProgStartHandlers = [];
 var onProgEndHandlers = [];
 var progWorker = null;
 var uiMessageMap = new Map();
-var urlParams = new URLSearchParams(window.location.search);
 var paramFileURL = "";
 
-if(urlParams.has("open"))
-  paramFileURL = urlParams.get("open");
+readURLParams();
 
 initWorker();
 
-setMainEvents();
+setMainUIEvents();
 
-loadDebugUI();
-loadEditorUI();
-loadConsoleUI();
-loadCanvasUI();
-loadSoundUI();
-loadSpriteUI();
+loadUIComponents();
 
+
+function readURLParams()
+//
+{
+  var urlParams = new URLSearchParams(window.location.search);
+
+  if(urlParams.has("run"))
+  {
+    paramFileURL = urlParams.get("run");
+    mainMode = MAIN_MODE_DEPLOY;
+    return;
+  }
+
+  if(urlParams.has("open"))
+    paramFileURL = urlParams.get("open");
+}
 
 function initWorker()
 //Terminate and restart the worker thread
@@ -126,13 +135,28 @@ function initWorker()
   progWorker.onmessage = progUI_onMessage;
 }
 
-function setMainEvents()
+function setMainUIEvents()
 //
 {
   uiMessageMap.set(MSGID_PROG_DONE, onMsgProgDone);
   uiMessageMap.set(MSGID_STATUS_CHANGE, onMsgStatusChange);
   
   window.addEventListener("load", window_onLoad);
+}
+
+function loadUIComponents()
+//
+{
+  if(mainMode == MAIN_MODE_EDIT)
+  {
+    loadDebugUI();
+    loadEditorUI();
+  }
+
+  loadConsoleUI();
+  loadCanvasUI();
+  loadSoundUI();
+  loadSpriteUI();
 }
 
 function loadDebugUI()
@@ -175,17 +199,6 @@ function loadSpriteUI()
 {
   loadScript("./source/sprite/sprite_common.js");
   loadScript("./source/sprite/sprite_ui.js");
-}
-
-function loadCSS(fileURL)
-//
-{
-  var link = document.createElement('link');
-
-  link.rel = "stylesheet";
-  link.type = "text/css";
-  link.href = fileURL;
-  document.head.appendChild(link);
 }
 
 function loadScript(fileURL)

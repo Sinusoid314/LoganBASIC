@@ -7,25 +7,45 @@ var expectedResultMessageID = 0;
 var pendingMessages = [];
 var workerMessageMap = new Map();
 var mainVM = new VM();
-              
-if(urlParams.has("mode"))
-  mainMode = urlParams.get("mode");
-
-mainVM.onStatusChangeHook = onVMStatusChange;
-mainVM.onErrorHook = onVMError;
-
-onmessage = progWorker_onMessage;
-
-workerMessageMap.set(MSGID_START_PROG, onMsgStartProg);
 
 mainVM.addNativeFuncArray(stdNativeFuncs);
+              
+readURLParams();
 
-loadDebugWorker();
-loadConsoleWorker();
-loadCanvasWorker();
-loadSoundWorker();
-loadSpriteWorker();
+setMainWorkerEvents();
 
+loadWorkerComponents();
+
+
+function readURLParams()
+//
+{
+  if(urlParams.has("mode"))
+    mainMode = urlParams.get("mode");
+}
+
+function setMainWorkerEvents()
+//
+{
+  mainVM.onStatusChangeHook = onVMStatusChange;
+  mainVM.onErrorHook = onVMError;
+  
+  onmessage = progWorker_onMessage;
+  
+  workerMessageMap.set(MSGID_START_PROG, onMsgStartProg);
+}
+
+function loadWorkerComponents()
+//
+{
+  if(mainMode == MAIN_MODE_EDIT)
+    loadDebugWorker();
+
+  loadConsoleWorker();
+  loadCanvasWorker();
+  loadSoundWorker();
+  loadSpriteWorker();
+}
 
 function loadDebugWorker()
 //

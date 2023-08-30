@@ -1,3 +1,8 @@
+(August 29, 2023)
+[v2.0.2.25]
+	- Added loadUIComponents() and readURLParams() functions to main_ui module.
+	- Added readURLParams(), setMainWorkerEvents(), and loadWorkerComponents() funcitons to main_worker module.
+
 (August 28, 2023)
 [v2.0.2.23]
 	- Added PROG_EXIT_STATUS_SUCCESS, PROG_EXIT_STATUS_ERROR, and PROG_EXIT_STATUS_TERMINATED constants,
