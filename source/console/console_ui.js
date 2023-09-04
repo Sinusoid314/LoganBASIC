@@ -43,18 +43,24 @@ var consoleInput = document.getElementById("consoleInput");
 var consoleInputBtn = document.getElementById("consoleInputBtn");
 var consoleInputDiv = document.getElementById("consoleInputDiv");
 
-consoleInput.addEventListener("keydown", consoleInput_onKeydown);
-consoleInputBtn.addEventListener("click", consoleInputBtn_onClick);
+setConsoleUIEvents();
 
-onProgStartHandlers.push(console_onProgStart);
-onProgEndHandlers.push(console_onProgEnd);
 
-uiMessageMap.set(MSGID_SHOW_CONSOLE, onMsgShowConsole);
-uiMessageMap.set(MSGID_HIDE_CONSOLE, onMsgHideConsole);
-uiMessageMap.set(MSGID_PRINT, onMsgPrint);
-uiMessageMap.set(MSGID_INPUT_REQUEST, onMsgInputRequest);
-uiMessageMap.set(MSGID_CLEAR_CONSOLE, onMsgClearConsole);
-
+function setConsoleUIEvents()
+//
+{
+  consoleInput.addEventListener("keydown", consoleInput_onKeydown);
+  consoleInputBtn.addEventListener("click", consoleInputBtn_onClick);
+  
+  onProgStartHandlers.push(console_onProgStart);
+  onProgEndHandlers.push(console_onProgEnd);
+  
+  uiMessageMap.set(MSGID_SHOW_CONSOLE, onMsgShowConsole);
+  uiMessageMap.set(MSGID_HIDE_CONSOLE, onMsgHideConsole);
+  uiMessageMap.set(MSGID_PRINT, onMsgPrint);
+  uiMessageMap.set(MSGID_INPUT_REQUEST, onMsgInputRequest);
+  uiMessageMap.set(MSGID_CLEAR_CONSOLE, onMsgClearConsole);
+}
 
 function clearConsoleOutput()
 //Clear the console

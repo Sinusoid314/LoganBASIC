@@ -6,12 +6,17 @@ const consoleNativeFuncs = [
 
 var inputCallback = null;
 
-mainVM.onPrintHook = onVMPrint;
-
-workerMessageMap.set(MSGID_INPUT_RESULT, onMsgInputResult);
-
 mainVM.addNativeFuncArray(consoleNativeFuncs);
 
+setConsoleWorkerEvents();
+
+
+function setConsoleWorkerEvents()
+//
+{
+  mainVM.onPrintHook = onVMPrint;
+  workerMessageMap.set(MSGID_INPUT_RESULT, onMsgInputResult);
+}
 
 function resetConsole()
 //

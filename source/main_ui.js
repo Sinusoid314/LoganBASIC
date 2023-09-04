@@ -92,7 +92,7 @@ const PROG_EXIT_STATUS_SUCCESS = 1;
 const PROG_EXIT_STATUS_ERROR = 2;
 const PROG_EXIT_STATUS_TERMINATED = 3;
 
-const versionHTML = `<div id="version">Version 2.0.2.24 - <a href="updates.html" target="_blank">Updates</a></div>`;
+const versionHTML = `<div id="version">Version 2.0.2.27 - <a href="updates.html" target="_blank">Updates</a></div>`;
 var mainDiv = document.getElementById("mainDiv");
 var statusBar = document.getElementById("statusBar");
 
@@ -212,6 +212,52 @@ function loadScript(fileURL)
   document.head.appendChild(script);
 }
 
+function loadSourceFile(fileURL)
+//Load a slource file from either local storage or a given URL
+{
+  var httpReq, fileData;
+
+  statusBar.innerHTML = `Loading '${fileURL}'...`;
+
+  return new Promise((resolve, reject)  =>
+  {
+    if(fileURL == "local")
+    {
+      fileData = window.localStorage.getItem("fileData");
+      if(fileData)
+        resolve(fileData);
+      else
+        reject("Failed to read local storage data.");
+    }
+    else
+    {
+      httpReq = new XMLHttpRequest();
+      httpReq.open("GET", fileURL);
+      httpReq.onload = () => {resolve(httpReq.responseText)};
+      httpReq.onerror = () => {reject(httpReq.statusText)};
+      httpReq.send();
+    }
+  });
+}
+
+function setToggleEvents()
+//
+{
+  var toggles = document.getElementsByClassName("toggle-open");
+
+  for(var i = 0; i < toggles.length; i++)
+    toggles[i].addEventListener("click", toggle_onClick);
+}
+
+function hideToggles()
+//
+{
+  var toggles = document.getElementsByClassName("toggle-open");
+
+  for(var i = 0; i < toggles.length; i++)
+    toggles[i].style.display = "none";
+}
+
 function startProg(source)
 //Signal the worker thread to start the program
 {
@@ -247,12 +293,19 @@ function onProgEnd(exitMessage, exitStatus, error)
 function window_onLoad(event)
 //
 {
-  var toggles = document.getElementsByClassName("toggle-open");
+  if(mainMode == MAIN_MODE_EDIT)
+  {
+    setToggleEvents();
+    mainDiv.insertAdjacentHTML("beforeend", versionHTML);
+  }
+  else
+  {
+    hideToggles();
 
-  for(var i = 0; i < toggles.length; i++)
-    toggles[i].addEventListener("click", toggle_onClick);
-
-  mainDiv.insertAdjacentHTML("beforeend", versionHTML);
+    loadSourceFile(paramFileURL)
+      .then((fileData) => {startProg(fileData)})
+      .catch((errorMessage) => {statusBar.innerHTML = errorMessage});
+  }
 }
 
 function progUI_onMessage(message)

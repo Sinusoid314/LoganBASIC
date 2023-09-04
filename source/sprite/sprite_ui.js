@@ -24,15 +24,21 @@ class SpriteSheet
 
 var spriteSheets = new Map();
 
-onProgEndHandlers.push(sprite_onProgEnd);
+setSpriteUIEvents();
 
-uiMessageMap.set(MSGID_SPRITE_SHEET_REF_REQUEST, onMsgSpriteSheetRefRequest);
-uiMessageMap.set(MSGID_LOAD_SPRITE_SHEET_REQUEST, onMsgLoadSpriteSheetRequest);
-uiMessageMap.set(MSGID_UNLOAD_SPRITE_SHEET_REQUEST, onMsgUnloadSpriteSheetRequest);
-uiMessageMap.set(MSGID_DRAW_SPRITE_SHEET_FRAMES_REQUEST, onMsgDrawSpriteSheetFramesRequest);
-uiMessageMap.set(MSGID_GET_SPRITE_SHEET_FRAME_WIDTH_REQUEST, onMsgGetSpriteSheetFrameWidthRequest);
-uiMessageMap.set(MSGID_GET_SPRITE_SHEET_FRAME_HEIGHT_REQUEST, onMsgGetSpriteSheetFrameHeightRequest);
 
+function setSpriteUIEvents()
+//
+{
+  onProgEndHandlers.push(sprite_onProgEnd);
+
+  uiMessageMap.set(MSGID_SPRITE_SHEET_REF_REQUEST, onMsgSpriteSheetRefRequest);
+  uiMessageMap.set(MSGID_LOAD_SPRITE_SHEET_REQUEST, onMsgLoadSpriteSheetRequest);
+  uiMessageMap.set(MSGID_UNLOAD_SPRITE_SHEET_REQUEST, onMsgUnloadSpriteSheetRequest);
+  uiMessageMap.set(MSGID_DRAW_SPRITE_SHEET_FRAMES_REQUEST, onMsgDrawSpriteSheetFramesRequest);
+  uiMessageMap.set(MSGID_GET_SPRITE_SHEET_FRAME_WIDTH_REQUEST, onMsgGetSpriteSheetFrameWidthRequest);
+  uiMessageMap.set(MSGID_GET_SPRITE_SHEET_FRAME_HEIGHT_REQUEST, onMsgGetSpriteSheetFrameHeightRequest);
+}
 
 function cleanupSpriteSheets()
 //Unload all sprite sheet images

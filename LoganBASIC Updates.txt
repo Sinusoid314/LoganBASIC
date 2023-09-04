@@ -1,5 +1,18 @@
-(August 29, 2023)
+(September 3, 2023)
+[v2.0.2.27]
+	- Moved loadSourceFile() into main_ui module and modified it to return a Promise object.
+
+(September 1, 2023)
+[v2.0.2.26]
+	- Added setToggleEvents() and hideToggles() funcitons to main_ui module, and modified
+	  window_onLoad() function to call them depending on the value of mainMode.
+
+(August 31, 2023)
 [v2.0.2.25]
+	- Moved the event-setting code for each module into its own respective function.
+
+(August 29, 2023)
+[v2.0.2.24]
 	- Added loadUIComponents() and readURLParams() functions to main_ui module.
 	- Added readURLParams(), setMainWorkerEvents(), and loadWorkerComponents() funcitons to main_worker module.
 

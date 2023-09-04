@@ -80,11 +80,17 @@ var scrollX = 0;
 var scrollY = 0;
 var spriteSheetResultCallback = null;
 
-workerMessageMap.set(MSGID_SPRITE_SHEET_REF_REQUEST_RESULT, onMsgSpriteSheetRefRequestResult);
-workerMessageMap.set(MSGID_SPRITE_SHEET_REQUEST_RESULT, onMsgSpriteSheetRequestResult);
-
 mainVM.addNativeFuncArray(spriteNativeFuncs);
 
+setSpriteWorkerEvents();
+
+
+function setSpriteWorkerEvents()
+//
+{
+  workerMessageMap.set(MSGID_SPRITE_SHEET_REF_REQUEST_RESULT, onMsgSpriteSheetRefRequestResult);
+  workerMessageMap.set(MSGID_SPRITE_SHEET_REQUEST_RESULT, onMsgSpriteSheetRequestResult);
+}
 
 function resetSprites()
 //

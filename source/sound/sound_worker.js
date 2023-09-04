@@ -12,10 +12,16 @@ const soundNativeFuncs = [
 
 var soundResultCallback = null;
 
-workerMessageMap.set(MSGID_SOUND_REQUEST_RESULT, onMsgSoundRequestResult);
-
 mainVM.addNativeFuncArray(soundNativeFuncs);
 
+setSoundWorkerEvents();
+
+
+function setSoundWorkerEvents()
+//
+{
+  workerMessageMap.set(MSGID_SOUND_REQUEST_RESULT, onMsgSoundRequestResult);
+}
 
 function resetSounds()
 //

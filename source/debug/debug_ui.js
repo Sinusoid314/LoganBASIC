@@ -144,21 +144,27 @@ var debugLocalsItemValueMap = new Map;
 var debugGlobalsItemValueMap = new Map;
 var debugBreakpointBackups = [];
 
-document.addEventListener("mousedown", document_onMouseDown);
-document.addEventListener("mousemove", document_onMouseMove);
-document.addEventListener("mouseup", document_onMouseUp);
-debugResumeBtn.addEventListener("click", debugResumeBtn_onClick);
-debugStepIntoBtn.addEventListener("click", debugStepIntoBtn_onClick);
-debugStepOverBtn.addEventListener("click", debugStepOverBtn_onClick);
-debugStepOutBtn.addEventListener("click", debugStepOutBtn_onClick);
-debugSkipBtn.addEventListener("click", debugSkipBtn_onClick);
-debugCallStackList.addEventListener("change", debugCallStackList_onChange);
+setDebugUIEvents();
 
-onProgStartHandlers.push(debug_onProgStart);
-onProgEndHandlers.push(debug_onProgEnd);
 
-uiMessageMap.set(MSGID_DEBUG_UPDATE_UI, onMsgDebugUpdateUI);
-
+function setDebugUIEvents()
+//
+{
+  document.addEventListener("mousedown", document_onMouseDown);
+  document.addEventListener("mousemove", document_onMouseMove);
+  document.addEventListener("mouseup", document_onMouseUp);
+  debugResumeBtn.addEventListener("click", debugResumeBtn_onClick);
+  debugStepIntoBtn.addEventListener("click", debugStepIntoBtn_onClick);
+  debugStepOverBtn.addEventListener("click", debugStepOverBtn_onClick);
+  debugStepOutBtn.addEventListener("click", debugStepOutBtn_onClick);
+  debugSkipBtn.addEventListener("click", debugSkipBtn_onClick);
+  debugCallStackList.addEventListener("change", debugCallStackList_onChange);
+  
+  onProgStartHandlers.push(debug_onProgStart);
+  onProgEndHandlers.push(debug_onProgEnd);
+  
+  uiMessageMap.set(MSGID_DEBUG_UPDATE_UI, onMsgDebugUpdateUI);
+}
 
 function debugResyncWorker()
 //Reload saved breakpoints into, and reinitialize, the worker thread's debugger component

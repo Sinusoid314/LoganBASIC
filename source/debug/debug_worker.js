@@ -53,17 +53,23 @@ var debugBreakpoints = [];
 var debugLineChangeAction = DEBUG_ACTION_BREAK;
 var debugStepCallFrame = null;
 
-workerMessageMap.set(MSGID_DEBUG_ENABLE, onMsgDebugEnable);
-workerMessageMap.set(MSGID_DEBUG_DISABLE, onMsgDebugDisable);
-workerMessageMap.set(MSGID_DEBUG_RESUME, onMsgDebugResume);
-workerMessageMap.set(MSGID_DEBUG_STEP_INTO, onMsgDebugStepInto);
-workerMessageMap.set(MSGID_DEBUG_STEP_OVER, onMsgDebugStepOver);
-workerMessageMap.set(MSGID_DEBUG_STEP_OUT, onMsgDebugStepOut);
-workerMessageMap.set(MSGID_DEBUG_SKIP, onMsgDebugSkip);
-workerMessageMap.set(MSGID_DEBUG_CALL_FRAME_INFO_REQUEST, onMsgDebugCallFrameInfoRequest);
-workerMessageMap.set(MSGID_DEBUG_ADD_BREAKPOINT, onMsgDebugAddBreakpoint);
-workerMessageMap.set(MSGID_DEBUG_REMOVE_BREAKPOINT, onMsgDebugRemoveBreakpoint);
+setDebugWorkerEvents();
 
+
+function setDebugWorkerEvents()
+//
+{
+  workerMessageMap.set(MSGID_DEBUG_ENABLE, onMsgDebugEnable);
+  workerMessageMap.set(MSGID_DEBUG_DISABLE, onMsgDebugDisable);
+  workerMessageMap.set(MSGID_DEBUG_RESUME, onMsgDebugResume);
+  workerMessageMap.set(MSGID_DEBUG_STEP_INTO, onMsgDebugStepInto);
+  workerMessageMap.set(MSGID_DEBUG_STEP_OVER, onMsgDebugStepOver);
+  workerMessageMap.set(MSGID_DEBUG_STEP_OUT, onMsgDebugStepOut);
+  workerMessageMap.set(MSGID_DEBUG_SKIP, onMsgDebugSkip);
+  workerMessageMap.set(MSGID_DEBUG_CALL_FRAME_INFO_REQUEST, onMsgDebugCallFrameInfoRequest);
+  workerMessageMap.set(MSGID_DEBUG_ADD_BREAKPOINT, onMsgDebugAddBreakpoint);
+  workerMessageMap.set(MSGID_DEBUG_REMOVE_BREAKPOINT, onMsgDebugRemoveBreakpoint);
+}
 
 function resetDebug()
 //

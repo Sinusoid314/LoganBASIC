@@ -118,27 +118,42 @@ var debugToggleBtn = document.getElementById("debugToggleBtn");
 
 var prevLineCount = 1;
 
-newBtn.addEventListener("click", newBtn_onClick);
-openFileBtn.addEventListener("click", openFileBtn_onClick);
-openURLBtn.addEventListener("click", openURLBtn_onClick);
-saveBtn.addEventListener("click", saveBtn_onClick);
-examplesBtn.addEventListener("click", examplesBtn_onClick);
-helpBtn.addEventListener("click", helpBtn_onClick);
-aboutBtn.addEventListener("click", aboutBtn_onClick);
-editorCode.addEventListener("input", editor_onInput);
-editorCode.addEventListener("scroll", editor_onScroll);
-runBtn.addEventListener("click", runBtn_onClick);
-stopBtn.addEventListener("click", stopBtn_onClick);
-debugToggleBtn.addEventListener("click", debugToggleBtn_onClick);
-
-onProgStartHandlers.push(editor_onProgStart);
-onProgEndHandlers.push(editor_onProgEnd);
+setEditorUIEvents();
 
 addEditorGutterItem();
 
 if(paramFileURL != "")
-  loadSourceFile(paramFileURL);
+{
+  loadSourceFile(paramFileURL)
+    .then((fileData) => 
+    {
+      editorCode.value = fileData;
+      updateEditorGutter();
+      statusBar.innerHTML = "Ready.";
+    })
+    .catch((errorMessage) => {statusBar.innerHTML = errorMessage});
+}
 
+
+function setEditorUIEvents()
+//
+{
+  newBtn.addEventListener("click", newBtn_onClick);
+  openFileBtn.addEventListener("click", openFileBtn_onClick);
+  openURLBtn.addEventListener("click", openURLBtn_onClick);
+  saveBtn.addEventListener("click", saveBtn_onClick);
+  examplesBtn.addEventListener("click", examplesBtn_onClick);
+  helpBtn.addEventListener("click", helpBtn_onClick);
+  aboutBtn.addEventListener("click", aboutBtn_onClick);
+  editorCode.addEventListener("input", editor_onInput);
+  editorCode.addEventListener("scroll", editor_onScroll);
+  runBtn.addEventListener("click", runBtn_onClick);
+  stopBtn.addEventListener("click", stopBtn_onClick);
+  debugToggleBtn.addEventListener("click", debugToggleBtn_onClick);
+  
+  onProgStartHandlers.push(editor_onProgStart);
+  onProgEndHandlers.push(editor_onProgEnd);
+}
 
 function switchEditorMode()
 //Switch between run and edit modes
@@ -221,44 +236,6 @@ function selectEditorLine(selLine)
   editorCode.scrollTop = ((editorCode.scrollHeight / lines.length) * selLine) - (editorCode.clientHeight / 2);
 }
 
-function loadSourceFile(fileURL)
-//Load a slource file into the editor
-{
-  var httpReq, fileText;
-
-  statusBar.innerHTML = "Loading file...";
-
-  if(fileURL == "local")
-  {
-    fileText = window.localStorage.getItem("fileText");
-
-    if(fileText != null)
-    {
-      editorCode.value = fileText;
-      updateEditorGutter();
-      statusBar.innerHTML = "Ready.";
-    }
-    else
-    {
-      statusBar.innerHTML = "Failed to open file.";
-    }
-  }
-  else
-  {
-    httpReq = new XMLHttpRequest();
-
-    httpReq.onload = function()
-    {
-      editorCode.value = this.responseText;
-      updateEditorGutter();
-      statusBar.innerHTML = "Ready.";
-    };
-
-    httpReq.open("GET", fileURL);
-    httpReq.send();
-  }
-}
-
 function newBtn_onClick(event)
 //Open a blank editor in a new tab
 {
@@ -274,7 +251,7 @@ function openFileBtn_onClick(event)
 
     fileInput.onchange = function()
     {
-      this.files[0].text().then(fileText => window.localStorage.setItem("fileText", fileText));
+      this.files[0].text().then(fileData => window.localStorage.setItem("fileData", fileData));
       window.open("index.html?open=local", "_blank");
     };
 
