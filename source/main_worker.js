@@ -2,7 +2,7 @@ importScripts('./core/object.js', './core/token.js', './core/bytecode.js', './co
               './core/scanner.js', './core/compiler.js', './core/vm.js');
 importScripts('main_common.js');
 
-var urlParams = new URLSearchParams(location.search);
+var onProgEndHandlers = [];
 var expectedResultMessageID = 0;
 var pendingMessages = [];
 var workerMessageMap = new Map();
@@ -20,6 +20,8 @@ loadWorkerComponents();
 function readURLParams()
 //
 {
+  var urlParams = new URLSearchParams(location.search);
+
   if(urlParams.has("mode"))
     mainMode = urlParams.get("mode");
 }
@@ -99,6 +101,12 @@ function resetMain()
   pendingMessages = [];
 }
 
+function dispatchMessage(message)
+//Call the appropriate message-handling function
+{
+  workerMessageMap.get(message.data.msgId)(message.data.msgData);
+}
+
 function progWorker_onMessage(message)
 //Process messages sent from the UI thread
 {
@@ -131,12 +139,6 @@ function progWorker_onMessage(message)
   }
   else
     pendingMessages.push(message);
-}
-
-function dispatchMessage(message)
-//Call the appropriate message-handling function
-{
-  workerMessageMap.get(message.data.msgId)(message.data.msgData);
 }
 
 function onMsgStartProg(msgData)

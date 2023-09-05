@@ -92,7 +92,7 @@ const PROG_EXIT_STATUS_SUCCESS = 1;
 const PROG_EXIT_STATUS_ERROR = 2;
 const PROG_EXIT_STATUS_TERMINATED = 3;
 
-const versionHTML = `<div id="version">Version 2.0.2.27 - <a href="updates.html" target="_blank">Updates</a></div>`;
+const versionHTML = `<div id="version">Version 2.0.2.28 - <a href="updates.html" target="_blank">Updates</a></div>`;
 var mainDiv = document.getElementById("mainDiv");
 var statusBar = document.getElementById("statusBar");
 
@@ -233,8 +233,23 @@ function loadSourceFile(fileURL)
     {
       httpReq = new XMLHttpRequest();
       httpReq.open("GET", fileURL);
-      httpReq.onload = () => {resolve(httpReq.responseText)};
-      httpReq.onerror = () => {reject(httpReq.statusText)};
+
+      httpReq.onreadystatechange = function()
+      {
+        if(this.readyState != XMLHttpRequest.DONE)
+          return;
+
+        if(this.status == 200)
+          resolve(this.responseText);
+        else
+          reject(`Failed to load '${this.responseURL}': ${this.statusText}`);
+      };
+      
+      httpReq.onerror = function()
+      {
+        reject(`Failed to load '${this.responseURL}': ${this.statusText}`);
+      };
+
       httpReq.send();
     }
   });

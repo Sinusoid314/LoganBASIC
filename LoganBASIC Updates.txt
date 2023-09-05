@@ -1,3 +1,8 @@
+(September 4, 2023)
+[v2.0.2.28]
+	- Fixed bug with status bar not displaying an error message when failing to load a source file.
+	- Modified window_onLoad() in main_ui module to load and run the given source file if in DEPLOY mode.
+
 (September 3, 2023)
 [v2.0.2.27]
 	- Moved loadSourceFile() into main_ui module and modified it to return a Promise object.
