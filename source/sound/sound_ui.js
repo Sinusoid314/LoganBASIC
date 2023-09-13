@@ -6,7 +6,7 @@ setSoundUIEvents();
 function setSoundUIEvents()
 //
 {
-  onProgEndHandlers.push(sound_onProgEnd);
+  uiOnProgEndHandlers.push(soundUI_onProgEnd);
 
   uiMessageMap.set(MSGID_LOAD_SOUND_REQUEST, onMsgLoadSoundRequest);
   uiMessageMap.set(MSGID_UNLOAD_SOUND_REQUEST, onMsgUnloadSoundRequest);
@@ -60,7 +60,7 @@ function sound_onError(event)
   sendSoundRequestResult(false)
 }
 
-function sound_onProgEnd(exitStatus, error)
+function soundUI_onProgEnd(exitStatus, error)
 //
 {
   cleanupSounds();

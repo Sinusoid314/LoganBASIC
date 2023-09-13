@@ -54,6 +54,8 @@ setCanvasWorkerEvents();
 function setCanvasWorkerEvents()
 //
 {
+  workerOnProgEndHandlers.push(canvasWorker_onProgEnd);
+
   workerMessageMap.set(MSGID_IMAGE_REQUEST_RESULT, onMsgImageRequestResult);
   workerMessageMap.set(MSGID_CANVAS_EVENT, onMsgCanvasEvent);
   workerMessageMap.set(MSGID_DRAW_CANVAS_BUFFER_DONE, onMsgDrawCanvasBufferDone);
@@ -94,6 +96,12 @@ function sendImageRequest(vm, msgId, msgData)
 
   expectedResultMessageID = MSGID_IMAGE_REQUEST_RESULT;
   vm.runLoopExitFlag = true;
+}
+
+function canvasWorker_onProgEnd()
+//
+{
+  resetCanvas();
 }
 
 function onMsgCanvasEvent(msgData)

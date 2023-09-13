@@ -88,6 +88,8 @@ setSpriteWorkerEvents();
 function setSpriteWorkerEvents()
 //
 {
+  workerOnProgEndHandlers.push(spriteWorker_onProgEnd);
+
   workerMessageMap.set(MSGID_SPRITE_SHEET_REF_REQUEST_RESULT, onMsgSpriteSheetRefRequestResult);
   workerMessageMap.set(MSGID_SPRITE_SHEET_REQUEST_RESULT, onMsgSpriteSheetRequestResult);
 }
@@ -100,6 +102,12 @@ function resetSprites()
   scrollX = 0;
   scrollY = 0;
   spriteSheetResultCallback = null;
+}
+
+function spriteWorker_onProgEnd()
+//
+{
+  resetSprites();
 }
 
 function onMsgSpriteSheetRefRequestResult(msgData)

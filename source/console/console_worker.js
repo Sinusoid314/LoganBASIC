@@ -15,6 +15,9 @@ function setConsoleWorkerEvents()
 //
 {
   mainVM.onPrintHook = onVMPrint;
+
+  workerOnProgEndHandlers.push(consoleWorker_onProgEnd);
+
   workerMessageMap.set(MSGID_INPUT_RESULT, onMsgInputResult);
 }
 
@@ -22,6 +25,12 @@ function resetConsole()
 //
 {
   inputCallback = null;
+}
+
+function consoleWorker_onProgEnd()
+//
+{
+  resetConsole();
 }
 
 function onMsgInputResult(msgData)

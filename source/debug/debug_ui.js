@@ -160,8 +160,8 @@ function setDebugUIEvents()
   debugSkipBtn.addEventListener("click", debugSkipBtn_onClick);
   debugCallStackList.addEventListener("change", debugCallStackList_onChange);
   
-  onProgStartHandlers.push(debug_onProgStart);
-  onProgEndHandlers.push(debug_onProgEnd);
+  uiOnProgStartHandlers.push(debug_onProgStart);
+  uiOnProgEndHandlers.push(debug_onProgEnd);
   
   uiMessageMap.set(MSGID_DEBUG_UPDATE_UI, onMsgDebugUpdateUI);
 }

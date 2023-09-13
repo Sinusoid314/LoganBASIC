@@ -151,8 +151,8 @@ function setEditorUIEvents()
   stopBtn.addEventListener("click", stopBtn_onClick);
   debugToggleBtn.addEventListener("click", debugToggleBtn_onClick);
   
-  onProgStartHandlers.push(editor_onProgStart);
-  onProgEndHandlers.push(editor_onProgEnd);
+  uiOnProgStartHandlers.push(editorUI_onProgStart);
+  uiOnProgEndHandlers.push(editorUI_onProgEnd);
 }
 
 function switchEditorMode()
@@ -331,7 +331,7 @@ function runBtn_onClick(event)
 function stopBtn_onClick(event)
 //
 {
-  onProgEnd("Program stopped.", PROG_EXIT_STATUS_TERMINATED, null);
+  mainUI_onProgEnd("Program stopped.", PROG_EXIT_STATUS_TERMINATED, null);
 }
 
 function debugToggleBtn_onClick(event)
@@ -340,13 +340,13 @@ function debugToggleBtn_onClick(event)
   debugToggleDiv();
 }
 
-function editor_onProgStart()
+function editorUI_onProgStart()
 //
 {
   switchEditorMode();
 }
 
-function editor_onProgEnd(exitStatus, error)
+function editorUI_onProgEnd(exitStatus, error)
 //
 {
   switchEditorMode();

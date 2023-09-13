@@ -2,7 +2,7 @@ importScripts('./core/object.js', './core/token.js', './core/bytecode.js', './co
               './core/scanner.js', './core/compiler.js', './core/vm.js');
 importScripts('main_common.js');
 
-var onProgEndHandlers = [];
+var workerOnProgEndHandlers = [];
 var expectedResultMessageID = 0;
 var pendingMessages = [];
 var workerMessageMap = new Map();
@@ -84,27 +84,26 @@ function loadSpriteWorker()
   importScripts('./sprite/sprite_worker.js');
 }
 
-function resetMain()
+function dispatchMessage(message)
+//Call the appropriate message-handling function
+{
+  workerMessageMap.get(message.data.msgId)(message.data.msgData);
+}
+
+function mainWorker_onProgEnd(vm)
 //
-{ 
-  resetStd();
-  resetConsole();
-  resetCanvas();
-  resetSounds();
-  resetSprites();
-  resetDebug();
+{
+  postMessage({msgId: MSGID_PROG_DONE, msgData: {error: vm.error}});
   
+  workerOnProgEndHandlers.forEach(handler => handler());
+
+  resetStd();
+
   mainVM.resetActiveRunState();
   mainVM.globals.clear();
 
   expectedResultMessageID = 0;
   pendingMessages = [];
-}
-
-function dispatchMessage(message)
-//Call the appropriate message-handling function
-{
-  workerMessageMap.get(message.data.msgId)(message.data.msgData);
 }
 
 function progWorker_onMessage(message)
@@ -156,16 +155,9 @@ function onVMStatusChange(vm, prevStatus)
   switch(vm.status)
   {
     case VM_STATUS_IDLE:
-      if(vm.error)
+      if(((prevStatus == VM_STATUS_RUNNING) && (vm.callFramesEmpty())) || vm.error)
       {
-        resetMain();
-        return;
-      }
-      
-      if((prevStatus == VM_STATUS_RUNNING) && (vm.callFramesEmpty()))
-      {
-        postMessage({msgId: MSGID_PROG_DONE, msgData: {}});
-        resetMain();
+        mainWorker_onProgEnd(vm);
         return;
       }
 
@@ -184,10 +176,8 @@ function onVMStatusChange(vm, prevStatus)
 function onVMError(vm)
 //
 {
-  postMessage({msgId: MSGID_PROG_DONE, msgData: {error: vm.error}});
-
   if(vm.status == VM_STATUS_IDLE)
-    resetMain();
+    mainWorker_onProgEnd(vm);
 
   return false;
 }

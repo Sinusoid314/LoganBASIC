@@ -52,8 +52,8 @@ function setConsoleUIEvents()
   consoleInput.addEventListener("keydown", consoleInput_onKeydown);
   consoleInputBtn.addEventListener("click", consoleInputBtn_onClick);
   
-  onProgStartHandlers.push(console_onProgStart);
-  onProgEndHandlers.push(console_onProgEnd);
+  uiOnProgStartHandlers.push(console_onProgStart);
+  uiOnProgEndHandlers.push(consoleUI_onProgEnd);
   
   uiMessageMap.set(MSGID_SHOW_CONSOLE, onMsgShowConsole);
   uiMessageMap.set(MSGID_HIDE_CONSOLE, onMsgHideConsole);
@@ -111,7 +111,7 @@ function console_onProgStart()
   clearConsoleOutput();
 }
 
-function console_onProgEnd(exitStatus, error)
+function consoleUI_onProgEnd(exitStatus, error)
 //
 {
   closeConsoleInput();

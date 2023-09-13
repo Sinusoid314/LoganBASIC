@@ -59,6 +59,8 @@ setDebugWorkerEvents();
 function setDebugWorkerEvents()
 //
 {
+  workerOnProgEndHandlers.push(debugWorker_onProgEnd);
+
   workerMessageMap.set(MSGID_DEBUG_ENABLE, onMsgDebugEnable);
   workerMessageMap.set(MSGID_DEBUG_DISABLE, onMsgDebugDisable);
   workerMessageMap.set(MSGID_DEBUG_RESUME, onMsgDebugResume);
@@ -87,6 +89,12 @@ function debugEnterBreakpoint(vm, nextSourceLineNum)
   vm.inBreakpoint = true;
 
   postMessage({msgId: MSGID_DEBUG_UPDATE_UI, msgData: new DebugInfo(vm, nextSourceLineNum, DEBUG_UI_STATUS_BREAKPOINT)});
+}
+
+function debugWorker_onProgEnd()
+//
+{
+  resetDebug();
 }
 
 function onMsgDebugEnable(msgData)

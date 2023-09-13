@@ -92,13 +92,13 @@ const PROG_EXIT_STATUS_SUCCESS = 1;
 const PROG_EXIT_STATUS_ERROR = 2;
 const PROG_EXIT_STATUS_TERMINATED = 3;
 
-const versionHTML = `<div id="version">Version 2.0.2.28 - <a href="updates.html" target="_blank">Updates</a></div>`;
+const versionHTML = `<div id="version">Version 2.0.2.29 - <a href="updates.html" target="_blank">Updates</a></div>`;
 var mainDiv = document.getElementById("mainDiv");
 var statusBar = document.getElementById("statusBar");
 
 var isRunning = false;
-var onProgStartHandlers = [];
-var onProgEndHandlers = [];
+var uiOnProgStartHandlers = [];
+var uiOnProgEndHandlers = [];
 var progWorker = null;
 var uiMessageMap = new Map();
 var paramFileURL = "";
@@ -279,14 +279,14 @@ function startProg(source)
   if(isRunning)
     return;
 
-  onProgStartHandlers.forEach(handler => handler());
+  uiOnProgStartHandlers.forEach(handler => handler());
 
   progWorker.postMessage({msgId: MSGID_START_PROG, msgData: {source: source}});
 
   isRunning = true;
 }
 
-function onProgEnd(exitMessage, exitStatus, error)
+function mainUI_onProgEnd(exitMessage, exitStatus, error)
 //Set the UI to reflect that the program has stopped running
 {
   if(!isRunning)
@@ -300,7 +300,7 @@ function onProgEnd(exitMessage, exitStatus, error)
     initWorker();
   }
 
-  onProgEndHandlers.forEach(handler => handler(exitStatus, error));
+  uiOnProgEndHandlers.forEach(handler => handler(exitStatus, error));
 
   isRunning = false;
 }
@@ -336,9 +336,9 @@ function onMsgProgDone(msgData)
 //The worker thread has signaled that the program has ended
 {
   if(msgData.error)
-    onProgEnd(msgData.error.message, PROG_EXIT_STATUS_ERROR, msgData.error);
+    mainUI_onProgEnd(msgData.error.message, PROG_EXIT_STATUS_ERROR, msgData.error);
   else
-    onProgEnd("Program run successfully.", PROG_EXIT_STATUS_SUCCESS, null);
+    mainUI_onProgEnd("Program run successfully.", PROG_EXIT_STATUS_SUCCESS, null);
 }
 
 function onMsgStatusChange(msgData)

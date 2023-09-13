@@ -1,3 +1,11 @@
+(September 13, 2023)
+[v2.0.2.29]
+	- Added onProgEndHandlers array to main_worker module to support each component's worker module having its own handler
+	  code for program end event.
+	- Condensed the postMessage(MSGID_PROG_DONE) calls in main_worker into one call in mainWorker_onProgDone().
+	- Renamed onProgStartHandlers and onProgEndHandlers in main_ui module to uionProgStartHandlers and uiOnProgEndHandlers, respectively.
+	- Renamed onProgEndHandlers in main_worker module to workerOnProgEndHandlers.
+
 (September 4, 2023)
 [v2.0.2.28]
 	- Fixed bug with status bar not displaying an error message when failing to load a source file.

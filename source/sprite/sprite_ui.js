@@ -30,7 +30,7 @@ setSpriteUIEvents();
 function setSpriteUIEvents()
 //
 {
-  onProgEndHandlers.push(sprite_onProgEnd);
+  uiOnProgEndHandlers.push(sprite_onProgEnd);
 
   uiMessageMap.set(MSGID_SPRITE_SHEET_REF_REQUEST, onMsgSpriteSheetRefRequest);
   uiMessageMap.set(MSGID_LOAD_SPRITE_SHEET_REQUEST, onMsgLoadSpriteSheetRequest);

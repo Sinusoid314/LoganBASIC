@@ -1,5 +1,4 @@
 [Bugs]
-    - resetDebug() being called in main_worker module's resetMain() when in DEPLOY mode.
     - Background music in Space Shooter example not playing when in DEPLOY mode.
 
 [Features]

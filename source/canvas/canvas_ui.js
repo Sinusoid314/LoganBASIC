@@ -38,8 +38,8 @@ setCanvasUIEvents();
 function setCanvasUIEvents()
 //
 {
-  onProgStartHandlers.push(canvas_onProgStart);
-  onProgEndHandlers.push(canvas_onProgEnd);
+  uiOnProgStartHandlers.push(canvasUI_onProgStart);
+  uiOnProgEndHandlers.push(canvasUI_onProgEnd);
   
   uiMessageMap.set(MSGID_SHOW_CANVAS, onMsgShowCanvas);
   uiMessageMap.set(MSGID_HIDE_CANVAS, onMsgHideCanvas);
@@ -197,13 +197,13 @@ function canvas_onEvent(event)
   event.preventDefault();
 }
 
-function canvas_onProgStart()
+function canvasUI_onProgStart()
 //
 {
   resetCanvas();
 }
 
-function canvas_onProgEnd(exitStatus, error)
+function canvasUI_onProgEnd(exitStatus, error)
 //
 {
   cleanupCanvas();
