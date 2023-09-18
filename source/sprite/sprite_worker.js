@@ -94,7 +94,7 @@ function setSpriteWorkerEvents()
   workerMessageMap.set(MSGID_SPRITE_SHEET_REQUEST_RESULT, onMsgSpriteSheetRequestResult);
 }
 
-function resetSprites()
+function spriteWorker_onProgEnd()
 //
 {
   sprites.clear();
@@ -102,12 +102,6 @@ function resetSprites()
   scrollX = 0;
   scrollY = 0;
   spriteSheetResultCallback = null;
-}
-
-function spriteWorker_onProgEnd()
-//
-{
-  resetSprites();
 }
 
 function onMsgSpriteSheetRefRequestResult(msgData)

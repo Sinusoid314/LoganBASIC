@@ -21,16 +21,10 @@ function setConsoleWorkerEvents()
   workerMessageMap.set(MSGID_INPUT_RESULT, onMsgInputResult);
 }
 
-function resetConsole()
-//
-{
-  inputCallback = null;
-}
-
 function consoleWorker_onProgEnd()
 //
 {
-  resetConsole();
+  inputCallback = null;
 }
 
 function onMsgInputResult(msgData)

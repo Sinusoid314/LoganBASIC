@@ -25,16 +25,10 @@ function setSoundWorkerEvents()
   workerMessageMap.set(MSGID_SOUND_REQUEST_RESULT, onMsgSoundRequestResult);
 }
 
-function resetSounds()
-//
-{
-  soundResultCallback = null;
-}
-
 function soundWorker_onProgEnd()
 //
 {
-  resetSounds();
+  soundResultCallback = null;
 }
 
 function onMsgSoundRequestResult(msgData)

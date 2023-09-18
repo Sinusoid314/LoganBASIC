@@ -32,7 +32,7 @@ function setMainWorkerEvents()
   mainVM.onStatusChangeHook = onVMStatusChange;
   mainVM.onErrorHook = onVMError;
   
-  onmessage = progWorker_onMessage;
+  onmessage = mainWorker_onMessage;
   
   workerMessageMap.set(MSGID_START_PROG, onMsgStartProg);
 }
@@ -106,7 +106,7 @@ function mainWorker_onProgEnd(vm)
   pendingMessages = [];
 }
 
-function progWorker_onMessage(message)
+function mainWorker_onMessage(message)
 //Process messages sent from the UI thread
 {
   console.clear();

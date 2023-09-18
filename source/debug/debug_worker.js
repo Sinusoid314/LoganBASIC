@@ -73,13 +73,6 @@ function setDebugWorkerEvents()
   workerMessageMap.set(MSGID_DEBUG_REMOVE_BREAKPOINT, onMsgDebugRemoveBreakpoint);
 }
 
-function resetDebug()
-//
-{
-  debugLineChangeAction = DEBUG_ACTION_BREAK;
-  debugStepCallFrame = null;
-}
-
 function debugEnterBreakpoint(vm, nextSourceLineNum)
 //
 {
@@ -94,7 +87,8 @@ function debugEnterBreakpoint(vm, nextSourceLineNum)
 function debugWorker_onProgEnd()
 //
 {
-  resetDebug();
+  debugLineChangeAction = DEBUG_ACTION_BREAK;
+  debugStepCallFrame = null;
 }
 
 function onMsgDebugEnable(msgData)

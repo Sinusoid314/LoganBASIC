@@ -1,3 +1,9 @@
+(September 18, 2023)
+[v2.0.2.30]
+	- Renamed progWorker_onMessage() to mainWorker_onMessage() in main_worker module.
+	- Renamed progUI_onMessage() to mainUI_onMessage() in main_ui module.
+	- Moved all reset code to onProgEnd handlers in each worker module.
+
 (September 13, 2023)
 [v2.0.2.29]
 	- Added onProgEndHandlers array to main_worker module to support each component's worker module having its own handler

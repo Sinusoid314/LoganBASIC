@@ -92,7 +92,7 @@ const PROG_EXIT_STATUS_SUCCESS = 1;
 const PROG_EXIT_STATUS_ERROR = 2;
 const PROG_EXIT_STATUS_TERMINATED = 3;
 
-const versionHTML = `<div id="version">Version 2.0.2.29 - <a href="updates.html" target="_blank">Updates</a></div>`;
+const versionHTML = `<div id="version">Version 2.0.2.30 - <a href="updates.html" target="_blank">Updates</a></div>`;
 var mainDiv = document.getElementById("mainDiv");
 var statusBar = document.getElementById("statusBar");
 
@@ -132,7 +132,7 @@ function initWorker()
 //Terminate and restart the worker thread
 {
   progWorker = new Worker('./source/main_worker.js?mode=' + mainMode);
-  progWorker.onmessage = progUI_onMessage;
+  progWorker.onmessage = mainUI_onMessage;
 }
 
 function setMainUIEvents()
@@ -323,7 +323,7 @@ function window_onLoad(event)
   }
 }
 
-function progUI_onMessage(message)
+function mainUI_onMessage(message)
 //Process messages sent from the worker thread
 {
   if(!isRunning)

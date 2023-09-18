@@ -61,14 +61,6 @@ function setCanvasWorkerEvents()
   workerMessageMap.set(MSGID_DRAW_CANVAS_BUFFER_DONE, onMsgDrawCanvasBufferDone);
 }
 
-function resetCanvas()
-//
-{
-  canvasEvents.forEach(event => event.callback = null);
-  imageResultCallback = null;
-  drawBufferCallback = null;
-}
-
 function onMsgImageRequestResult(msgData)
 //
 {
@@ -101,7 +93,9 @@ function sendImageRequest(vm, msgId, msgData)
 function canvasWorker_onProgEnd()
 //
 {
-  resetCanvas();
+  canvasEvents.forEach(event => event.callback = null);
+  imageResultCallback = null;
+  drawBufferCallback = null;
 }
 
 function onMsgCanvasEvent(msgData)
