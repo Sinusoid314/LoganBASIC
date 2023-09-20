@@ -1273,7 +1273,7 @@ class Compiler
 
     this.vm.error = new VMError(message, sourceLineNum, this.sourceName);
 
-    if((this.vm.onErrorHook) && (this.vm.onErrorHook(this.vm, this)))
+    if((this.vm.onErrorHook) && (this.vm.onErrorHook(this.vm)))
     {
       this.vm.error = null;
       return;

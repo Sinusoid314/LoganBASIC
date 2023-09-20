@@ -92,7 +92,7 @@ const PROG_EXIT_STATUS_SUCCESS = 1;
 const PROG_EXIT_STATUS_ERROR = 2;
 const PROG_EXIT_STATUS_TERMINATED = 3;
 
-const versionHTML = `<div id="version">Version 2.0.2.30 - <a href="updates.html" target="_blank">Updates</a></div>`;
+const versionHTML = `<div id="version">Version 2.0.2.31 - <a href="updates.html" target="_blank">Updates</a></div>`;
 var mainDiv = document.getElementById("mainDiv");
 var statusBar = document.getElementById("statusBar");
 

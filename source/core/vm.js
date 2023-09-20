@@ -765,7 +765,7 @@ class VM
 
     this.error = new VMError(message, sourceLineNum, sourceName);
 
-    if((this.onErrorHook) && (this.onErrorHook(this, null)))
+    if((this.onErrorHook) && (this.onErrorHook(this)))
     {
       this.error = null;
       return;

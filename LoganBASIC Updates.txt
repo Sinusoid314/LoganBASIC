@@ -1,3 +1,7 @@
+(September 20, 2023)
+[v2.0.2.31]
+	- Removed the compiler reference parameter from the onErrorHook callback property of the VM class.
+
 (September 18, 2023)
 [v2.0.2.30]
 	- Renamed progWorker_onMessage() to mainWorker_onMessage() in main_worker module.
