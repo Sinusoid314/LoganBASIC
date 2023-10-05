@@ -17,6 +17,7 @@ class Compiler
     this.vm = vm;
     this.scanner = new Scanner(source);
     this.sourceName = sourceName;
+    this.topUserFunc = null;
     this.currUserFunc = null;
     this.hoistedOps = [];
     this.hoistedOpsJumpOpIndex = 0;
@@ -42,7 +43,8 @@ class Compiler
 
     try
     {
-      this.currUserFunc = new ObjUserFunc(this.sourceName, this.sourceName, SOURCE_LEVEL_TOP);
+      this.topUserFunc = new ObjUserFunc(this.sourceName, this.sourceName, SOURCE_LEVEL_TOP);
+      this.currUserFunc = this.topUserFunc;
 
       this.initTokens();
 
@@ -57,6 +59,7 @@ class Compiler
     }
     catch(error)
     {
+      this.topUserFunc = null;
       this.currUserFunc = null;
       console.log(error);
     }
@@ -64,7 +67,7 @@ class Compiler
     this.vm.changeStatus(prevStatus);
     this.vm.currCompiler = null;
 
-    return this.currUserFunc;
+    return this.topUserFunc;
   }
 
   parseHoistedDeclaration()
@@ -131,14 +134,13 @@ class Compiler
   funcDecl()
   //Parse a Function declaration
   {
-    var newFunc, topUserFunc, ident, litIndex;
+    var newFunc, ident, litIndex;
 
     if(this.matchToken(TOKEN_IDENTIFIER))
       ident = this.peekPrevToken().lexeme;
     else
       this.compileError("Expected identifier.");
 
-    topUserFunc = this.currUserFunc;
     this.currUserFunc = new ObjUserFunc(ident, this.sourceName, SOURCE_LEVEL_FUNC, this.peekPrevToken().lineNum);
 
     this.parseParameters();
@@ -152,7 +154,7 @@ class Compiler
     this.addReturnOps(false);
 
     newFunc = this.currUserFunc;
-    this.currUserFunc = topUserFunc;
+    this.currUserFunc = this.topUserFunc;
 
     litIndex = this.getLiteralIndex(newFunc);
     this.addOp([OPCODE_LOAD_LIT, litIndex], true);

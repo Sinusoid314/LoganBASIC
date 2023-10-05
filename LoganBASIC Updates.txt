@@ -1,3 +1,11 @@
+(October 5, 2023)
+[v2.0.2.33]
+	- Added topUserFunc member to Compiler class in compiler module.
+
+(September 22, 2023)
+[v2.0.2.32]
+	- Modified import_onLoad() in std_funcs module to resume the VM in the event of a compile error.
+
 (September 20, 2023)
 [v2.0.2.31]
 	- Removed the compiler reference parameter from the onErrorHook callback property of the VM class.

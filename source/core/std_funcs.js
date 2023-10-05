@@ -1,4 +1,4 @@
-const lbVersion = "2.0.2.31";
+const lbVersion = "2.0.2.33";
 
 const stdNativeFuncs = [
                   new ObjNativeFunc("rnd", 0, 0, funcRnd),
@@ -96,7 +96,9 @@ function import_onLoad()
   sourceName = url.pathname.split("/").pop();
 
   importCallback.vm.stack.push(true);
-  importCallback.vm.interpret(source, sourceName, CALLFRAME_FLAG_POP_RETURN_VAL);
+
+  if(importCallback.vm.interpret(source, sourceName, CALLFRAME_FLAG_POP_RETURN_VAL) == INTERPRET_COMPILE_ERROR)
+    importCallback.resumeVM();
 }
 
 function import_onError()
