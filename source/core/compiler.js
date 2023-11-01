@@ -1275,11 +1275,7 @@ class Compiler
 
     this.vm.error = new VMError(message, sourceLineNum, this.sourceName);
 
-    if((this.vm.onErrorHook) && (this.vm.onErrorHook(this.vm)))
-    {
-      this.vm.error = null;
-      return;
-    }
+    this.eventHooks.get(VM_EVENT_ERROR).forEach(hook => hook(this.vm));
 
     throw this.vm.error;
   }

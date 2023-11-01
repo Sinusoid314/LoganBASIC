@@ -2,6 +2,13 @@ const VM_STATUS_IDLE = 1;
 const VM_STATUS_COMPILING = 2;
 const VM_STATUS_RUNNING = 3;
 
+const VM_EVENT_STATUS_CHANGE = 1;
+const VM_EVENT_ERROR = 2;
+const VM_EVENT_PRINT = 3;
+const VM_EVENT_USER_FUNC_CALL = 4;
+const VM_EVENT_USER_FUNC_RETURN = 5;
+const VM_EVENT_SOURCE_LINE_CHANGE = 6;
+
 const INTERPRET_COMPILE_ERROR = 1;
 const INTERPRET_RUNTIME_ERROR = 2;
 const INTERPRET_SUCCESS = 3;
@@ -72,12 +79,13 @@ class VM
 {
   constructor()
   {
-    this.onStatusChangeHook = null;
-    this.onErrorHook = null;
-    this.onPrintHook = null;
-    this.onUserFuncCallHook = null;
-    this.onUserFuncReturnHook = null;
-    this.onSourceLineChangeHook = null;
+    this.eventHooks = new Map();
+    this.eventHooks.set(VM_EVENT_STATUS_CHANGE, []);
+    this.eventHooks.set(VM_EVENT_ERROR, []);
+    this.eventHooks.set(VM_EVENT_PRINT, []);
+    this.eventHooks.set(VM_EVENT_USER_FUNC_CALL, []);
+    this.eventHooks.set(VM_EVENT_USER_FUNC_RETURN, []);
+    this.eventHooks.set(VM_EVENT_SOURCE_LINE_CHANGE, []);
 
     this.status = VM_STATUS_IDLE;
     this.error = null;
@@ -173,7 +181,7 @@ class VM
       
       while(!this.runLoopExitFlag && !this.callFramesEmpty())
       {
-        if((!this.inBreakpoint) && (this.onSourceLineChangeHook))
+        if((!this.inBreakpoint) && (this.eventHooks.get(VM_EVENT_SOURCE_LINE_CHANGE).length > 0))
         {
             this.checkSourceLineChange();
 
@@ -432,8 +440,7 @@ class VM
     var val = this.stack.pop();
     val += '\n';
 
-    if(this.onPrintHook != null)
-      this.onPrintHook(this, val, false);
+    this.eventHooks.get(VM_EVENT_PRINT).forEach(hook => hook(this, val, false));
   }
 
   opJump()
@@ -589,8 +596,7 @@ class VM
   opCls()
   //Clear the console window
   {
-    if(this.onPrintHook != null)
-      this.onPrintHook(this, "", true);
+    this.eventHooks.get(VM_EVENT_PRINT).forEach(hook => hook(this, "", true));
   }
 
   opCheckCounter()
@@ -724,16 +730,14 @@ class VM
     
     this.currCallFrame = this.callFrames[this.callFrames.length - 1];
 
-    if(this.onUserFuncCallHook)
-      this.onUserFuncCallHook(this, func.ident);
+    this.eventHooks.get(VM_EVENT_USER_FUNC_CALL).forEach(hook => hook(this, func.ident));
   }
 
   returnFromUserFunc()
   //Unload the current call frame, activating the previous call frame or exiting
   //the run loop if no frames are left
   {
-    if(this.onUserFuncReturnHook)
-      this.onUserFuncReturnHook(this);
+    this.eventHooks.get(VM_EVENT_USER_FUNC_RETURN).forEach(hook => hook(this));
 
     this.stack.splice(this.currCallFrame.funcStackIndex, this.stack.length - this.currCallFrame.funcStackIndex - 1);
 
@@ -765,11 +769,7 @@ class VM
 
     this.error = new VMError(message, sourceLineNum, sourceName);
 
-    if((this.onErrorHook) && (this.onErrorHook(this)))
-    {
-      this.error = null;
-      return;
-    }
+    this.eventHooks.get(VM_EVENT_ERROR).forEach(hook => hook(this));
 
     this.resetActiveRunState();
 
@@ -786,7 +786,7 @@ class VM
     if((currOpSourceLineNum == nextOpSourceLineNum) || (nextOpSourceLineNum == 0))
       return;
 
-    this.onSourceLineChangeHook(this, nextOpSourceLineNum, this.currCallFrame.func.sourceName)
+    this.eventHooks.get(VM_EVENT_SOURCE_LINE_CHANGE).forEach(hook => hook(this, nextOpSourceLineNum, this.currCallFrame.func.sourceName));
   }
 
   skipSourceLine()
@@ -827,8 +827,7 @@ class VM
 
     this.status = newStatus;
 
-    if(this.onStatusChangeHook)
-      this.onStatusChangeHook(this, prevStatus);
+    this.eventHooks.get(VM_EVENT_STATUS_CHANGE).forEach(hook => hook(this, prevStatus));
   
     return prevStatus;
   }
@@ -859,6 +858,33 @@ class VM
   //Add multiple native function objects to the VM
   {
     funcArray.forEach((func) => this.nativeFuncs.set(func.ident, func))
+  }
+  
+  addEventHook(event, hook)
+  //
+  {
+    if(!this.eventHooks.has(event))
+      return;
+
+    this.eventHooks.get(event).push(hook);
+  }
+
+  removeEventHook(event, hook)
+  //
+  {
+    var hooks, hookIndex;
+
+    if(!this.eventHooks.has(event))
+      return;
+
+    hooks = this.eventHooks.get(event);
+    
+    hookIndex = hooks.indexOf(hook);
+
+    if(hookIndex == -1)
+      return
+
+    hooks.splice(hookIndex, 1);
   }
 }
 

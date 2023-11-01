@@ -29,8 +29,8 @@ function readURLParams()
 function setMainWorkerEvents()
 //
 {
-  mainVM.onStatusChangeHook = onVMStatusChange;
-  mainVM.onErrorHook = onVMError;
+  mainVM.addEventHook(VM_EVENT_STATUS_CHANGE, onVMStatusChange);
+  mainVM.addEventHook(VM_EVENT_ERROR, onVMError);
   
   onmessage = mainWorker_onMessage;
   

@@ -97,7 +97,7 @@ function onMsgDebugEnable(msgData)
   if(debugEnabled)
     return;
   
-  mainVM.onSourceLineChangeHook = onVMSourceLineChange;
+  mainVM.addEventHook(VM_EVENT_SOURCE_LINE_CHANGE, onVMSourceLineChange)
   debugEnabled = true;
 
   if(mainVM.callFramesEmpty())
@@ -115,7 +115,7 @@ function onMsgDebugDisable(msgData)
   if(!debugEnabled)
     return;
 
-  mainVM.onSourceLineChangeHook = null;
+  mainVM.removeEventHook(VM_EVENT_SOURCE_LINE_CHANGE, onVMSourceLineChange)
   debugEnabled = false;
 
   if(mainVM.inBreakpoint)

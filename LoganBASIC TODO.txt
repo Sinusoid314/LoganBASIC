@@ -2,16 +2,16 @@
     - Background music in Space Shooter example not playing when in DEPLOY mode.
 
 [Features]
-    - Multiple handler functions for each VM event.
     - "Contact Us" link to main page.
+    - Ability of run() native function to return error messages instead of terminating the program.
+    - A "deploy" mode to run a pre-compiled ObjUserFunc object from a JSON file.
     - getTextWidth() and getTextHeight() canvas native functions.
     - getSpriteSheetFrameWith() and getSpriteSheetFrameHeight() sprite native functions.
     - Breakpoint display to debugger pane.
     - Variable display persistence between breakpoints in debugger.
     - Ability to run code in debugger.
     - Ability to display different sources in debugger.
-    - A "deploy" mode to run a pre-compiled ObjUserFunc object from a JSON file.
-    - callback option for native functions that download resources.
+    - Asynch option for native functions that download resources.
     - HTTP GET/POST native functions.
     - onError user function support.
     - Possibly use willReadFrequently with canvas.

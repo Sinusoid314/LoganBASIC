@@ -1,3 +1,7 @@
+(November 1, 2023)
+[v2.0.2.34]
+	- Added support for having multiple handler functions for each VM event.
+
 (October 5, 2023)
 [v2.0.2.33]
 	- Added topUserFunc member to Compiler class in compiler module.

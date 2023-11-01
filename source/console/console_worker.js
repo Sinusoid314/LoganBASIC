@@ -14,7 +14,7 @@ setConsoleWorkerEvents();
 function setConsoleWorkerEvents()
 //
 {
-  mainVM.onPrintHook = onVMPrint;
+  mainVM.addEventHook(VM_EVENT_PRINT, onVMPrint);
 
   workerOnProgEndHandlers.push(consoleWorker_onProgEnd);
 
