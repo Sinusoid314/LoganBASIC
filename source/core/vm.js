@@ -13,12 +13,6 @@ const INTERPRET_COMPILE_ERROR = 1;
 const INTERPRET_RUNTIME_ERROR = 2;
 const INTERPRET_SUCCESS = 3;
 
-const CALLFRAME_FLAG_POP_RETURN_VAL = 0x0001;
-const CALLFRAME_FLAG_EXIT_ON_RETURN = 0x0010;
-const CALLFRAME_FLAG_IS_UNWIND_ROOT = 0x0100;
-const CALLFRAME_FLAG_OPCALL_DEFAULT = 0x0000;
-const CALLFRAME_FLAG_INTERPRET_DEFAULT = CALLFRAME_FLAG_POP_RETURN_VAL | CALLFRAME_FLAG_EXIT_ON_RETURN | CALLFRAME_FLAG_IS_UNWIND_ROOT;
-const CALLFRAME_FLAG_CALLBACK_DEFAULT = CALLFRAME_FLAG_POP_RETURN_VAL | CALLFRAME_FLAG_EXIT_ON_RETURN;
 
 class VMError
 {
@@ -32,7 +26,7 @@ class VMError
 
 class CallbackContext
 {
-  constructor(vm, userFunc = null, callFrameFlags = CALLFRAME_FLAG_CALLBACK_DEFAULT)
+  constructor(vm, userFunc = null, callFrameFlags = {popReturnVal: true, exitOnReturn: true, isUnwindRoot: false})
   {
     this.vm = vm;
     this.userFunc = userFunc;
@@ -146,7 +140,7 @@ class VM
     this.opFuncs[OPCODE_STORE_STRUCT_FIELD_PERSIST] = this.opStoreStructFieldPersist.bind(this);
   }
 
-  interpret(source, sourceName = "", callFrameFlags = CALLFRAME_FLAG_INTERPRET_DEFAULT)
+  interpret(source, sourceName = "", callFrameFlags = {popReturnVal: true, exitOnReturn: true, isUnwindRoot: true})
   //Compile and run the given source code
   {
     var topUserFunc;
@@ -506,7 +500,7 @@ class VM
     if(func instanceof ObjNativeFunc)
       this.callNativeFunc(argCount);
     else if(func instanceof ObjUserFunc)
-      this.callUserFunc(argCount, CALLFRAME_FLAG_OPCALL_DEFAULT);
+      this.callUserFunc(argCount, {popReturnVal: false, exitOnReturn: false, isUnwindRoot: false});
     else
       this.runError("Can only call functions.");
   }
@@ -741,7 +735,7 @@ class VM
 
     this.stack.splice(this.currCallFrame.funcStackIndex, this.stack.length - this.currCallFrame.funcStackIndex - 1);
 
-    if(this.currCallFrame.flags & CALLFRAME_FLAG_POP_RETURN_VAL)
+    if(this.currCallFrame.flags.popReturnVal)
       this.stack.pop();
 
     if(this.callFrames.length == 1)
@@ -751,7 +745,7 @@ class VM
     }
     else
     {
-      if(this.currCallFrame.flags & CALLFRAME_FLAG_EXIT_ON_RETURN)
+      if(this.currCallFrame.flags.exitOnReturn)
         this.runLoopExitFlag = true;
 
       this.callFrames.pop();

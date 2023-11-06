@@ -1,5 +1,3 @@
-const lbVersion = "2.0.2.34";
-
 const stdNativeFuncs = [
                   new ObjNativeFunc("rnd", 0, 0, funcRnd),
                   new ObjNativeFunc("time", 0, 0, funcTime),
@@ -36,7 +34,6 @@ const stdNativeFuncs = [
                   new ObjNativeFunc("sin", 1, 1, funcSin),
                   new ObjNativeFunc("tan", 1, 1, funcTan),
                   new ObjNativeFunc("round", 1, 2, funcRound),
-                  new ObjNativeFunc("version", 0, 0, funcVersion),
                   new ObjNativeFunc("word", 2, 3, funcWord),
                   new ObjNativeFunc("splitStr", 2, 2, funcSplitStr),
                   new ObjNativeFunc("pauseFor", 1, 1, funcPauseFor),
@@ -86,7 +83,7 @@ function pauseFor_onTimeout()
 function import_onLoad()
 //
 {
-  var source, url, sourceName;
+  var source, url, sourceName, result;
 
   if(!importCallback)
     return;
@@ -97,7 +94,9 @@ function import_onLoad()
 
   importCallback.vm.stack.push(true);
 
-  if(importCallback.vm.interpret(source, sourceName, CALLFRAME_FLAG_POP_RETURN_VAL) == INTERPRET_COMPILE_ERROR)
+  result = importCallback.vm.interpret(source, sourceName, {popReturnVal: true, exitOnReturn: false, isUnwindRoot: false});
+
+  if(interpretResult == INTERPRET_COMPILE_ERROR)
     importCallback.resumeVM();
 }
 
@@ -470,12 +469,6 @@ function funcRound(vm, args)
   }
 }
 
-function funcVersion(vm, args)
-//Return the current Logan BASIC version
-{
-  return lbVersion;
-}
-
 function funcWord(vm, args)
 //Returns the word at the given position within the given string
 {
@@ -561,7 +554,7 @@ function funcRun(vm, args)
 
   vm.stack.push(null);
 
-  result = vm.interpret(source, sourceName, CALLFRAME_FLAG_POP_RETURN_VAL | CALLFRAME_FLAG_IS_UNWIND_ROOT);
+  result = vm.interpret(source, sourceName, {popReturnVal: true, exitOnReturn: false, isUnwindRoot: true});
 
   if(result == INTERPRET_COMPILE_ERROR)
     vm.runLoopExitFlag = true;

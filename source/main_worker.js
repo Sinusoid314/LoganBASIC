@@ -2,6 +2,10 @@ importScripts('./core/object.js', './core/token.js', './core/bytecode.js', './co
               './core/scanner.js', './core/compiler.js', './core/vm.js');
 importScripts('main_common.js');
 
+const mainNativeFuncs = [
+                new ObjNativeFunc("version", 0, 0, funcVersion),
+               ];
+
 var workerOnProgEndHandlers = [];
 var expectedResultMessageID = 0;
 var pendingMessages = [];
@@ -9,6 +13,7 @@ var workerMessageMap = new Map();
 var mainVM = new VM();
 
 mainVM.addNativeFuncArray(stdNativeFuncs);
+mainVM.addNativeFuncArray(mainNativeFuncs);
               
 readURLParams();
 
@@ -180,4 +185,10 @@ function onVMError(vm)
     mainWorker_onProgEnd(vm);
 
   return false;
+}
+
+function funcVersion(vm, args)
+//Return the current Logan BASIC version
+{
+  return lbVersion;
 }

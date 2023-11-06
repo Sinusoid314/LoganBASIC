@@ -1,3 +1,11 @@
+(November 5, 2023)
+[v2.0.2.36]
+	- Moved the version() native function from std_funcs module to main_worker module.
+
+(November 2, 2023)
+[v2.0.2.35]
+	- Changed flags property of CallFrame class from a bitfield to an object with boolean properties.
+
 (November 1, 2023)
 [v2.0.2.34]
 	- Added support for having multiple handler functions for each VM event.
