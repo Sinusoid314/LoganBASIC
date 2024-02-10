@@ -2,6 +2,9 @@
     - Background music in Space Shooter example not playing when in DEPLOY mode.
 
 [Features]
+    - Protection against generating more than one animation frame request.
+    - "drawbufferdone" event for setCanvasEvent() native function.
+    
     - "Contact Us" link to main page.
     - Ability of run() native function to return error messages instead of terminating the program.
     - A "deploy" mode to run a pre-compiled ObjUserFunc object from a JSON file.
