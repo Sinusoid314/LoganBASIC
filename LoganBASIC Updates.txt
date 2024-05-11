@@ -1,5 +1,5 @@
 (May 10, 2024)
-[v2.0.2.36]
+[v2.0.2.37]
 	- Added drawBufferInProgress flag to canvas_worker module to protect against generating more than one
 	  animation frame request.
 
