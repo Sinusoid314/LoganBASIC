@@ -2,7 +2,6 @@
     - Background music in Space Shooter example not playing when in DEPLOY mode.
 
 [Features]
-    - Protection against generating more than one animation frame request.
     - "drawbufferdone" event for setCanvasEvent() native function.
     
     - "Contact Us" link to main page.

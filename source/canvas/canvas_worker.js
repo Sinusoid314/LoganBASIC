@@ -43,8 +43,9 @@ var canvasEvents = [
                   new CanvasEvent("keyup", 1, null)
                  ];
 
-var imageResultCallback = null;
+var drawBufferInProgress = false;
 var drawBufferCallback = null;
+var imageResultCallback = null;
 
 mainVM.addNativeFuncArray(canvasNativeFuncs);
 
@@ -118,7 +119,10 @@ function onMsgDrawCanvasBufferDone(msgData)
   if(drawBufferCallback.vm.inBreakpoint)
     postMessage({msgId: MSGID_DRAW_CANVAS_BUFFER, msgData: null});
   else
+  {
+    drawBufferInProgress = false;
     drawBufferCallback.resumeVM();
+  }
 }
 
 function funcShowCanvas(vm, args)
@@ -275,6 +279,9 @@ function funcDrawCanvasBuffer(vm, args)
 {
   var callbackUserFunc;
 
+  if(drawBufferInProgress)
+    return;
+
   if(args.length == 0)
   {
     if(drawBufferCallback)
@@ -302,6 +309,7 @@ function funcDrawCanvasBuffer(vm, args)
   }
 
   postMessage({msgId: MSGID_DRAW_CANVAS_BUFFER, msgData: null});
+  drawBufferInProgress = true;
 
   return null;
 }
@@ -326,7 +334,7 @@ function funcSetCanvasEvent(vm, args)
     if(eventUserFunc.paramCount != canvasEvents[eventIndex].paramCount)
       vm.runError("Handler function " + eventUserFunc.ident + "() for event '" + eventName + "' must have " + canvasEvents[eventIndex].paramCount + " parameters.");
 
-    if(canvasEvents[eventIndex].callback == null)
+    if(!canvasEvents[eventIndex].callback)
     {
       canvasEvents[eventIndex].callback = new CallbackContext(vm, eventUserFunc);
     }

@@ -1,3 +1,8 @@
+(May 10, 2024)
+[v2.0.2.36]
+	- Added drawBufferInProgress flag to canvas_worker module to protect against generating more than one
+	  animation frame request.
+
 (November 5, 2023)
 [v2.0.2.36]
 	- Moved the version() native function from std_funcs module to main_worker module.
