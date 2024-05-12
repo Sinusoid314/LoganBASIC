@@ -43,9 +43,11 @@ var canvasEvents = [
                   new CanvasEvent("keyup", 1, null)
                  ];
 
+var drawBufferDoneEvent = new CanvasEvent("drawbufferdone", 0, null);
 var drawBufferInProgress = false;
-var drawBufferCallback = null;
 var imageResultCallback = null;
+
+canvasEvents.push(drawBufferDoneEvent);
 
 mainVM.addNativeFuncArray(canvasNativeFuncs);
 
@@ -96,7 +98,6 @@ function canvasWorker_onProgEnd()
 {
   canvasEvents.forEach(event => event.callback = null);
   imageResultCallback = null;
-  drawBufferCallback = null;
 }
 
 function onMsgCanvasEvent(msgData)
@@ -113,15 +114,15 @@ function onMsgCanvasEvent(msgData)
 function onMsgDrawCanvasBufferDone(msgData)
 //
 {
-  if(!drawBufferCallback)
+  if(!drawBufferDoneEvent.callback)
     return;
 
-  if(drawBufferCallback.vm.inBreakpoint)
+  if(drawBufferDoneEvent.callback.vm.inBreakpoint)
     postMessage({msgId: MSGID_DRAW_CANVAS_BUFFER, msgData: null});
   else
   {
     drawBufferInProgress = false;
-    drawBufferCallback.resumeVM();
+    drawBufferDoneEvent.callback.resumeVM();
   }
 }
 
@@ -284,8 +285,8 @@ function funcDrawCanvasBuffer(vm, args)
 
   if(args.length == 0)
   {
-    if(drawBufferCallback)
-      drawBufferCallback = null;
+    if(drawBufferDoneEvent.callback)
+      drawBufferDoneEvent.callback = null;
   }
   else
   {
@@ -297,14 +298,14 @@ function funcDrawCanvasBuffer(vm, args)
     if(callbackUserFunc.paramCount != 0)
       vm.runError("Callback function for DrawCanvasBuffer() must have zero parameters.");
 
-    if(!drawBufferCallback)
+    if(!drawBufferDoneEvent.callback)
     {
-      drawBufferCallback = new CallbackContext(vm, callbackUserFunc);
+      drawBufferDoneEvent.callback = new CallbackContext(vm, callbackUserFunc);
     }
     else
     {
-      drawBufferCallback.vm = vm;
-      drawBufferCallback.userFunc = callbackUserFunc;
+      drawBufferDoneEvent.callback.vm = vm;
+      drawBufferDoneEvent.callback.userFunc = callbackUserFunc;
     }
   }
 

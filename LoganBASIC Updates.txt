@@ -1,3 +1,8 @@
+(May 11, 2024)
+[v2.0.2.38]
+	- Added "drawbufferdone" event to setCanvasEvent() native function that fires after the canvas backbuffer has
+	  been drawn to the visible canvas.
+
 (May 10, 2024)
 [v2.0.2.37]
 	- Added drawBufferInProgress flag to canvas_worker module to protect against generating more than one

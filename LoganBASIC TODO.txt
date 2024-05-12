@@ -2,8 +2,8 @@
     - Background music in Space Shooter example not playing when in DEPLOY mode.
 
 [Features]
-    - "drawbufferdone" event for setCanvasEvent() native function.
-    
+    - Add "drawbufferdone" event description to setCanvasEvent() help page.
+
     - "Contact Us" link to main page.
     - Ability of run() native function to return error messages instead of terminating the program.
     - A "deploy" mode to run a pre-compiled ObjUserFunc object from a JSON file.
