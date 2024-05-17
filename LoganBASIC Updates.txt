@@ -1,3 +1,7 @@
+(May 17, 2024)
+[v2.0.2.39]
+	- Added "drawbufferdone" event description to setCanvasEvent() help page.
+
 (May 11, 2024)
 [v2.0.2.38]
 	- Added "drawbufferdone" event to setCanvasEvent() native function that fires after the canvas backbuffer has

@@ -1,8 +1,8 @@
 [Bugs]
-    - Background music in Space Shooter example not playing when in DEPLOY mode.
+    - 
 
 [Features]
-    - Add "drawbufferdone" event description to setCanvasEvent() help page.
+    - Add an intro screen to Space Shooter example to allow the main level background music to play.
 
     - "Contact Us" link to main page.
     - Ability of run() native function to return error messages instead of terminating the program.
