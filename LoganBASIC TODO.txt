@@ -3,11 +3,13 @@
 
 [Features]
     - Add an intro screen to Space Shooter example to allow the main level background music to play.
-
     - "Contact Us" link to main page.
+    - Add ability to auto-run source file upon opening.
+    - Add Editor section to help files.
     - Ability of run() native function to return error messages instead of terminating the program.
-    - A "deploy" mode to run a pre-compiled ObjUserFunc object from a JSON file.
     - Ability to run code in debugger.
+
+    - A "deploy" mode to run a pre-compiled ObjUserFunc object from a JSON file.
     - getTextWidth() and getTextHeight() canvas native functions.
     - getSpriteSheetFrameWith() and getSpriteSheetFrameHeight() sprite native functions.
     - Breakpoint display to debugger pane.
