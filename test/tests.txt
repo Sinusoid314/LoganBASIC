@@ -1,7 +1,0 @@
-(X) Examples
-(X) Statements
-(X) Standard Functions
-(X) Canvas Functions
-(X) Sprite Functions
-(X) Sound Functions
-(X) Expression Operators
