@@ -115,24 +115,11 @@ var editorGutter = document.getElementById("editorGutter");
 var runBtn = document.getElementById("runBtn");
 var stopBtn = document.getElementById("stopBtn");
 var debugToggleBtn = document.getElementById("debugToggleBtn");
-
 var prevLineCount = 1;
 
 setEditorUIEvents();
 
 addEditorGutterItem();
-
-if(paramFileURL != "")
-{
-  loadSourceFile(paramFileURL)
-    .then((fileData) => 
-    {
-      editorCode.value = fileData;
-      updateEditorGutter();
-      statusBar.innerHTML = "Ready.";
-    })
-    .catch((errorMessage) => {statusBar.innerHTML = errorMessage});
-}
 
 
 function setEditorUIEvents()
@@ -234,6 +221,53 @@ function selectEditorLine(selLine)
   editorCode.focus();
   editorCode.setSelectionRange(startPos, endPos);
   editorCode.scrollTop = ((editorCode.scrollHeight / lines.length) * selLine) - (editorCode.clientHeight / 2);
+}
+
+function loadSourceFile(fileURL)
+//Load source file from local storage or a given URL
+{
+  statusBar.innerHTML = `Loading '${fileURL}'...`;
+
+  return new Promise((resolve, reject) =>
+  {
+    var fileData;
+
+    if(fileURL == "local")
+    {
+      fileData = window.localStorage.getItem("fileData");
+      if(fileData)
+        resolve(fileData);
+      else
+        reject("Failed to read local storage data.");
+    }
+    else
+    {
+      fetch(fileURL)
+      .then((response) =>
+      {
+        if(!response.ok)
+          return Promise.reject(response.statusText);
+
+        return response.text();
+      })
+      .then(fileData => resolve(fileData))
+      .catch(error => reject(`Failed to load '${fileURL}': ${error}`));
+    }
+  })
+  .then((fileData) =>
+  {
+    editorCode.value = fileData;
+    updateEditorGutter();
+    statusBar.innerHTML = "Ready.";
+
+    return fileData;
+  })
+  .catch((errorMessage) =>
+  {
+    statusBar.innerHTML = errorMessage;
+
+    return Promise.reject(errorMessage);
+  });
 }
 
 function newBtn_onClick(event)

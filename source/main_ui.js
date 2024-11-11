@@ -102,6 +102,7 @@ var uiOnProgEndHandlers = [];
 var progWorker = null;
 var uiMessageMap = new Map();
 var paramFileURL = "";
+var autoRun = false;
 
 readURLParams();
 
@@ -117,15 +118,21 @@ function readURLParams()
 {
   var urlParams = new URLSearchParams(window.location.search);
 
-  if(urlParams.has("run"))
-  {
-    paramFileURL = urlParams.get("run");
-    mainMode = MAIN_MODE_DEPLOY;
-    return;
-  }
+  // if(urlParams.has("run"))
+  // {
+  //   paramFileURL = urlParams.get("run");
+  //   mainMode = MAIN_MODE_DEPLOY;
+  //   return;
+  // }
 
   if(urlParams.has("open"))
+  {
     paramFileURL = urlParams.get("open");
+    mainMode = MAIN_MODE_EDIT;
+
+    if(urlParams.has("autoRun"))
+      autoRun = urlParams.get("autoRun");
+  }
 }
 
 function initWorker()
@@ -212,49 +219,6 @@ function loadScript(fileURL)
   document.head.appendChild(script);
 }
 
-function loadSourceFile(fileURL)
-//Load a slource file from either local storage or a given URL
-{
-  var httpReq, fileData;
-
-  statusBar.innerHTML = `Loading '${fileURL}'...`;
-
-  return new Promise((resolve, reject)  =>
-  {
-    if(fileURL == "local")
-    {
-      fileData = window.localStorage.getItem("fileData");
-      if(fileData)
-        resolve(fileData);
-      else
-        reject("Failed to read local storage data.");
-    }
-    else
-    {
-      httpReq = new XMLHttpRequest();
-      httpReq.open("GET", fileURL);
-
-      httpReq.onreadystatechange = function()
-      {
-        if(this.readyState != XMLHttpRequest.DONE)
-          return;
-
-        if(this.status == 200)
-          resolve(this.responseText);
-        else
-          reject(`Failed to load '${this.responseURL}': ${this.statusText}`);
-      };
-      
-      httpReq.onerror = function()
-      {
-        reject(`Failed to load '${this.responseURL}': ${this.statusText}`);
-      };
-
-      httpReq.send();
-    }
-  });
-}
-
 function setToggleEvents()
 //
 {
@@ -312,15 +276,26 @@ function window_onLoad(event)
   {
     setToggleEvents();
     mainDiv.insertAdjacentHTML("beforeend", versionHTML);
-  }
-  else
-  {
-    hideToggles();
+    
+    if(paramFileURL == "")
+      return;
 
     loadSourceFile(paramFileURL)
-      .then((fileData) => {startProg(fileData)})
-      .catch((errorMessage) => {statusBar.innerHTML = errorMessage});
+    .then((fileData) => 
+    {
+      if(autoRun)
+        startProg(fileData);
+    })
+    .catch(errorMessage => null);
+
+    return;
   }
+
+  // if(mainMode == MAIN_MODE_DEPLOY)
+  // {
+  //   hideToggles();
+  //   return;
+  // }
 }
 
 function mainUI_onMessage(message)

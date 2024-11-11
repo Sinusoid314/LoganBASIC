@@ -149,6 +149,10 @@ class VM
     topUserFunc = compiler.compile();
     if(this.error != null)
       return INTERPRET_COMPILE_ERROR;
+
+    var funcJSON = JSON.stringify(topUserFunc);
+    console.log(topUserFunc);
+    console.log(JSON.parse(funcJSON));
     
     this.stack.push(topUserFunc);
     this.callUserFunc(0, callFrameFlags);

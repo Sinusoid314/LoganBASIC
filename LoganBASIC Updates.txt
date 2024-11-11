@@ -1,3 +1,16 @@
+(November 10, 2024)
+[v2.0.2.42]
+	- Added ability to auto-run source file upon opening.
+
+(November 7, 2024)
+[v2.0.2.41]
+	- Commented out the partial implementation of "deplaoy" mode. This feature will be implemented
+	  in a later version.
+
+(October 24, 2024)
+[v2.0.2.40]
+	 - Added autoRun flag to main_ui module, and modified readURLParams() to read it in as a parameter argument.
+
 (May 17, 2024)
 [v2.0.2.39]
 	- Added "drawbufferdone" event description to setCanvasEvent() help page.
