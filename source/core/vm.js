@@ -855,7 +855,7 @@ class VM
   addNativeFuncArray(funcArray)
   //Add multiple native function objects to the VM
   {
-    funcArray.forEach((func) => this.nativeFuncs.set(func.ident, func))
+    funcArray.forEach((func) => this.nativeFuncs.set(func.ident, func));
   }
   
   addEventHook(event, hook)
