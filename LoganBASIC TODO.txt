@@ -2,6 +2,7 @@
     - 
 
 [Features]
+    - Modify all examples that use drawCanvasBuffer() to also use "drawbufferdone" event.
     - Add an intro screen to Space Shooter example to allow the main level background music to play.
     - "Contact Us" link to main page.
     - Add Editor section to help files.

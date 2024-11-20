@@ -97,6 +97,7 @@ function canvasWorker_onProgEnd()
 //
 {
   canvasEvents.forEach(event => event.callback = null);
+  drawBufferInProgress = false;
   imageResultCallback = null;
 }
 

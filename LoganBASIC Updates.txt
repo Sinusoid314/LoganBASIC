@@ -1,3 +1,7 @@
+(November 19, 2024)
+[v2.0.2.43]
+	- Modified canvasWorker_onProgEnd() in canvas_worker module to reset drawBufferInProgress to false.
+
 (November 10, 2024)
 [v2.0.2.42]
 	- Added ability to auto-run source file upon opening.
