@@ -284,12 +284,7 @@ function funcDrawCanvasBuffer(vm, args)
   if(drawBufferInProgress)
     return;
 
-  if(args.length == 0)
-  {
-    if(drawBufferDoneEvent.callback)
-      drawBufferDoneEvent.callback = null;
-  }
-  else
+  if(args.length > 0)
   {
     callbackUserFunc = args[0];
 

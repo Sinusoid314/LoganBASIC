@@ -144,6 +144,7 @@ function setup()
 
   setCanvasEvent("keydown", onKeyDown)
   setCanvasEvent("keyup", onKeyUp)
+  setCanvasEvent("drawbufferdone", mainLoop)
 
   prevTime = time()
 end function
@@ -203,7 +204,7 @@ function mainLoop()
   displayControls()
   if gameOver then displayGameOver()
 
-  drawCanvasBuffer(mainLoop)
+  drawCanvasBuffer()
 end function
 
 
