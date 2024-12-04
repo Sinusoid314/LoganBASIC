@@ -61,6 +61,7 @@ var leftKeyDown = false
 var rightKeyDown = false
 var shootKeyDown = false
 
+loadResources()
 setup()
 
 mainLoop()
@@ -68,8 +69,8 @@ mainLoop()
 wait
 
 
-'Load the images and sounds, and create the sprites
-function setup()
+'Load the images and sounds
+function loadResources()
   print "Loading images..."
 
   if not loadImage(bgImage, "../examples/images/space2.png") then
@@ -120,7 +121,25 @@ function setup()
   end if
 
   print "Sounds loaded."
+end function
 
+
+'Unload the images and sounds
+function unloadResources()
+  unloadSound(explosionSound)
+  unloadSound(enemyFireSound)
+  unloadSound(playerFireSound)
+  unloadSound(bgSound)
+
+  unloadSpriteSheet(playerShipSheet)
+  unloadSpriteSheet(enemyShipSheet)
+  unloadSpriteSheet(bulletSheet)
+  unloadSpriteSheet(explosionSheet)
+  unloadImage(bgImage)
+end function
+
+
+function setup()
   bgImageWidth = getImageWidth(bgImage)
   bgImageHeight = getImageHeight(bgImage)
 
@@ -150,7 +169,6 @@ function setup()
 end function
 
 
-'Unload all the sprites, images, and sounds
 function cleanup()
   var index
 
@@ -172,17 +190,6 @@ function cleanup()
 
   removeSprite(playerShip)
   removeSprite(playerExplosion)
-
-  unloadSound(explosionSound)
-  unloadSound(enemyFireSound)
-  unloadSound(playerFireSound)
-  unloadSound(bgSound)
-
-  unloadSpriteSheet(playerShipSheet)
-  unloadSpriteSheet(enemyShipSheet)
-  unloadSpriteSheet(bulletSheet)
-  unloadSpriteSheet(explosionSheet)
-  unloadImage(bgImage)
 end function
 
 
@@ -212,6 +219,7 @@ end function
 function onKeyDown(key)
   if key = "q" then
     cleanup()
+    unloadResources()
     end
   end if
 

@@ -1,3 +1,7 @@
+(December 3, 2024)
+[v2.0.2.46]
+	- Modified Space Shooter example by separating the image and sound loading/unloading code into their own seperate functions.
+
 (November 23, 2024)
 [v2.0.2.45]
 	- Modified Space Shooter example to use "drawbufferdone" canvas event.
