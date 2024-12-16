@@ -62,9 +62,11 @@ var rightKeyDown = false
 var shootKeyDown = false
 
 loadResources()
-setup()
 
-mainLoop()
+initCanvas()
+
+setupIntro()
+introOnDrawBufferDone()
 
 wait
 
@@ -139,7 +141,62 @@ function unloadResources()
 end function
 
 
-function setup()
+'Initialize canvas properties
+function initCanvas()
+  setCanvasWidth(canvasWidth)
+  setCanvasHeight(canvasHeight)
+
+  hideConsole()
+  showCanvas()
+  
+  enableCanvasBuffer()
+end function
+
+
+function setupIntro()
+  setCanvasEvent("keyup", introOnKeyUp)
+  setCanvasEvent("drawbufferdone", introOnDrawBufferDone)
+
+  prevTime = time()
+end function
+
+
+function cleanupIntro()
+  setCanvasEvent("keyup")
+  setCanvasEvent("drawbufferdone")
+end function
+
+
+function introOnDrawBufferDone()
+  clearCanvas()
+  setFillColor("black")
+  drawRect(0, 0, canvasWidth, canvasHeight)
+
+  displayControls()
+
+  setTextFont("42px system-ui")
+  setFillColor("red")
+  drawText("Space Shooter", int((canvasWidth - 260) / 2) , int(canvasHeight / 2) - 70)
+
+  setTextFont("12px system-ui")
+  setFillColor("goldenrod")
+  drawText("A totally original game. Trust me, bro.", int((canvasWidth - 190) / 2) , int(canvasHeight / 2) - 40)
+
+  setTextFont("16px system-ui")
+  setFillColor("white")
+  drawText("Press any key to continue...", int((canvasWidth - 185) / 2) , int(canvasHeight / 2) + 50)
+
+  drawCanvasBuffer()
+end function
+
+
+function introOnKeyUp(key)
+  cleanupIntro()
+  setupGame()
+end function
+
+
+function setupGame()
   bgImageWidth = getImageWidth(bgImage)
   bgImageHeight = getImageHeight(bgImage)
 
@@ -153,23 +210,15 @@ function setup()
   setSpriteCycles(playerExplosion, 1)
   setSpriteFrameRate(playerExplosion, 3)
 
-  setCanvasWidth(canvasWidth)
-  setCanvasHeight(canvasHeight)
-
-  hideConsole()
-  showCanvas()
-
-  enableCanvasBuffer()
-
-  setCanvasEvent("keydown", onKeyDown)
-  setCanvasEvent("keyup", onKeyUp)
-  setCanvasEvent("drawbufferdone", mainLoop)
+  setCanvasEvent("keydown", gameOnKeyDown)
+  setCanvasEvent("keyup", gameOnKeyUp)
+  setCanvasEvent("drawbufferdone", gameOnDrawBufferDone)
 
   prevTime = time()
 end function
 
 
-function cleanup()
+function cleanupGame()
   var index
 
   for index = len(enemyShips) - 1 to 0 step -1
@@ -194,7 +243,7 @@ end function
 
 
 'Main update & draw loop
-function mainLoop()
+function gameOnDrawBufferDone()
   updatePhysics()
   
   checkInBounds()
@@ -216,9 +265,9 @@ end function
 
 
 'Move the ship or shoot when the appropriate key is pressed down
-function onKeyDown(key)
+function gameOnKeyDown(key)
   if key = "q" then
-    cleanup()
+    cleanupGame()
     unloadResources()
     end
   end if
@@ -258,7 +307,7 @@ end function
 
 
 'Stop moving the ship, or allow the ship to shoot again, when the appropriate key is released
-function onKeyUp(key)
+function gameOnKeyUp(key)
   if key = upKey then
     upKeyDown = false
     setSpriteVelocityY(playerShip, 0)

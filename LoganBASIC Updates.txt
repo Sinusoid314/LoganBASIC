@@ -1,3 +1,7 @@
+(December 15, 2024)
+[v2.0.2.47]
+	- Added an intro screen to Space Shooter example to allow the main level background music to play.
+
 (December 3, 2024)
 [v2.0.2.46]
 	- Modified Space Shooter example by separating the image and sound loading/unloading code into their own seperate functions.

@@ -1,9 +1,10 @@
 [Bugs]
-    - 
+    - A function name containing underscore chracter "_" gives Compile error
+      "Expected terminator after statement" instead of "Expected new line after '_'".
 
 [Features]
-    - Add an intro screen to Space Shooter example to allow the main level background music to play.
     - Add Editor section to help files.
+    - Add Language Overview section to help files.
     - Ability of run() native function to return error messages instead of terminating the program.
     - Ability to run code in debugger.
 
