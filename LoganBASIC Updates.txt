@@ -1,3 +1,7 @@
+(December 17, 2024)
+[v2.0.2.48]
+	- Fixed bug in compileError() in Compiler module where the eventHooks map was being referenced incorrectly.
+
 (December 15, 2024)
 [v2.0.2.47]
 	- Added an intro screen to Space Shooter example to allow the main level background music to play.
