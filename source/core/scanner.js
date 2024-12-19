@@ -48,7 +48,7 @@ class Scanner
 
     this.skipWhitespace();
 
-    if(!this.skipLineJoiner)
+    if(!this.skipLineJoiner())
       return this.makeErrorToken("Expected new line after '_'");
 
     this.startCharIndex = this.currCharIndex;

@@ -1,6 +1,5 @@
 [Bugs]
-    - A function name containing underscore chracter "_" gives Compile error
-      "Expected terminator after statement" instead of "Expected new line after '_'".
+    - 
 
 [Features]
     - Add Editor section to help files.
