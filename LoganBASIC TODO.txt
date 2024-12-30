@@ -2,8 +2,8 @@
     - 
 
 [Features]
-    - Add Editor section to help files.
-    - Add Language Overview section to help files.
+    - Complete Code Editor help files.
+    - Complete Language Overview help files.
     
     - Ability of run() native function to return error messages instead of terminating the program.
     - Ability to run code in debugger.

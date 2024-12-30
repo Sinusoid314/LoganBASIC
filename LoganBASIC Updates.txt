@@ -1,3 +1,8 @@
+(December 30, 2024)
+[v2.0.2.50]
+	- Added skeleton file for Language Overview help section.
+	- Added skeleton files for Code Editor help section.
+
 (December 19, 2024)
 [v2.0.2.49]
 	- Fixed bug where a function name containing an underscore chracter "_" gives Compile error
@@ -35,7 +40,7 @@
 
 (November 7, 2024)
 [v2.0.2.41]
-	- Commented out the partial implementation of "deplaoy" mode. This feature will be implemented
+	- Commented out the partial implementation of "deploy" mode. This feature will be implemented
 	  in a later version.
 
 (October 24, 2024)
