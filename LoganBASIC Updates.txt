@@ -1,3 +1,7 @@
+(January 2, 2025)
+[v2.0.2.51]
+	- Added file_command and program_command images to Code Editor help section.
+
 (December 30, 2024)
 [v2.0.2.50]
 	- Added skeleton file for Language Overview help section.
