@@ -1,3 +1,7 @@
+(March 25, 2025)
+[v2.0.2.53]
+	- Finished the Overview topic of the Code Editor help section.
+
 (January 23, 2025)
 [v2.0.2.52]
 	- Added to Code Editor help section.
