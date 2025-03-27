@@ -9,14 +9,27 @@
 
 <h3>URL Parameters</h3>
 <p>
+  URL parameters are a set of key/value pairs added to the end of Logan BASIC's main URL. They
+  signal Logan BASIC to perform certain tasks when the main page loads. The list of parameters is
+  seperated from the rest of the URL by a question mark (?). Different parameters are seperated by
+  an ampersand (&), and each parameter is made up of a key and a value, which are seperated by an
+  equals sign (=). For example:
 </p>
+<code id="usageCode">sinusoft.com/loganbasic/?open=./examples/spaceshooter.bas&autoRun=true</code>
+<p>
+  The following are valid URL parameters:
+</p>
+
 
 <h4>open=fileURL</h4>
 <p>
+  Tells Logan BASIC to open the source code file given by fileURL.
 </p>
 
 <h4>autoRun=(true|false)</h4>
 <p>
+  If the <i>open</i> parameter is specified, this parameter will automatically compile and
+  run the source code that was loaded with the <i>open</i> parameter.
 </p>
 
 </body>
