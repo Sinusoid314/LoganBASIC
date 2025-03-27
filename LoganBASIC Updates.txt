@@ -1,3 +1,8 @@
+(March 26, 2025)
+[v2.0.2.54]
+	- Added summary paragraphs to the File Commands and Program Commands topics of the Code Editor help section.
+	- Finished the Parameters topic of the Code Editor help section.
+
 (March 25, 2025)
 [v2.0.2.53]
 	- Finished the File Commands and Program Commands topics of the Code Editor help section.
