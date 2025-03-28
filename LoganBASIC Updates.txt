@@ -1,3 +1,7 @@
+(March 27, 2025)
+[v2.0.2.55]
+	- Added to Language Overview help section.
+
 (March 26, 2025)
 [v2.0.2.54]
 	- Added summary paragraphs to the File Commands and Program Commands topics of the Code Editor help section.
