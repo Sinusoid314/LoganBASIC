@@ -1,3 +1,8 @@
+(May 13, 2025)
+[v2.0.2.56]
+	- Removed Language Overview help section.
+	- Moved Code Editor and Debugger help sections to the top of the help section listing.
+
 (March 27, 2025)
 [v2.0.2.55]
 	- Added to Language Overview help section.
