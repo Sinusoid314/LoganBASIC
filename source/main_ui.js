@@ -131,7 +131,7 @@ function readURLParams()
     mainMode = MAIN_MODE_EDIT;
 
     if(urlParams.has("autoRun"))
-      autoRun = urlParams.get("autoRun");
+      autoRun = (urlParams.get("autoRun").toLowerCase() == "true");
   }
 }
 

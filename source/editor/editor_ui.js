@@ -66,6 +66,22 @@ document.head.appendChild(document.createElement('style')).textContent =
   margin-top: 10px;
   margin-bottom: 0px;
 }
+
+#runBtn
+{
+  padding-inline: 1.5em;
+  padding-block: 0.15em;
+  border: 1px solid green;
+  background-color: rgb(190, 255, 210);
+}
+
+#stopBtn
+{
+  padding-inline: 1.5em;
+  padding-block: 0.15em;
+  border: 1px solid red;
+  background-color: rgb(255, 190, 210);
+}
 `;
 
 
