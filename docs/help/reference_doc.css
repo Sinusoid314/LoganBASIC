@@ -27,9 +27,19 @@ code
   margin-right: 50%;
 }
 
+#usageRun
+{
+  margin-left: 10px;
+  margin-right: 5px;
+}
+
 #usageOpen
 {
-  display: block;
-  margin-left: 10px;
-  margin-top: 2px;
+  margin-left: 5px;
+}
+
+#usageRun, #usageOpen
+{
+  display: inline-block;
+  margin-top: 4px;
 }

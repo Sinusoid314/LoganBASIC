@@ -1,15 +1,18 @@
+var usageRun = document.getElementById("usageRun");
 var usageOpen = document.getElementById("usageOpen");
 var usageCode = document.getElementById("usageCode");
+var fileData = usageCode.innerText;
 
-usageOpen.addEventListener("click", usageOpen_onClick);
+usageRun.addEventListener("click", usage_onClick);
+usageOpen.addEventListener("click", usage_onClick);
 
-function usageOpen_onClick(event)
+function usage_onClick(event)
 //
 {
-  var fileData = usageCode.innerText;
-
+  var autoRun = event.target == usageRun;
+  
   window.localStorage.setItem("fileData", fileData);
-  window.open(event.target.href + "index.html?open=local", "_blank");
+  window.open(event.target.href + "index.html?open=local&autoRun=" + autoRun, "_blank");
 
   event.preventDefault();
 }
