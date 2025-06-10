@@ -4,7 +4,8 @@
 [Features]
     - Rename introOnDrawBufferDone() and gameOnDrawBufferDone() functions in Space Shooter example
       to introLoop() and gameLoop(), respectively.
-    - Add updateDeltaTime(), getDeltaTime(), setMaxDeltaTime(), and getMaxDeltaTime() sprite native functions.
+    - Add an optional deltaTime argument to the callback function for the "drawbufferdone" canvas event.
+    - Add getDeltaTime(), setMaxDeltaTime(), and getMaxDeltaTime() sprite native functions.
     - Update Space Shooter, Platformer, Sprites, and Breakout examples to use the updateDeltaTime() native function.
 
     - Ability of run() native function to return error messages instead of terminating the program.
