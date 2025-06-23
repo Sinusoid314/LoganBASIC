@@ -46,6 +46,12 @@ var canvasEvents = [
 var drawBufferDoneEvent = new CanvasEvent("drawbufferdone", 0, null);
 var drawBufferInProgress = false;
 var imageResultCallback = null;
+var deltaTime = 0
+var maxDeltaTime = 0.03
+var prevDeltaTime =  0;
+
+//deltaTime = min(((Date.now() - prevDeltaTime) / 1000), maxDeltaTime);
+//prevDeltaTime = Date.now();
 
 canvasEvents.push(drawBufferDoneEvent);
 

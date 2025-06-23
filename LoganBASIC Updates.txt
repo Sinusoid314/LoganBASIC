@@ -1,3 +1,7 @@
+(June 23, 2025)
+[v2.0.2.58]
+	- Added deltaTime, maxDeltaTime, and prevDeltaTime to canvas_worker module.
+
 (May 14, 2025)
 [v2.0.2.57]
 	- Fixed bug in main_ui module where the autoRun parameter was always being read as 'true'.
