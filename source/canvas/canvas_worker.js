@@ -32,7 +32,11 @@ const canvasNativeFuncs = [
                   new ObjNativeFunc("setTextFont", 1, 1, funcSetTextFont),
                   new ObjNativeFunc("setFillColor", 1, 1, funcSetFillColor),
                   new ObjNativeFunc("setLineColor", 1, 1, funcSetLineColor),
-                  new ObjNativeFunc("setLineSize", 1, 1, funcSetLineSize)
+                  new ObjNativeFunc("setLineSize", 1, 1, funcSetLineSize),
+                  new ObjNativeFunc("updateDeltaTime", 0, 0, funcUpdateDeltaTime),
+                  new ObjNativeFunc("getDeltaTime", 0, 0, funcGetDeltaTime),
+                  new ObjNativeFunc("setMaxDeltaTime", 1, 1, funcSetMaxDeltaTime),
+                  new ObjNativeFunc("getMaxDeltaTime", 0, 0, funcGetMaxDeltaTime)
                  ];
 
 var canvasEvents = [
@@ -49,9 +53,6 @@ var imageResultCallback = null;
 var deltaTime = 0
 var maxDeltaTime = 0.03
 var prevDeltaTime =  0;
-
-//deltaTime = min(((Date.now() - prevDeltaTime) / 1000), maxDeltaTime);
-//prevDeltaTime = Date.now();
 
 canvasEvents.push(drawBufferDoneEvent);
 
@@ -455,3 +456,28 @@ function funcSetLineSize(vm, args)
   return null;
 }
 
+function funcUpdateDeltaTime(vm, args)
+{
+  if(prevDeltaTime != 0)
+    deltaTime = min(((Date.now() - prevDeltaTime) / 1000), maxDeltaTime);
+
+  prevDeltaTime = Date.now();
+
+  return deltaTime;
+}
+
+function funcGetDeltaTime(vm, args)
+{
+  return deltaTime;
+}
+
+function funcSetMaxDeltaTime(vm, args)
+{
+  maxDeltaTime = args[0];
+  return null;
+}
+
+function funcGetMaxDeltaTime(vm, args)
+{
+  return maxDeltaTime;
+}
