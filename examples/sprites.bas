@@ -3,9 +3,7 @@
 'Draws multiple sprites that move around the canvas.
 
 array spriteNames[3]
-var prevTime
 var deltaTime
-var maxDeltaTime = 0.25
 var canvasWidth = 600
 var canvasHeight = 450
 
@@ -75,15 +73,12 @@ function setup()
   enableCanvasBuffer()
   
   setFillColor("white")
-  
-  prevTime = time()
 end function
 
 
 'Main update & draw loop
 function mainLoop()
-  deltaTime = min(((time() - prevTime) / 1000), maxDeltaTime)
-  prevTime = time()
+  deltaTime = updateDeltaTime()
   
   updateSprites(deltaTime)
   

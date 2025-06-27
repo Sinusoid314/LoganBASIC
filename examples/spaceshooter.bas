@@ -7,9 +7,7 @@
 'Down arrow key => Move ship down
 'Space bar => Shoot
 
-var prevTime
 var deltaTime
-var maxDeltaTime = 0.03
 var bgOffsetX = 0
 var bgScrollSpeedX = 3
 var bgImageWidth, bgImageHeight
@@ -66,7 +64,7 @@ loadResources()
 initCanvas()
 
 setupIntro()
-introOnDrawBufferDone()
+introLoop()
 
 wait
 
@@ -155,9 +153,7 @@ end function
 
 function setupIntro()
   setCanvasEvent("keyup", introOnKeyUp)
-  setCanvasEvent("drawbufferdone", introOnDrawBufferDone)
-
-  prevTime = time()
+  setCanvasEvent("drawbufferdone", introLoop)
 end function
 
 
@@ -167,7 +163,7 @@ function cleanupIntro()
 end function
 
 
-function introOnDrawBufferDone()
+function introLoop()
   clearCanvas()
   setFillColor("black")
   drawRect(0, 0, canvasWidth, canvasHeight)
@@ -212,9 +208,7 @@ function setupGame()
 
   setCanvasEvent("keydown", gameOnKeyDown)
   setCanvasEvent("keyup", gameOnKeyUp)
-  setCanvasEvent("drawbufferdone", gameOnDrawBufferDone)
-
-  prevTime = time()
+  setCanvasEvent("drawbufferdone", gameLoop)
 end function
 
 
@@ -243,7 +237,7 @@ end function
 
 
 'Main update & draw loop
-function gameOnDrawBufferDone()
+function gameLoop()
   updatePhysics()
   
   checkInBounds()
@@ -341,8 +335,7 @@ end function
 
 'Apply each sprite's velocity to its position
 function updatePhysics()
-  deltaTime = min(((time() - prevTime) / 1000), maxDeltaTime)
-  prevTime = time()
+  deltaTime = updateDeltaTime()
   updateSprites(deltaTime)
 end function
 

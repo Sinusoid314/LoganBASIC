@@ -38,9 +38,6 @@ var ballVelX = 0
 var ballVelY = 250
 var ballColor = "red"
 
-var prevTime
-var maxDeltaTime = 0.03
-
 setCanvasWidth(canvasWidth)
 setCanvasHeight(canvasHeight)
 
@@ -54,7 +51,6 @@ setupBricks()
 setCanvasEvent("keydown", onKeyDown)
 setCanvasEvent("keyup", onKeyUp)
 
-prevTime = time()
 draw()
 
 wait
@@ -92,8 +88,7 @@ end function
 
 'Update the ball and paddle positions based of their velocities
 function update()
-  var deltaTime = min(((time() - prevTime) / 1000), maxDeltaTime)
-  prevTime = time()
+  var deltaTime = updateDeltaTime()
   
   ballX = ballX + (ballVelX * deltaTime)
   ballY = ballY + (ballVelY * deltaTime)

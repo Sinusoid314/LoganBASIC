@@ -1,3 +1,9 @@
+(June 26, 2025)
+[v2.0.2.60]
+	- Renamed introOnDrawBufferDone() and gameOnDrawBufferDone() functions in Space Shooter example
+      to introLoop() and gameLoop(), respectively.
+	- Updated Space Shooter, Platformer, Sprites, and Breakout examples to use the updateDeltaTime() native function.
+
 (June 25, 2025)
 [v2.0.2.59]
 	- Added updateDeltaTime(), getDeltaTime(), setMaxDeltaTime(), and getMaxDeltaTime() canvas native functions.

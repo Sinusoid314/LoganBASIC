@@ -12,9 +12,7 @@ structure SpriteContact
   normalY
 end structure
 
-var prevTime
 var deltaTime
-var maxDeltaTime = 0.03
 var canvasWidth, canvasHeight
 var levelWidth
 var scrollViewX = 0
@@ -105,8 +103,6 @@ function setup()
   
   setCanvasEvent("keydown", onKeyDown)
   setCanvasEvent("keyup", onKeyUp)
-  
-  prevTime = time()
 end function
 
 
@@ -225,8 +221,7 @@ end function
 function updatePhysics()
   var newVelocityX, newVelocityY
   
-  deltaTime = min(((time() - prevTime) / 1000), maxDeltaTime)
-  prevTime = time()
+  deltaTime = updateDeltaTime()
 
   'Apply gravity
   newVelocityY = getSpriteVelocityY("bubba") + (gravityForce * deltaTime)

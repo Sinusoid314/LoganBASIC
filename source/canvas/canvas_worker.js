@@ -50,8 +50,8 @@ var canvasEvents = [
 var drawBufferDoneEvent = new CanvasEvent("drawbufferdone", 0, null);
 var drawBufferInProgress = false;
 var imageResultCallback = null;
-var deltaTime = 0
-var maxDeltaTime = 0.03
+var deltaTime = 0;
+var maxDeltaTime = 0.03;
 var prevDeltaTime =  0;
 
 canvasEvents.push(drawBufferDoneEvent);

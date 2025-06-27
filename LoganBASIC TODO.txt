@@ -2,9 +2,6 @@
     - 
 
 [Features]
-    - Rename introOnDrawBufferDone() and gameOnDrawBufferDone() functions in Space Shooter example
-      to introLoop() and gameLoop(), respectively.
-    - Update Space Shooter, Platformer, Sprites, and Breakout examples to use the updateDeltaTime() native function.
     - Add help pages for updateDeltaTime(), getDeltaTime(), setMaxDeltaTime(), and getMaxDeltaTime() native functions.
 
     - Ability of run() native function to return error messages instead of terminating the program.
