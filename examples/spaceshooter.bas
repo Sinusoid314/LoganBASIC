@@ -209,6 +209,8 @@ function setupGame()
   setCanvasEvent("keydown", gameOnKeyDown)
   setCanvasEvent("keyup", gameOnKeyUp)
   setCanvasEvent("drawbufferdone", gameLoop)
+
+  resetDeltaTime()
 end function
 
 

@@ -34,6 +34,7 @@ const canvasNativeFuncs = [
                   new ObjNativeFunc("setLineColor", 1, 1, funcSetLineColor),
                   new ObjNativeFunc("setLineSize", 1, 1, funcSetLineSize),
                   new ObjNativeFunc("updateDeltaTime", 0, 0, funcUpdateDeltaTime),
+                  new ObjNativeFunc("resetDeltaTime", 0, 0, funcResetDeltaTime),
                   new ObjNativeFunc("getDeltaTime", 0, 0, funcGetDeltaTime),
                   new ObjNativeFunc("setMaxDeltaTime", 1, 1, funcSetMaxDeltaTime),
                   new ObjNativeFunc("getMaxDeltaTime", 0, 0, funcGetMaxDeltaTime)
@@ -451,19 +452,30 @@ function funcSetLineColor(vm, args)
 }
 
 function funcSetLineSize(vm, args)
+//
 {
   postMessage({msgId: MSGID_SET_LINE_SIZE, msgData: {size: args[0]}});
   return null;
 }
 
 function funcUpdateDeltaTime(vm, args)
+//
 {
   if(prevDeltaTime != 0)
-    deltaTime = min(((Date.now() - prevDeltaTime) / 1000), maxDeltaTime);
+    deltaTime = Math.min(((Date.now() - prevDeltaTime) / 1000), maxDeltaTime);
 
   prevDeltaTime = Date.now();
 
   return deltaTime;
+}
+
+function funcResetDeltaTime(vm, args)
+//
+{
+  deltaTime = 0;
+  prevDeltaTime = 0;
+
+  return null;
 }
 
 function funcGetDeltaTime(vm, args)

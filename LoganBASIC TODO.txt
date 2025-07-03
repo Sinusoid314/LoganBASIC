@@ -2,7 +2,7 @@
     - 
 
 [Features]
-    - Add help pages for updateDeltaTime(), getDeltaTime(), setMaxDeltaTime(), and getMaxDeltaTime() native functions.
+    - Add help pages for updateDeltaTime(), getDeltaTime(), setMaxDeltaTime(), getMaxDeltaTime(), and resetDeltaTime() native functions.
 
     - Ability of run() native function to return error messages instead of terminating the program.
     - Ability to run code in debugger.

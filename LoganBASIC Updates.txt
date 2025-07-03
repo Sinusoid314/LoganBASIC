@@ -1,3 +1,9 @@
+(July 3, 2025)
+[v2.0.2.61]
+	- Added resetDeltaTime() native function.
+	- Modified setupGame() function in Space Shooter example to use the resetDeltaTime() native function.
+	- Fixed bug with updateDeltaTime() canvas native function where min() should have been Math.min().
+
 (June 26, 2025)
 [v2.0.2.60]
 	- Renamed introOnDrawBufferDone() and gameOnDrawBufferDone() functions in Space Shooter example
