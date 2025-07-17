@@ -53,7 +53,7 @@ var drawBufferInProgress = false;
 var imageResultCallback = null;
 var deltaTime = 0;
 var maxDeltaTime = 0.03;
-var prevDeltaTime =  0;
+var prevTime =  0;
 
 canvasEvents.push(drawBufferDoneEvent);
 
@@ -461,10 +461,10 @@ function funcSetLineSize(vm, args)
 function funcUpdateDeltaTime(vm, args)
 //
 {
-  if(prevDeltaTime != 0)
-    deltaTime = Math.min(((Date.now() - prevDeltaTime) / 1000), maxDeltaTime);
+  if(prevTime != 0)
+    deltaTime = Math.min(((Date.now() - prevTime) / 1000), maxDeltaTime);
 
-  prevDeltaTime = Date.now();
+  prevTime = Date.now();
 
   return deltaTime;
 }
@@ -473,7 +473,7 @@ function funcResetDeltaTime(vm, args)
 //
 {
   deltaTime = 0;
-  prevDeltaTime = 0;
+  prevTime = 0;
 
   return null;
 }
