@@ -10,6 +10,12 @@ class Sprite
     this.drawHeight = 0;
     this.velocityX = 0;
     this.velocityY = 0;
+    this.prevX = x;
+    this.prevY = y;
+    this.hitBoxOffsetX = 0;
+    this.hitBoxOffsetY = 0;
+    this.hitBoxWidth = 0;
+    this.hitBoxHeight = 0;
     this.isVisible = true;
     this.isPlaying = true;
     this.updatesPerFrame = 1;
@@ -119,6 +125,8 @@ function onMsgSpriteSheetRefRequestResult(msgData)
     sprite = sprites.get(msgData.spriteName);
     sprite.drawWidth = msgData.frameWidth;
     sprite.drawHeight = msgData.frameHeight;
+    sprite.hitBoxWidth = msgData.frameWidth;
+    sprite.hitBoxHeight = msgData.frameHeight;
     sprite.frameCount = msgData.frameCount;
     sprite.lastFrameIndex = sprite.frameCount - 1;
 
@@ -299,6 +307,8 @@ function funcUpdateSprites(vm, args)
 
   for(const [spriteName, sprite] of sprites)
   {
+    sprite.prevX = sprite.x;
+    sprite.prevY = sprite.Y;
     sprite.x += (sprite.velocityX * deltaTime);
     sprite.y += (sprite.velocityY * deltaTime);
 

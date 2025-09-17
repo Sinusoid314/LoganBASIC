@@ -2,7 +2,15 @@
     - 
 
 [Features]
+    - Add spritesWillCollide(), spritesHaveCollided(), setSpriteHitBoxOffsetX(), setSpriteHitBoxOffsetY(), setSpriteHitBoxWidth(),
+      setSpriteHitBoxHeight(), getSpriteHitBoxOffsetX(), getSpriteHitBoxOffsetY(), getSpriteHitBoxWidth(), and
+      getSpriteHitBoxHeight() sprite native functions.
+    - Add rayIntersectsRect() standard native function.
     - Add help pages for updateDeltaTime(), getDeltaTime(), setMaxDeltaTime(), getMaxDeltaTime(), and resetDeltaTime() native functions.
+    - Add help pages for spritesWillCollide(), spritesHaveCollided(), setSpriteHitBoxOffsetX(), setSpriteHitBoxOffsetY(),
+      setSpriteHitBoxWidth(), setSpriteHitBoxHeight(), getSpriteHitBoxOffsetX(), getSpriteHitBoxOffsetY(), getSpriteHitBoxWidth(),
+      and getSpriteHitBoxHeight() native functions.
+    - Add help page for rayIntersectsRect() native function.
 
     - Ability of run() native function to return error messages instead of terminating the program.
     - Ability to run code in debugger.
