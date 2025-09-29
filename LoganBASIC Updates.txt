@@ -1,3 +1,7 @@
+(September 28, 2025)
+[v2.0.2.64]
+	- Added rayIntersectsRect() standard native function.
+
 (September 16, 2025)
 [v2.0.2.63]
 	- Added prevX, prevY, hitBoxOffsetX, hitBoxOffsetY, hitBoxWidth, and hitBoxHeight members to Sprite class in sprite_worker module.

@@ -38,7 +38,8 @@ const stdNativeFuncs = [
                   new ObjNativeFunc("splitStr", 2, 2, funcSplitStr),
                   new ObjNativeFunc("pauseFor", 1, 1, funcPauseFor),
                   new ObjNativeFunc("import", 1, 1, funcImport),
-                  new ObjNativeFunc("run", 1, 1, funcRun)
+                  new ObjNativeFunc("run", 1, 1, funcRun),
+                  new ObjNativeFunc("rayintersectsrect", 8, 9, funcRayIntersectsRect)
                  ];
 
 var timerID = 0;
@@ -560,4 +561,91 @@ function funcRun(vm, args)
     vm.runLoopExitFlag = true;
 
   return undefined;
+}
+
+function funcRayIntersectsRect(vm, args)
+//
+{
+  var rayOriginX = args[0], rayOriginY = args[1];
+  var rayDirX = args[2], rayDirY = args[3];
+  var rectX = args[4], rectY = args[5];
+  var rectWidth = args[6], rectHeight = args[7];
+  var contactStruct = null;
+  var invRayDirX, invRayDirY;
+  var leftTime, rightTime, topTime, bottomTime;
+  var nearTimeX, farTimeX, nearTimeY, farTimeY;
+  var entryTime, exitTime;
+
+  if(args.length == 9)
+    contactStruct = args[8];
+
+  if(!(contactStruct instanceof ObjStructure))
+    vm.runError("Last argument of rayIntersectsRect() must be a structure.");
+
+  invRayDirX = 1 / rayDirX;
+  invRayDirY = 1 / rayDirY;
+
+  leftTime = (rectX - rayOriginX) * invRayDirX;
+  if(Math.abs(leftTime) < timeEpsilon)
+    leftTime = 0;
+
+  rightTime = (rectX + rectWidth - rayOriginX) * invRayDirX;
+  if(Math.abs(rightTime) < timeEpsilon)
+    rightTime = 0;
+
+  topTime = (rectY - rayOriginY) * invRayDirY;
+  if(Math.abs(topTime) < timeEpsilon)
+    topTime = 0;
+
+  bottomTime = (rectY + rectHeight - rayOriginY) * invRayDirY;
+  if(Math.abs(bottomTime) < timeEpsilon)
+    bottomTime = 0;
+
+  if(Number.isNaN(leftTime) || Number.isNaN(rightTime) || Number.isNaN(topTime) || Number.isNaN(bottomTime))
+    return false;
+
+  nearTimeX = Math.min(leftTime, rightTime);
+  farTimeX = Math.max(leftTime, rightTime);
+  nearTimeY = Math.min(topTime, bottomTime);
+  farTimeY = Math.max(topTime, bottomTime);
+ 
+  if((nearTimeX > farTimeY) || (nearTimeY > farTimeX))
+    return false;
+
+  entryTime = Math.max(nearTimeX, nearTimeY);
+  exitTime = Math.min(farTimeX, farTimeY);
+
+  if(exitTime < 0)
+    return false;
+
+  if(!contactStruct)
+    return true;
+
+  switch(entryTime)
+  {
+    case topTime:
+      if(contactStruct.fieldMap.has("normalY"))
+        contactStruct.fieldMap.set("normalY", -1);
+      break;
+    case bottomTime:
+      if(contactStruct.fieldMap.has("normalY"))
+        contactStruct.fieldMap.set("normalY", 1);
+      break;
+    case leftTime:
+      if(contactStruct.fieldMap.has("normalX"))
+        contactStruct.fieldMap.set("normalX", -1);
+      break;
+    case rightTime:
+      if(contactStruct.fieldMap.has("normalX"))
+        contactStruct.fieldMap.set("normalX", 1);
+      break;
+  }
+    
+  if(contactStruct.fieldMap.has("pointX"))
+        contactStruct.fieldMap.set("pointX", rayOriginX + (rayDirX * entryTime));
+  
+  if(contactStruct.fieldMap.has("pointY"))
+        contactStruct.fieldMap.set("pointY", rayOriginY + (rayDirY * entryTime));
+
+  return true;
 }

@@ -2,7 +2,7 @@ const MAIN_MODE_EDIT = 1;
 const MAIN_MODE_DEPLOY = 2;
 
 const mainSourceName = "<main>";
-const lbVersion = "2.0.2.63";
+const lbVersion = "2.0.2.64";
 
 //UI -> Worker messages
 const MSGID_START_PROG = 1;
