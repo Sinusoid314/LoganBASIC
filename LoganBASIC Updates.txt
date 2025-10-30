@@ -1,3 +1,8 @@
+(October 29, 2025)
+[v2.0.2.65]
+	- Modified reference_docs.css to widen both the code and description elements, and disable word-wrap on the code element.
+	- Started the help page for rayIntersectsRect() native function.
+
 (September 28, 2025)
 [v2.0.2.64]
 	- Added rayIntersectsRect() standard native function.

@@ -39,7 +39,7 @@ const stdNativeFuncs = [
                   new ObjNativeFunc("pauseFor", 1, 1, funcPauseFor),
                   new ObjNativeFunc("import", 1, 1, funcImport),
                   new ObjNativeFunc("run", 1, 1, funcRun),
-                  new ObjNativeFunc("rayintersectsrect", 8, 9, funcRayIntersectsRect)
+                  new ObjNativeFunc("rayIntersectsRect", 8, 9, funcRayIntersectsRect)
                  ];
 
 var timerID = 0;
@@ -566,6 +566,7 @@ function funcRun(vm, args)
 function funcRayIntersectsRect(vm, args)
 //
 {
+  const timeEpsilon = 0.01;
   var rayOriginX = args[0], rayOriginY = args[1];
   var rayDirX = args[2], rayDirY = args[3];
   var rectX = args[4], rectY = args[5];
@@ -577,10 +578,11 @@ function funcRayIntersectsRect(vm, args)
   var entryTime, exitTime;
 
   if(args.length == 9)
+  {
     contactStruct = args[8];
-
-  if(!(contactStruct instanceof ObjStructure))
-    vm.runError("Last argument of rayIntersectsRect() must be a structure.");
+    if(!(contactStruct instanceof ObjStructure))
+      vm.runError("Last argument of rayIntersectsRect() must be a structure.");
+  }
 
   invRayDirX = 1 / rayDirX;
   invRayDirY = 1 / rayDirY;
