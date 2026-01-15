@@ -1,0 +1,47 @@
+<html>
+
+<head>
+  <title></title>
+  <link rel="stylesheet" type="text/css" href="../../reference_doc.css"></link>
+  <script defer="defer" type="text/javascript" src="../../reference_doc.js"></script>
+</head>
+
+<body>
+
+<h3>getSoundPos(soundName)</h3>
+
+<h4>Description</h4>
+<p id="description">
+Returns the current position of the sound specified by <i>soundName</i>.
+</p>
+
+<h4>Usage</h4>
+<code id="usageCode">
+var position
+
+print "Loading sound file..."
+
+if not loadSound("mac", "../examples/sounds/mac.wav") then
+  print "Sound failed to load."
+  end
+end if
+
+print "Sound loaded."
+print ""
+
+playSound("mac")
+
+input("Press enter to get the sound's current position...")
+
+position = <b>getSoundPos("mac")</b>
+print "Sound position: " + position
+
+unloadSound("mac")
+</code>
+
+<a id="usageRun" href="../../../../">Run</a>
+|
+<a id="usageOpen" href="../../../../">Open in Code Editor</a>
+
+</body>
+</html>

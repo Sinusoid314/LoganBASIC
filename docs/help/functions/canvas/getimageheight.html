@@ -1,0 +1,40 @@
+<html>
+
+<head>
+  <title></title>
+  <link rel="stylesheet" type="text/css" href="../../reference_doc.css"></link>
+  <script defer="defer" type="text/javascript" src="../../reference_doc.js"></script>
+</head>
+
+<body>
+
+<h3>getImageHeight(imageName)</h3>
+
+<h4>Description</h4>
+<p id="description">
+Returns the height of the image given by <i>imageName</i>.
+</p>
+
+<h4>Usage</h4>
+<code id="usageCode">
+var shipWidth, shipHeight
+
+loadImage("ship", "../examples/images/ship1.png")
+
+shipWidth = getImageWidth("ship")
+<b>shipHeight = getImageHeight("ship")</b>
+
+drawText("Width: " + shipWidth, 10, 10)
+drawText("Height: " + shipHeight, 10, 25)
+
+drawImage("ship", 10, 40)
+
+unloadImage("ship")
+</code>
+
+<a id="usageRun" href="../../../../">Run</a>
+|
+<a id="usageOpen" href="../../../../">Open in Code Editor</a>
+
+</body>
+</html>

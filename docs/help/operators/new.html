@@ -1,0 +1,56 @@
+<html>
+
+<head>
+  <title>New Operator</title>
+  <link rel="stylesheet" type="text/css" href="../reference_doc.css"></link>
+  <script defer="defer" type="text/javascript" src="../reference_doc.js"></script>
+</head>
+
+<body>
+
+<h3>New [ Array[dimSize1, dimSize2, ...] | sructName ]</h3>
+
+<h4>Description</h4>
+<p id="description">
+Creates either a new instance of a <a href="../statements/structure.html">Structrue</a>, or a
+new anonymous <a href="../statements/array.html">Array</a>.
+</p>
+
+<h4>Usage</h4>
+<code id="usageCode">
+structure Employee
+  name
+  id
+end structure
+
+'Create a new anonymous array and assign it to a variable
+var employees = <b>new array[3]</b>
+
+'Create 3 new employees
+var n
+for n = 0 to 2
+  employees[n] = <b>new Employee</b>
+  employees[n].id = n + 1
+next n
+
+employees[0].name = "Alice"
+employees[1].name = "Bob"
+employees[2].name = "Chris"
+
+for n = 0 to 2
+  print "Employee #" + employees[n].id + " - " + employees[n].name
+  print ""
+next n
+
+'output:
+'Employee #1 - Alice
+'Employee #2 - Bob
+'Employee #3 - Chris
+</code>
+
+<a id="usageRun" href="../../../">Run</a>
+|
+<a id="usageOpen" href="../../../">Open in Code Editor</a>
+
+</body>
+</html>

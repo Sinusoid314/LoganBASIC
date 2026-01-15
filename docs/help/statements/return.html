@@ -1,0 +1,39 @@
+<html>
+
+<head>
+  <title>Return Statement</title>
+  <link rel="stylesheet" type="text/css" href="../reference_doc.css"></link>
+  <script defer="defer" type="text/javascript" src="../reference_doc.js"></script>
+</head>
+
+<body>
+
+<h3>Return [ expression ]</h3>
+
+<h4>Description</h4>
+<p id="description">
+Ends execution of the current function and returns control to the function's caller.
+The optional <i>expression</i> provides a value to return to the caller.
+</p>
+
+<h4>Usage</h4>
+<code id="usageCode">
+print timesFive(6)
+print timesFive(7)
+
+function timesFive(num)
+  var result = num * 5
+  <b>return result</b>
+end function
+
+'output:
+'30
+'35
+</code>
+
+<a id="usageRun" href="../../../">Run</a>
+|
+<a id="usageOpen" href="../../../">Open in Code Editor</a>
+
+</body>
+</html>

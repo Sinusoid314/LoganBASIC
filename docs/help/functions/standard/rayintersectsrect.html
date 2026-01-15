@@ -1,0 +1,70 @@
+<html>
+
+<head>
+  <title></title>
+  <link rel="stylesheet" type="text/css" href="../../reference_doc.css"></link>
+  <script defer="defer" type="text/javascript" src="../../reference_doc.js"></script>
+</head>
+
+<body>
+
+<h3>rayIntersectsRect(rayOriginX, rayOriginY, rayDirX, rayDirY, rectX, rectY, rectWidth, rectHeight [ ,contactStruct ])</h3>
+
+<h4>Description</h4>
+<p id="description">
+Returns true if (rayOriginX, rayOriginY, rayDirX, rayDirY)</i>
+<i>(rectX, rectY, rectWidth, rectHeight)</i>
+</p>
+
+<h4>Usage</h4>
+<code id="usageCode">
+structure ContactInfo
+  pointX
+  pointY
+end structure
+
+var rectX = 100
+var rectY = 100
+var rectWidth = 100
+var rectHeight = 100
+var rayOriginX = 20
+var rayOriginY = 20
+
+hideConsole()
+
+setLineSize(2)
+setFillColor("red")
+drawCircle(rayOriginX, rayOriginY, 2, true)
+drawRect(rectX, rectY, rectWidth, rectHeight, false)
+
+setCanvasEvent("pointerup", onPointerUp)
+
+wait
+
+function onPointerUp(pointerX, pointerY)
+  var rayDirX = pointerX - rayOriginX
+  var rayDirY = pointerY - rayOriginY
+  var rayContact = new ContactInfo
+  var intersects = <b>rayIntersectsRect(rayOriginX, rayOriginY, rayDirX, rayDirY, rectX, rectY, rectWidth, rectHeight, rayContact)</b>
+
+  clearCanvas()
+
+  setFillColor("red")
+  drawRect(rectX, rectY, rectWidth, rectHeight, intersects)
+  drawCircle(rayOriginX, rayOriginY, 2, true)
+  drawCircle(pointerX, pointerY, 2, true)
+  drawLine(rayOriginX, rayOriginY, pointerX, pointerY)
+
+  if intersects then
+    setFillColor("blue")
+    drawCircle(rayContact.pointX, rayContact.pointY, 3, true)
+  end if
+end function
+</code>
+
+<a id="usageRun" href="../../../../">Run</a>
+|
+<a id="usageOpen" href="../../../../">Open in Code Editor</a>
+
+</body>
+</html>

@@ -1,0 +1,68 @@
+<html>
+
+<head>
+  <title></title>
+  <link rel="stylesheet" type="text/css" href="../../reference_doc.css"></link>
+  <script defer="defer" type="text/javascript" src="../../reference_doc.js"></script>
+</head>
+
+<body>
+
+<h3>setScrollY(scrollY)</h3>
+
+<h4>Description</h4>
+<p id="description">
+Sets the vertical position of the <a href="scrolloffset.html">scroll offset</a> to <i>scrollY</i>.
+</p>
+
+<h4>Usage</h4>
+<code id="usageCode">
+hideConsole()
+enableCanvasBuffer()
+
+loadSpriteSheet("ship-sheet", "../examples/images/ship-sheet.png", 2, 1)
+loadImage("bg", "../examples/images/space.bmp")
+
+addSprite("ship1", "ship-sheet", 50, 50)
+setSpriteFrameRate("ship1", 2)
+
+addSprite("ship2", "ship-sheet", 400, 400)
+setSpriteFrameRate("ship2", 4)
+
+mainLoop()
+
+wait
+
+function mainLoop()
+  if getScrollX() < 0 then
+    removeSprite("ship1")
+    removeSprite("ship2")
+    unloadSpriteSheet("ship-sheet")
+    unloadImage("bg")
+    end
+  end if
+
+  shiftScrollX(5)
+  shiftScrollY(5)
+
+  if getScrollX() > 500 then
+    setScrollX(-10)
+    <b>setScrollY(-10)</b>
+  end if
+
+  clearCanvas()
+
+  drawImageTiled("bg", 0, 0, getImageWidth("bg"), getImageHeight("bg"), -getScrollX(), -getScrollY())
+
+  drawSprites()
+
+  drawCanvasBuffer(mainLoop)
+end function
+</code>
+
+<a id="usageRun" href="../../../../">Run</a>
+|
+<a id="usageOpen" href="../../../../">Open in Code Editor</a>
+
+</body>
+</html>

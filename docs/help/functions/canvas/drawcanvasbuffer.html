@@ -1,0 +1,49 @@
+<html>
+
+<head>
+  <title></title>
+  <link rel="stylesheet" type="text/css" href="../../reference_doc.css"></link>
+  <script defer="defer" type="text/javascript" src="../../reference_doc.js"></script>
+</head>
+
+<body>
+
+<h3>drawCanvasBuffer([ functionName ])</h3>
+
+<h4>Description</h4>
+<p id="description">
+Transers all graphics from the offscreen buffer to the visible canvas. If <i>functionName</i>
+is specified, then that function will be called after the buffer has been drawn.
+<br>
+<br>
+<b>Note:</b> If there is already an unfinished buffer draw in progress due to a previous call to drawCanvasBuffer(), the
+             function does nothing. To set a callback for when a buffer draw has completed without initiating a new
+             draw request, use <a href="setcanvasevent.html">setCanvasEvent()</a>.
+</p>
+
+<h4>Usage</h4>
+<code id="usageCode">
+loadImage("ship", "../examples/images/ship1.png")
+enableCanvasBuffer()
+
+input("Press enter to draw image to buffer...")
+drawImage("ship", 10, 10)
+
+input("Press enter to draw image to canvas...")
+disableCanvasBuffer()
+drawImage("ship", 50, 50)
+
+input("Press enter to draw buffer to canvas...")
+<b>drawCanvasBuffer()</b>
+
+unloadImage("ship")
+
+print "Done."
+</code>
+
+<a id="usageRun" href="../../../../">Run</a>
+|
+<a id="usageOpen" href="../../../../">Open in Code Editor</a>
+
+</body>
+</html>

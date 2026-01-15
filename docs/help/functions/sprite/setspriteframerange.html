@@ -1,0 +1,65 @@
+<html>
+
+<head>
+  <title></title>
+  <link rel="stylesheet" type="text/css" href="../../reference_doc.css"></link>
+  <script defer="defer" type="text/javascript" src="../../reference_doc.js"></script>
+</head>
+
+<body>
+
+<h3>setSpriteFrameRange(spriteName, firstFrameIndex, lastFrameIndex)</h3>
+
+<h4>Description</h4>
+<p id="description">
+Restricts <i>spriteName</i>'s playable animation frames to the frame indexes between
+<i>firstFrameIndex</i> and <i>lastFrameIndex</i>, inclusive.
+</p>
+
+<h4>Usage</h4>
+<code id="usageCode">
+var deltaTime, prevTime
+var maxDeltaTime = 0.03
+
+hideConsole()
+enableCanvasBuffer()
+
+loadSpriteSheet("bubba-sheet", "../examples/images/bubba.png", 5, 2)
+
+addSprite("bubba", "bubba-sheet", 10, 100)
+<b>setSpriteFrameRange("bubba", 0, 3)</b>
+setSpriteVelocityX("bubba", 60)
+setSpriteFrameRate("bubba", 8)
+
+prevTime = time()
+
+mainLoop()
+
+wait
+
+function mainLoop()
+  deltaTime = min(((time() - prevTime) / 1000), maxDeltaTime)
+  prevTime = time()
+
+  if getSpriteX("bubba") >= 300 then
+    removeSprite("bubba")
+    unloadSpriteSheet("bubba-sheet")
+    end
+  end if
+
+  updateSprites(deltaTime)
+
+  clearCanvas()
+
+  drawSprites()
+
+  drawCanvasBuffer(mainLoop)
+end function
+</code>
+
+<a id="usageRun" href="../../../../">Run</a>
+|
+<a id="usageOpen" href="../../../../">Open in Code Editor</a>
+
+</body>
+</html>

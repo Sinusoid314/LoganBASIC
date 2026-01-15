@@ -1,0 +1,77 @@
+<html>
+
+<head>
+  <title></title>
+  <link rel="stylesheet" type="text/css" href="../../reference_doc.css"></link>
+  <script defer="defer" type="text/javascript" src="../../reference_doc.js"></script>
+</head>
+
+<body>
+
+<h3>spritesOverlap(spriteName1, spriteName2)</h3>
+
+<h4>Description</h4>
+<p id="description">
+Returns true if the sprites <i>spriteName1</i> and <i>spriteName2</i> overlap, and false otherwise.
+</p>
+
+<h4>Usage</h4>
+<code id="usageCode">
+var deltaTime, prevTime
+var maxDeltaTime = 0.03
+var isDone = false
+
+hideConsole()
+enableCanvasBuffer()
+
+loadSpriteSheet("bubba-sheet", "../examples/images/bubba.png", 5, 2)
+loadSpriteSheet("ship-sheet", "../examples/images/ship-sheet.png", 2, 1)
+
+addSprite("bubba", "bubba-sheet", 10, 20)
+setSpriteFrameRange("bubba", 0, 3)
+setSpriteVelocityX("bubba", 60)
+setSpriteFrameRate("bubba", 8)
+
+addSprite("ship", "ship-sheet", 300, 50)
+setSpriteVelocityX("ship", -60)
+setSpriteFrameRate("ship", 8)
+
+prevTime = time()
+
+mainLoop()
+
+wait
+
+function mainLoop()
+  if isDone then
+    removeSprite("bubba")
+    removeSprite("ship")
+    unloadSpriteSheet("bubba-sheet")
+    unloadSpriteSheet("ship-sheet")
+    end
+  end if
+
+  deltaTime = min(((time() - prevTime) / 1000), maxDeltaTime)
+  prevTime = time()
+
+  updateSprites(deltaTime)
+
+  if <b>spritesOverlap("bubba", "ship")</b> then
+    setSpriteFrameRange("bubba", 0, 0)
+    isDone = true
+  end if
+
+  clearCanvas()
+
+  drawSprites()
+
+  drawCanvasBuffer(mainLoop)
+end function
+</code>
+
+<a id="usageRun" href="../../../../">Run</a>
+|
+<a id="usageOpen" href="../../../../">Open in Code Editor</a>
+
+</body>
+</html>

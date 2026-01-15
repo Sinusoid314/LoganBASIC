@@ -1,0 +1,25 @@
+[Bugs]
+    - 
+
+[Features]
+    - Add spritesWillCollide(), spritesHaveCollided(), setSpriteHitBoxOffsetX(), setSpriteHitBoxOffsetY(), setSpriteHitBoxWidth(),
+      setSpriteHitBoxHeight(), getSpriteHitBoxOffsetX(), getSpriteHitBoxOffsetY(), getSpriteHitBoxWidth(), and
+      getSpriteHitBoxHeight() sprite native functions.
+    - Add help pages for updateDeltaTime(), getDeltaTime(), setMaxDeltaTime(), getMaxDeltaTime(), and resetDeltaTime() native functions.
+    - Add help pages for spritesWillCollide(), spritesHaveCollided(), setSpriteHitBoxOffsetX(), setSpriteHitBoxOffsetY(),
+      setSpriteHitBoxWidth(), setSpriteHitBoxHeight(), getSpriteHitBoxOffsetX(), getSpriteHitBoxOffsetY(), getSpriteHitBoxWidth(),
+      and getSpriteHitBoxHeight() native functions.
+    - Add help page for rayIntersectsRect() native function.
+
+    - Ability of run() native function to return error messages instead of terminating the program.
+    - Ability to run code in debugger.
+    - A "deploy" mode to run a pre-compiled ObjUserFunc object from a JSON file.
+    - getTextWidth() and getTextHeight() canvas native functions.
+    - getSpriteSheetFrameWith() and getSpriteSheetFrameHeight() sprite native functions.
+    - Breakpoint display to debugger pane.
+    - Variable display persistence between breakpoints in debugger.
+    - Ability to display different sources in debugger.
+    - Asynch option for native functions that download resources.
+    - HTTP GET/POST native functions.
+    - onError user function support.
+    - Possibly use willReadFrequently with canvas.

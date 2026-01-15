@@ -1,0 +1,1717 @@
+(October 29, 2025)
+[v2.0.2.65]
+	- Modified reference_docs.css to widen both the code and description elements, and disable word-wrap on the code element.
+	- Started the help page for rayIntersectsRect() native function.
+
+(September 28, 2025)
+[v2.0.2.64]
+	- Added rayIntersectsRect() standard native function.
+
+(September 16, 2025)
+[v2.0.2.63]
+	- Added prevX, prevY, hitBoxOffsetX, hitBoxOffsetY, hitBoxWidth, and hitBoxHeight members to Sprite class in sprite_worker module.
+
+(July 17, 2025)
+[v2.0.2.62]
+	- Renamed prevDeltaTime to prevTime in canvas_worker module.
+
+(July 3, 2025)
+[v2.0.2.61]
+	- Added resetDeltaTime() native function.
+	- Modified setupGame() function in Space Shooter example to use the resetDeltaTime() native function.
+	- Fixed bug with updateDeltaTime() canvas native function where min() should have been Math.min().
+
+(June 26, 2025)
+[v2.0.2.60]
+	- Renamed introOnDrawBufferDone() and gameOnDrawBufferDone() functions in Space Shooter example
+      to introLoop() and gameLoop(), respectively.
+	- Updated Space Shooter, Platformer, Sprites, and Breakout examples to use the updateDeltaTime() native function.
+
+(June 25, 2025)
+[v2.0.2.59]
+	- Added updateDeltaTime(), getDeltaTime(), setMaxDeltaTime(), and getMaxDeltaTime() canvas native functions.
+
+(June 23, 2025)
+[v2.0.2.58]
+	- Added deltaTime, maxDeltaTime, and prevDeltaTime to canvas_worker module.
+
+(May 14, 2025)
+[v2.0.2.57]
+	- Fixed bug in main_ui module where the autoRun parameter was always being read as 'true'.
+	- Modified the "Run" and "Stop" buttons in editor_ui module to have green and red background colors, respectively.
+	- Added ability to automatically run example code from the help pages.
+
+(May 13, 2025)
+[v2.0.2.56]
+	- Removed Language Overview help section.
+	- Moved Code Editor and Debugger help sections to the top of the help section listing.
+
+(March 27, 2025)
+[v2.0.2.55]
+	- Added to Language Overview help section.
+
+(March 26, 2025)
+[v2.0.2.54]
+	- Added summary paragraphs to the File Commands and Program Commands topics of the Code Editor help section.
+	- Finished the Parameters topic of the Code Editor help section.
+
+(March 25, 2025)
+[v2.0.2.53]
+	- Finished the File Commands and Program Commands topics of the Code Editor help section.
+	- Finished the Overview topic of the Code Editor help section.
+
+(January 23, 2025)
+[v2.0.2.52]
+	- Added to Code Editor help section.
+
+(January 2, 2025)
+[v2.0.2.51]
+	- Added file_command and program_command images to Code Editor help section.
+
+(December 30, 2024)
+[v2.0.2.50]
+	- Added skeleton file for Language Overview help section.
+	- Added skeleton files for Code Editor help section.
+
+(December 19, 2024)
+[v2.0.2.49]
+	- Fixed bug where a function name containing an underscore chracter "_" gives Compile error
+      "Expected terminator after statement" instead of "Expected new line after '_'".
+
+(December 17, 2024)
+[v2.0.2.48]
+	- Fixed bug in compileError() in Compiler module where the eventHooks map was being referenced incorrectly.
+
+(December 15, 2024)
+[v2.0.2.47]
+	- Added an intro screen to Space Shooter example to allow the main level background music to play.
+
+(December 3, 2024)
+[v2.0.2.46]
+	- Modified Space Shooter example by separating the image and sound loading/unloading code into their own seperate functions.
+
+(November 23, 2024)
+[v2.0.2.45]
+	- Modified Space Shooter example to use "drawbufferdone" canvas event.
+	- Modified funcDrawCanvasBuffer() in canvas_worker module by removing the part that sets drawBufferDoneEvent.callback
+	  to null when a user function callback is not specified.
+
+(November 21, 2024)
+[v2.0.2.44]
+	- Modified About page to include portfolio link.
+
+(November 19, 2024)
+[v2.0.2.43]
+	- Modified canvasWorker_onProgEnd() in canvas_worker module to reset drawBufferInProgress to false.
+
+(November 10, 2024)
+[v2.0.2.42]
+	- Added ability to auto-run source file upon opening.
+
+(November 7, 2024)
+[v2.0.2.41]
+	- Commented out the partial implementation of "deploy" mode. This feature will be implemented
+	  in a later version.
+
+(October 24, 2024)
+[v2.0.2.40]
+	 - Added autoRun flag to main_ui module, and modified readURLParams() to read it in as a parameter argument.
+
+(May 17, 2024)
+[v2.0.2.39]
+	- Added "drawbufferdone" event description to setCanvasEvent() help page.
+
+(May 11, 2024)
+[v2.0.2.38]
+	- Added "drawbufferdone" event to setCanvasEvent() native function that fires after the canvas backbuffer has
+	  been drawn to the visible canvas.
+
+(May 10, 2024)
+[v2.0.2.37]
+	- Added drawBufferInProgress flag to canvas_worker module to protect against generating more than one
+	  animation frame request.
+
+(November 5, 2023)
+[v2.0.2.36]
+	- Moved the version() native function from std_funcs module to main_worker module.
+
+(November 2, 2023)
+[v2.0.2.35]
+	- Changed flags property of CallFrame class from a bitfield to an object with boolean properties.
+
+(November 1, 2023)
+[v2.0.2.34]
+	- Added support for having multiple handler functions for each VM event.
+
+(October 5, 2023)
+[v2.0.2.33]
+	- Added topUserFunc member to Compiler class in compiler module.
+
+(September 22, 2023)
+[v2.0.2.32]
+	- Modified import_onLoad() in std_funcs module to resume the VM in the event of a compile error.
+
+(September 20, 2023)
+[v2.0.2.31]
+	- Removed the compiler reference parameter from the onErrorHook callback property of the VM class.
+
+(September 18, 2023)
+[v2.0.2.30]
+	- Renamed progWorker_onMessage() to mainWorker_onMessage() in main_worker module.
+	- Renamed progUI_onMessage() to mainUI_onMessage() in main_ui module.
+	- Moved all reset code to onProgEnd handlers in each worker module.
+
+(September 13, 2023)
+[v2.0.2.29]
+	- Added onProgEndHandlers array to main_worker module to support each component's worker module having its own handler
+	  code for program end event.
+	- Condensed the postMessage(MSGID_PROG_DONE) calls in main_worker into one call in mainWorker_onProgDone().
+	- Renamed onProgStartHandlers and onProgEndHandlers in main_ui module to uionProgStartHandlers and uiOnProgEndHandlers, respectively.
+	- Renamed onProgEndHandlers in main_worker module to workerOnProgEndHandlers.
+
+(September 4, 2023)
+[v2.0.2.28]
+	- Fixed bug with status bar not displaying an error message when failing to load a source file.
+	- Modified window_onLoad() in main_ui module to load and run the given source file if in DEPLOY mode.
+
+(September 3, 2023)
+[v2.0.2.27]
+	- Moved loadSourceFile() into main_ui module and modified it to return a Promise object.
+
+(September 1, 2023)
+[v2.0.2.26]
+	- Added setToggleEvents() and hideToggles() funcitons to main_ui module, and modified
+	  window_onLoad() function to call them depending on the value of mainMode.
+
+(August 31, 2023)
+[v2.0.2.25]
+	- Moved the event-setting code for each module into its own respective function.
+
+(August 29, 2023)
+[v2.0.2.24]
+	- Added loadUIComponents() and readURLParams() functions to main_ui module.
+	- Added readURLParams(), setMainWorkerEvents(), and loadWorkerComponents() funcitons to main_worker module.
+
+(August 28, 2023)
+[v2.0.2.23]
+	- Added PROG_EXIT_STATUS_SUCCESS, PROG_EXIT_STATUS_ERROR, and PROG_EXIT_STATUS_TERMINATED constants,
+	  along with onProgStartHandlers and onProgEndHandlers arrays, to main_ui module to support each
+	  component having its own handler code for program start/end events.
+	- Modified editor_ui, debug_ui, console_ui, canvas_ui, sound_ui, and sprite_ui modules to register
+	  their own respective program start/end event handlers.
+
+(August 25, 2023)
+[v2.0.2.22]
+	- Moved main CSS and HTML into main_ui module.
+	- Modified reference_doc.js, examples.html, and editor_ui.js files to reference index.html.
+
+(August 24, 2023)
+[v2.0.2.21]
+	- Moved CSS and HTML insertion code for canvas component into canvas_ui module.
+	- Moved CSS and HTML insertion code for console component into console_ui module.
+	- Moved the importScripts() calls to each component's common modules from their respective worker modules
+	  to the main_worker module.
+	- Moved each component's source files into their own respective directories.
+
+(August 23, 2023)
+[v2.0.2.20]
+	- Moved CSS and HTML insertion code for debugger component into debug_ui module.
+
+(August 22, 2023)
+[v2.0.2.19]
+	- Moved CSS and HTML insertion code for editor component into editor_ui module.
+
+(August 17, 2023)
+[v2.0.2.18]
+	- Modified onVMStatusChange() in main_worker module to send and empty object instead of null when sending
+	  the MSGID_PROG_DONE_SUCCESS message.
+	- Combined the MSGID_PROG_DONE_SUCCESS and MSGID_PROG_DONE_ERROR messages into the MSGID_PROG_DONE message.
+
+(August 16, 2023)
+[v2.0.2.17]
+	- Added loadDebugUI(), loadEditorUI(), loadConsoleUI(), loadCanvasUI(), loadSoundUI(), loadSpriteUI(), and setMainEvents()
+	  functions to main_ui module.
+	- Added MAIN_MODE_EDIT and MAIN_MODE_DEPLOY constants and mainMode variable to main_common module.
+	- Modified main_worker module and initWorker() in main_ui module to use mainMode.
+
+(August 10, 2023)
+[v2.0.2.16]
+	- Renamed cleanupUI() to onProgEnd().
+	- Removed resetUI() function from main_ui module and moved its functionality to runBtn_onClick() in editor_ui module.
+	- Removed stopProg() from main_ui module and moved its functionality to stopBtn_onClick() in  editor_ui module.
+
+(August 8, 2023)
+[v2.0.2.15]
+	- Modified editor_ui module to check for empty paramFileURL before calling loadSourceFile().
+	- Moved 'Debug' button to editor_ui module.
+	- Added resetUI() and initWorker() functions to main_ui module.
+	- Added debugResyncWorker() function to debug_ui module.
+	- Replaced all references to loganbasic.html with main.html.
+
+(August 7, 2023)
+[v2.0.2.14]
+	- Removed initUI() function from main_ui module and moved initialization code back to top-level of main_ui module.
+	- Modified HTML modules for each component to insert the component's HTML into the DOM.
+
+(August 3, 2023)
+[v2.0.2.13]
+	- Renamed switchMode() to switchEditorMode() and moved it from main_ui module to editor_ui module.
+	- Removed loadHTML() function from main_ui module.
+	- Added initUI() function to main_ui module to be called from window_onLoad().
+	- Moved all loadCSS() and loadScript() calls from each UI module to main_ui module.
+
+(July 31, 2023)
+[v2.0.2.12]
+	- Modified loadScript() in main_ui module to load the script synchronously.
+	- Modified loadHTML() in main_ui module to take in an HTML string instead of a URL.
+	- Replaced each component's HTML file with a JavaScript file that loads the component's HTML.
+
+(July 29, 2023)
+[v2.0.2.11]
+	- Split loganbasic.html into seperate HTML files for each UI module, modified each UI module to load its own
+	  CSS/HTML/JavaScript, and modified main_ui module to load the UI modules for each component.
+
+(July 28, 2023)
+[v2.0.2.10]
+	- Added loadCSS(), loadScript(), and loadHTML() functions to main_ui module.
+
+(July 27, 2023)
+[v2.0.2.9]
+	- Moved the importScripts() calls for each common module into their respective worker modules.
+	- Removed the "_style" postfix from each module's CSS file name.
+
+(July 24, 2023)
+[v2.0.2.8]
+	- Moved the setting of mainVM.onPrintHook from main_worker module to console_worker module.
+
+(July 20, 2023)
+[v2.0.2.7]
+	- Modified each worker module to register its own native functions with the VM.
+	- Split thread_common module into seperate files for each UI/worker module.
+	- Split loganbasic.css into seperate files for each UI module.
+
+(July 19, 2023)
+[v2.0.2.6]
+	- Moved code for adding thread messages in UI modules from function-level to the top-level.
+	- Moved code for adding thread messages in worker modules from function-level to the top-level.
+
+(July 18, 2023)
+[v2.0.2.5]
+	- Renamed initUIMsgFuncs() in main_ui module to addMainUIMessages().
+	- Removed MSGID_SHOW_EDITOR and MSGID_HIDE_EDITOR messages.
+	- Added functions for adding thread messages to all UI modules.
+	- Moved the <script> tag for loading main_ui module in loganbasic.html to load before the other UI modules.
+	- Renamed uiMsgFuncs to uiMessageMap in main_ui module and workerMsgFuncs to workerMessageMap in main_worker module.
+
+(July 17, 2023)
+[v2.0.2.4]
+	- Moved window_onLoad() function to main_ui module and moved code that loads a source file
+	  into new loadSourceFile() function in editor_ui module.
+	- Moved command bar to editor_ui module and decoupled its button events from the program start/stop functionality.
+
+(July 14, 2023)
+[v2.0.2.3]
+	- Renamed stopProg() to cleanupUI() in main_ui module.
+
+(July 12, 2023)
+[v2.0.2.2]
+	- Modified main_ui module to use a Map to dispatch thread messages to their handling functions.
+
+(July 10, 2023)
+[v2.0.2.1]
+	- Modified all thread message-handling functions to accept a message-data argument.
+	- Modified main_worker module to use a Map to dispatch thread messages to their handling functions.
+
+(July 7, 2023)
+[v2.0.2.0]
+	- Seperated status bar from command  bar.
+
+(July 3, 2023)
+[v2.0.1.0]
+	- Added on-screen control instructions to Space Shooter, Scrolling Platformer, Breakout, and DFT examples.
+	- Tweaked the contact physics and speeds of the ball and paddle in Breakout example.
+
+(June 25, 2023)
+[v2.0.0.132]
+	- Added sound effects and background music to Space Shooter example.
+[v2.0.0.131]
+	- Tested Canvas usage examples.
+
+(June 24, 2023)
+[v2.0.0.131]
+	- Tested Standard and Sprite usage examples.
+	- Modified import_onLoad() and funcRun() functions in std_funcs module to call vm::interpret() without
+	  CALLFRAME_FLAG_EXIT_ON_RETURN flag.
+
+(June 22, 2023)
+[v2.0.0.130]
+	- Tested Sound and Expression usage examples.
+
+(June 21, 2023)
+[v2.0.0.130]
+	- Tested Statement usage examples.
+
+(June 20, 2023)
+[v2.0.0.130]
+	- Modified resetCanvas() and onMsgCanvasEvent() funcitons in canvas_worker module to clear canvasEvents and
+	  check for null event callbacks.
+	- Commented DFT and Space Shooter examples.
+
+(June 19, 2023)
+[v2.0.0.129]
+	- Modified Game of Life, Bouncing Sprites, and Breakout examples to resize the canvas before showing it in order
+	  to make it scroll completely into view.
+	- Tested example programs.
+
+(June 17, 2023)
+[v2.0.0.128]
+	- Replaced 'popReturnVal' property of CallFrame class with 'flags' bitmask that can contain any combination of
+	  POP_RETURN_VAL, EXIT_ON_RETURN, and IS_UNWIND_ROOT; also modified VM and CallbackContext classes to support
+	  this new property.
+
+(June 16, 2023)
+[v2.0.0.127]
+	- Modified resetMain() in main_worker module to reset expectedResultMessageID and pendingMessages.
+	- Removed setting of expectedResultMessageID in funcInput() in console_worker module.
+	- Edited the explosion sprite in Space Shooter example to be rounded at the edges.
+
+(June 14, 2023)
+[v2.0.0.126]
+	- Added a score display to Space Shooter example.
+	- Modified Scrolling Platformer example to resize the canvas before showing it in order to make it scroll completely into view.
+[v2.0.0.125]
+	- Modified Space Shooter example to resize the canvas before showing it in order to make it scroll completely into view.
+	- Modified sendImageRequest() in canvas_worker module, funcInput() in console_worker module, sendSoundRequest()
+	  in sound_worker module, and sendSpriteSheetRequest() in sprite_worker module to set expectedResultMessageID
+	  to the appropriate expected result message.
+
+(June 13, 2023)
+[v2.0.0.124]
+	- Added expectedResultMessageID variable, pendingMessages array, and dispatchMessage() function to
+	  main_worker module to keep the worker thread from being interrupted by UI event messages while waiting
+	  for a specific UI response message.
+
+(June 9, 2023)
+[v2.0.0.123]
+	- Added to Space Shooter example.
+
+(June 7, 2023)
+[v2.0.0.122]
+	- Added to Space Shooter example.
+
+(June 6, 2023)
+[v2.0.0.121]
+	- Added to Space Shooter example.
+
+(May 23, 2023)
+[v2.0.0.120]
+	- Added to Space Shooter example.
+
+(April 23, 2023)
+[v2.0.0.119]
+	- Modified array handling to allow declaring zero-length arrays.
+[v2.0.0.118]
+	- Updated Space Shooter example.
+
+(April 22, 2023)
+[v2.0.0.117]
+	- Finished first draft of Space Shooter example.
+
+(April 16, 2023)
+[v2.0.0.116]
+	- Updated Discrete Fourier Transform example and renamed it to DFT.
+
+(April 15, 2023)
+[v2.0.0.115]
+	- Finished first draft of Discrete Fourier Transform example.
+
+(April 11, 2023)
+[v2.0.0.114]
+	- Created BAS files for Space Shooter and Discrete Fourier Transform examples.
+
+(April 5, 2023)
+[v2.0.0.113]
+	- Fixed typos in getSpriteFrameHeight(), clamp(), and run() help pages.
+	
+(April 4, 2023)
+[v2.0.0.112]
+	- Fixed bug with deltaTime in sprite examples not clamping.
+
+(April 3, 2023)
+[v2.0.0.111]
+	- Removed Pause button from debugger pane.
+	- Modified debugger to not automatically break when enabled while a program is running.
+	- Modified debugger help pages to reflect pause/stepping changes.
+
+(April 2, 2023)
+[v2.0.0.110]
+	- Fixed bug with setCanvasEvent() example not resuming after stepping through canvas event functions.
+	- Fixed bug with sprites in getSpriteCycles() and setSpriteCycles() examples not replaying when cycles is changed.
+
+(March 31, 2023)
+[v2.0.0.109]
+	- Modified onMsgDebugResume() function in debug_worker module by moving the inBreakpoint flag check from the
+	  beginning of the function to right before running the VM.
+	- Modified onMsgDebugPause() function in debug_worker module by removing the inBreakpoint flag check and changing
+	  the debug UI status to DISABLED.
+
+(March 27, 2023)
+[v2.0.0.108]
+	- Fixed bug with program hanging when stepping into Wait statement after initial drawCanvasBuffer() call.
+	- Fixed bug with import() function help page not opening code example properly.
+
+(March 21, 2023)
+[v2.0.0.107]
+	- Fixed bug with editor crashing when removing breakpoints.
+
+(March 20, 2023)
+[v2.0.0.106]
+	- Added debugAddBreakpoint() and debugRemoveBreakpoint() functions to debug_ui module.
+	- Added removeEditorGutterItem() function to editor_ui module.
+	- Fixed bug with breakpoints not being removed with their associated editor gutter item.
+
+(March 18, 2023)
+[v2.0.0.105]
+	- Completed debugger help pages.
+
+(March 16, 2023)
+[v2.0.0.104]
+	- Fixed bug with opCallFunc() method of VM not setting 'func' variable.
+	- Completed debugger Overview help page.
+
+(March 13, 2023)
+[v2.0.0.103]
+	- Added image to debugger Overview help page.
+
+(March 11, 2023)
+[v2.0.0.102]
+	- Added the text portions of the debugger help pages.
+
+(February 25, 2023)
+[v2.0.0.101]
+	- Removed showEditor() and hideEditor() native funcitons.
+	- Moved mainSourceName constant to thread_common module.
+
+(February 16, 2023)
+[v2.0.0.100]
+	- Renamed debugger command 'Step' to 'Step Into'.
+	- Added skeleton code to debugger help files.
+
+(February 15, 2023)
+[v2.0.0.99]
+	- Added all user-facing updates in v2 to updates.html.
+
+(February 13, 2023)
+[v2.0.0.98]
+	- Fixed bug with funcRun() in std_funcs module pushing its return value inside the eval function's stack frame.
+
+(February 1, 2023)
+[v2.0.0.97]
+	- Renamed stackIndex member of CallFrame class to funcStackIndex.
+	- Removed parameters 'func' and 'funcStackIndex' from callUserFunc() method in VM and moved their retrieval into the
+	  method itself. Did the same with the 'func' parameter of callNativeFunc() method in VM.
+	- Added localsStackIndex member to CallFrame class.
+
+(January 19, 2023)
+[v2.0.0.96]
+	- Modified resetMain() function in main_worker module to not clear the VM's error property.
+
+(January 18, 2023)
+[v2.0.0.95]
+	- Added resetDebug() function to debug_worker module and modified resetMain() function in main_worker module to call it.
+	- Fixed bug with debugger buttons not being disabled on program end by calling debugChangeUIStatus() function in
+	  stopProg() function in main_ui module.
+
+(January 16, 2023)
+[v2.0.0.94]
+	- Replaced resumeBtnEnabled and pauseBtnEnabled members of DebugInfo class with uiStatus member and constants
+	  DEBUG_UI_STATUS_DISABLED, DEBUG_UI_STATUS_PAUSED, and DEBUG_UI_STATUS_RESUMED.
+	- Replaced functions for enabling/disabling debugger buttons in debug_ui module with debugChangeUIStatus() function.
+
+(January 15, 2023)
+[v2.0.0.93]
+	- Modified Bouncing Sprites example to use a maxDeltaTime to keep the sprites from jumping too far after resuming from a debug break.
+
+(January 12, 2023)
+[v2.0.0.92]
+	- Fixed bug with function parameter variables being counted twice in the localsCount property of CallFrame class by adding
+	  isParameter flag to the addVariable() method of Compiler class.
+
+(January 11, 2023)
+[v2.0.0.91]
+	- Fixed bug with STEP_OVER and STEP_OUT debug actions not breaking properly.
+
+(January 6, 2023)
+[v2.0.0.90]
+	- Added localsCount member to CallFrame class to keep track of the number of local variables currently declared
+	  in the current call frame.
+	- Added DEFINE_LOCAL_VAR opcode, and modified addVariable() method of Compiler class to emit it.
+	- Modified constructor of DebugInfo class to use localsCount member of CallFrame to access the current local variables.
+
+(January 2, 2023)
+[v2.0.0.89]
+	- Fixed bug with usageOpen_onClick() in reference_doc.js not using an absolute path when opening example code.
+
+(January 1, 2023)
+[v2.0.0.88]
+	- Added ability to automatically load example code from the help pages into the editor.
+
+(December 31, 2022)
+[v2.0.0.87]
+	- Added arrow graphics to the expandable variable list items in debugger.
+	- Changed font of variable and call stack displays in debugger.
+	- Modified variable and call stack displays to be resizable.
+[v2.0.0.86]
+	- Fixed bug with variable display in debugger crashing when collapsing an expanded item.
+
+(December 30, 2022)
+[v2.0.0.85]
+	- Added ability to collapse object details in debugger.
+
+(December 29, 2022)
+[v2.0.0.84]
+	- Fixed bug with getIndexes() method of ObjArray class not being accessable in the UI thread.
+
+(December 28, 2022)
+[v2.0.0.83]
+	- Added ability to view Array object details in debugger.
+
+(December 27, 2022)
+[v2.0.0.82]
+	- Modified reDim() method of ObjArray class to fill the array with null values instead of zeros.
+[v2.0.0.81]
+	- Added getIndexes() method to ObjArray class.
+
+(December 19, 2022)
+[v2.0.0.80]
+	- Fixed bug with editor automatically resizing when typing/loading new text.
+	- Created empty debugger help pages.
+
+(December 18, 2022)
+[v2.0.0.79]
+	- Fixed bug with editor gutter not updating when loading a source file.
+
+(December 16, 2022)
+[v2.0.78]
+	- Renamed worker_msg module to thread_common.
+	- Moved DebugBreakpoint class from debug_worker module to thread_common module.
+	- Added UI support for adding/removing breakpoints in debugger.
+
+(December 8, 2022)
+[v2.0.77]
+	- Removed MSGID_DEBUG_ON_USER_BREAKPOINT message.
+	- Added resumeBtnEnabled and pauseBtnEnabled members to DebugInfo class and modified onMsgDebugUpdateUI() function
+	  in debug_ui module to use them.
+	- Implemented onMsgDebugAddBreakpoint() and onMsgDebugRemoveBreakpoint() functions in debug_worker module.
+
+(December 6, 2022)
+[v2.0.76]
+	- Renamed MSGID_DEBUG_ON_BREAKPOINT to MSGID_DEBUG_ON_USER_BREAKPOINT.
+	- Renamed MSGID_DEBUG_START to MSGID_DEBUG_ENABLE and MSGID_DEBUG_STOP to MSGID_DEBUG_DISABLE.
+	- Replaced DEBUG_STATUS state constants and debugStatus with DEBUG_ACTION intruction constants and debugLineChangeAction.	
+
+(December 1, 2022)
+[v2.0.75]
+	- Added MSGID_DEBUG_ON_BREAKPOINT thread message.
+	- Added DEBUG_STATUS_STANDBY constant to debug_worker module.
+	- Modified debugger to work with Resume and Pause status modes.
+
+(November 22, 2022)
+[v2.0.74]
+	- Added Resume and Pause buttons to debugger UI.
+	- Added DEBUG_RESUME, DEBUG_PAUSE, DEBUG_ADD_BREAKPOINT, DEBUG_REMOVE_BREAKPOINT, DEBUG_ON_RESUME, and DEBUG_ON_PAUSE thread messages.
+
+(November 19, 2022)
+[v2.0.73]
+	- Fixed bug with function declaration source line not selected when selecting function name in debugger
+      Globals list more than once.
+[v2.0.72]
+	- Fixed bug with addSprite() native function not returning a value.
+
+(November 18, 2022)
+[v2.0.71]
+	- Added popReturnVal member to CallFrame to support discarding the return value when a call frame ends.
+	- Rename runFunc() method of CallbackContext to resumeVM().
+
+(November 17, 2022)
+[v2.0.70]
+	- Modified callNativeFunc() method of VM to not push the native function's return value on the stack if
+	  it is undefined, and modified all native functions that idle the VM before returning a value to
+	  push their value on the stack right before resuming the VM.
+	- Modified HiLo example to convert the user input from a string to a number.
+
+(November 16, 2022)
+[v2.0.69]
+	- Modified all native functions that do not have a return value to return null instead of 0.
+	- Moved the code from opReturn() method of VM into new returnFromUserFunc() method.
+
+(November 13, 2022)
+[v2.0.68]
+	- Modified main_worker module to reset the worker thread after the user's program ends instead
+	  of right before it begins.
+
+(November 12, 2022)
+[v2.0.67]
+	- Modified funcRun() function in std_funcs module to set the VM's runLoopExitFlag member to
+	  true if the interpret() method returns a compile error.
+	- Removed onRunEndHook member from VM.
+
+(November 5, 2022)
+[v2.0.66]
+	- Added runLoopExitFlag member to VM.
+
+(November 4, 2022)
+[v2.0.65]
+	- Added resetStd() function to std_funcs module.
+	- Added null checks for every function in the worker modules that reference a callback object.
+	- Added endOfOps() check at the beginning of onMsgStartProg() function in main_worker module.
+	- Added isRunning check to every callback function in the UI modules.
+	- Renamed endOfOps() method in Vm to callFramesEmpty() and removed the check in it for nextOp out-of-bounds.
+
+(October 30, 2022)
+[v2.0.64]
+	- Added debugMode check before sending MSGID_DEBUG_UPDATE_UI on program end.
+[v2.0.63]
+	- Fixed bug with Locals/globals not showing in debugger when running HiLo example.
+
+(October 29, 2022)
+[v2.0.62]
+	- Added declSourceLineNum member to ObjUserFunc to track the source line number of the
+	  function's declaration.
+	- Added ability to view Function details in debugger.
+	- Added debugExpandVarListItem() function to debug_ui module.
+
+(October 28, 2022)
+[v2.0.61]
+	- Added backend support for debugger breakpoints.
+	- Added ability to view Structure Definition details in debugger.
+
+(October 27, 2022)
+[v2.0.60]
+	- Fixed bug with non-expandable global/local list items responding to click events.
+	- Modified error reporting to handle errors in external sources.
+	- Modified debugger to handle stepping over external source lines.
+
+(October 25, 2022)
+[v2.0.59]
+	- Modified constructor in ObjStructure to initialize fields with null instead of 0.
+	- Added ability to expand global/local Structure details in debugger.
+[v2.0.58]
+	- Fixed bug with sounds not being unloaded when force-stopping a program.
+
+(October 24, 2022)
+[v2.0.57]
+	- Finished modifying worker/UI messages in main_ui module to send object with named fields.
+	- Modified worker/UI messages in main_worker module to send objects with named fields.
+
+(October 23, 2022)
+[v2.0.56]
+	- Modified worker/UI messages up to and including MSGID_DRAW_IMAGE_TILED_REQUEST in main_ui module to send 
+	  objects with named fields.
+
+(October 21, 2022)
+[v2.0.55]
+	- Moved getOpSourceLineNum() method from VM to ObjUserFunc.
+	- Modified worker/UI messages up to MSGID_LOAD_IMAGE_REQUEST in main_ui module to send 
+	  objects with named fields.
+
+(October 20, 2022)
+[v2.0.54]
+	- Fixed bug with debugger highlighting wrong lines in IF and WHILE blocks.
+
+(October 18, 2022)
+[v2.0.53]
+	- Fixed bug with display update when selecting call stack item in debugger.
+
+(October 17, 2022)
+[v2.0.52]
+	- Added display update when selecting call stack item in debugger.
+
+(October 16, 2022)
+[v2.0.51]
+	- Added Step Over and Step Out functions to debugger.
+
+[v2.0.50]
+	- Fixed bug with variable values not being updated in the debugger right before program end.
+	- Added debugAddVarListItem() function to debug_ui module.
+	- Added support for displaying local variables in debugger.
+
+(October 14, 2022)
+[v2.0.49]
+	- Added debugCurrGlobals to debug_ui module to hold a reference to the current global variable map.
+	- Added debugGlobalsItemMap to debug_ui module to map items from the globals list element to values
+	  from the current globals map.
+	- Removed typeToString() methods from all Obj classes in objects module.
+	- Added object type constants to objects module and type member to all Obj classes.
+	- Modified onMsgDebugUpdateUI() in debug_ui module to display globals items differently
+	  based on value type.
+	- Fixed bug with debugger not working when force-stopping and restarting a program.
+
+(October 10, 2022)
+[v2.0.48]
+	- Added ability to populate the globals view in debugger at every UI update.
+
+[v2.0.47]
+	- Added sourceName, locals, and globals members to DebugInfo.
+	- Added local and gloabal variable views to debugger.
+	- Added ability to roll up/down the debugger views.
+
+(October 10, 2022)
+[v2.0.46]
+	- Added mainSourceName constant to main_ui module that is passed to main_worker module
+	  when starting a program.
+	- Added DebugInfo class to debug_worker module to hold debug data sent to the UI thread.
+
+(October 8, 2022)
+[v2.0.45]
+	- Fixed the call stack display's layout in debugger.
+
+(October 7, 2022)
+[v2.0.44]
+	- Modified selectEditorLine() function in editor_ui to properly center the selected line.
+	- Renamed MSGID_DEBUG_SOURCE_LINE_CHANGE to MSGID_DEBUG_BREAKPOINT.
+	- Removed MSGID_DEBUG_USER_FUNC_CALL and MSGID_DEBUG_USER_FUNC_RETURN messages.
+	- Removed MSGID_DEBUG_UPDATE_DISPLAYS message and replaced it's functionality into MSGID_DEBUG_BREAKPOINT.
+	- Modified selectEditorLine() function in editor_ui to clear the selection if the line number is out of range.
+	- Fixed bug with errors not being reported properly by resetting the VM before compiling and running a
+	  program instead of after.
+
+(October 6, 2022)
+[v2.0.43]
+	- Renamed eval() native function to run().
+
+(October 5, 2022)
+[v2.0.42]
+	- Added hasSourceLine parameter to addOp() method in Compiler.
+	- Added hasSourceLine parameter to addReturnOps() method in Compiler.
+	- Modified addReturnOps() method in Compiler to add LOAD_NOTHING op instead of LOAD_INT.
+
+(October 3, 2022)
+[v2.0.41]
+	- Added ability to resize debugger pane.
+
+(October 2, 2022)
+[v2.0.40]
+	- Fixed bug with mainDiv not moving aside when opening the debugger.
+	- Cleaned up the debugger layout.
+
+(September 29, 2022)
+[v2.0.39]
+	- Modified compile() method of Compiler to create and return the top-level user function.
+
+(September 28, 2022)
+[v2.0.38]
+	- Removed sourceName member from Scanner and moved it into Compiler.
+
+(September 27, 2022)
+[v2.0.37]
+	- Added currCompiiler member to VM that holds a reference to the Compiler object that is currently
+	  executing its compile() method.
+	- Added sourceLevel member to ObjUserFunc that can be either SOURCE_LEVEL_TOP or SOURCE_LEVEL_FUNC,
+	  and modified Compiler to utilize this member instead of using a serperate rootUserFunc reference.
+
+(September 18, 2022)
+[v2.0.36]
+	- Renamed all message-response functions in the UI thread to begin with onMsg.
+
+(September 15, 2022)
+[v2.0.35]
+	- Renamed all worker module to end in _worker.
+	- Renamed all message-response functions in the worker thread to begin with onMsg.
+
+(September 14, 2022)
+[v2.0.34]
+	- Added clearDebugDisplays() function to debug_ui module.
+
+(September 11, 2022)
+[v2.0.33]
+	- Finished basic Debug interface and functionality.
+
+(September 10, 2022)
+[v2.0.32]
+	- Modified runFunc() method of CallbackContext to avoid calling run() method of VM if the VM is
+	  currently in a breakpoint.
+[v2.0.31]
+	- Removed breakpointSourceLineNum member from VM.
+	- Added currOpIndex member to CallFrame.
+[v2.0.30]
+	- Renamed nextSourceLineNum member of VM to breakpointSourceLineNum.
+	- Renamed getCurrSourceLineNum(), getNextSourceLineNum(), and getSourceLineNum() methods of
+	  VM to getCurrOpSourceLineNum(), getNextOpSourceLineNum(), and getOpSourceLineNum() respectively.
+	- Added debugToggleBtn_onClick(), debugStepBtn_onClick(), debugSkipBtn_onClick(), onDebugUpdateDisplays()
+	  and onDebugSourceLineChange() functions to debug_ui module.
+
+(September 9, 2022)
+[v2.0.29]
+	- Removed call in onDebugStart() function to run() method of VM.
+	- Added check for inBreakpoint member of VM before calling run() method of VM.
+	- Renamed clearStacks() method in VM to resetActiveRunState().
+	- Renamed clearMain(), clearConsole(), clearCanvas(), clearSounds(), and clearSprites() functions
+	  to resetMain(), resetConsole(), resetCanvas(), resetSounds(), and resetSprites() respectively.
+	- Added getNextSourceLineNum() and getCurrSourceLineNum() methods to VM.
+	- Added nextSourceLineNum property to displayInfo in composeDebugDisplayInfo().
+	- Modified switchMode() function in main_ui module to make editor read-only while running the user's program.
+
+(September 8, 2022)
+[v2.0.28]
+	- Modified run() method in VM to call endOfOps() at the beginning of the method.
+	- Modified opReturn() method of VM to call clearStacks() method when callFrames is empty.
+	- Modified clearStacks() method of VM to reset inBreakpoint and nextSourceLineNum members.
+	- Created debug and debug_ui modules, and added debug UI/Worker messages to worker_msg module.
+	- Added composeDebugDisplayInfo(), onDebugStart(), onDebugStop(), onDebugStep(), onDebugSkip(),
+	  onUserFuncCall(), onUserFuncReturn(), and onSourceLineChange() functions to debug module.
+
+(September 7, 2022)
+[v2.0.27]
+	- Renamed skipToNextSourceLine() method in VM to skipSourceLine().
+	- Renamed currSourceLineNum member of VM to nextSourceLineNum and modified run(),
+	  checkSourceLineChange(), and skipSourceLine() methods in VM to reflect this change.
+	- Modified main_ui, main, console_funcs, canvas_funcs, sound_funcs, and sprite_funcs modules to
+	  have the worker thread always resident.
+
+(September 4, 2022)
+[v2.0.26]
+	- Modified run() method of VM to support source line breakpoints.
+	- Added skipToNextSourceLine() method to VM to support skipping source lines.
+
+(September 2, 2022)
+[v2.0.25]
+	- Finished help page for import() native funciton.
+
+(August 29, 2022)
+[v2.0.24]
+	- Added eval() native function.
+	- Modified import_onLoad() function in std_funcs to give a name to source code from import() native function.
+
+(August 28, 2022)
+[v2.0.23]
+	- Added import() native function to support library source files.
+[v2.0.22]
+	- Added onSourceLineChangeHook member and checkSourceLineChange() method to VM.
+[v2.0.21]
+	- Fixed bug with Scanner creating NEWLINE tokens without proper source line numbers.
+[v2.0.20]
+	- Added onUserFuncCallHook and onUserFuncReturnHook members to VM, and modified
+	  callUserFunc() and opReturn() methods of VM to utilize them.
+
+(August 27, 2022)
+[v2.0.19]
+	- Fixed bug with hoisted ops offsetting the other op indexes by adding the hoisted
+	  ops to the end of, and a jump op to the beginnig of, the root user-function's ops.
+
+(August 22, 2022)
+[v2.0.18]
+	- Fixed bug with callUserFunc() method in VM where variables for the called 
+	  user function were being created within the method itself.
+
+[v2.0.17]
+	- Modified all native function names to have proper letter case.
+	- Modified run() method in VM to call endOfOps() method when checking if
+	  onRunEndHook should be called.
+	- Renamed parseGlobalDeclaration() method in Compiler to parseHoistedDeclaration().
+
+[v2.0.16]
+	- Modified opLoadNativeFunc(), opLoadVar(), and opCreateStruct() methods in
+	  VM to check the globals map for the given identifier before attempting to
+	  get its value.
+
+(August 20, 2022)
+[v2.0.15]
+	- Modified parseGlobalDeclaration() and parseDeclaration() methods in Compiler
+	  to return before the terminator check if calling parseDeclaration() and
+	  parseStatement() methods, respectively.
+
+[v2.0.14]
+	- Renamed onRuntimeEndHook and onRuntimeErrorHook members of VM to onRunEnd
+	  and onErrorHook respectively.
+	- Modified endWithError() method in VM to create a new VMError instance in error property
+	  even if one already exists.
+	- Modified raiseError() method in Compiler to call the VM's onErrorHook.
+	- Renamed raiseError() method in Compiler to compileError().
+	- Renamed endWithError() method in VM to runError().
+
+(August 18, 2022)
+[v2.0.13]
+	- Added onRuntimeEndHook member to VM.
+	- Renamed doStuff() method in Vm to interpret().
+
+(August 15, 2022)
+[v2.0.12]
+	- Added call to clearStacks() back into endWithError() method in VM.
+	- Modified endWithError() method in VM to create a new VMError instance in error property
+	  only if there isn't an existing one.
+	- Modified run() method in VM to check the VM status to avoid re-entry.
+	- Modified compile() method in Compiler to check the VM status to avoid re-entry.
+	- Modified constructor() and funcDecl() methods in Compiler to pass sourceName to the
+	  ObjUserFunc objects, and set the root ObjUserFunc's ident to "<sourceName>".
+	  
+
+(August 14, 2022)
+[v2.0.11]
+	- Modified run() method in VM to change the VM status to IDLE at its end.
+	- Modified endOfOps() method in VM to check for null currCallFrame.
+	- Modified compile() method in Compiler to restore the previous VM status at its end.
+	- Replaced check of calledFromVM in endWithError() method of VM with check of VM
+	  status RUNNING.
+	- Removed call to clearStacks() from endWithError() method of VM.
+
+(August 13, 2022)
+[v2.0.10]
+	- Renamed onErrorHook to onRuntimeErrorHook in VM.
+	- Modified the main module to reflect the new VM structure.
+
+(August 12, 2022)
+[v2.0.9]
+	- Refactored updateSourceLineMap() method in Compiler.
+	- Added IndexRange class to Bytecode.
+	- Refactored getSourceLineNum() method in VM.
+
+(August 11, 2022)
+[v2.0.8]
+	- Modified Compiler to hoist function and structure declarations to the top of the
+	  root user function's ops list.
+	- Modified getSourceLineNum() in VM to return 0 if a source line number is not found.
+
+(August 7, 2022)
+[v2.0.7]
+	- Added a sourceName property to Scanner and ObjUserFunc.
+	- Added VMError class to VM.
+
+(August 5, 2022)
+[v2.0.6]
+	- Added endOfOps() method to VM and modified run() method to add endOfOps() as 
+	  an exit condition.
+	- Modified userFuncs to be stored in the global hash map in VM.
+
+(August 4, 2022)
+[v2.0.5]
+	- Modified structDefs to be stored in the global hash map in VM.
+
+(August 3, 2022)
+[v2.0.4]
+	- Modified addVariable(), varDecl(), arrayDecl(), and getVariableReference() methods in
+	  Compiler to store global variables in a 'global' hash map in VM.
+	- Modified addVariable() and getVariableReference() methods in Compiler to make
+	  variable identifiers case-sensitive.
+	- Modified Compiler and VM to reference a native functions by name.
+	- Added addNativeFunc() and addNativeFuncArray() methods to VM.
+
+(July 31, 2022)
+[v2.0.3]
+	- Renamed varStmt() and arrayStmt() methods in Compiler to varDecl() and arrayDecl().
+	- Added parseDeclaration() method to Compiler.
+	- Added parseGlobalDeclaration() method to Compiler.
+	- Added the literal value 'nothing'.
+	- Added DEFINE_GLOBAL_VAR opcode.
+
+(July 30, 2022)
+[v2.0.2]
+	- Modified compile() method in Compiler.
+	- Modified consumeToken() method in Compiler.
+	- Modified scanToken() method in Scanner.
+	- Added consumeNewLines() method to Scanner.
+	- Added skipLineJoiner() method to Scanner.
+	- Added initTokens() method to Compiler.
+
+(July 28, 2022)
+[v2.0.1]
+	- Added clearStacks() method to VM and modified opEnd() method to call it.
+	- Renamed onPrintJsFunc member of VM to onPrintHook.
+	- Modified compile() method in Compiler to clear the VM error and set the VM
+	  state to COMPILING at the begining, and set the VM state to IDLE at the end.
+	- Modified run() method in VM to clear the VM error and set the VM state to
+	  RUNNING at the beginning.
+	- Added onErrorHook to VM and modified endWithError() method to call it.
+	- Added calledFromVM parameter to endWithError() method of VM to decide if the
+	  method can throw an exception.
+	- Moved code from setError() method of VM into endWithError() method.
+	- Removed endVM() method of CallbackContext and replaced calls to it with calls to
+	  endWithError() method of VM with the calledFromVM parameter set to false.
+	- Added doStuff() method to VM that compiles and runs a source string.
+
+(July 27, 2022)
+[v2.0.0]
+	- Modified the grammar to have 'var' and 'array' be declarations, and added a
+	  globalDeclaration rule that includes 'function' and 'structure'.
+	- Added prevToken, currToken, and nextToken members to Compiler and modified
+	  the token helper methods to use them.
+	- Modified the VM status values to IDLE, COMPILING, and RUNNING.
+	- Added onStatusChangeHook member to VM.
+	- Added changeStatus() method to VM.
+	- Removed setup() and reset() methods from VM.
+	- Removed onDoneJsFunc member from VM.
+
+(July 15, 2022)
+[v1.9.5]
+	- Modified structure field access to use the literal index of the field identifier
+	  directly in the opcode operands.
+	- Renamed varIdents in ObjUserFunc class to localIdents.
+	- Moved StructureDef class to object module and renamed it to ObjStructureDef.
+	- Added typeToString() method to all object classes.
+	- Moved literals from Bytecode class to ObjUserFunc class.
+	- Moved nativeFuncs, userFuncs, and structDefs from Bytecode class
+	  to Runtime class and removed Bytecode class.
+	- Renamed Runtime class to VM.
+
+(July 12, 2022)
+[v1.9.4]
+	- Modified nativeFuncs list in Bytecode class to be owned by its Bytecode object.
+
+(July 10, 2022)
+[v1.9.3]
+	- Added a status property to Compiler class.
+	- Updated LBCore library file.
+	- Moved LBCore library to /lib directory in /core.
+[v1.9.2]
+	- Modified getNativeFuncIndex() method in Compiler class to check the that the Bytecode's nativeFuncs
+	  is a valid reference.
+	- Renamed init() method in Bytecode class to reset().
+	- Added reset() method to Scanner class.
+	- Added reset() and setup() methods to both Compiler and Runtime classes to allow their objects to reinitialize
+	  their properties and be reused.
+
+(July 2, 2022)
+[v1.9.1]
+	- Added init() method to Bytecode class.
+	- Renamed setup() method in Runtime class to init() and moved the functionality of cleanup() method to it.
+	- Modified compile() method of Compiler class to call init() on the given Bytecode object before compiling.
+	- Added an Interpreter class and module that wraps a native function array along with Bytecode, Compiler, and Runtime objects.
+
+(June 18, 2022)
+[v1.8.8]
+	- Modified Runtime class to take a Bytecode object as an argument to the run() method instead of the constructor.
+	- Modified Compiler class to take a source string and Bytecode object as arguments to the compile() method instead of the constructor.
+
+(June 1, 2022)
+[v1.8.7]
+	- Added pauseFor() native function.
+
+(May 12, 2022)
+[v1.8.6]
+	- Fixed bug with Runtime object crashing when onDoneJsFunc is not set.
+[v1.8.5]
+	- Added help page for version() native function.
+	- Added word() native function.
+	- Added splitStr() native function.
+
+(May 11, 2022)
+[v1.8.4]
+	- Added a minified library file that bundles all the core source files.
+
+[v1.8.3]
+	- Moved std_funcs module into /source/core directory.
+	- Modified Compiler constructor to make stdNativeFuncs a default part of the nativeFuncs member.
+	- Added version() native function.
+
+(May 10, 2022)
+[v1.8.2]
+	- Moved importScripts() call for core source files back into main module.
+[v1.8.1]
+	- Decoupled opPrint() and opCls() methods of Runtime from the worker messages defined in worker_msg module.
+	- Decoupled console native functions from std_funcs module and placed them in new console_funcs module.
+	- Combined importScripts() call for all core source files into lbcore module.
+
+(April 15, 2022)
+[v1.7.3]
+	- Modified the help pages for the round(), sin(), cos(), and tan() native functions.
+
+(April 5, 2022)
+[v1.7.2]
+	- Added sprite z-order functions spriteToBack() and spriteToFront().
+	- Added help page for round() native function.
+
+(April 4, 2022)
+[v1.7.1]
+	- Added round() function.
+
+(March 28, 2022)
+[v1.7.0]
+	- Disabled default touch actions for the canvas.
+	- Added trigonometry functions sin(), cos(), and tan().
+
+(March 15, 2022)
+[v1.6.37]
+	- Added variable jump force to "Scrolling Platformer" example.
+
+(March 14, 2022)
+[v1.6.36]
+	- Modified "Scrolling Platformer" example.
+
+(March 13, 2022)
+[v1.6.35]
+	- Modified "Scrolling Platformer" example.
+
+(March 12, 2022)
+[v1.6.34]
+	- Modified "Scrolling Platformer" example.
+[v1.6.33]
+	- Modified "Scrolling Platformer" example.
+
+(March 9, 2022)
+[v1.6.32]
+	- Modified "Scrolling Platformer" example.
+
+(March 8, 2022)
+[v1.6.31]
+	- Added help page for Scroll Offset description.
+	- Added a platform sprite to "Scrolling Platformer" example.
+
+(March 6, 2022)
+[v1.6.30]
+	- Added Usage sections to help pages for getSpriteScroll() and setSpriteScroll() native functions.
+
+(March 3, 2022)
+[v1.6.29]
+	- Added help pages for getScrollX(), setScrollX(), getScrollY(), setScrollY(), shiftScrollX(), and shiftScrollY() native functions.
+	- Seperated the description of sprite sheets from the loadSpriteSheet() help page.
+
+(February 28, 2022)
+[v1.6.28]
+	- Added scrolling view to "Scrolling Platformer" example.
+
+(February 26, 2022)
+[v1.6.27]
+	- Added getScrollX(), setScrollX(), getScrollY(), setScrollY(), shiftScrollX(), shiftScrollY(), getSpriteScroll(),
+	  and setSpriteScroll() native functions.
+	- Updated "Scrolling Platformer" example.
+
+(February 23, 2022)
+[v1.6.26]
+	- Updated "Scrolling Platformer" example.
+	- Modified the canvas event handler to prevent the browser's default action when an event is handled.
+
+(February 21, 2022)
+[v1.6.25]
+	- Started "Scrolling Platformer" example.
+
+(February 16, 2022)
+[v1.6.24]
+	- Added an Updates page.
+
+(February 14, 2022)
+	- Finished commenting the example programs.
+	- Modified "Breakout" example program.
+
+(February 8, 2022)
+	- Fixed bug with drawImageTiled() slowing down when called continuously.
+
+(January 25, 2022)
+	- Modified updateSprites() native function to make the deltaTime argument optional.
+	- Fix bug with sprites not being hidden when using setSpriteVisible().
+	- Finished adding usage sections to the help pages for sprite functions.
+
+(January 21, 2022)
+	- Added usage sections to the help pages for setSpriteX(), getSpriteY(), setSpriteY(), getSpriteDrawWidth(),
+	  setSpriteDrawWidth(), getSpriteDrawHeight(), and setSpriteDrawHeight() native functions.
+	- Added About page.
+
+(January 20, 2022)
+	- Added usage sections to the help pages for getSpriteVelocityY(), setSpriteVelocityY(), and getSpriteVelocityX() native functions.
+	- Added a frame rate display to "Bouncing Sprites" example.
+
+(January 18, 2022)
+	- Added setSpriteSheet() native function.
+	- Added usage sections to the help pages for loadSpriteSheet(), unloadSpriteSheet(), drawSprites(), addSprite(),
+	  removeSprite(), updateSprites(), getSpriteX(), setSpriteFrameRate(), setSpriteVelocityX(), and setSpriteFrameRange()
+	  native functions.
+
+(January 12, 2022)
+	- Added a sprite sheet layout image to the loadSpriteSheet help page.
+
+(January 10, 2022)
+	- Added descriptions to the help pages for sprite functions.
+
+(January 8, 2022)
+	- Added help page for pointInRect(), pointInCircle(), rectsOverlap(), circlesOverlap(), and rectOverlapsCircle() native functions.
+
+(January 6, 2022)
+	- Added help page for drawImageTiled()
+
+(January 4, 2022)
+	- Implemented drawImageTiled() native function.
+
+(January 1, 2022)
+	- Added spritesOverlap(), pointInSprite(), spriteOverlapsRect(), and spriteOverlapsCircle() native functions.
+	- Added pointInRect(), pointInCircle(), rectsOverlap(), circlesOverlap(), and rectOverlapsCircle() native functions.
+
+(December 31, 2021)
+	- Fixed bug with sprite draw sizes not scaling.
+
+(December 30, 2021)
+	- Modified loadSpriteSheet() and spriteSheet_onLoad() in sprite_ui module to use the dataset attribute to store
+	  the sprite sheet's row and column count.
+	- Modified "Bounding Sprites" example to use sprite native functions.
+	
+(December 29, 2021)
+	- Renamed getSpriteFrameIndex() and setSpriteFrameIndex() to getSpriteFrame() and setSpriteFrame().
+	- Added getSpriteFrameCount(), setSpriteFrameRange(), getSpriteCycles(), and setSpriteCycles() native funcitons.
+	- Modified funcUpdateSprites() in sprite_funcs module to keep track of sprite frame range and cycles.
+
+(December 25, 2021)
+	- Added drawSprites(), getSpriteX(), setSpriteX(), getSpriteY(), setSpriteY(), getSpriteDrawWidth(), setSpriteDrawWidth(),
+	  getSpriteDrawHeight(), setSpriteDrawHeight(), getSpriteVelocityX(), setSpriteVelocityX(), getSpriteVelocityY(), setSpriteVelocityY(),
+	  getSpriteFrameRate(), setSpriteFrameRate(), getSpriteFrameIndex(), setSpriteFrameIndex(), getSpriteVisible(), setSpriteVisible(),
+	  getSpritePlaying(), and setSpritePlaying() native function.
+
+(December 24, 2021)
+	- Added addSprite(), removeSprite(), and updateSprites() native functions.
+
+(December 22, 2021)
+	- Added loadSpriteSheet(), unloadSpriteSheet(), getSpriteFrameWidth(), and getSpriteFrameHeight() native functions.
+
+(December 20, 2021)
+	- Split function help pages into Standard, Canvas, and Sound catagories.
+	- Added sprite_funcs and sprite_ui modules.
+	- Modified showCanvas() in canvas_ui modules to set focus to the canvas.
+
+(December 19, 2021)
+	- Modified canvas_funcs and canvas_ui modules to keep the image objects in a Map on the UI thread.
+	- Added a background image and sound effects to "Bouncing Sprites" example.
+
+(December 18, 2021)
+	- Modified canvas_onAnimationFrame() in canvas_ui module to use drawImage() to draw the canvas buffer.
+
+(December 17, 2021)
+	- Modified sound_funcs and sound_ui modules to keep the audio objects in a Map on the UI thread.
+
+(December 15, 2021)
+	- Added setError() and cleanup() methods to Runtime class.
+	- Changed raiseError() method to endWithError() in Runtime class.
+	- Added endRuntime() method to CallbackContext class.
+	- Modified native function handlers in sound_funcs module to wait for response from the UI thread.
+
+(December 12, 2021)
+	- Renamed cleanupImages() to cleanupCanvas().
+	- Added removal of canvas event handlers in cleanupCanvas().
+	- Moved runtime, compiler, scanner, object, bytecode, and token source files into new /core directory.
+
+(December 9, 2021)
+	- Renamed the call grammar rules to postfix and merged it with the arrayItem rule.
+
+(December 7, 2021)
+	- Added "Bouncing Sprites" to the examples page.
+
+(December 6, 2021)
+	- Finished "Breakout" example.
+	- Added checkTerminator() and checkTokenList() methods to Compiler class.
+	- Modified returnStmt() in Compiler to use checkTerminator() instead of matchTerminator().
+	- Modified showCanvas() in console_ui module to set focus on the canvas.
+
+(December 1, 2021)
+	- Started "Breakout" example.
+	
+(November 30, 2021)
+	- Added a bar graph to "Letter Count" example.
+	- Added "Conway's Game of Life" to the examples page.
+
+(November 27, 2021)
+	- Split cleanupCanvas() in canvas_ui into resetCanvas() and cleanupImages().
+	- Added cleanupSounds() in sound_ui.
+	- Replaced fish.png with ship1.png in help pages.
+	- Added "Letter Count" to the examples page.
+
+(November 22, 2021)
+	- Modified some of the graphic function help pages to refer to fish.png.
+
+(November 20, 2021)
+	- Added clamp() native function.
+
+(November 19, 2021)
+	- Added addItem() and removeItem() methods to ObjArray class.
+	- Added addArrayItem() and removeArrayItem() native functions.
+
+(November 17, 2021)
+	- Added isFilled parameter to drawText() native funciton.
+	- Added setTextFont(), setFillColor(), setLineColor(), and setLineSize() native functions.
+	- Italicized parameters in the help page descriptions.
+
+(November 16, 2021)
+	- Added drawCircle() and drawLine() native functions.
+
+(November 15, 2021)
+	- Added optional scaling parameters to drawImage() native function.
+	- Added drawImageClip() native function.
+
+(November 14, 2021)
+	- Added help page entries for Structure statement and New operator.
+	- Added drawRect() native function.
+	- Fixed bug with compiling structure definitions.
+
+(November 10, 2021)
+	- Fixed bug with images not drawing to the canvas.
+	- Added support for data structures.
+	- Added support for dynamically created arrays.
+
+(November 1, 2021)
+	- Added playSound(), pauseSound(), stopSound(), getSoundLen(), getSoundPos(), setSoundPos(), and loopSound() native functions.
+	- Added entries for the sound functions to the help page.
+
+(October 29, 2021)
+	- Added loadSound() and unloadSound() native functions, along with sound_funcs and sound_ui modules.
+
+(October 27, 2021)
+	- Added showEditor(), hideEditor(), showConsole(), hideConsole(), showCanvas(), and hideCanvas() native functions.
+	- Added editor line selection when reporting an error.
+
+(October 26, 2021)
+	- Moved onInputResult() from main module to std_funcs module.
+	- Moved routing of worker-to-ui canvas messages back to progUI_onMessage() in main_ui module.
+	- Modified runFunc() in CallbackContext class to check if userFunc is null.
+	- Added inputCallback to store the runtime object that requested console input.
+	- Modified loadImage() native function to pause the runtime until the image has either succeeded
+	  or failed to load, and return the result as either true or false respectively.
+	- Added drawText() native function.
+	- Added "pointermove" canvas event.
+	- Added getImageWidth() and getImageHeight() native functions.
+
+(October 25, 2021)
+	- Modified DrawCanvasBuffer() to take an optional callback function that is called after the buffer has been drawn.
+	- Modified runFunc() in CallbackContext class to not run the callback function unless the runtime state is RUNTIME_STATUS_PAUSED.
+
+(October 21, 2021)
+	- Fixed bug with keyboard input not working in the canvas.
+	- Added entry for setCanvasEvent() to the help page.
+
+(October 20, 2021)
+	- Modified runFunc() member in CallbackContext class to take a single array as an argument.
+	- Added setCanvasEvent() native function to support user input for the canvas.
+
+(October 19, 2021)
+	- Added enableCanvasBuffer(), disableCanvasBuffer(), and drawCanvasBuffer() native functions.
+	- Modified setCanvasWidth() and setCanvasHeight() to resize the buffer canvas with the main canvas and retain the graphics of both.
+	- Added MoveImage to the examples page.
+
+(October 17, 2021)
+	- Combined all canvas messages into MSGID_CANVAS_MSG handled by canvasWorker_onMessage() in canvas_ui module.
+	- Added setCanvasWidth() and setCanvasHeight() native functions.
+
+(October 16, 2021)
+	- Fixed bug with images being stretched when drawn to the canvas.
+	- Added entries for clearCanvas(), loadImage(), unloadImage(), and drawImage() to the help page.
+	- Added setCanvasWidth() and setCanvasHeight() functions to canvas_ui module.
+	- Modified cleanupCanvas() in canvas_ui module to reset the canvas size.
+
+(October 15, 2021)
+	- Added onDoneJsFunc member to Runtime class to provide a callback for when the runtime object is done executing the program.
+	- Added canvas_funcs module and renamed native_func module to std_funcs.
+	- Added clearCanvas(), loadImage(), unloadImage(), and drawImage() native functions for drawing on the canvas.
+	- Added CanvasImage to the examples page.
+
+(October 14, 2021)
+	- Added a status member to Runtime class that can be either RUNNING, PAUSED, or DONE.
+	- Fixed bug with timer callback not ending program properly.
+
+(October 13, 2021)
+	- Added CallbackContext class to facilitate calling user functions from outside of the Runtime class.
+	- Added startTimer() and stopTimer() native functions.
+
+(October 12, 2021)
+	- Changed console to have a separate textbox for input.
+
+(October 11, 2021)
+	- Rearranged the UI into four modules: editor_ui, console_ui, canvas_ui, and main_ui.
+
+(October 7, 2021)
+	- Added ability to declare more than one variable per Var statement.
+	- Added Wait statement and PAUSE opcode to pause program execution and wait for callback events.
+	- Moved the main user function loading from run() to constructor() in Runtime.
+	- Added ability to collapse/expand the editor and console.
+	- Fix bug with console not collapsing.
+	- Added a canvas UI element to the main page.
+
+(October 4, 2021)
+	- Added source code line to runtime error messages.
+
+(October 3, 2021)
+	- Fixed bug with user functions not compiling.
+	- Added raiseError() method to Compiler and Runtime.
+	- Fixed a bug with STORE_ARRAY_ITEM_PERSIST not leaving the item value on the stack.
+
+(September 28, 2021)
+	- Finished implementing user function support in Runtime.
+	- Finished implementing user function support in Compiler.
+	- Added a toString() method to ObjUserFunc.
+	- Added entries for Return and Function in help docs.
+
+(September 26, 2021)
+	- Added makeEOFToken() method to Scanner.
+	- Modified forStmt() in Compiler to use LOAD_INT opcode instead of LOAD_LIT.
+	- Added opsCount() method to Compiler.
+	- Renamed 'inputting' member in Runtime to 'paused'.
+
+(September 14, 2021)
+	- Added ObjUserFunc and CallFrame classes.
+	- Modified Bytecode, Runtime, and Compiler members to support user functions.
+	- Added FUNCTION and RETURN tokens.
+	- Modified grammar to support user functions.
+	- Added SCOPE_GLOBAL and SCOPE_LOCAL types for distinguishing variable scope.
+	- Renamed CALL_NATIVE_FUNC opcode to CALL_FUNC.
+	- Added LOAD_INT and LOAD_USER_FUNC opcodes.
+	- Modified LOAD_VAR, STORE_VAR, and STORE_VAR_PERSIST, JUMP, JUMP_IF_FALSE, JUMP_IF_FALSE_PERSIST,
+	  JUMP_IF_TRUE, JUMP_IF_TRUE_PERSIST, and END opcodes to support user functions.
+
+(September 12, 2021)
+	- Replaced nextToken with prevToken in scanTokens() in Compiler.
+	- In Runtime, replaced getOperand() and currOpIndex with currOp and nextOpIndex.
+
+(August 21, 2021)
+	- Added INCREMENT_COUNTER opcode.
+	- Fixed bug with For loops not terminating.
+
+(August 17, 2021)
+	- Renamed some member variables to have more succinct names.
+	- Added help entries for For...Next, Exit While, Exit For, and Exit Do.
+	- Added Exit statements for While, For, and Do loops.
+	- Modified parseStatement() in Compiler to report an error when a block-ending token does not match with its corresponding block.
+
+(August 15, 2021)
+	- Refactored scanTokens() in Compiler.
+
+(August 13, 2021)
+	- Modified getVariableIndex() in Compiler to check a new variable's identifier against the native function names.
+
+(August 5, 2021)
+	- Added toString() method to Bytecode class.
+	- Fixed bug where native function objects were not being popped off the stack after being called.
+
+(August 4, 2021)
+	- Added expression statements, making assignments part of expressions.
+	- Added back-to-back parenthesis/brackets for function-calls/array-items.
+	- Modified native functions to be first-class values.
+	- Added LOAD_NATIVE_FUNC and STORE_VAR_PERSIST opcodes.
+
+(August 3, 2021)
+	- Moved nativeFuncList into Bytecode class.
+	- Renamed class NativeFunc to ObjNativeFunc.
+	- Moved ObjNativeFunc and ObjArray classes to the new Object module.
+
+(August 1, 2021)
+	- Modified the syntax grammar to allow:
+	  - Expression statements, including assignment.
+	  - Back-to-back parenthesis/brackets for function-calls/array-items.
+	  - Calling first-class functions.
+
+(July 28, 2021)
+	- Fixed bug with Input() native function that was leaving an extra item on the stack.
+
+(July 17, 2021)
+	- Added CHECK_COUNTER opcode.
+	- Added FOR/NEXT loop.
+
+(July 14, 2021)
+	- Added expression operator sections to help file.
+	- Fixed bug where the touch-screen keypad does not appear when the console is waiting for input.
+
+(July 10, 2021)
+	- Modified the native function implementation to supply a reference to the
+	  runtime object that is invoking the function.
+	- Added exponent operator ^.
+	- Started expression operator section in help file.
+
+(June 29, 2021)
+	- Finished statement help pages.
+	- Fixed bug that caused the compiler to hang in some cases.
+	- Finished commenting all functions and methods.
+
+(June 24, 2021)
+	- Finished function help pages.
+
+(June 19, 2021)
+	- Finished modifying Scanner to output one token at a time.
+	- Fixed bugs in Scanner and Compiler.
+
+(June 18, 2021)
+	- Removed the 'loganbasic_' prefix from the source file names.
+	- Renamed Parser class to Compiler.
+	- Made nativeFuncList a global variable.
+	- Modified Compiler to use the Scanner to build its own token list.
+	- Started modifying Scanner to output one token at a time.
+
+(June 14, 2021)
+	- Set up the outlines for Statements help pages.
+	- Modified examples page to load the example code in an iframe.
+
+(June 13, 2021)
+	- Set up the main help page.
+
+(June 8, 2021)
+	- Started the help pages.
+
+(June 7, 2021)
+	- Modified the calling convention of native functions to allow optional arguments.
+	- Added Trim(), LTrim(), RTrim(), Mid(), Abs(), Min(), Max(), Sqr(), Asc(),
+	  Chr(), Str(), and Val() native functions.
+
+(May 30, 2021)
+	- Added DO/LOOP WHILE loop.
+	- Added Left() and Right() native functions.
+
+(May 28, 2021)
+	- Added Var statement for declaring variables.
+	- Added Len() native function that works for both strings and arrays.
+	- Added Upper() and Lower() native functions.
+	- Added Cls statement for clearing the console.
+
+(May 26, 2021)
+	- Added matchToken() in Parser to check and consume a single token.
+	- Finished adding array support.
+	- Fixed bug in Runtime where arrays items were not being initialized to 0.
+	- Changed Input statement into a native function.
+	- Added two array examples to examples page.
+
+(May 23, 2021)
+	- Added getOperand() to Runtime.
+	- Added array support in Runtime.
+
+(May 22, 2021)
+	- Started adding support for arrays.
+
+(May 18, 2021)
+	- Added HiLo.bas to the examples page.
+	- Added version number to the bottom of loganbasic.html.
+	- Added the shell for the help page.
+
+(May 16, 2021)
+	- Added function-call statement.
+	- Added more CSS styling to the UI elements.
+	- Added an examples programs page.
+	- Fixed a bug when compiling code that has comments or newlines at its beginning.
+	- Disabled spellcheck underlines in the editor.
+
+(May 14, 2021)
+	- Added ELSE clause to IF..THEN statement.
+
+(May 12, 2021)
+	- Made the statement-terminator optional and moved its consumption to parseStatement().
+
+(May 11, 2021)
+	- Implemented "Open File" button in editor.
+	- Implemented "Save" button in editor.
+	- Implemented window_onLoad().
+
+(May 8, 2021)
+	- Separated the code editor into loganbasic_editor module.
+	- Added a menu bar to the editor.
+	- Implemented "New" and "Open URL" buttons in editor.
+
+(May 2, 2021)
+	- Added native function Int().
+	- Added getNativeFuncIndex() to Parser.
+	- Debugged native function support.
+	- Modified callExpr() in Parser to make function identifier matching case-insensitive.
+
+(May 1, 2021)
+	- Added native functions Rnd() and Time().
+
+(April 30, 2021)
+	- Added logical-line-extender '_'.
+
+(April 29, 2021)
+	- Modified whileStmt() in Parser to use checkToken() for detecting WEND keyword.
+
+(April 27, 2021)
+	- Renamed matchTokenTypes() to matchTokenList().
+	- Renamed checkTokenType() to checkToken().
+	- Renamed checkNextTokenType() to checkNextToken().
+	- Added checkTokenPair() to Parser.
+	- Modified ifStmt() in Parser to use checkTokenPair().
+	- Added statement terminator ':'.
+	- Add END statement.
+	- Added WHILE...WEND loop.
+	- Made console auto scroll to bottom.
+	- Added matchTokenPair() to Parser.
+	- Fixed bug with OR operator giving wrong result.
+	- Added peekNextToken() and checkNextToken() to Parser.
+	- Added IF...THEN...END IF statement.
+
+(April 26, 2021)
+	- Added JUMP_IF_TRUE and JUMP_IF_TRUE_PERSIST opcodes.
+	- Added OR and AND operators.
+
+(April 25, 2021)
+	- Added remainder operator %.
+	- Added JUMP, JUMP_IF_FALSE, and JUMP_IF_FALSE_PERSIST opcodes.
+	- Changed keyword matching to be case-insensitive.
+
+(April 23, 2021)
+	- Added TRUE and FALSE literals.
+	- Added NOT operator.
+	- Added equality operators.
+	- Added comparison operators.
+
+(April 21, 2021)
+	- Implemented INPUT statement.
+	- Added TOKEN_COMMA.
+	- Fixed bug with the negation operator.
+	- Modified the PRINT statement to append a newline to its output.
+	- Implemented Parser class.
+	- Modified main module to use a (Scanner -> Parser -> Runtime) pipeline.
+
+(April 19, 2021)
+	- Added Opcode documentation.
+	- Implemented Runtime class.
+
+(April 18, 2021)
+	- Renamed loganbasic_interpreter module to loganbasic_parser.
+	- Renamed Interpreter class to Parser.
+	- Added loganbasic_bytecode and loganbasic_runtime modules.
+	- Implemented Bytecode class.
+
+(April 17, 2021)
+	- Renamed loganbasic_main to loganbasic_ui.
+	- Created loganbasic_workermsg module to share message IDs between the UI and worker threads.
+	- Moved the Lexer and Interpreter into a worker thread in loganbasic_main.
+	
+(April 14, 2021)
+	- Added error handling for invalid expressions.
+	- Renamed checkTerminator() to matchTerminator().
+
+(April 12, 2021)
+	- Fixed bug that is returning undefined from evalOperation() in Interpreter class.
+	- Added support for parenthesis tokens in Lexer class.
+	- Modified scanToken() in Lexer class to avoid adding multiple newline tokens in a row.
+	- Added variable support.
+	- Added checkTerminator() to Interpreter class.
+
+(April 11, 2021)
+	- Added progConsole variable to Lexer class.
+	- Implemented runBtn_OnClick().
+	- Implemented run(), runStatement(), and printStmt() in Interpreter class.
+	- Removed EOF check in checkToken() in Interpreter class.
+
+(April 9, 2021)
+	- Implemented evalExpression(), termExpr(), factorExpr(), unaryExpr(),
+	  primaryExpr(), and evalOperation() in Interpreter class.
+
+(April 8, 2021)
+	- Implemented constructor(), consumeToken(), matchTokenTypes(),
+	  checkToken(), endOfTokens(), peekToken(), and prevToken()
+	  in Interpreter class.
+
+(April 7, 2021)
+	- Implemented scanToken(), consumeStringLiteral(), consumeNumberLiteral(),
+	  and consumeIdentifier() in Lexer class.
+	- Added error handling to Lexer class.
+
+(April 5, 2021)
+	- Added toString() to Token class.
+	- Added a status variable and constants to loganbasic_main module.
+	- Added a status bar and command bar.
+	- Implemented runBtn_OnClick().
+
+(April 4, 2021)
+	- Implemented matchChar(), peekChar(), peekNextChar(), and scan()
+	  in Lexer class.
+	- Added errorMsg to Lexer class.
+
+(April 3, 2021)
+	- Implemented constructor(), addToken(), consumeChar(), endOfSource(),
+	  isAlpha(), isDigit(), and isAlphaNumeric() in Lexer class.
+	- Added keywordList object map to lexer module.
+
+(April 1, 2021)
+	- Implemented Token class.
+	- Defined language grammar.
+
+(March 31, 2021)
+	- Created the HTML, CSS, and JavaScript skeletons.

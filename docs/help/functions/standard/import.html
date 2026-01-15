@@ -1,0 +1,42 @@
+<html>
+
+<head>
+  <title>Import function</title>
+  <link rel="stylesheet" type="text/css" href="../../reference_doc.css"></link>
+  <script defer="defer" type="text/javascript" src="../../reference_doc.js"></script>
+</head>
+
+<body>
+
+<h3>import(sourceFile)</h3>
+
+<h4>Description</h4>
+<p id="description">
+Downloads, compiles, and runs the source code contained in <i>sourceFile</i>. The function waits
+for the code to finish running before returning. If successful, it returns true. If <i>sourceFile</i>
+fails to download, it returns false. If the code fails to compile or run, and error is raised.
+</p>
+
+<h4>Usage</h4>
+importExample.bas
+<code>
+  print "This is the imported file."
+</code>
+example.bas
+<code id="usageCode">
+  print "Hello!"
+  <b>import("importExample.bas")</b>
+  print "Goodbye!"
+
+  'output:
+  'Hello!
+  'This is the imported file.
+  'Goodbye!
+</code>
+
+<a id="usageRun" href="../../../../">Run</a>
+|
+<a id="usageOpen" href="../../../../">Open in Code Editor</a>
+
+</body>
+</html>

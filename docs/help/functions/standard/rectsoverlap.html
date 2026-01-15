@@ -1,0 +1,66 @@
+<html>
+
+<head>
+  <title></title>
+  <link rel="stylesheet" type="text/css" href="../../reference_doc.css"></link>
+  <script defer="defer" type="text/javascript" src="../../reference_doc.js"></script>
+</head>
+
+<body>
+
+<h3>rectsOverlap(rectX1, rectY1, rectWidth1, rectHeight1, rectX2, rectY2, rectWidth2, rectHeight2)</h3>
+
+<h4>Description</h4>
+<p id="description">
+Returns true if the rectangles <i>(rectX1, rectY1, rectWidth1, rectHeight1)</i> and
+<i>(rectX2, rectY2, rectWidth2, rectHeight2)</i> overlap, and false otherwise.
+</p>
+
+<h4>Usage</h4>
+<code id="usageCode">
+var rectX1 = 0
+var rectY1 = 50
+var rectX2 = 300
+var rectY2 = 100
+var rectWidth = 100
+var rectHeight = 100
+
+hideConsole()
+
+enableCanvasBuffer()
+
+setFillColor("red")
+setLineSize(2)
+drawRect(rectX1, rectY1, rectWidth, rectHeight, false)
+drawRect(rectX2, rectY2, rectWidth, rectHeight, false)
+
+mainLoop()
+
+wait
+
+function mainLoop()
+  rectX1 = rectX1 + 2
+  rectX2 = rectX2 - 2
+
+  clearCanvas()
+
+  if <b>rectsOverlap(rectX1, rectY1, rectWidth, rectHeight, rectX2, rectY2, rectWidth, rectHeight)</b> then
+    drawRect(rectX1, rectY1, rectWidth, rectHeight, true)
+    drawRect(rectX2, rectY2, rectWidth, rectHeight, true)
+  else
+    drawRect(rectX1, rectY1, rectWidth, rectHeight, false)
+    drawRect(rectX2, rectY2, rectWidth, rectHeight, false)
+  end if
+
+  if rectX2 = 0 then end
+
+  drawCanvasBuffer(mainLoop)
+end function
+</code>
+
+<a id="usageRun" href="../../../../">Run</a>
+|
+<a id="usageOpen" href="../../../../">Open in Code Editor</a>
+
+</body>
+</html>

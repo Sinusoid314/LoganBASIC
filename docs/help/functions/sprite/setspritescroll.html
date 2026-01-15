@@ -1,0 +1,62 @@
+<html>
+
+<head>
+  <title></title>
+  <link rel="stylesheet" type="text/css" href="../../reference_doc.css"></link>
+  <script defer="defer" type="text/javascript" src="../../reference_doc.js"></script>
+</head>
+
+<body>
+
+<h3>setSpriteScroll(spriteName, scroll)</h3>
+
+<h4>Description</h4>
+<p id="description">
+If <i>scroll</i> is true, the <a href="scrolloffset.html">scroll offset</a> is applied to
+<i>spriteName</i>'s position when drawing the sprites. This property is set to true by default.
+</p>
+
+<h4>Usage</h4>
+<code id="usageCode">
+hideConsole()
+enableCanvasBuffer()
+
+loadSpriteSheet("ship-sheet", "../examples/images/ship-sheet.png", 2, 1)
+
+addSprite("ship", "ship-sheet", 0, 0)
+
+setScrollX(-100)
+setScrollY(-100)
+
+setCanvasEvent("pointerup", onPointerUp)
+setCanvasEvent("keyup", onKeyUp)
+
+mainLoop()
+
+wait
+
+function mainLoop()
+  clearCanvas()
+
+  drawSprites()
+
+  drawCanvasBuffer(mainLoop)
+end function
+
+function onPointerUp(pointerX, pointerY)
+  <b>setSpriteScroll("ship", not getSpriteScroll("ship"))</b>
+end function
+
+function onKeyUp(key)
+  removeSprite("ship")
+  unloadSpriteSheet("ship-sheet")
+  end
+end function
+</code>
+
+<a id="usageRun" href="../../../../">Run</a>
+|
+<a id="usageOpen" href="../../../../">Open in Code Editor</a>
+
+</body>
+</html>

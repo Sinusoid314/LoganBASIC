@@ -1,0 +1,51 @@
+<html>
+
+<head>
+  <title></title>
+  <link rel="stylesheet" type="text/css" href="../../reference_doc.css"></link>
+  <script defer="defer" type="text/javascript" src="../../reference_doc.js"></script>
+</head>
+
+<body>
+
+<h3>pointInCircle(pointX, pointY, circleX, circleY, circleRadius)</h3>
+
+<h4>Description</h4>
+<p id="description">
+Returns true if the point <i>(pointX, pointY)</i> is within the circle
+<i>(circleX, circleY, circleRadius)</i>, and false otherwise.
+</p>
+
+<h4>Usage</h4>
+<code id="usageCode">
+var circleX = 100
+var circleY = 100
+var circleRadius = 50
+
+hideConsole()
+
+setFillColor("red")
+setLineSize(2)
+drawCircle(circleX, circleY, circleRadius, false)
+
+setCanvasEvent("pointerup", onPointerUp)
+
+wait
+
+function onPointerUp(pointerX, pointerY)
+  clearCanvas()
+
+  if <b>pointInCircle(pointerX, pointerY, circleX, circleY, circleRadius)</b> then
+    drawCircle(circleX, circleY, circleRadius, true)
+  else
+    drawCircle(circleX, circleY, circleRadius, false)
+  end if
+end function
+</code>
+
+<a id="usageRun" href="../../../../">Run</a>
+|
+<a id="usageOpen" href="../../../../">Open in Code Editor</a>
+
+</body>
+</html>

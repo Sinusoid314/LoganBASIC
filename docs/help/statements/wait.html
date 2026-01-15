@@ -1,0 +1,38 @@
+<html>
+
+<head>
+  <title>Wait Statement</title>
+  <link rel="stylesheet" type="text/css" href="../reference_doc.css"></link>
+  <script defer="defer" type="text/javascript" src="../reference_doc.js"></script>
+</head>
+
+<body>
+
+<h3>Wait</h3>
+
+<h4>Description</h4>
+<p id="description">
+Stops program execution and waits for user input or callback events. When an event occurs, program
+execution resumes at the function assigned to handle the event. Because the Wait statement does
+not stop waiting until the program ends, any top-level code after it will not be executed.
+</p>
+
+<h4>Usage</h4>
+<code id="usageCode">
+startTimer(1000, onTick)
+
+<b>wait</b>
+
+function onTick()
+  stopTimer()
+  print "Tick."
+  end
+end function
+</code>
+
+<a id="usageRun" href="../../../">Run</a>
+|
+<a id="usageOpen" href="../../../">Open in Code Editor</a>
+
+</body>
+</html>

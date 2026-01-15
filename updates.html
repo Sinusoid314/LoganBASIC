@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+  <title>Logan BASIC Updates</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>
+  <link rel="stylesheet" type="text/css" href="updates.css"></link>
+</head>
+
+<body style="text-align:center; margin-right:25%; margin-left:25%">
+  <h1>Logan BASIC Updates</h1>
+
+  <div class="update">
+    <div class="version">v2.0.2</div>
+    <div class="date"></div>
+    <ul class="features">
+      <li>Added "drawbufferdone" event to setCanvasEvent() function that fires after the canvas backbuffer has
+          been drawn to the visible canvas.</li>
+      <li>Added "autoRun" URL parameter, which causes the source file to automatically run upon opening.</li>
+      <li>Fixed bug where a function name containing an underscore chracter "_" gives Compile error
+          "Expected terminator after statement" instead of "Expected new line after '_'".</li>
+      <li>Added Code Editor help section.</li>
+      <li>Modified the "Run" and "Stop" buttons in the Code Editor to have green and red background colors, respectively.</li>
+      <li>Added ability to automatically run example code from the help pages.</li>
+      <li>Added updateDeltaTime(), resetDeltaTime(), getDeltaTime(), setMaxDeltaTime(), and getMaxDeltaTime() canvas native functions.</li>
+      <li>Added rayIntersectsRect() standard native function.</li>
+    </ul>
+  </div>
+
+  <div class="update">
+    <div class="version">v2.0.1</div>
+    <div class="date">July 3, 2023</div>
+    <ul class="features">
+      <li>Added on-screen control instructions to Space Shooter, Scrolling Platformer, Breakout, and DFT examples.</li>
+      <li>Tweaked the contact physics and speeds of the ball and paddle in Breakout example.</li>
+    </ul>
+  </div>
+
+  <div class="update">
+    <div class="version">v2.0.0</div>
+    <div class="date">June 27, 2023</div>
+    <ul class="features">
+      <li>Added the literal value 'nothing'.</li>
+      <li>Added import() function to support library source files.</li>
+      <li>Added run() function.</li>
+      <li>Added a debugger, including line-stepping functionality, breakpoints, and variable/call stack displays.</li>
+    </ul>
+  </div>
+
+  <div class="update">
+    <div class="version">v1.8.7</div>
+    <div class="date">June 1, 2022</div>
+    <ul class="features">
+      <li>Added version(), splitStr(), word(), and pauseFor() functions.</li>
+      <li>Added a library file that bundles all of the core source files.</li>
+    </ul>
+  </div>
+
+  <div class="update">
+    <div class="version">v1.7.3</div>
+    <div class="date">April 15, 2022</div>
+    <ul class="features">
+      <li>Disabled default touch actions for the canvas.</li>
+      <li>Added trigonometry functions sin(), cos(), and tan().</li>
+      <li>Added round() function.</li>
+      <li>Added sprite z-order functions spriteToBack() and spriteToFront().</li>
+    </ul>
+  </div>
+
+  <div class="update">
+    <div class="version">v1.6.37</div>
+    <div class="date">March 15, 2022</div>
+    <ul class="features">
+      <li>Added "Scrolling Platformer" example.</li>
+      <li>Modified the canvas event handler to prevent the browser's default action when an event is handled.</li>
+      <li>Added an Updates page.</li>
+      <li>Added an About page.</li>
+      <li>Added sprite functions.</li>
+      <li>Added drawImageTiled() function.</li>
+      <li>Added functions for detecting overlapping rectangles, circles, and points.</li>
+    </ul>
+  </div>
+</body>
+
+</html>

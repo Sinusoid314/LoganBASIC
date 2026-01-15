@@ -1,0 +1,67 @@
+<html>
+
+<head>
+  <title></title>
+  <link rel="stylesheet" type="text/css" href="../../reference_doc.css"></link>
+  <script defer="defer" type="text/javascript" src="../../reference_doc.js"></script>
+</head>
+
+<body>
+
+<h3>loadSpriteSheet(sheetName, sheetSource, columnCount, rowCount)</h3>
+
+<h4>Description</h4>
+<p id="description">
+Loads an <a href="spritesheet.html">sprite sheet</a> image file specified by <i>sheetSource</i> and assigns it a reference name specified by <i>sheetName</i>.
+The function waits for the image to load before returning, and returns true if the image successfully
+loaded, and false otherwise. Once loaded, the sheet image can be used by a sprite created with
+<a href="addsprite.html">addSprite</a>, and unloaded with <a href="unloadspritesheet.html">unloadSpriteSheet</a>.
+</p>
+
+<h4>Usage</h4>
+<code id="usageCode">
+var deltaTime, prevTime
+var maxDeltaTime = 0.03
+
+hideConsole()
+enableCanvasBuffer()
+
+<b>loadSpriteSheet("bubba-sheet", "../examples/images/bubba.png", 5, 2)</b>
+
+addSprite("bubba", "bubba-sheet", 10, 100)
+setSpriteFrameRange("bubba", 0, 3)
+setSpriteVelocityX("bubba", 60)
+setSpriteFrameRate("bubba", 8)
+
+prevTime = time()
+
+mainLoop()
+
+wait
+
+function mainLoop()
+  deltaTime = min(((time() - prevTime) / 1000), maxDeltaTime)
+  prevTime = time()
+
+  if getSpriteX("bubba") >= 300 then
+    removeSprite("bubba")
+    unloadSpriteSheet("bubba-sheet")
+    end
+  end if
+
+  updateSprites(deltaTime)
+
+  clearCanvas()
+
+  drawSprites()
+
+  drawCanvasBuffer(mainLoop)
+end function
+</code>
+
+<a id="usageRun" href="../../../../">Run</a>
+|
+<a id="usageOpen" href="../../../../">Open in Code Editor</a>
+
+</body>
+</html>

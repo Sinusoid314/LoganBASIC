@@ -1,0 +1,64 @@
+<html>
+
+<head>
+  <title></title>
+  <link rel="stylesheet" type="text/css" href="../../reference_doc.css"></link>
+  <script defer="defer" type="text/javascript" src="../../reference_doc.js"></script>
+</head>
+
+<body>
+
+<h3>removeSprite(spriteName)</h3>
+
+<h4>Description</h4>
+<p id="description">
+Removes a sprite, specified by <i>spriteName</i>, that was added using <a href="addsprite.html">addSprite</a>.
+</p>
+
+<h4>Usage</h4>
+<code id="usageCode">
+var deltaTime, prevTime
+var maxDeltaTime = 0.03
+
+hideConsole()
+enableCanvasBuffer()
+
+loadSpriteSheet("bubba-sheet", "../examples/images/bubba.png", 5, 2)
+
+addSprite("bubba", "bubba-sheet", 10, 100)
+setSpriteFrameRange("bubba", 0, 3)
+setSpriteVelocityX("bubba", 60)
+setSpriteFrameRate("bubba", 8)
+
+prevTime = time()
+
+mainLoop()
+
+wait
+
+function mainLoop()
+  deltaTime = min(((time() - prevTime) / 1000), maxDeltaTime)
+  prevTime = time()
+
+  if getSpriteX("bubba") >= 300 then
+    <b>removeSprite("bubba")</b>
+    unloadSpriteSheet("bubba-sheet")
+    end
+  end if
+
+  updateSprites(deltaTime)
+
+  clearCanvas()
+
+  drawSprites()
+
+  drawCanvasBuffer(mainLoop)
+end function
+</code>
+
+<a id="usageRun" href="../../../../">Run</a>
+|
+<a id="usageOpen" href="../../../../">Open in Code Editor</a>
+
+</body>
+</html>

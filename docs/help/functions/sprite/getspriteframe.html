@@ -1,0 +1,70 @@
+<html>
+
+<head>
+  <title></title>
+  <link rel="stylesheet" type="text/css" href="../../reference_doc.css"></link>
+  <script defer="defer" type="text/javascript" src="../../reference_doc.js"></script>
+</head>
+
+<body>
+
+<h3>getSpriteFrame(spriteName)</h3>
+
+<h4>Description</h4>
+<p id="description">
+Returns the index of <i>spriteName</i>'s currently displayed animation frame.
+</p>
+
+<h4>Usage</h4>
+<code id="usageCode">
+var isDone = false
+
+hideConsole()
+enableCanvasBuffer()
+
+loadSpriteSheet("bubba-sheet", "../examples/images/bubba.png", 5, 2)
+
+addSprite("bubba", "bubba-sheet", 50, 50)
+setSpritePlaying("bubba", false)
+
+setCanvasEvent("pointerup", onPointerUp)
+
+mainLoop()
+
+wait
+
+function mainLoop()
+  if isDone then
+    removeSprite("bubba")
+    unloadSpriteSheet("bubba-sheet")
+    end
+  end if
+
+  updateSprites()
+
+  clearCanvas()
+
+  drawSprites()
+
+  drawCanvasBuffer(mainLoop)
+end function
+
+function onPointerUp(pointerX, pointerY)
+  if pointInSprite("bubba", pointerX, pointerY) then
+    if <b>getSpriteFrame("bubba")</b> = getSpriteFrameCount("bubba") - 1 then
+      setSpriteFrame("bubba", 0)
+    else
+      setSpriteFrame("bubba", <b>getSpriteFrame("bubba")</b> + 1)
+    end if
+  else
+    isDone = true
+  end if
+end function
+</code>
+
+<a id="usageRun" href="../../../../">Run</a>
+|
+<a id="usageOpen" href="../../../../">Open in Code Editor</a>
+
+</body>
+</html>

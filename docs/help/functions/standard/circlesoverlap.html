@@ -1,0 +1,65 @@
+<html>
+
+<head>
+  <title></title>
+  <link rel="stylesheet" type="text/css" href="../../reference_doc.css"></link>
+  <script defer="defer" type="text/javascript" src="../../reference_doc.js"></script>
+</head>
+
+<body>
+
+<h3>circlesOverlap(circleX1, circleY1, circleRadius1, circleX2, circleY2, circleRadius2)</h3>
+
+<h4>Description</h4>
+<p id="description">
+Returns true if the circles <i>(circleX1, circleY1, circleRadius1)</i> and
+<i>(circleX2, circleY2, circleRadius2)</i> overlap, and false otherwise.
+</p>
+
+<h4>Usage</h4>
+<code id="usageCode">
+var circleX1 = 50
+var circleY1 = 50
+var circleX2 = 350
+var circleY2 = 100
+var circleRadius = 50
+
+hideConsole()
+
+enableCanvasBuffer()
+
+setFillColor("red")
+setLineSize(2)
+drawCircle(circleX1, circleY1, circleRadius, false)
+drawCircle(circleX2, circleY2, circleRadius, false)
+
+mainLoop()
+
+wait
+
+function mainLoop()
+  circleX1 = circleX1 + 2
+  circleX2 = circleX2 - 2
+
+  clearCanvas()
+
+  if <b>circlesOverlap(circleX1, circleY1, circleRadius, circleX2, circleY2, circleRadius)</b> then
+    drawCircle(circleX1, circleY1, circleRadius, true)
+    drawCircle(circleX2, circleY2, circleRadius, true)
+  else
+    drawCircle(circleX1, circleY1, circleRadius, false)
+    drawCircle(circleX2, circleY2, circleRadius, false)
+  end if
+
+  if circleX2 = 50 then end
+
+  drawCanvasBuffer(mainLoop)
+end function
+</code>
+
+<a id="usageRun" href="../../../../">Run</a>
+|
+<a id="usageOpen" href="../../../../">Open in Code Editor</a>
+
+</body>
+</html>
