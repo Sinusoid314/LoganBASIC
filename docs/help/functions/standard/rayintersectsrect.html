@@ -12,8 +12,15 @@
 
 <h4>Description</h4>
 <p id="description">
-Returns true if (rayOriginX, rayOriginY, rayDirX, rayDirY)</i>
-<i>(rectX, rectY, rectWidth, rectHeight)</i>
+Returns true if the ray given by (rayOriginX, rayOriginY, rayDirX, rayDirY) intersects with the rectangle given by </i>
+<i>(rectX, rectY, rectWidth, rectHeight)</i>. <i>contactStruct</i> is a <a href="../../statements/structure.html">structure instance</a>
+that contains the following optional fields:
+<ul>
+  <li><b>normalX</b> - </li>
+  <li><b>normalY</b> - </li>
+  <li><b>pointX</b> - Point on the X-axis where the ray intersects with the rectangle.</li>
+  <li><b>pointY</b> - Point on the Y-axis where the ray intersects with the rectangle.</li>
+</ul>
 </p>
 
 <h4>Usage</h4>
