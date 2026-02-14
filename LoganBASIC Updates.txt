@@ -1,3 +1,8 @@
+(February 13, 2026)
+[v2.0.2.66]
+	- Modified funcRayIntersectsRect() in std_funcs module to account for the situation where the normalX and normalY members
+	  of contactStruct should be 0.
+
 (October 29, 2025)
 [v2.0.2.65]
 	- Modified reference_docs.css to widen both the code and description elements, and disable word-wrap on the code element.

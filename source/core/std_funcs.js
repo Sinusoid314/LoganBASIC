@@ -623,26 +623,26 @@ function funcRayIntersectsRect(vm, args)
   if(!contactStruct)
     return true;
 
-  switch(entryTime)
+  if(contactStruct.fieldMap.has("normalY"))
   {
-    case topTime:
-      if(contactStruct.fieldMap.has("normalY"))
-        contactStruct.fieldMap.set("normalY", -1);
-      break;
-    case bottomTime:
-      if(contactStruct.fieldMap.has("normalY"))
-        contactStruct.fieldMap.set("normalY", 1);
-      break;
-    case leftTime:
-      if(contactStruct.fieldMap.has("normalX"))
-        contactStruct.fieldMap.set("normalX", -1);
-      break;
-    case rightTime:
-      if(contactStruct.fieldMap.has("normalX"))
-        contactStruct.fieldMap.set("normalX", 1);
-      break;
+    if(entryTime == topTime)
+      contactStruct.fieldMap.set("normalY", -1);
+    else if(entryTime == bottomTime)
+      contactStruct.fieldMap.set("normalY", 1);
+    else
+      contactStruct.fieldMap.set("normalY", 0);
   }
-    
+
+  if(contactStruct.fieldMap.has("normalX"))
+  {
+    if(entryTime == leftTime)
+      contactStruct.fieldMap.set("normalX", -1);
+    else if(entryTime == rightTime)
+      contactStruct.fieldMap.set("normalX", 1);
+    else
+      contactStruct.fieldMap.set("normalX", 0);
+  }
+
   if(contactStruct.fieldMap.has("pointX"))
         contactStruct.fieldMap.set("pointX", rayOriginX + (rayDirX * entryTime));
   
