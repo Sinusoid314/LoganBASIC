@@ -1,5 +1,6 @@
 (February 13, 2026)
 [v2.0.2.66]
+	- Added demonstration of normalX and normalY members of contactStruct to help page for rayIntersectsRect() native function.
 	- Modified funcRayIntersectsRect() in std_funcs module to account for the situation where the normalX and normalY members
 	  of contactStruct should be 0.
 

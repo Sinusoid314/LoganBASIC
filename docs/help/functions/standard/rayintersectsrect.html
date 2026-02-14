@@ -26,6 +26,8 @@ that contains the following optional fields:
 <h4>Usage</h4>
 <code id="usageCode">
 structure ContactInfo
+  normalX
+  normalY
   pointX
   pointY
 end structure
@@ -56,7 +58,8 @@ function onPointerUp(pointerX, pointerY)
 
   clearCanvas()
 
-  setFillColor("red")
+  setFillColor("gray")
+  setLineColor("black")
   drawRect(rectX, rectY, rectWidth, rectHeight, intersects)
   drawCircle(rayOriginX, rayOriginY, 2, true)
   drawCircle(pointerX, pointerY, 2, true)
@@ -65,6 +68,24 @@ function onPointerUp(pointerX, pointerY)
   if intersects then
     setFillColor("blue")
     drawCircle(rayContact.pointX, rayContact.pointY, 3, true)
+  end if
+
+  setLineColor("red")
+
+  if rayContact.normalX = -1 then
+    drawLine(rectX - 5, rectY + (rectHeight / 2), rectX + 5, rectY + (rectHeight / 2))
+  else
+    if rayContact.normalX = 1 then
+      drawLine((rectX + rectWidth) - 5, rectY + (rectHeight / 2), (rectX + rectWidth) + 5, rectY + (rectHeight / 2))
+    end if
+  end if
+
+  if rayContact.normalY = -1 then
+    drawLine(rectX + (rectWidth / 2), rectY - 5, rectX + (rectWidth / 2), rectY + 5)
+  else
+    if rayContact.normalY = 1 then
+      drawLine(rectX + (rectWidth / 2), (rectY + rectHeight) - 5, rectX + (rectWidth / 2), (rectY + rectHeight) + 5)
+    end if
   end if
 end function
 </code>
