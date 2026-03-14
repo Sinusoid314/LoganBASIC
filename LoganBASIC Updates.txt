@@ -1,4 +1,6 @@
 (March 14, 2026)
+[v2.0.2.68]
+	- Added spritesWillCollide() and spritesHaveCollided() sprite native functions.
 [v2.0.2.67]
 	- Created a template for help file pages.
 	- Created the template pages for updateDeltaTime(), getDeltaTime(), setMaxDeltaTime(), getMaxDeltaTime(), resetDeltaTime(), spritesWillCollide(),
