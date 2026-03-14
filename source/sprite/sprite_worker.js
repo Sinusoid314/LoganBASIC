@@ -77,7 +77,17 @@ const spriteNativeFuncs = [
                   new ObjNativeFunc("getSpriteScroll", 1, 1, funcGetSpriteScroll),
                   new ObjNativeFunc("setSpriteScroll", 2, 2, funcSetSpriteScroll),
                   new ObjNativeFunc("spriteToBack", 1, 1, funcSpriteToBack),
-                  new ObjNativeFunc("spriteToFront", 1, 1, funcSpriteToFront)
+                  new ObjNativeFunc("spriteToFront", 1, 1, funcSpriteToFront),
+                  new ObjNativeFunc("getSpriteHitBoxOffsetX", 1, 1, funcGetSpriteHitBoxOffsetX),
+                  new ObjNativeFunc("setSpriteHitBoxOffsetX", 2, 2, funcSetSpriteHitBoxOffsetX),
+                  new ObjNativeFunc("getSpriteHitBoxOffsetY", 1, 1, funcGetSpriteHitBoxOffsetY),
+                  new ObjNativeFunc("setSpriteHitBoxOffsetY", 2, 2, funcSetSpriteHitBoxOffsetY),
+                  new ObjNativeFunc("getSpriteHitBoxWidth", 1, 1, funcGetSpriteHitBoxWidth),
+                  new ObjNativeFunc("setSpriteHitBoxWidth", 2, 2, funcSetSpriteHitBoxWidth),
+                  new ObjNativeFunc("getSpriteHitBoxHeight", 1, 1, funcGetSpriteHitBoxHeight),
+                  new ObjNativeFunc("setSpriteHitBoxHeight", 2, 2, funcSetSpriteHitBoxHeight),
+                  new ObjNativeFunc("spritesWillCollide", 3, 4, funcSpritesWillCollide),
+                  new ObjNativeFunc("spritesHaveCollided", 3, 4, funcSpritesHaveCollided)
                  ];
 
 var sprites = new Map();
@@ -851,3 +861,114 @@ function funcSpriteToFront(vm, args)
   return null;
 }
 
+function funcGetSpriteHitBoxOffsetX(vm, args)
+//
+{
+  var spriteName = args[0];
+
+  if(!sprites.has(spriteName))
+    vm.runError("Sprite '" + spriteName + "' does not exist.");
+
+  return sprites.get(spriteName).hitBoxOffsetX;
+}
+
+function funcSetSpriteHitBoxOffsetX(vm, args)
+//
+{
+  var spriteName = args[0];
+  var hitBoxOffsetX = args[1];
+
+  if(!sprites.has(spriteName))
+    vm.runError("Sprite '" + spriteName + "' does not exist.");
+
+  sprites.get(spriteName).hitBoxOffsetX = hitBoxOffsetX;
+
+  return null;
+}
+
+function funcGetSpriteHitBoxOffsetY(vm, args)
+//
+{
+  var spriteName = args[0];
+
+  if(!sprites.has(spriteName))
+    vm.runError("Sprite '" + spriteName + "' does not exist.");
+
+  return sprites.get(spriteName).hitBoxOffsetY;
+}
+
+function funcSetSpriteHitBoxOffsetY(vm, args)
+//
+{
+  var spriteName = args[0];
+  var hitBoxOffsetY = args[1];
+
+  if(!sprites.has(spriteName))
+    vm.runError("Sprite '" + spriteName + "' does not exist.");
+
+  sprites.get(spriteName).hitBoxOffsetY = hitBoxOffsetY;
+
+  return null;
+}
+
+function funcGetSpriteHitBoxWidth(vm, args)
+//
+{
+  var spriteName = args[0];
+
+  if(!sprites.has(spriteName))
+    vm.runError("Sprite '" + spriteName + "' does not exist.");
+
+  return sprites.get(spriteName).hitBoxWidth;
+}
+
+function funcSetSpriteHitBoxWidth(vm, args)
+//
+{
+  var spriteName = args[0];
+  var hitBoxWidth = args[1];
+
+  if(!sprites.has(spriteName))
+    vm.runError("Sprite '" + spriteName + "' does not exist.");
+
+  sprites.get(spriteName).hitBoxWidth = hitBoxWidth;
+
+  return null;
+}
+
+function funcGetSpriteHitBoxHeight(vm, args)
+//
+{
+  var spriteName = args[0];
+
+  if(!sprites.has(spriteName))
+    vm.runError("Sprite '" + spriteName + "' does not exist.");
+
+  return sprites.get(spriteName).hitBoxHeight;
+}
+
+function funcSetSpriteHitBoxHeight(vm, args)
+//
+{
+  var spriteName = args[0];
+  var hitBoxHeight = args[1];
+
+  if(!sprites.has(spriteName))
+    vm.runError("Sprite '" + spriteName + "' does not exist.");
+
+  sprites.get(spriteName).hitBoxHeight = hitBoxHeight;
+
+  return null;
+}
+
+function funcSpritesWillCollide(vm, args)
+//
+{
+
+}
+
+function funcSpritesHaveCollided(vm, args)
+//
+{
+
+}

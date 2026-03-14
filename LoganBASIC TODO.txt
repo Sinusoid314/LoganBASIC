@@ -2,9 +2,7 @@
     - 
 
 [Features]
-    - Add spritesWillCollide(), spritesHaveCollided(), setSpriteHitBoxOffsetX(), setSpriteHitBoxOffsetY(), setSpriteHitBoxWidth(),
-      setSpriteHitBoxHeight(), getSpriteHitBoxOffsetX(), getSpriteHitBoxOffsetY(), getSpriteHitBoxWidth(), and
-      getSpriteHitBoxHeight() sprite native functions.
+    - Add spritesWillCollide() and spritesHaveCollided() sprite native functions.
     - Add help pages for updateDeltaTime(), getDeltaTime(), setMaxDeltaTime(), getMaxDeltaTime(), and resetDeltaTime() native functions.
     - Add help pages for spritesWillCollide(), spritesHaveCollided(), setSpriteHitBoxOffsetX(), setSpriteHitBoxOffsetY(),
       setSpriteHitBoxWidth(), setSpriteHitBoxHeight(), getSpriteHitBoxOffsetX(), getSpriteHitBoxOffsetY(), getSpriteHitBoxWidth(),

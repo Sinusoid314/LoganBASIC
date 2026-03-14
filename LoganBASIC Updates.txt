@@ -1,6 +1,8 @@
 (March 13, 2026)
 [v2.0.2.67]
 	- Finished the help page for rayIntersectsRect() native function.
+	- Added setSpriteHitBoxOffsetX(), setSpriteHitBoxOffsetY(), setSpriteHitBoxWidth(), setSpriteHitBoxHeight(), getSpriteHitBoxOffsetX(),
+	  getSpriteHitBoxOffsetY(), getSpriteHitBoxWidth(), and getSpriteHitBoxHeight() sprite native functions.
 
 (February 13, 2026)
 [v2.0.2.66]
