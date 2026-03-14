@@ -1,3 +1,7 @@
+(March 13, 2026)
+[v2.0.2.67]
+	- Finished the help page for rayIntersectsRect() native function.
+
 (February 13, 2026)
 [v2.0.2.66]
 	- Added demonstration of normalX and normalY members of contactStruct to help page for rayIntersectsRect() native function.

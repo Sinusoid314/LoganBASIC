@@ -22,6 +22,16 @@ code
   background-color: lightgray;
 }
 
+ul
+{
+  margin-right: 35%;
+}
+
+li
+{
+  margin-block: 4px;
+}
+
 #description
 {
   margin-left: 10px;

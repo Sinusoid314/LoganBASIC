@@ -16,8 +16,8 @@ Returns true if the ray given by (rayOriginX, rayOriginY, rayDirX, rayDirY) inte
 <i>(rectX, rectY, rectWidth, rectHeight)</i>. <i>contactStruct</i> is a <a href="../../statements/structure.html">structure instance</a>
 that contains the following optional fields:
 <ul>
-  <li><b>normalX</b> - </li>
-  <li><b>normalY</b> - </li>
+  <li><b>normalX</b> - Indicates which side of the rectangle the ray intersects with on the X-axis. A value of -1 indicates the left side, 1 indicates the right side, and 0 is neither.</li>
+  <li><b>normalY</b> - Indicates which side of the rectangle the ray intersects with on the Y-axis. A value of -1 indicates the top side, 1 indicates the bottom side, and 0 is neither.</li>
   <li><b>pointX</b> - Point on the X-axis where the ray intersects with the rectangle.</li>
   <li><b>pointY</b> - Point on the Y-axis where the ray intersects with the rectangle.</li>
 </ul>
