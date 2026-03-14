@@ -4,6 +4,7 @@
 	- Created the template pages for updateDeltaTime(), getDeltaTime(), setMaxDeltaTime(), getMaxDeltaTime(), resetDeltaTime(), spritesWillCollide(),
 	  spritesHaveCollided(), setSpriteHitBoxOffsetX(), setSpriteHitBoxOffsetY(), setSpriteHitBoxWidth(), setSpriteHitBoxHeight(), getSpriteHitBoxOffsetX(),
 	  getSpriteHitBoxOffsetY(), getSpriteHitBoxWidth(), and getSpriteHitBoxHeight() native functions.
+	- Added links to new template help files in main help file.
 
 (March 13, 2026)
 [v2.0.2.67]
