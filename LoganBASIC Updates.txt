@@ -1,3 +1,8 @@
+(March 15, 2026)
+[v2.0.2.69]
+	- Added descriptions to the help pages for updateDeltaTime(), getDeltaTime(), setMaxDeltaTime(), getMaxDeltaTime(),
+	  and resetDeltaTime() native functions.
+
 (March 14, 2026)
 [v2.0.2.68]
 	- Added spritesWillCollide() and spritesHaveCollided() sprite native functions.
