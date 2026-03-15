@@ -2,6 +2,7 @@
 [v2.0.2.69]
 	- Added descriptions to the help pages for updateDeltaTime(), getDeltaTime(), setMaxDeltaTime(), getMaxDeltaTime(),
 	  and resetDeltaTime() native functions.
+	- Removed the pointX and pointY members of SpriteContact class in sprite_worker module.
 
 (March 14, 2026)
 [v2.0.2.68]

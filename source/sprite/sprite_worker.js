@@ -32,13 +32,11 @@ class Sprite
 
 class SpriteContact
 {
-  constructor(time = 0, normalX = 0, normalY = 0, pointX = 0, pointY = 0)
+  constructor(time = 0, normalX = 0, normalY = 0)
   {
     this.time = time;
     this.normalX = normalX;
     this.normalY = normalY;
-    this.pointX = pointX;
-    this.pointY = pointY;
   }
 }
 
@@ -208,9 +206,6 @@ function rayIntersectsRect(rayOriginX, rayOriginY, rayDirX, rayDirY, rectX, rect
     contact.normalX = 1;
   else
     contact.normalX = 0;
-
-  contact.pointX = rayOriginX + (rayDirX * entryTime);
-  contact.pointY = rayOriginY + (rayDirY * entryTime);
 
   return true;
 }
