@@ -25,11 +25,12 @@ code
 ul
 {
   margin-right: 35%;
+  margin-block: 6px;
 }
 
 li
 {
-  margin-block: 4px;
+  margin-block: 1px;
 }
 
 #description
