@@ -30,6 +30,18 @@ class Sprite
   }
 }
 
+class SpriteContact
+{
+  constructor(time = 0, normalX = 0, normalY = 0, pointX = 0, pointY = 0)
+  {
+    this.time = time;
+    this.normalX = normalX;
+    this.normalY = normalY;
+    this.pointX = pointX;
+    this.pointY = pointY;
+  }
+}
+
 const spriteNativeFuncs = [
                   new ObjNativeFunc("loadSpriteSheet", 4, 4, funcLoadSpriteSheet),
                   new ObjNativeFunc("unloadSpriteSheet", 1, 1, funcUnloadSpriteSheet),
@@ -101,15 +113,17 @@ mainVM.addNativeFuncArray(spriteNativeFuncs);
 setSpriteWorkerEvents();
 
 
-function spriteCollisionExists(testSprite, referenceSprite, deltaTime, contactStruct, usePrevXY)
+function spriteCollisionExists(testSprite, referenceSprite, deltaTime, contact, usePrevXY)
 //
 {
   var rayOriginX, rayOriginY, rayDirX, rayDirY;
   var rectX, rectY, rectWidth, rectHeight;
+
   var testSpriteX = usePrevXY ? testSprite.prevX : testSprite.x;
   var testSpriteY = usePrevXY ? testSprite.prevY : testSprite.y;
   var referenceSpriteX = usePrevXY ? referenceSprite.prevX : referenceSprite.x;
   var referenceSpriteY = usePrevXY ? referenceSprite.prevY : referenceSprite.y;
+
   var relativeVelocityX = testSprite.velocityX - referenceSprite.velocityX;
   var relativeVelocityY = testSprite.velocityY - referenceSprite.velocityY;
 
@@ -126,10 +140,10 @@ function spriteCollisionExists(testSprite, referenceSprite, deltaTime, contactSt
   rectWidth = referenceSprite.hitBoxWidth + testSprite.hitBoxWidth;
   rectHeight = referenceSprite.hitBoxHeight + testSprite.hitBoxHeight;
   
-  return rayIntersectsRect(rayOriginX, rayOriginY, rayDirX, rayDirY, rectX, rectY, rectWidth, rectHeight, contactStruct);
+  return rayIntersectsRect(rayOriginX, rayOriginY, rayDirX, rayDirY, rectX, rectY, rectWidth, rectHeight, contact);
 }
 
-function rayIntersectsRect(rayOriginX, rayOriginY, rayDirX, rayDirY, rectX, rectY, rectWidth, rectHeight, contactStruct)
+function rayIntersectsRect(rayOriginX, rayOriginY, rayDirX, rayDirY, rectX, rectY, rectWidth, rectHeight, contact)
 {
   const timeEpsilon = 0.01;
   var invRayDirX, invRayDirY;
@@ -176,37 +190,27 @@ function rayIntersectsRect(rayOriginX, rayOriginY, rayDirX, rayDirY, rectX, rect
   if((entryTime >= 0) && (entryTime < 1))
     return false;
 
-  if(!contactStruct)
+  if(!(contact instanceof SpriteContact))
     return true;
 
-  if(contactStruct.fieldMap.has("time"))
-    contactStruct.fieldMap.set("time", entryTime);
+  contact.time = entryTime;
 
-  if(contactStruct.fieldMap.has("normalY"))
-  {
-    if(entryTime == topTime)
-      contactStruct.fieldMap.set("normalY", -1);
-    else if(entryTime == bottomTime)
-      contactStruct.fieldMap.set("normalY", 1);
-    else
-      contactStruct.fieldMap.set("normalY", 0);
-  }
+  if(entryTime == topTime)
+    contact.normalY = -1;
+  else if(entryTime == bottomTime)
+    contact.normalY = 1;
+  else
+    contact.normalY = 0;
 
-  if(contactStruct.fieldMap.has("normalX"))
-  {
-    if(entryTime == leftTime)
-      contactStruct.fieldMap.set("normalX", -1);
-    else if(entryTime == rightTime)
-      contactStruct.fieldMap.set("normalX", 1);
-    else
-      contactStruct.fieldMap.set("normalX", 0);
-  }
+  if(entryTime == leftTime)
+    contact.normalX = -1;
+  else if(entryTime == rightTime)
+    contact.normalX = 1;
+  else
+    contact.normalX = 0;
 
-  if(contactStruct.fieldMap.has("pointX"))
-        contactStruct.fieldMap.set("pointX", rayOriginX + (rayDirX * entryTime));
-  
-  if(contactStruct.fieldMap.has("pointY"))
-        contactStruct.fieldMap.set("pointY", rayOriginY + (rayDirY * entryTime));
+  contact.pointX = rayOriginX + (rayDirX * entryTime);
+  contact.pointY = rayOriginY + (rayDirY * entryTime);
 
   return true;
 }
@@ -1079,6 +1083,8 @@ function funcSpritesWillCollide(vm, args)
   var deltaTime = args[3];
   var contactStruct = null;
   var testSprite, referenceSprite;
+  var contact = new SpriteContact();
+  var willCollide;
 
   if(!sprites.has(testSpriteName))
     vm.runError("Sprite '" + testSpriteName + "' does not exist.");
@@ -1096,7 +1102,15 @@ function funcSpritesWillCollide(vm, args)
       vm.runError("Last argument of spritesWillCollide() must be a structure.");
   }
 
-  return spriteCollisionExists(testSprite, referenceSprite, deltaTime, contactStruct, false);
+  willCollide = spriteCollisionExists(testSprite, referenceSprite, deltaTime, contact, false);
+
+  for(const [key, value] of Object.entries(contact))
+  {
+    if(contactStruct.fieldMap.has(key))
+      contactStruct.fieldMap.set(key, value);
+  }
+
+  return willCollide;
 }
 
 function funcSpritesHaveCollided(vm, args)
@@ -1107,6 +1121,8 @@ function funcSpritesHaveCollided(vm, args)
   var deltaTime = args[3];
   var contactStruct = null;
   var testSprite, referenceSprite;
+  var contact = new SpriteContact();
+  var haveCollided;
 
   if(!sprites.has(testSpriteName))
     vm.runError("Sprite '" + testSpriteName + "' does not exist.");
@@ -1124,5 +1140,13 @@ function funcSpritesHaveCollided(vm, args)
       vm.runError("Last argument of spritesHaveCollided() must be a structure.");
   }
 
-  return spriteCollisionExists(testSprite, referenceSprite, deltaTime, contactStruct, true);
+  haveCollided = spriteCollisionExists(testSprite, referenceSprite, deltaTime, contact, true);
+
+  for(const [key, value] of Object.entries(contact))
+  {
+    if(contactStruct.fieldMap.has(key))
+      contactStruct.fieldMap.set(key, value);
+  }
+
+  return haveCollided;
 }

@@ -1,6 +1,8 @@
 (March 14, 2026)
 [v2.0.2.68]
 	- Added spritesWillCollide() and spritesHaveCollided() sprite native functions.
+	- Added a SpriteContact class in sprite_worker module in order to decouple the rayIntersectsRect() helper function
+	  from the ObjStructure class.
 [v2.0.2.67]
 	- Created a template for help file pages.
 	- Created the template pages for updateDeltaTime(), getDeltaTime(), setMaxDeltaTime(), getMaxDeltaTime(), resetDeltaTime(), spritesWillCollide(),
