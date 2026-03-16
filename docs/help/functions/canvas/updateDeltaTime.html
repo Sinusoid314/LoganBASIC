@@ -19,7 +19,41 @@ If <a href="resetDeltaTime.html">resetDeltaTime()</a> was called prior to callin
 
 <h4>Usage</h4>
 <code id="usageCode">
+var deltaTime
+var startX = 50, startY = 50
+var x = startX, y = startY
+var width = 100, height = 100
+var velocityX = 20, velocityY = 20
 
+hideConsole()
+
+enableCanvasBuffer()
+
+setFillColor("red")
+setLineSize(2)
+
+mainLoop()
+
+wait
+
+function reset()
+  x = startX
+  y = startY
+  resetDeltaTime()
+end function
+
+function mainLoop()
+  deltaTime = <b>updateDeltaTime()</b>
+  x = x + (velocityX * deltaTime)
+  y = y + (velocityY * deltaTime)
+
+  clearCanvas()
+  drawRect(x, y, width, height, true)
+
+  if x > 100 then reset()
+
+  drawCanvasBuffer(mainLoop)
+end function
 </code>
 
 <a id="usageRun" href="../../../../">Run</a>

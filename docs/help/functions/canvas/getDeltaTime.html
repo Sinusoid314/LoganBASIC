@@ -13,13 +13,46 @@
 <h4>Description</h4>
 <p id="description">
 Returns the current deltaTime, which is the number of milliseconds elapsed between the last two calls to
-<a href="updateDeltaTime">updateDeltaTime()</a>, or 0 if <a href="resetDeltaTime.html">resetDeltaTime()</a>
+<a href="updateDeltaTime.html">updateDeltaTime()</a>, or 0 if <a href="resetDeltaTime.html">resetDeltaTime()</a>
 was previously called.
 </p>
 
 <h4>Usage</h4>
 <code id="usageCode">
+var startX = 50, startY = 50
+var x = startX, y = startY
+var width = 100, height = 100
+var velocityX = 20, velocityY = 20
 
+hideConsole()
+
+enableCanvasBuffer()
+
+setFillColor("red")
+setLineSize(2)
+
+mainLoop()
+
+wait
+
+function reset()
+  x = startX
+  y = startY
+  resetDeltaTime()
+end function
+
+function mainLoop()
+  updateDeltaTime()
+  x = x + (velocityX * <b>getDeltaTime()</b>)
+  y = y + (velocityY * <b>getDeltaTime()</b>)
+
+  clearCanvas()
+  drawRect(x, y, width, height, true)
+
+  if x > 100 then reset()
+
+  drawCanvasBuffer(mainLoop)
+end function
 </code>
 
 <a id="usageRun" href="../../../../">Run</a>
