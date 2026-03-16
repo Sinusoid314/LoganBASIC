@@ -2,7 +2,7 @@
     - 
 
 [Features]
-    - Add help pages for updateDeltaTime(), getDeltaTime(), setMaxDeltaTime(), getMaxDeltaTime(), and resetDeltaTime() native functions.
+    - Finish help pages for setMaxDeltaTime() and getMaxDeltaTime() native functions.
     - Add help pages for spritesWillCollide(), spritesHaveCollided(), setSpriteHitBoxOffsetX(), setSpriteHitBoxOffsetY(),
       setSpriteHitBoxWidth(), setSpriteHitBoxHeight(), getSpriteHitBoxOffsetX(), getSpriteHitBoxOffsetY(), getSpriteHitBoxWidth(),
       and getSpriteHitBoxHeight() native functions.

@@ -4,6 +4,7 @@
 	  and resetDeltaTime() native functions.
 	- Removed the pointX and pointY members of SpriteContact class in sprite_worker module.
 	- Modified the help page for the rayIntersectsRect() native function to give the normalX and normalY values their own list element.
+	- Finished help pages for updateDeltaTime(), getDeltaTime(), and resetDeltaTime() native functions.
 
 (March 14, 2026)
 [v2.0.2.68]
