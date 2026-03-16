@@ -1,3 +1,7 @@
+(March 16, 2026)
+[v2.0.2.70]
+	- Finished help pages for setMaxDeltaTime() and getMaxDeltaTime() native functions.
+
 (March 15, 2026)
 [v2.0.2.69]
 	- Added descriptions to the help pages for updateDeltaTime(), getDeltaTime(), setMaxDeltaTime(), getMaxDeltaTime(),

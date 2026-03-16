@@ -17,7 +17,51 @@ Sets the maximum value that deltaTime can have to <i>maxDeltaTime</i>.
 
 <h4>Usage</h4>
 <code id="usageCode">
+var deltaTime, initMaxDeltaTime
+var startX = 50, startY = 50
+var x = startX, y = startY
+var width = 100, height = 100
+var velocityX = 20, velocityY = 20
 
+hideConsole()
+
+enableCanvasBuffer()
+
+setFillColor("red")
+setLineSize(2)
+
+initMaxDeltaTime = getMaxDeltaTime()
+
+mainLoop()
+
+wait
+
+function reset()
+  x = startX
+  y = startY
+  resetDeltaTime()
+end function
+
+function mainLoop()
+  if getMaxDeltaTime() < 0.5 then
+    <b>setMaxDeltaTime(getMaxDeltaTime() + 0.01)</b>
+  else
+    <b>setMaxDeltaTime(initMaxDeltaTime)</b>
+  end if
+
+  deltaTime = updateDeltaTime()
+  x = x + (velocityX * deltaTime)
+  y = y + (velocityY * deltaTime)
+
+  clearCanvas()
+  drawRect(x, y, width, height, true)
+
+  if x > 100 then reset()
+
+  pauseFor(200)
+
+  drawCanvasBuffer(mainLoop)
+end function
 </code>
 
 <a id="usageRun" href="../../../../">Run</a>
