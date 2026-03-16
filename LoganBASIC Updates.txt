@@ -1,6 +1,9 @@
 (March 16, 2026)
 [v2.0.2.70]
 	- Finished help pages for setMaxDeltaTime() and getMaxDeltaTime() native functions.
+	- Added descriptions to the help pages for setSpriteHitBoxOffsetX(), setSpriteHitBoxOffsetY(),
+      setSpriteHitBoxWidth(), setSpriteHitBoxHeight(), getSpriteHitBoxOffsetX(), getSpriteHitBoxOffsetY(), getSpriteHitBoxWidth(),
+      and getSpriteHitBoxHeight() native functions.
 
 (March 15, 2026)
 [v2.0.2.69]
