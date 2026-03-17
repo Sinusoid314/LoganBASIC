@@ -8,11 +8,32 @@
 
 <body>
 
-<h3>()</h3>
+<h3>spritesHaveCollided(testSpriteName, referenceSpriteName, deltaTime [ ,contactStruct ])</h3>
 
 <h4>Description</h4>
 <p id="description">
 
+<ul>
+  <li><b>time</b> - A value that is greater than or equal to 0, and less than 1, which indicates when the two sprites first made
+  contact within the interval [0,deltaTime). For example, a value of 0.5 indicates that contact was made about half way through
+  the interval [0,deltaTime).</li>
+  <li><b>normalX</b> - Indicates which sides of <i>testSpriteName</i> and <i>referenceSpriteName</i> have made contact on the X-axis.
+  Has one of the following values:
+    <ul>
+      <li><b>-1</b> - Indicates that the right side of <i>testSpriteName</i> made contact with the left side of <i>referenceSpriteName</i>.</li>
+      <li><b>1</b> - Indicates that the left side of <i>testSpriteName</i> made contact with the right side of <i>referenceSpriteName</i>.</li>
+      <li><b>0</b> - Indicates no contact on the X-axis.</li>
+    </ul>
+  </li>
+  <li><b>normalY</b> - Indicates which sides of <i>testSpriteName</i> and <i>referenceSpriteName</i> have made contact on the Y-axis.
+  Has one of the following values:
+    <ul>
+      <li><b>-1</b> - Indicates that the bottom side of <i>testSpriteName</i> made contact with the top side of <i>referenceSpriteName</i>.</li>
+      <li><b>1</b> - Indicates that the top side of <i>testSpriteName</i> made contact with the bottom side of <i>referenceSpriteName</i>.</li>
+      <li><b>0</b> - Indicates no contact on the Y-axis.</li>
+    </ul>
+  </li>
+</ul>
 </p>
 
 <h4>Usage</h4>
