@@ -105,6 +105,7 @@ var zOrderedSprites = [];
 var scrollX = 0;
 var scrollY = 0;
 var spriteSheetResultCallback = null;
+var prevUpdateDeltaTime = 0;
 
 mainVM.addNativeFuncArray(spriteNativeFuncs);
 
@@ -423,6 +424,8 @@ function funcUpdateSprites(vm, args)
 
   if(args.length == 1)
     deltaTime = args[0];
+
+  prevUpdateDeltaTime = deltaTime;
 
   for(const [spriteName, sprite] of sprites)
   {

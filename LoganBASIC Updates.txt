@@ -1,3 +1,7 @@
+(March 17, 2026)
+[v2.0.2.70]
+	- Added prevUpdateDeltaTime to hold the deltaTime value (if any) that was used in the last call to the updateSprites() native function.
+
 (March 16, 2026)
 [v2.0.2.70]
 	- Finished help pages for setMaxDeltaTime() and getMaxDeltaTime() native functions.
