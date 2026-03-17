@@ -1078,7 +1078,7 @@ function funcSpritesWillCollide(vm, args)
 {
   var testSpriteName = args[0];
   var referenceSpriteName = args[1];
-  var deltaTime = args[3];
+  var deltaTime = args[2];
   var contactStruct = null;
   var testSprite, referenceSprite;
   var contact = new SpriteContact();
@@ -1116,7 +1116,6 @@ function funcSpritesHaveCollided(vm, args)
 {
   var testSpriteName = args[0];
   var referenceSpriteName = args[1];
-  var deltaTime = args[3];
   var contactStruct = null;
   var testSprite, referenceSprite;
   var contact = new SpriteContact();
@@ -1131,14 +1130,14 @@ function funcSpritesHaveCollided(vm, args)
   testSprite = sprites.get(testSpriteName);
   referenceSprite = sprites.get(referenceSpriteName);
 
-  if(args.length == 4)
+  if(args.length == 3)
   {
-    contactStruct = args[3];
+    contactStruct = args[2];
     if(!(contactStruct instanceof ObjStructure))
       vm.runError("Last argument of spritesHaveCollided() must be a structure.");
   }
 
-  haveCollided = spriteCollisionExists(testSprite, referenceSprite, deltaTime, contact, true);
+  haveCollided = spriteCollisionExists(testSprite, referenceSprite, prevUpdateDeltaTime, contact, true);
 
   for(const [key, value] of Object.entries(contact))
   {
