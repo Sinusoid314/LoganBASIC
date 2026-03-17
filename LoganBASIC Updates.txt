@@ -4,6 +4,7 @@
 	- Added descriptions to the help pages for setSpriteHitBoxOffsetX(), setSpriteHitBoxOffsetY(),
       setSpriteHitBoxWidth(), setSpriteHitBoxHeight(), getSpriteHitBoxOffsetX(), getSpriteHitBoxOffsetY(), getSpriteHitBoxWidth(),
       and getSpriteHitBoxHeight() native functions.
+	- Added the 'contactStruct' part of the help page description for the spritesWillCollide() and spritesHaveCollided() native functions.
 
 (March 15, 2026)
 [v2.0.2.69]
