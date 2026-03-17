@@ -185,7 +185,7 @@ function rayIntersectsRect(rayOriginX, rayOriginY, rayDirX, rayDirY, rectX, rect
   if(exitTime < 0)
     return false;
 
-  if((entryTime >= 0) && (entryTime < 1))
+  if(!((entryTime >= 0) && (entryTime < 1)))
     return false;
 
   if(!(contact instanceof SpriteContact))
