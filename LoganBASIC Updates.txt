@@ -4,6 +4,8 @@
 	- Added descriptions to the help pages for setSpriteHitBoxOffsetX(), setSpriteHitBoxOffsetY(),
       setSpriteHitBoxWidth(), setSpriteHitBoxHeight(), getSpriteHitBoxOffsetX(), getSpriteHitBoxOffsetY(), getSpriteHitBoxWidth(),
       and getSpriteHitBoxHeight() native functions.
+	- Fixed a bug in rayIntersectsRect() function in sprite_worker module where a false negative is returned when the entryTime
+	  is within the interval [0,1).
 	- Added the 'contactStruct' part of the help page description for the spritesWillCollide() and spritesHaveCollided() native functions.
 
 (March 15, 2026)
