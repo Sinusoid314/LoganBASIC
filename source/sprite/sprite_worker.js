@@ -32,11 +32,15 @@ class Sprite
 
 class SpriteContact
 {
-  constructor(time = 0, normalX = 0, normalY = 0)
+  constructor()
   {
-    this.time = time;
-    this.normalX = normalX;
-    this.normalY = normalY;
+    this.time = 0;
+    this.normalX = 0;
+    this.normalY = 0;
+    this.testSpriteX = 0;
+    this.testSpriteY = 0;
+    this.referenceSpriteX = 0;
+    this.referenceSpriteY = 0;
   }
 }
 
@@ -112,16 +116,17 @@ mainVM.addNativeFuncArray(spriteNativeFuncs);
 setSpriteWorkerEvents();
 
 
-function spriteCollisionExists(testSprite, referenceSprite, deltaTime, contact, usePrevXY)
+function spriteCollisionExists(testSprite, referenceSprite, deltaTime, contact, haveCollided)
 //
 {
   var rayOriginX, rayOriginY, rayDirX, rayDirY;
   var rectX, rectY, rectWidth, rectHeight;
+  var collisionExists;
 
-  var testSpriteX = usePrevXY ? testSprite.prevX : testSprite.x;
-  var testSpriteY = usePrevXY ? testSprite.prevY : testSprite.y;
-  var referenceSpriteX = usePrevXY ? referenceSprite.prevX : referenceSprite.x;
-  var referenceSpriteY = usePrevXY ? referenceSprite.prevY : referenceSprite.y;
+  var testSpriteX = haveCollided ? testSprite.prevX : testSprite.x;
+  var testSpriteY = haveCollided ? testSprite.prevY : testSprite.y;
+  var referenceSpriteX = haveCollided ? referenceSprite.prevX : referenceSprite.x;
+  var referenceSpriteY = haveCollided ? referenceSprite.prevY : referenceSprite.y;
 
   var relativeVelocityX = testSprite.velocityX - referenceSprite.velocityX;
   var relativeVelocityY = testSprite.velocityY - referenceSprite.velocityY;
@@ -139,7 +144,24 @@ function spriteCollisionExists(testSprite, referenceSprite, deltaTime, contact, 
   rectWidth = referenceSprite.hitBoxWidth + testSprite.hitBoxWidth;
   rectHeight = referenceSprite.hitBoxHeight + testSprite.hitBoxHeight;
   
-  return rayIntersectsRect(rayOriginX, rayOriginY, rayDirX, rayDirY, rectX, rectY, rectWidth, rectHeight, contact);
+  collisionExists = rayIntersectsRect(rayOriginX, rayOriginY, rayDirX, rayDirY, rectX, rectY, rectWidth, rectHeight, contact);
+
+  if(haveCollided)
+  {
+    contact.testSpriteX = testSpriteX - ((1 - contact.time) * testSprite.velocityX * deltaTime);
+    contact.testSpriteY = testSpriteY - ((1 - contact.time) * testSprite.velocityY * deltaTime);
+    contact.referenceSpriteX = referenceSpriteX - ((1 - contact.time) * referenceSprite.velocityX * deltaTime);
+    contact.referenceSpriteY = referenceSpriteY - ((1 - contact.time) * referenceSprite.velocityY * deltaTime);
+  }
+  else
+  {
+    contact.testSpriteX = testSpriteX + (contact.time * testSprite.velocityX * deltaTime);
+    contact.testSpriteY = testSpriteY + (contact.time * testSprite.velocityY * deltaTime);
+    contact.referenceSpriteX = referenceSpriteX + (contact.time * referenceSprite.velocityX * deltaTime);
+    contact.referenceSpriteY = referenceSpriteY + (contact.time * referenceSprite.velocityY * deltaTime);
+  }
+
+  return collisionExists;
 }
 
 function rayIntersectsRect(rayOriginX, rayOriginY, rayDirX, rayDirY, rectX, rectY, rectWidth, rectHeight, contact)
