@@ -18,7 +18,7 @@ class Sprite
     this.hitBoxHeight = 0;
     this.isVisible = true;
     this.isPlaying = true;
-    this.updatesPerFrame = 1;
+    this.updatesPerFrame = 15;
     this.firstFrameIndex = 0;
     this.lastFrameIndex = 0;
     this.currFrameIndex = 0;

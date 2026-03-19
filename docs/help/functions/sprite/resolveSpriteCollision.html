@@ -20,7 +20,69 @@ Moves <i>spriteName1</i> and <i>spriteName2</i> to the positions they had at the
 
 <h4>Usage</h4>
 <code id="usageCode">
+structure SpriteContact
+  time
+  normalX
+  normalY
+end structure
 
+var deltaTime
+var canvasWidth = 600
+var canvasHeight = 450
+var contact = new SpriteContact
+
+setCanvasWidth(canvasWidth)
+setCanvasHeight(canvasHeight)
+
+hideConsole()
+showCanvas()
+
+enableCanvasBuffer()
+
+loadSpriteSheet("ship-sheet", "../examples/images/ship-sheet.png", 2, 1)
+addSprite("ship1", "ship-sheet", 5, 200)
+addSprite("ship2", "ship-sheet", 300, 200)
+setSpriteVelocityX("ship1", 50)
+setSpriteVelocityX("ship2", -50)
+
+setSpriteHitBoxOffsetX("ship1", 15)
+setSpriteHitBoxOffsetY("ship1", 15)
+setSpriteHitBoxWidth("ship1", getSpriteDrawWidth("ship1") - 30)
+setSpriteHitBoxHeight("ship1", getSpriteDrawHeight("ship1") - 30)
+
+setLineSize(2)
+setLineColor("red")
+
+mainLoop()
+
+wait
+
+function mainLoop()
+  var hitBoxX, hitBoxY
+
+  deltaTime = updateDeltaTime()
+  
+  updateSprites(deltaTime)
+
+  if spritesCollided("ship1", "ship2", contact) then
+    resolveSpriteCollision("ship1", "ship2", contact.time)
+    setSpriteVelocityX("ship1", -getSpriteVelocityX("ship1"))
+    setSpriteVelocityX("ship2", -getSpriteVelocityX("ship2"))
+  end if
+  
+  clearCanvas()
+  drawSprites()
+
+  hitBoxX = getSpriteX("ship1") + getSpriteHitBoxOffsetX("ship1")
+  hitBoxY = getSpriteY("ship1") + getSpriteHitBoxOffsetY("ship1")
+  drawRect(hitBoxX, hitBoxY, getSpriteHitBoxWidth("ship1"), getSpriteHitBoxHeight("ship1"), false)
+
+  hitBoxX = getSpriteX("ship2") + getSpriteHitBoxOffsetX("ship2")
+  hitBoxY = getSpriteY("ship2") + getSpriteHitBoxOffsetY("ship2")
+  drawRect(hitBoxX, hitBoxY, getSpriteHitBoxWidth("ship2"), getSpriteHitBoxHeight("ship2"), false)
+  
+  drawCanvasBuffer(mainLoop)
+end function
 </code>
 
 <a id="usageRun" href="../../../../">Run</a>
