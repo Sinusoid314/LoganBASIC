@@ -1,6 +1,8 @@
 (March 18, 2026)
 [v2.0.2.70]
 	- Added resolveLastSpriteCollision() and resolveNextSpriteCollision() native functions.
+	- Removed testSpriteX, testSpriteY, referenceSpriteX, and referenceSpriteY members from SpriteContact class, and
+	  removed references to them from spriteCollisionExists(), in sprite_worker module.
 
 (March 17, 2026)
 [v2.0.2.70]

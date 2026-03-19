@@ -37,10 +37,6 @@ class SpriteContact
     this.time = 0;
     this.normalX = 0;
     this.normalY = 0;
-    this.testSpriteX = 0;
-    this.testSpriteY = 0;
-    this.referenceSpriteX = 0;
-    this.referenceSpriteY = 0;
   }
 }
 
@@ -123,7 +119,6 @@ function spriteCollisionExists(testSprite, referenceSprite, deltaTime, contact, 
 {
   var rayOriginX, rayOriginY, rayDirX, rayDirY;
   var rectX, rectY, rectWidth, rectHeight;
-  var collisionExists;
 
   var testSpriteX = haveCollided ? testSprite.prevX : testSprite.x;
   var testSpriteY = haveCollided ? testSprite.prevY : testSprite.y;
@@ -146,24 +141,7 @@ function spriteCollisionExists(testSprite, referenceSprite, deltaTime, contact, 
   rectWidth = referenceSprite.hitBoxWidth + testSprite.hitBoxWidth;
   rectHeight = referenceSprite.hitBoxHeight + testSprite.hitBoxHeight;
   
-  collisionExists = rayIntersectsRect(rayOriginX, rayOriginY, rayDirX, rayDirY, rectX, rectY, rectWidth, rectHeight, contact);
-
-  if(haveCollided)
-  {
-    contact.testSpriteX = testSpriteX - ((1 - contact.time) * testSprite.velocityX * deltaTime);
-    contact.testSpriteY = testSpriteY - ((1 - contact.time) * testSprite.velocityY * deltaTime);
-    contact.referenceSpriteX = referenceSpriteX - ((1 - contact.time) * referenceSprite.velocityX * deltaTime);
-    contact.referenceSpriteY = referenceSpriteY - ((1 - contact.time) * referenceSprite.velocityY * deltaTime);
-  }
-  else
-  {
-    contact.testSpriteX = testSpriteX + (contact.time * testSprite.velocityX * deltaTime);
-    contact.testSpriteY = testSpriteY + (contact.time * testSprite.velocityY * deltaTime);
-    contact.referenceSpriteX = referenceSpriteX + (contact.time * referenceSprite.velocityX * deltaTime);
-    contact.referenceSpriteY = referenceSpriteY + (contact.time * referenceSprite.velocityY * deltaTime);
-  }
-
-  return collisionExists;
+  return rayIntersectsRect(rayOriginX, rayOriginY, rayDirX, rayDirY, rectX, rectY, rectWidth, rectHeight, contact);
 }
 
 function rayIntersectsRect(rayOriginX, rayOriginY, rayDirX, rayDirY, rectX, rectY, rectWidth, rectHeight, contact)
