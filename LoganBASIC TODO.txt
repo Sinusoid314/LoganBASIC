@@ -2,7 +2,7 @@
     - 
 
 [Features]
-    - Add help pages for resolveLastSpriteCollision(), spritesHaveCollided(), setSpriteHitBoxOffsetX(), setSpriteHitBoxOffsetY(),
+    - Add help pages for resolveLastSpriteCollision(), spritesCollided(), setSpriteHitBoxOffsetX(), setSpriteHitBoxOffsetY(),
       setSpriteHitBoxWidth(), setSpriteHitBoxHeight(), getSpriteHitBoxOffsetX(), getSpriteHitBoxOffsetY(), getSpriteHitBoxWidth(),
       and getSpriteHitBoxHeight() native functions.
 

@@ -96,7 +96,7 @@ const spriteNativeFuncs = [
                   new ObjNativeFunc("setSpriteHitBoxWidth", 2, 2, funcSetSpriteHitBoxWidth),
                   new ObjNativeFunc("getSpriteHitBoxHeight", 1, 1, funcGetSpriteHitBoxHeight),
                   new ObjNativeFunc("setSpriteHitBoxHeight", 2, 2, funcSetSpriteHitBoxHeight),
-                  new ObjNativeFunc("spritesHaveCollided", 3, 4, funcSpritesHaveCollided),
+                  new ObjNativeFunc("spritesCollided", 3, 4, funcSpritesCollided),
                   new ObjNativeFunc("resolveLastSpriteCollision", 3, 3, funcResolveLastSpriteCollision)
                  ];
 
@@ -112,30 +112,24 @@ mainVM.addNativeFuncArray(spriteNativeFuncs);
 setSpriteWorkerEvents();
 
 
-function spriteCollisionExists(testSprite, referenceSprite, deltaTime, contact, haveCollided)
+function spritesCollided(testSprite, referenceSprite, deltaTime, contact)
 //
 {
   var rayOriginX, rayOriginY, rayDirX, rayDirY;
   var rectX, rectY, rectWidth, rectHeight;
-
-  var testSpriteX = haveCollided ? testSprite.prevX : testSprite.x;
-  var testSpriteY = haveCollided ? testSprite.prevY : testSprite.y;
-  var referenceSpriteX = haveCollided ? referenceSprite.prevX : referenceSprite.x;
-  var referenceSpriteY = haveCollided ? referenceSprite.prevY : referenceSprite.y;
-
   var relativeVelocityX = testSprite.velocityX - referenceSprite.velocityX;
   var relativeVelocityY = testSprite.velocityY - referenceSprite.velocityY;
 
   if((relativeVelocityX == 0) && (relativeVelocityY == 0))
     return false;
 
-  rayOriginX = (testSpriteX + testSprite.hitBoxOffsetX) + (testSprite.hitBoxWidth / 2);
-  rayOriginY = (testSpriteY + testSprite.hitBoxOffsetY) + (testSprite.hitBoxHeight / 2);
+  rayOriginX = (testSprite.prevX + testSprite.hitBoxOffsetX) + (testSprite.hitBoxWidth / 2);
+  rayOriginY = (testSprite.prevY + testSprite.hitBoxOffsetY) + (testSprite.hitBoxHeight / 2);
   rayDirX = relativeVelocityX * deltaTime;
   rayDirY = relativeVelocityY * deltaTime;
 
-  rectX = (referenceSpriteX + referenceSprite.hitBoxOffsetX) - (testSprite.hitBoxWidth / 2);
-  rectY = (referenceSpriteY + referenceSprite.hitBoxOffsetY) - (testSprite.hitBoxHeight / 2);
+  rectX = (referenceSprite.prevX + referenceSprite.hitBoxOffsetX) - (testSprite.hitBoxWidth / 2);
+  rectY = (referenceSprite.prevY + referenceSprite.hitBoxOffsetY) - (testSprite.hitBoxHeight / 2);
   rectWidth = referenceSprite.hitBoxWidth + testSprite.hitBoxWidth;
   rectHeight = referenceSprite.hitBoxHeight + testSprite.hitBoxHeight;
   
@@ -1073,7 +1067,7 @@ function funcSetSpriteHitBoxHeight(vm, args)
   return null;
 }
 
-function funcSpritesHaveCollided(vm, args)
+function funcSpritesCollided(vm, args)
 //
 {
   var testSpriteName = args[0];
@@ -1096,10 +1090,10 @@ function funcSpritesHaveCollided(vm, args)
   {
     contactStruct = args[2];
     if(!(contactStruct instanceof ObjStructure))
-      vm.runError("Last argument of spritesHaveCollided() must be a structure.");
+      vm.runError("Last argument of spritesCollided() must be a structure.");
   }
 
-  haveCollided = spriteCollisionExists(testSprite, referenceSprite, prevUpdateDeltaTime, contact, true);
+  haveCollided = spritesCollided(testSprite, referenceSprite, prevUpdateDeltaTime, contact);
 
   for(const [key, value] of Object.entries(contact))
   {
