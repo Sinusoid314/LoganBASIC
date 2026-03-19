@@ -97,7 +97,7 @@ const spriteNativeFuncs = [
                   new ObjNativeFunc("getSpriteHitBoxHeight", 1, 1, funcGetSpriteHitBoxHeight),
                   new ObjNativeFunc("setSpriteHitBoxHeight", 2, 2, funcSetSpriteHitBoxHeight),
                   new ObjNativeFunc("spritesCollided", 3, 4, funcSpritesCollided),
-                  new ObjNativeFunc("resolveLastSpriteCollision", 3, 3, funcResolveLastSpriteCollision)
+                  new ObjNativeFunc("resolveSpriteCollision", 3, 3, funcResolveSpriteCollision)
                  ];
 
 var sprites = new Map();
@@ -1104,7 +1104,7 @@ function funcSpritesCollided(vm, args)
   return haveCollided;
 }
 
-function funcResolveLastSpriteCollision(vm, args)
+function funcResolveSpriteCollision(vm, args)
 //
 {
   var spriteName1 = args[0];
