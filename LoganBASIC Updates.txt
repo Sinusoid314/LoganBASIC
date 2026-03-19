@@ -4,6 +4,7 @@
 	- Renamed spritesHaveCollided() native function to spritesCollided().
 	- Renamed resolveLastSpriteCollision() native function to resolveSpriteCollision().
 	- Finished the description to the help page for resolveSpriteCollision() native function.
+	- Finished the description to the help page for spritesCollided() native function.
 
 (March 18, 2026)
 [v2.0.2.70]

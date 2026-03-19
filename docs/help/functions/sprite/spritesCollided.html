@@ -12,7 +12,9 @@
 
 <h4>Description</h4>
 <p id="description">
-
+Returns true if <i>testSpriteName</i> and <i>referenceSpriteName</i> have made contact after the last call to
+<a href="updatesprites.html">updateSprites()</a>, and false otherwise. Details about the contact are provided by
+<i>contactStruct</i>, a <a href="../../statements/structure.html">structure instance</a> containing the following optional fields:
 <ul>
   <li><b>time</b> - A value that is greater than or equal to 0, and less than 1, which indicates when the two sprites first made
   contact within the interval [0,deltaTime). For example, a value of 0.5 indicates that contact was made about half way through
