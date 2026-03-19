@@ -96,10 +96,8 @@ const spriteNativeFuncs = [
                   new ObjNativeFunc("setSpriteHitBoxWidth", 2, 2, funcSetSpriteHitBoxWidth),
                   new ObjNativeFunc("getSpriteHitBoxHeight", 1, 1, funcGetSpriteHitBoxHeight),
                   new ObjNativeFunc("setSpriteHitBoxHeight", 2, 2, funcSetSpriteHitBoxHeight),
-                  new ObjNativeFunc("spritesWillCollide", 3, 4, funcSpritesWillCollide),
                   new ObjNativeFunc("spritesHaveCollided", 3, 4, funcSpritesHaveCollided),
-                  new ObjNativeFunc("resolveLastSpriteCollision", 3, 3, funcResolveLastSpriteCollision),
-                  new ObjNativeFunc("resolveNextSpriteCollision", 4, 4, funcResolveNextSpriteCollision)
+                  new ObjNativeFunc("resolveLastSpriteCollision", 3, 3, funcResolveLastSpriteCollision)
                  ];
 
 var sprites = new Map();
@@ -1075,44 +1073,6 @@ function funcSetSpriteHitBoxHeight(vm, args)
   return null;
 }
 
-function funcSpritesWillCollide(vm, args)
-//
-{
-  var testSpriteName = args[0];
-  var referenceSpriteName = args[1];
-  var deltaTime = args[2];
-  var contactStruct = null;
-  var testSprite, referenceSprite;
-  var contact = new SpriteContact();
-  var willCollide;
-
-  if(!sprites.has(testSpriteName))
-    vm.runError("Sprite '" + testSpriteName + "' does not exist.");
-
-  if(!sprites.has(referenceSpriteName))
-    vm.runError("Sprite '" + referenceSpriteName + "' does not exist.");
-
-  testSprite = sprites.get(testSpriteName);
-  referenceSprite = sprites.get(referenceSpriteName);
-
-  if(args.length == 4)
-  {
-    contactStruct = args[3];
-    if(!(contactStruct instanceof ObjStructure))
-      vm.runError("Last argument of spritesWillCollide() must be a structure.");
-  }
-
-  willCollide = spriteCollisionExists(testSprite, referenceSprite, deltaTime, contact, false);
-
-  for(const [key, value] of Object.entries(contact))
-  {
-    if(contactStruct.fieldMap.has(key))
-      contactStruct.fieldMap.set(key, value);
-  }
-
-  return willCollide;
-}
-
 function funcSpritesHaveCollided(vm, args)
 //
 {
@@ -1171,32 +1131,6 @@ function funcResolveLastSpriteCollision(vm, args)
   sprite1.y = sprite1.prevY + (contactTime * sprite1.velocityY * prevUpdateDeltaTime);
   sprite2.x = sprite2.prevX + (contactTime * sprite2.velocityX * prevUpdateDeltaTime);
   sprite2.y = sprite2.prevY + (contactTime * sprite2.velocityY * prevUpdateDeltaTime);
-
-  return null;
-}
-
-function funcResolveNextSpriteCollision(vm, args)
-//
-{
-  var spriteName1 = args[0];
-  var spriteName2 = args[1];
-  var deltaTime = args[2];
-  var contactTime = args[3];
-  var sprite1, sprite2;
-
-  if(!sprites.has(spriteName1))
-    vm.runError("Sprite '" + spriteName1 + "' does not exist.");
-
-  if(!sprites.has(spriteName2))
-    vm.runError("Sprite '" + spriteName2 + "' does not exist.");
-
-  sprite1 = sprites.get(spriteName1);
-  sprite2 = sprites.get(spriteName2);
-
-  sprite1.x += (contactTime * sprite1.velocityX * deltaTime);
-  sprite1.y += (contactTime * sprite1.velocityY * deltaTime);
-  sprite2.x += (contactTime * sprite2.velocityX * deltaTime);
-  sprite2.y += (contactTime * sprite2.velocityY * deltaTime);
 
   return null;
 }

@@ -2,9 +2,9 @@
     - 
 
 [Features]
-    - Add help pages for resolveLastSpriteCollision(), resolveNextSpriteCollision(), spritesWillCollide(), spritesHaveCollided(),
-      setSpriteHitBoxOffsetX(), setSpriteHitBoxOffsetY(), setSpriteHitBoxWidth(), setSpriteHitBoxHeight(), getSpriteHitBoxOffsetX(),
-      getSpriteHitBoxOffsetY(), getSpriteHitBoxWidth(), and getSpriteHitBoxHeight() native functions.
+    - Add help pages for resolveLastSpriteCollision(), spritesHaveCollided(), setSpriteHitBoxOffsetX(), setSpriteHitBoxOffsetY(),
+      setSpriteHitBoxWidth(), setSpriteHitBoxHeight(), getSpriteHitBoxOffsetX(), getSpriteHitBoxOffsetY(), getSpriteHitBoxWidth(),
+      and getSpriteHitBoxHeight() native functions.
 
     - Ability of run() native function to return error messages instead of terminating the program.
     - Ability to run code in debugger.
