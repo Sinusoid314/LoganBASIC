@@ -424,7 +424,7 @@ function funcUpdateSprites(vm, args)
   for(const [spriteName, sprite] of sprites)
   {
     sprite.prevX = sprite.x;
-    sprite.prevY = sprite.Y;
+    sprite.prevY = sprite.y;
     sprite.x += (sprite.velocityX * deltaTime);
     sprite.y += (sprite.velocityY * deltaTime);
 

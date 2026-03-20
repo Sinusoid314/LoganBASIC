@@ -1,3 +1,7 @@
+(March 20, 2026)
+[v2.0.2.72]
+	- Fixed bug where sprites' prevY property was not being set correctly in funcUpdateSprites() in sprite_worker module.
+
 (March 19, 2026)
 [v2.0.2.71]
 	- Removed spritesWillCollide() and resolveNextSpriteCollision() native functions.
