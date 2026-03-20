@@ -2,10 +2,6 @@
     - 
 
 [Features]
-    - Add help pages for spritesCollided(), setSpriteHitBoxOffsetX(), setSpriteHitBoxOffsetY(),
-      setSpriteHitBoxWidth(), setSpriteHitBoxHeight(), getSpriteHitBoxOffsetX(), getSpriteHitBoxOffsetY(), getSpriteHitBoxWidth(),
-      and getSpriteHitBoxHeight() native functions.
-
     - Ability of run() native function to return error messages instead of terminating the program.
     - Ability to run code in debugger.
     - A "deploy" mode to run a pre-compiled ObjUserFunc object from a JSON file.
