@@ -292,12 +292,14 @@ end function
 
 'If Bubba lands on top of the platform, keep him on it
 function checkHitPlatform()
-  if spritesOverlap("bubba", "platform") then
+  'if spritesOverlap("bubba", "platform") then
+  if spritesCollided("bubba", "platform", contact) then
     if getSpriteVelocityY("bubba") < 0 then return
-    getSpriteContact("bubba", "platform", deltaTime, contact)
-    if contact.normalY <> 1 then return
+    'getSpriteContact("bubba", "platform", deltaTime, contact)
+    if contact.normalY <> -1 then return
     
     setSpriteY("bubba", getSpriteY("platform") - getSpriteDrawHeight("bubba"))
+    'resolveSpriteCollisionY("bubba", "platform", deltaTime)
     setSpriteVelocityY("bubba", 0)
   
     if not prevHitPlatform then
