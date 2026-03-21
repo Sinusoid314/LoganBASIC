@@ -97,7 +97,9 @@ const spriteNativeFuncs = [
                   new ObjNativeFunc("getSpriteHitBoxHeight", 1, 1, funcGetSpriteHitBoxHeight),
                   new ObjNativeFunc("setSpriteHitBoxHeight", 2, 2, funcSetSpriteHitBoxHeight),
                   new ObjNativeFunc("spritesCollided", 3, 4, funcSpritesCollided),
-                  new ObjNativeFunc("resolveSpriteCollision", 3, 3, funcResolveSpriteCollision)
+                  new ObjNativeFunc("resolveSpriteCollision", 3, 3, funcResolveSpriteCollision),
+                  new ObjNativeFunc("resolveSpriteCollisionX", 3, 3, funcResolveSpriteCollisionX),
+                  new ObjNativeFunc("resolveSpriteCollisionY", 3, 3, funcResolveSpriteCollisionY)
                  ];
 
 var sprites = new Map();
@@ -1124,6 +1126,52 @@ function funcResolveSpriteCollision(vm, args)
   sprite1.x = sprite1.prevX + (contactTime * sprite1.velocityX * prevUpdateDeltaTime);
   sprite1.y = sprite1.prevY + (contactTime * sprite1.velocityY * prevUpdateDeltaTime);
   sprite2.x = sprite2.prevX + (contactTime * sprite2.velocityX * prevUpdateDeltaTime);
+  sprite2.y = sprite2.prevY + (contactTime * sprite2.velocityY * prevUpdateDeltaTime);
+
+  return null;
+}
+
+function funcResolveSpriteCollisionX(vm, args)
+//
+{
+  var spriteName1 = args[0];
+  var spriteName2 = args[1];
+  var contactTime = args[2];
+  var sprite1, sprite2;
+
+  if(!sprites.has(spriteName1))
+    vm.runError("Sprite '" + spriteName1 + "' does not exist.");
+
+  if(!sprites.has(spriteName2))
+    vm.runError("Sprite '" + spriteName2 + "' does not exist.");
+
+  sprite1 = sprites.get(spriteName1);
+  sprite2 = sprites.get(spriteName2);
+
+  sprite1.x = sprite1.prevX + (contactTime * sprite1.velocityX * prevUpdateDeltaTime);
+  sprite2.x = sprite2.prevX + (contactTime * sprite2.velocityX * prevUpdateDeltaTime);
+
+  return null;
+}
+
+function funcResolveSpriteCollisionY(vm, args)
+//
+{
+  var spriteName1 = args[0];
+  var spriteName2 = args[1];
+  var contactTime = args[2];
+  var sprite1, sprite2;
+
+  if(!sprites.has(spriteName1))
+    vm.runError("Sprite '" + spriteName1 + "' does not exist.");
+
+  if(!sprites.has(spriteName2))
+    vm.runError("Sprite '" + spriteName2 + "' does not exist.");
+
+  sprite1 = sprites.get(spriteName1);
+  sprite2 = sprites.get(spriteName2);
+
+  sprite1.y = sprite1.prevY + (contactTime * sprite1.velocityY * prevUpdateDeltaTime);
   sprite2.y = sprite2.prevY + (contactTime * sprite2.velocityY * prevUpdateDeltaTime);
 
   return null;

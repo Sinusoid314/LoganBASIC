@@ -1,0 +1,93 @@
+<html>
+
+<head>
+  <title></title>
+  <link rel="stylesheet" type="text/css" href="../../reference_doc.css"></link>
+  <script defer="defer" type="text/javascript" src="../../reference_doc.js"></script>
+</head>
+
+<body>
+
+<h3>resolveSpriteCollisionY(spriteName1, spriteName2, contactTime)</h3>
+
+<h4>Description</h4>
+<p id="description">
+Moves <i>spriteName1</i> and <i>spriteName2</i> to the vertical positions they had at the point in time, given by
+<i>contactTime</i>, when both sprites first made contact after the last call to <a href="updatesprites.html">updateSprites()</a>.
+The horizontal positions of each sprite remain unchanged. <i>contactTime</i> is a value greater than or equal to 0, and less than 1,
+that is obtained by calling <a href="spritesCollided.html">spritesCollided()</a>.
+</p>
+
+<h4>Usage</h4>
+<code id="usageCode">
+structure SpriteContact
+  time
+  normalX
+  normalY
+end structure
+
+var deltaTime
+var canvasWidth = 600
+var canvasHeight = 450
+var contact = new SpriteContact
+
+setCanvasWidth(canvasWidth)
+setCanvasHeight(canvasHeight)
+
+hideConsole()
+showCanvas()
+
+enableCanvasBuffer()
+
+loadSpriteSheet("ship-sheet", "../examples/images/ship-sheet.png", 2, 1)
+addSprite("ship1", "ship-sheet", 100, 130)
+addSprite("ship2", "ship-sheet", 300, 200)
+setSpriteVelocityX("ship1", 45)
+setSpriteVelocityY("ship1", 10)
+
+setSpriteHitBoxOffsetX("ship1", 20)
+setSpriteHitBoxOffsetY("ship1", 10)
+setSpriteHitBoxWidth("ship1", getSpriteDrawWidth("ship1") - 40)
+setSpriteHitBoxHeight("ship1", getSpriteDrawHeight("ship1") - 20)
+
+setLineSize(2)
+setLineColor("red")
+
+mainLoop()
+
+wait
+
+function mainLoop()
+  deltaTime = updateDeltaTime()
+
+  if getSpriteX("ship1") + getSpriteHitBoxOffsetX("ship1") + getSpriteHitBoxWidth("ship1") >= canvasWidth then end
+
+  updateSprites(deltaTime)
+
+  if spritesCollided("ship1", "ship2", contact) then
+    resolveSpriteCollisionY("ship1", "ship2", contact.time)
+  end if
+
+  clearCanvas()
+  drawSprites()
+  drawHitBox("ship1")
+  drawHitBox("ship2")
+  
+  drawCanvasBuffer(mainLoop)
+end function
+
+function drawHitBox(spriteName)
+  var hitBoxX, hitBoxY
+
+  hitBoxX = getSpriteX(spriteName) + getSpriteHitBoxOffsetX(spriteName)
+  hitBoxY = getSpriteY(spriteName) + getSpriteHitBoxOffsetY(spriteName)
+  drawRect(hitBoxX, hitBoxY, getSpriteHitBoxWidth(spriteName), getSpriteHitBoxHeight(spriteName), false)
+end function
+</code>
+
+<a id="usageRun" href="../../../../">Run</a>
+|
+<a id="usageOpen" href="../../../../">Open in Code Editor</a>
+
+</body>
+</html>
