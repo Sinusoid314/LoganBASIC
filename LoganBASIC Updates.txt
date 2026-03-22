@@ -5,7 +5,7 @@
 
 (March 21, 2026)
 [v2.0.2.73]
-	- Added resolveSpriteCollisionX() and resolveSPriteCollisionY() native functions.
+	- Added resolveSpriteCollisionX() and resolveSpriteCollisionY() native functions.
 	- Modified Platformer example to use spritesCollided() native function.
 
 (March 20, 2026)
