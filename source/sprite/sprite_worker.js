@@ -140,7 +140,7 @@ function spritesCollided(testSprite, referenceSprite, deltaTime, contact)
 
 function rayIntersectsRect(rayOriginX, rayOriginY, rayDirX, rayDirY, rectX, rectY, rectWidth, rectHeight, contact)
 {
-  const timeEpsilon = 0.01;
+  const timeEpsilon = 0.001;
   var invRayDirX, invRayDirY;
   var leftTime, rightTime, topTime, bottomTime;
   var nearTimeX, farTimeX, nearTimeY, farTimeY;
@@ -150,20 +150,16 @@ function rayIntersectsRect(rayOriginX, rayOriginY, rayDirX, rayDirY, rectX, rect
   invRayDirY = 1 / rayDirY;
 
   leftTime = (rectX - rayOriginX) * invRayDirX;
-  if(Math.abs(leftTime) < timeEpsilon)
-    leftTime = 0;
+  if(Math.abs(leftTime) < timeEpsilon) leftTime = 0;
 
   rightTime = (rectX + rectWidth - rayOriginX) * invRayDirX;
-  if(Math.abs(rightTime) < timeEpsilon)
-    rightTime = 0;
+  if(Math.abs(rightTime) < timeEpsilon) rightTime = 0;
 
   topTime = (rectY - rayOriginY) * invRayDirY;
-  if(Math.abs(topTime) < timeEpsilon)
-    topTime = 0;
+  if(Math.abs(topTime) < timeEpsilon) topTime = 0;
 
   bottomTime = (rectY + rectHeight - rayOriginY) * invRayDirY;
-  if(Math.abs(bottomTime) < timeEpsilon)
-    bottomTime = 0;
+  if(Math.abs(bottomTime) < timeEpsilon) bottomTime = 0;
 
   if(Number.isNaN(leftTime) || Number.isNaN(rightTime) || Number.isNaN(topTime) || Number.isNaN(bottomTime))
     return false;

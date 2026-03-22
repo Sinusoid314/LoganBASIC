@@ -1,3 +1,7 @@
+(March 22, 2026)
+[v2.0.2.73]
+	- Increased the time timeEpsilon to 0.001 in the rayIntersectsRect() function of the sprite_worker module.
+
 (March 21, 2026)
 [v2.0.2.73]
 	- Added resolveSpriteCollisionX() and resolveSPriteCollisionY() native functions.
