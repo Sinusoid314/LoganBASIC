@@ -1,9 +1,9 @@
 [Bugs]
-    - 
+    - Sprite frames not playing properly.
 
 [Features]
-    - Modify updateSprites(), getSpriteFrameRate(), and setSpriteFrameRate() native functions to use milliseconds
-      instead of update counts to measure sprite frame duration.
+    - Update the help pages for, and examples using, the updateSprites(), getSpriteFrameRate(), and setSpriteFrameRate()
+      native functions to reflect the change to using milliseconds to measure sprite frame duration.
     - Add MemoryMatch game to examples.
 
     - Ability of run() native function to return error messages instead of terminating the program.

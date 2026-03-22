@@ -2,6 +2,9 @@
 [v2.0.2.73]
 	- Increased the time timeEpsilon to 0.001 in the rayIntersectsRect() function of the sprite_worker module.
 	- Fixed bug in the Platformer example where Bubba was falling through the platform.
+	- Modified updateSprites(), getSpriteFrameRate(), and setSpriteFrameRate() native functions to use milliseconds
+      instead of update counts to measure sprite frame duration, and made mandatory the deltaTIme argument of the
+      updateSprites() native function.
 
 (March 21, 2026)
 [v2.0.2.73]
