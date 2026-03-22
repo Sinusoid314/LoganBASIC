@@ -292,14 +292,11 @@ end function
 
 'If Bubba lands on top of the platform, keep him on it
 function checkHitPlatform()
-  'if spritesOverlap("bubba", "platform") then
   if spritesCollided("bubba", "platform", contact) then
     if getSpriteVelocityY("bubba") < 0 then return
-    'getSpriteContact("bubba", "platform", deltaTime, contact)
     if contact.normalY <> -1 then return
     
-    setSpriteY("bubba", getSpriteY("platform") - getSpriteDrawHeight("bubba"))
-    'resolveSpriteCollisionY("bubba", "platform", deltaTime)
+    resolveSpriteCollisionY("bubba", "platform", contact.time)
     setSpriteVelocityY("bubba", 0)
   
     if not prevHitPlatform then
@@ -353,71 +350,6 @@ function checkHitEdge()
   setSpriteX("bubba", newX)
 end function
 
-
-'Get the time and side of contact between two overlapping sprites
-function getSpriteContact(spriteName1, spriteName2, totalTime, contactRef)
-  var contactTimeX = 0
-  var contactTimeY = 0
-  var contactNormalX = 0
-  var contactNormalY = 0
-  var relativeVelocityX = getSpriteVelocityX(spriteName2) - getSpriteVelocityX(spriteName1)
-  var relativeVelocityY = getSpriteVelocityY(spriteName2) - getSpriteVelocityY(spriteName1)
-
-  if relativeVelocityY <> 0 then
-    contactTimeY = totalTime + (((getSpriteY(spriteName1) + getSpriteDrawHeight(spriteName1)) - getSpriteY(spriteName2)) / relativeVelocityY)
-    if abs(contactTimeY) < 0.001 then contactTimeY = 0
-    if (contactTimeY >= 0) and (contactTimeY < totalTime) then
-      'Bottom-top alignment
-      contactNormalY = 1
-    else
-      contactTimeY = totalTime + ((getSpriteY(spriteName1) - (getSpriteY(spriteName2) + getSpriteDrawHeight(spriteName2))) / relativeVelocityY)
-      if abs(contactTimeY) < 0.001 then contactTimeY = 0
-      if (contactTimeY >= 0) and (contactTimeY < totalTime) then
-        'Top-bottom alignment
-        contactNormalY = -1
-      end if
-    end if
-  end if
-  
-  if relativeVelocityX <> 0 then
-    contactTimeX = totalTime + (((getSpriteX(spriteName1) + getSpriteDrawWidth(spriteName1)) - getSpriteX(spriteName2)) / relativeVelocityX)
-    if abs(contactTimeX) < 0.001 then contactTimeX = 0
-    if (contactTimeX >= 0) and (contactTimeX < totalTime) then
-      'Right-left alignment
-      contactNormalX = 1
-    else
-      contactTimeX = totalTime + ((getSpriteX(spriteName1) - (getSpriteX(spriteName2) + getSpriteDrawWidth(spriteName2))) / relativeVelocityX)
-      if abs(contactTimeX) < 0.001 then contactTimeX = 0
-      if (contactTimeX >= 0) and (contactTimeX < totalTime) then
-        'Left-right alignment
-        contactNormalX = -1
-      end if
-    end if
-  end if
-  
-  contactRef.time = 0
-  contactRef.normalX = 0
-  contactRef.normalY = 0
-  
-  if contactNormalY <> 0 then
-    if contactNormalX <> 0 then
-      contactRef.time = max(contactTimeX, contactTimeY)
-      if contactTimeY >= contactTimeX then
-        contactRef.normalY = contactNormalY
-      else
-        contactRef.normalX = contactNormalX
-      end if
-    else
-      contactRef.time = contactTimeY
-      contactRef.normalY = contactNormalY
-    end if
-  else
-    if contactNormalX <> 0 then
-      contactRef.time = contactTimeX
-      contactRef.normalX = contactNormalX
-    end if
-  end if
-end function
 
 'Display the control intstructions on the screen
 function displayControls()
