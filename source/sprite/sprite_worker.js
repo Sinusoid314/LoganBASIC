@@ -18,14 +18,14 @@ class Sprite
     this.hitBoxHeight = 0;
     this.isVisible = true;
     this.isPlaying = true;
-    this.millisecondsPerFrame = 100;
+    this.secondsPerFrame = 0.2;
     this.firstFrameIndex = 0;
     this.lastFrameIndex = 0;
     this.currFrameIndex = 0;
     this.maxCycles = 0;
     this.scroll = true;
 
-    this.frameMillisecondCount = 0;
+    this.frameSecondCount = 0;
     this.currCycle = 0;
   }
 }
@@ -425,11 +425,11 @@ function funcUpdateSprites(vm, args)
 
     if(sprite.isPlaying)
     {
-      sprite.frameMillisecondCount += deltaTime;
+      sprite.frameSecondCount += deltaTime;
 
-      if(sprite.frameMillisecondCount >= sprite.millisecondsPerFrame)
+      if(sprite.frameSecondCount >= sprite.secondsPerFrame)
       {
-        sprite.frameMillisecondCount -= sprite.millisecondsPerFrame;
+        sprite.frameSecondCount -= sprite.secondsPerFrame;
         sprite.currFrameIndex++;
 
         if(sprite.currFrameIndex > sprite.lastFrameIndex)
@@ -673,7 +673,7 @@ function funcGetSpriteFrameRate(vm, args)
   if(!sprites.has(spriteName))
     vm.runError("Sprite '" + spriteName + "' does not exist.");
 
-  return sprites.get(spriteName).millisecondsPerFrame;
+  return sprites.get(spriteName).secondsPerFrame;
 }
 
 function funcSetSpriteFrameRate(vm, args)
@@ -685,7 +685,7 @@ function funcSetSpriteFrameRate(vm, args)
   if(!sprites.has(spriteName))
     vm.runError("Sprite '" + spriteName + "' does not exist.");
 
-  sprites.get(spriteName).millisecondsPerFrame = frameRate;
+  sprites.get(spriteName).secondsPerFrame = frameRate;
 
   return null;
 }

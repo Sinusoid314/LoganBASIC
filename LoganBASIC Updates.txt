@@ -1,3 +1,7 @@
+(March 23, 2026)
+[v2.0.2.73]
+	- Fixed bug with sprite frames not playing properly by changing the measure of sprite frame duration from milliseconds to seconds.
+
 (March 22, 2026)
 [v2.0.2.73]
 	- Increased the time timeEpsilon to 0.001 in the rayIntersectsRect() function of the sprite_worker module.

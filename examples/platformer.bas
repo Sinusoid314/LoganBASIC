@@ -86,7 +86,7 @@ function setup()
 
   addSprite("bubba", "bubba-sheet", 200, 10)
   setSpriteFrameRange("bubba", 0, 0)
-  setSpriteFrameRate("bubba", 5)
+  setSpriteFrameRate("bubba", 0.15)
   
   addSprite("car", "car-sheet", 1000, 0)
   setSpriteY("car", getSpriteY("curb1") - getSpriteDrawHeight("car"))
