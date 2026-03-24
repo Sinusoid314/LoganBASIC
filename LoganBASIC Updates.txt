@@ -4,6 +4,7 @@
 	- Updated the help pages for, and examples using, the updateSprites() native function to reflect the change to using
       seconds to measure sprite frame duration, the deltaTime argument being made mandatory, and to use the updateDeltaTime()
       native function instead of manually updating each frame's deltaTime.
+	- Commented out all non-error-reporting console logs.
 
 (March 23, 2026)
 [v2.0.2.73]
