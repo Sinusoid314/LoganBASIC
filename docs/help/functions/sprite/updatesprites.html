@@ -8,19 +8,19 @@
 
 <body>
 
-<h3>updateSprites([ deltaTime ])</h3>
+<h3>updateSprites(deltaTime)</h3>
 
 <h4>Description</h4>
 <p id="description">
 Updates the position and current animation frame of each sprite. The value of <i>deltaTime</i>
-is applied to the velocity of each sprite to determine the sprite's new position, using the
+is both added to the elapsed time of the current animation frame of each sprite, as well as
+applied to the velocity of each sprite to determine the sprite's new position, using the
 formulas:
 <br><br>
 <b>newX = currentX + (velocityX * deltaTime)</b>
 <br>
 <b>newY = currentY + (velocityY * deltaTime)</b>.
 <br><br>
-If <i>deltaTime</i> is not specified, its value defaults to zero.
 </p>
 
 <h4>Usage</h4>

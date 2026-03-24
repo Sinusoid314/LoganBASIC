@@ -25,7 +25,7 @@ class Sprite
     this.maxCycles = 0;
     this.scroll = true;
 
-    this.frameSecondCount = 0;
+    this.frameElapsedSeconds = 0;
     this.currCycle = 0;
   }
 }
@@ -425,11 +425,11 @@ function funcUpdateSprites(vm, args)
 
     if(sprite.isPlaying)
     {
-      sprite.frameSecondCount += deltaTime;
+      sprite.frameElapsedSeconds += deltaTime;
 
-      if(sprite.frameSecondCount >= sprite.secondsPerFrame)
+      if(sprite.frameElapsedSeconds >= sprite.secondsPerFrame)
       {
-        sprite.frameSecondCount -= sprite.secondsPerFrame;
+        sprite.frameElapsedSeconds -= sprite.secondsPerFrame;
         sprite.currFrameIndex++;
 
         if(sprite.currFrameIndex > sprite.lastFrameIndex)

@@ -1,3 +1,7 @@
+(March 24, 2026)
+[v2.0.2.73]
+	- Renamed frameSecondCount member of Sprite class in sprite_worker module to frameElapsedSeconds.
+
 (March 23, 2026)
 [v2.0.2.73]
 	- Fixed bug with sprite frames not playing properly by changing the measure of sprite frame duration from milliseconds to seconds.
