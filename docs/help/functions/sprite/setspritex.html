@@ -17,8 +17,7 @@ Sets the horizontal position of <i>spriteName</i> to <i>x</i>.
 
 <h4>Usage</h4>
 <code id="usageCode">
-var deltaTime, prevTime
-var maxDeltaTime = 0.03
+var deltaTime
 
 hideConsole()
 enableCanvasBuffer()
@@ -30,15 +29,12 @@ setSpriteFrameRange("bubba", 0, 3)
 setSpriteVelocityX("bubba", 60)
 setSpriteFrameRate("bubba", 0.24)
 
-prevTime = time()
-
 mainLoop()
 
 wait
 
 function mainLoop()
-  deltaTime = min(((time() - prevTime) / 1000), maxDeltaTime)
-  prevTime = time()
+  deltaTime = updateDeltaTime()
 
   if getSpriteX("bubba") = 200 then
     removeSprite("bubba")

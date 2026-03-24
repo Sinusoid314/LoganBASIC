@@ -17,8 +17,7 @@ Sets the vertical part of the velocity of <i>spriteName</i> to <i>velocityY</i>.
 
 <h4>Usage</h4>
 <code id="usageCode">
-var deltaTime, prevTime
-var maxDeltaTime = 0.03
+var deltaTime
 var accelX = -100
 var accelY = 100
 
@@ -33,15 +32,12 @@ setSpriteFrameRange("bubba", 4, 4)
 setSpriteVelocityX("bubba", 100)
 <b>setSpriteVelocityY("bubba", -100)</b>
 
-prevTime = time()
-
 mainLoop()
 
 wait
 
 function mainLoop()
-  deltaTime = min(((time() - prevTime) / 1000), maxDeltaTime)
-  prevTime = time()
+  deltaTime = updateDeltaTime()
 
   setSpriteVelocityX("bubba", getSpriteVelocityX("bubba") + (accelX * deltaTime))
   <b>setSpriteVelocityY("bubba", getSpriteVelocityY("bubba") + (accelY * deltaTime))</b>

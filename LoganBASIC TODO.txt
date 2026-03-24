@@ -2,8 +2,6 @@
     - 
 
 [Features]
-    - Update the help pages for, and examples using, the updateSprites() native function to reflect the change to using
-      seconds to measure sprite frame duration.
     - Add MemoryMatch game to examples.
 
     - Ability of run() native function to return error messages instead of terminating the program.

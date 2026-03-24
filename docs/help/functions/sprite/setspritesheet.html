@@ -18,8 +18,7 @@ reset to zero, its draw size is set to the size of the sheet's frames, and its f
 
 <h4>Usage</h4>
 <code id="usageCode">
-var deltaTime, prevTime
-var maxDeltaTime = 0.03
+var deltaTime
 
 hideConsole()
 enableCanvasBuffer()
@@ -32,15 +31,12 @@ setSpriteFrameRange("sprite", 0, 3)
 setSpriteVelocityX("sprite", 60)
 setSpriteFrameRate("sprite", 0.24)
 
-prevTime = time()
-
 mainLoop()
 
 wait
 
 function mainLoop()
-  deltaTime = min(((time() - prevTime) / 1000), maxDeltaTime)
-  prevTime = time()
+  deltaTime = updateDeltaTime()
 
   if getSpriteX("sprite") >= 150 then
     <b>setSpriteSheet("sprite", "ship-sheet")</b>

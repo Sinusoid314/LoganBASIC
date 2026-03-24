@@ -17,8 +17,7 @@ Unloads a <a href="spritesheet.html">sprite sheet</a>, specified by <i>sheetName
 
 <h4>Usage</h4>
 <code id="usageCode">
-var deltaTime, prevTime
-var maxDeltaTime = 0.03
+var deltaTime
 
 hideConsole()
 enableCanvasBuffer()
@@ -30,15 +29,12 @@ setSpriteFrameRange("bubba", 0, 3)
 setSpriteVelocityX("bubba", 60)
 setSpriteFrameRate("bubba", 0.24)
 
-prevTime = time()
-
 mainLoop()
 
 wait
 
 function mainLoop()
-  deltaTime = min(((time() - prevTime) / 1000), maxDeltaTime)
-  prevTime = time()
+  deltaTime = updateDeltaTime()
 
   if getSpriteX("bubba") >= 300 then
     removeSprite("bubba")

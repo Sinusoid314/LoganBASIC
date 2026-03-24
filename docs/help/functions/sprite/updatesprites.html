@@ -13,9 +13,8 @@
 <h4>Description</h4>
 <p id="description">
 Updates the position and current animation frame of each sprite. The value of <i>deltaTime</i>
-is both added to the elapsed time of the current animation frame of each sprite, as well as
-applied to the velocity of each sprite to determine the sprite's new position, using the
-formulas:
+is added to the elapsed time of the current animation frame of each sprite, as well as applied
+to the velocity of each sprite to determine the sprite's new position, using the formulas:
 <br><br>
 <b>newX = currentX + (velocityX * deltaTime)</b>
 <br>
@@ -25,8 +24,7 @@ formulas:
 
 <h4>Usage</h4>
 <code id="usageCode">
-var deltaTime, prevTime
-var maxDeltaTime = 0.03
+var deltaTime
 
 hideConsole()
 enableCanvasBuffer()
@@ -38,15 +36,12 @@ setSpriteFrameRange("bubba", 0, 3)
 setSpriteVelocityX("bubba", 60)
 setSpriteFrameRate("bubba", 0.24)
 
-prevTime = time()
-
 mainLoop()
 
 wait
 
 function mainLoop()
-  deltaTime = min(((time() - prevTime) / 1000), maxDeltaTime)
-  prevTime = time()
+  deltaTime = updateDeltaTime()
 
   if getSpriteX("bubba") >= 300 then
     removeSprite("bubba")

@@ -18,8 +18,7 @@ overlap, and false otherwise.
 
 <h4>Usage</h4>
 <code id="usageCode">
-var deltaTime, prevTime
-var maxDeltaTime = 0.03
+var deltaTime
 var circleX = 250
 var circleY = 100
 var circleRadius = 50
@@ -35,21 +34,18 @@ setSpriteFrameRange("bubba", 0, 3)
 setSpriteVelocityX("bubba", 60)
 setSpriteFrameRate("bubba", 0.24)
 
-prevTime = time()
-
 mainLoop()
 
 wait
 
 function mainLoop()
+  deltaTime = updateDeltaTime()
+  
   if isDone then
     removeSprite("bubba")
     unloadSpriteSheet("bubba-sheet")
     end
   end if
-
-  deltaTime = min(((time() - prevTime) / 1000), maxDeltaTime)
-  prevTime = time()
 
   updateSprites(deltaTime)
 
