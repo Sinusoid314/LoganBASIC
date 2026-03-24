@@ -97,7 +97,7 @@ function import_onLoad()
 
   result = importCallback.vm.interpret(source, sourceName, {popReturnVal: true, exitOnReturn: false, isUnwindRoot: false});
 
-  if(interpretResult == INTERPRET_COMPILE_ERROR)
+  if(result == INTERPRET_COMPILE_ERROR)
     importCallback.resumeVM();
 }
 
