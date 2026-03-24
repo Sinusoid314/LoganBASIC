@@ -8,6 +8,7 @@
 	- Fixed bug in HiLo example where typing 'q' was not ending the program.
 	- Fixed the link texts in the help page descriptions for the loadImage() and unloadImage() native functions.
 	- Modified the Bouncing Sprites example to give the lowest sprite animation rate a higher value.
+	- Modified Space Shooter example to make the explosion animations slightly faster.
 	
 (March 23, 2026)
 [v2.0.2.73]
