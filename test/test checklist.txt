@@ -1,4 +1,4 @@
-( ) Examples
+(X) Examples
 ( ) Code Editor
 ( ) Debugger
 ( ) Statements
