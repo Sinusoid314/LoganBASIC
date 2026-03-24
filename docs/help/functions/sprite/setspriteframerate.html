@@ -12,8 +12,8 @@
 
 <h4>Description</h4>
 <p id="description">
-Sets the animation rate of <i>spriteName</i> to <i>frameRate</i>. The higher the rate
-number is, the slower the sprite's animation will be.
+Sets the seconds per animation frame of <i>spriteName</i> to <i>frameRate</i>. The higher the rate
+is, the slower the sprite's animation will be.
 </p>
 
 <h4>Usage</h4>
@@ -27,7 +27,7 @@ loadSpriteSheet("bubba-sheet", "../examples/images/bubba.png", 5, 2)
 
 addSprite("bubba", "bubba-sheet", 50, 50)
 setSpriteFrameRange("bubba", 0, 3)
-setSpriteFrameRate("bubba", 1)
+setSpriteFrameRate("bubba", 0.05)
 
 setCanvasEvent("pointerup", onPointerUp)
 
@@ -53,7 +53,7 @@ end function
 
 function onPointerUp(pointerX, pointerY)
   if pointInSprite("bubba", pointerX, pointerY) then
-    <b>setSpriteFrameRate("bubba", (getSpriteFrameRate("bubba") + 1) % 10)</b>
+    <b>setSpriteFrameRate("bubba", (getSpriteFrameRate("bubba") + 0.05) % 0.5)</b>
   else
     isDone = true
   end if

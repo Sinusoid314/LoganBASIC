@@ -61,7 +61,7 @@ function setup()
     setSpriteVelocityX(name, int(rnd()*100) + 1)
     setSpriteVelocityY(name, int(rnd()*100) + 1)
     
-    setSpriteFrameRate(name, int(rnd()*50) + 1)
+    setSpriteFrameRate(name, int(rnd()*1.5) + 0.03)
   next index
 
   setCanvasWidth(canvasWidth)

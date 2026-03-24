@@ -204,7 +204,7 @@ function setupGame()
   addSprite(playerExplosion, explosionSheet, 0, 0)
   setSpriteVisible(playerExplosion, false)
   setSpriteCycles(playerExplosion, 1)
-  setSpriteFrameRate(playerExplosion, 3)
+  setSpriteFrameRate(playerExplosion, 0.09)
 
   setCanvasEvent("keydown", gameOnKeyDown)
   setCanvasEvent("keyup", gameOnKeyUp)

@@ -1,6 +1,8 @@
 (March 23, 2026)
 [v2.0.2.73]
 	- Fixed bug with sprite frames not playing properly by changing the measure of sprite frame duration from milliseconds to seconds.
+	- Updated the help pages for, and examples using, the getSpriteFrameRate() and setSpriteFrameRate() native functions to reflect
+	  the change to using seconds to measure sprite frame duration.
 
 (March 22, 2026)
 [v2.0.2.73]
