@@ -11,6 +11,7 @@
 	- Modified Space Shooter example to make the explosion animations slightly faster.
 	- Fixed the link texts in the help page descriptions for the loadSound(), setSoundPos(), and unloadSound() native functions.
 	- Fixed bug in import_onLoad() in std_funcs module where the interpreter result was being put in an undefined variable.
+	- Modified usage code in help page for rectOverlapsCircle() to make the shapes overlap.
 	
 (March 23, 2026)
 [v2.0.2.73]
