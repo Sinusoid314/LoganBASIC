@@ -6,6 +6,7 @@
       native function instead of manually updating each frame's deltaTime.
 	- Commented out all non-error-reporting console logs.
 	- Fixed bug in HiLo example where typing 'q' was not ending the program.
+	- Fixed the link texts in the help page descriptions for the loadImage() and unloadImage() native functions.
 	
 (March 23, 2026)
 [v2.0.2.73]
