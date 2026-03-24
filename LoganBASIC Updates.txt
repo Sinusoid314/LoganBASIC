@@ -5,7 +5,8 @@
       seconds to measure sprite frame duration, the deltaTime argument being made mandatory, and to use the updateDeltaTime()
       native function instead of manually updating each frame's deltaTime.
 	- Commented out all non-error-reporting console logs.
-
+	- Fixed bug in HiLo example where typing 'q' was not ending the program.
+	
 (March 23, 2026)
 [v2.0.2.73]
 	- Fixed bug with sprite frames not playing properly by changing the measure of sprite frame duration from milliseconds to seconds.

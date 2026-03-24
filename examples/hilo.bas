@@ -13,12 +13,16 @@ print "Guess what it is. Enter 'q' to quit."
 print ""
 
 while guess <> guessMe
-  guess = val(input("Enter guess: "))
+  guess = input("Enter guess: ")
+
+  if guess = "q" then exit while
+
+  guess = val(guess)
   guessCount = guessCount + 1
+  
   if guess < guessMe then print "Guess higher."
   if guess > guessMe then print "Guess lower."
   if guess = guessMe then print "Correct! It took you " + guessCount + " guesses."
-  if guess = "q" then guess = guessMe
 wend
 
 print ""
