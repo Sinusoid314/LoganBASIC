@@ -2,7 +2,7 @@
 (X) Code Editor
 (X) Debugger
 (X) Statements
-( ) Standard Functions
+(X) Standard Functions
 ( ) Canvas Functions
 ( ) Sprite Functions
 (X) Sound Functions
