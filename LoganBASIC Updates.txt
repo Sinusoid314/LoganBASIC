@@ -1,3 +1,7 @@
+(March 25, 2026)
+[v2.0.2.74]
+	- Added a 'test mode' to the help file system, to enable quicker testing of usage code in each help page.
+
 (March 24, 2026)
 [v2.0.2.73]
 	- Renamed frameSecondCount member of Sprite class in sprite_worker module to frameElapsedSeconds.
