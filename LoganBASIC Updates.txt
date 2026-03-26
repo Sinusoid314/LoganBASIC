@@ -1,6 +1,7 @@
 (March 25, 2026)
 [v2.0.2.74]
 	- Added a 'test mode' to the help file system, to enable quicker testing of usage code in each help page.
+	- Added a call to the showCanvas() native function to all help page usage code sections that use the canvas.
 
 (March 24, 2026)
 [v2.0.2.73]
