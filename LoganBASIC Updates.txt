@@ -2,6 +2,7 @@
 [v2.0.2.75]
 	- Created source file for Memory Match example.
 	- Added images for Memory Match example.
+	- Fixed the link texts in the help page descriptions for the startTimer() and stopTImer() native functions.
 
 (March 25, 2026)
 [v2.0.2.74]
