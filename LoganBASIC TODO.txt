@@ -2,7 +2,7 @@
     - 
 
 [Features]
-    - Add MemoryMatch game to examples.
+    - Add Memory Match game to examples.
 
     - Ability of run() native function to return error messages instead of terminating the program.
     - Ability to run code in debugger.
