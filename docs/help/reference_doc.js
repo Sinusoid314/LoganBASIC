@@ -1,10 +1,10 @@
 var usageRun = document.getElementById("usageRun");
 var usageOpen = document.getElementById("usageOpen");
 var usageCode = document.getElementById("usageCode");
-var fileData = usageCode.innerText;
+var fileData = usageCode?.innerText;
 
-usageRun.addEventListener("click", usage_onClick);
-usageOpen.addEventListener("click", usage_onClick);
+usageRun?.addEventListener("click", usage_onClick);
+usageOpen?.addEventListener("click", usage_onClick);
 
 function usage_onClick(event)
 //

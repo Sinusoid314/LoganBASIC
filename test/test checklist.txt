@@ -3,7 +3,7 @@
 (X) Debugger
 (X) Statements
 (X) Standard Functions
-( ) Canvas Functions
+(X) Canvas Functions
 ( ) Sprite Functions
 (X) Sound Functions
 (X) Expression Operators

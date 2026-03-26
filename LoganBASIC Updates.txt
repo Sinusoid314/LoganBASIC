@@ -3,6 +3,7 @@
 	- Added a 'test mode' to the help file system, to enable quicker testing of usage code in each help page.
 	- Added a call to the showCanvas() native function to all help page usage code sections that use the canvas.
 	- Modified the help file system's 'test mode' to avoid loading a page that does not have a 'usageCode' element.
+	- Modified the help file system's reference_doc script to avoid referencing elements that are not present in the given help page.
 
 (March 24, 2026)
 [v2.0.2.73]
