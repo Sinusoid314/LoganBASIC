@@ -40,8 +40,9 @@ function link_onClick(event)
   fetch(event.target.href)
     .then(response => response.text())
     .then(text => {
-      let fileData = (new DOMParser()).parseFromString(text, 'text/html').querySelector('#usageCode').innerText;
-    
+      let fileData = (new DOMParser()).parseFromString(text, 'text/html').querySelector('#usageCode')?.innerText;
+      if(!fileData) return;
+
       window.localStorage.setItem("fileData", fileData);
       window.open("../../../index.html?open=local&autoRun=true", "docview");
     });
