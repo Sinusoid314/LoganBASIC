@@ -1,6 +1,7 @@
 (March 26, 2026)
 [v2.0.2.75]
 	- Created source file for Memory Match example.
+	- Added images for Memory Match example.
 
 (March 25, 2026)
 [v2.0.2.74]
