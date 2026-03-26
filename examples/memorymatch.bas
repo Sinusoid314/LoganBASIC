@@ -1,13 +1,17 @@
 structure Card
+  image
+  isFlipped
+  isSelected
 end structure
 
-var cardBackImage = "cardBackImage"
+var imagePath = "../examples/images/"
+var cardBackImage = "card-back"
 array cardFaceImages[6]
 
-cardFaceImages[0] = "../examples/images/star.png"
-cardFaceImages[1] = "../examples/images/square.png"
-cardFaceImages[2] = "../examples/images/circle.png"
-cardFaceImages[3] = "../examples/images/triangle.png"
-cardFaceImages[4] = "../examples/images/diamond.png"
-cardFaceImages[5] = "../examples/images/heart.png"
+cardFaceImages[0] = "star"
+cardFaceImages[1] = "square"
+cardFaceImages[2] = "circle"
+cardFaceImages[3] = "triangle"
+cardFaceImages[4] = "diamond"
+cardFaceImages[5] = "heart"
 
