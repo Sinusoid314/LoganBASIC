@@ -242,7 +242,7 @@ function selectEditorLine(selLine)
 function loadSourceFile(fileURL)
 //Load source file from local storage or a given URL
 {
-  statusBar.innerHTML = `Loading '${fileURL}'...`;
+  statusBar.innerText = `Loading '${fileURL}'...`;
 
   return new Promise((resolve, reject) =>
   {
@@ -274,13 +274,13 @@ function loadSourceFile(fileURL)
   {
     editorCode.value = fileData;
     updateEditorGutter();
-    statusBar.innerHTML = "Ready.";
+    statusBar.innerText = "Ready.";
 
     return fileData;
   })
   .catch((errorMessage) =>
   {
-    statusBar.innerHTML = errorMessage;
+    statusBar.innerText = errorMessage;
 
     return Promise.reject(errorMessage);
   });

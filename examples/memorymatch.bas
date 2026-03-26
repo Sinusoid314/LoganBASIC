@@ -1,3 +1,6 @@
+structure Card
+end structure
+
 var cardBackImage = "cardBackImage"
 array cardFaceImages[6]
 

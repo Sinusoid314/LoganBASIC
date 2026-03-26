@@ -3,6 +3,7 @@
 	- Created source file for Memory Match example.
 	- Added images for Memory Match example.
 	- Fixed the link texts in the help page descriptions for the startTimer() and stopTImer() native functions.
+	- Fixed bug with the statusBar interpreting its contents as HTML instead of plain text.
 
 (March 25, 2026)
 [v2.0.2.74]

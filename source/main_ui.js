@@ -256,7 +256,7 @@ function mainUI_onProgEnd(exitMessage, exitStatus, error)
   if(!isRunning)
     return;
 
-  statusBar.innerHTML = exitMessage;
+  statusBar.innerText = exitMessage;
 
   if(exitStatus == PROG_EXIT_STATUS_TERMINATED)
   {
@@ -319,7 +319,7 @@ function onMsgProgDone(msgData)
 function onMsgStatusChange(msgData)
 //Display a status change
 {
-  statusBar.innerHTML = msgData.statusText;
+  statusBar.innerText = msgData.statusText;
 }
 
 function toggle_onClick(event)
