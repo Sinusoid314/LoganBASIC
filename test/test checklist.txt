@@ -1,9 +1,9 @@
-(X) Examples
-(X) Code Editor
-(X) Debugger
-(X) Statements
-(X) Standard Functions
-(X) Canvas Functions
+( ) Examples
+( ) Code Editor
+( ) Debugger
+( ) Statements
+( ) Standard Functions
+( ) Canvas Functions
 ( ) Sprite Functions
-(X) Sound Functions
-(X) Expression Operators
+( ) Sound Functions
+( ) Expression Operators
