@@ -17,28 +17,25 @@ structure Card
   isFlipped
 end structure
 
-var canvasWidth = 400
-var canvasHeight = 600
-var gameBoardX = 0
-var gameBoardY = 0
-var gameBoardWidth = canvasWidth
-var gameBoardHeight = canvasHeight
-
 var maxSelections = 2
-var cardCount = len(cardFaceImages) * maxSelections
-var cardGridColumns = getClosestSquareGridColumns(cardCount)
-var resultDisplayDuration = 700
-var RESULT_PENDING = "pending"
-var RESULT_SUCCESS = "success"
-var RESULT_FAIL = "fail"
-
-array cardDeck[cardCount]
+array cardDeck[len(cardFaceImages) * maxSelections]
 array selectedCards[maxSelections]
-var result = RESULT_PENDING
+
+var cardBorderSize = 4
+var cardWidth, cardHeight
+var gameBoardX, gameBoardY
+var gameBoardWidth, gameBoardHeight
 var gameOver = false
+
+var resultDisplayDuration = 700
+var RESULTPENDING = "pending"
+var RESULTSUCCESS = "success"
+var RESULTFAIL = "fail"
+var result = RESULTPENDING
 
 loadResources()
 initCanvas()
+drawGameBoard()
 
 wait
 
@@ -54,13 +51,18 @@ end function
 
 
 function initCanvas()
-  setCanvasWidth(canvasWidth)
-  setCanvasHeight(canvasHeight)
+  setCanvasWidth(400)
+  setCanvasHeight(600)
 
   hideConsole()
   showCanvas()
 
   setCanvasEvent("pointerup", canvasOnPointerUp)
+end function
+
+
+function drawGameBoard()
+
 end function
 
 
