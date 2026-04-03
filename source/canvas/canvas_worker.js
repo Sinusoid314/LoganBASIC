@@ -207,7 +207,7 @@ function funcDrawImage(vm, args)
 }
 
 function funcDrawImageClip(vm, args)
-//Send an image to the canvas to draw an image
+//Send an message to the canvas to draw an image
 {
   var msgData = {
       imageName: args[0],

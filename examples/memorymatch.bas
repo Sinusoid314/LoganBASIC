@@ -42,7 +42,7 @@ drawCardGrid()
 wait
 
 
-function initResources()
+function loadResources()
   var faceIndex
 
   print "Loading images..."
@@ -99,6 +99,15 @@ end function
 
 
 function shuffleCardDeck()
+  var swapCard
+  var deckIndex, swapIndex
+
+  for deckIndex = len(cardDeck) - 1 to 1 step -1
+    swapIndex = int(rnd() * (deckIndex + 1))
+    swapCard = cardDeck[swapIndex]
+    cardDeck[swapIndex] = cardDeck[deckIndex]
+    cardDeck[deckIndex] = swapCard
+  next deckIndex
 end function
 
 
@@ -110,13 +119,13 @@ function calcCardGridLayout()
   for row = 0 to totalRows - 1
     for column = 0 to totalColumns - 1
       deckIndex = (row * totalColumns) + column
-      cardDeck[deckIndex].x = (column * (cardBroderSize + cardWidth)) + cardBroderSize
-      cardDeck[deckIndex].y = (row * (cardBroderSize + cardHeight)) + cardBroderSize
+      cardDeck[deckIndex].x = (column * ((cardBorderSize * 2) + cardWidth)) + cardBorderSize
+      cardDeck[deckIndex].y = (row * ((cardBorderSize * 2) + cardHeight)) + cardBorderSize
     next column
   next row
 
-  cardGridWidth = (totalColumns * (cardBroderSize + cardWidth)) + cardBroderSize
-  cardGridHeight = (totalRows * (cardBroderSize + cardHeight)) + cardBroderSize
+  cardGridWidth = (totalColumns * ((cardBorderSize * 2) + cardWidth))
+  cardGridHeight = (totalRows * ((cardBorderSize * 2) + cardHeight))
 end function
 
 
@@ -132,17 +141,42 @@ end function
 
 
 function drawCardGrid()
+  var deckIndex
 
+  for deckIndex = 0 to len(cardDeck) - 1
+    drawImage(cardBackImage, cardDeck[deckIndex].x, cardDeck[deckIndex].y, cardWidth, cardHeight)
+  next deckIndex
 end function
 
 
 function canvasOnPointerUp(pointerX, pointerY)
+  var deckIndex
 
+  for deckIndex = 0 to len(cardDeck) - 1
+    if pointInRect(pointerX, pointerY, cardDeck[deckIndex].x, cardDeck[deckIndex].y, cardWidth, cardHeight) then
+      cardOnPointerUp(cardDeck[deckIndex])
+      exit for
+    end if
+  next deckIndex
 end function
 
 
 function cardOnPointerUp(card)
+  var borderColor, image
 
+  if card.isFlipped then
+    borderColor = "white"
+    image = cardBackImage
+  else
+    borderColor = "gold"
+    image = card.image
+  end if
+
+  setLineColor(borderColor)
+  setLineSize(cardBorderSize)
+  drawRect(card.x - (cardBorderSize / 2), card.y - (cardBorderSize / 2), cardWidth + cardBorderSize, cardHeight + cardBorderSize, false)
+  drawImage(image, card.x, card.y, cardWidth, cardHeight)
+  card.isFlipped = not card.isFlipped
 end function
 
 
