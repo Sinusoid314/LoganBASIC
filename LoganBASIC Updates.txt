@@ -1,3 +1,7 @@
+(April 5, 2026)
+[v2.0.2.77]
+	- Added to Memory Match example.
+
 (April 3, 2026)
 [v2.0.2.77]
 	- Added to Memory Match example.

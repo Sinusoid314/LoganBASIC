@@ -15,6 +15,7 @@ structure Card
   y
   image
   isFlipped
+  isSelected
 end structure
 
 var maxSelections = 2
@@ -22,6 +23,8 @@ array cardDeck[len(cardFaceImages) * maxSelections]
 array selectedCards[maxSelections]
 
 var cardBorderSize = 4
+var cardUnselectedBorderColor = "palegreen"
+var cardSelectedBorderColor = "gold"
 var cardWidth = 100, cardHeight = 100
 var cardGridWidth, cardGridHeight
 
@@ -93,6 +96,7 @@ function createCardDeck()
       cardDeck[deckIndex] = new Card
       cardDeck[deckIndex].image = cardFaceImages[faceIndex]
       cardDeck[deckIndex].isFlipped = false
+      cardDeck[deckIndex].isSelected = false
     next n
   next faceIndex
 end function
@@ -129,6 +133,19 @@ function calcCardGridLayout()
 end function
 
 
+function getClosestSquareGridColumns(gridItemCount)
+  array factors[0]
+  var num = 1
+
+  while (num ^ 2) <= gridItemCount
+    if (gridItemCount % num) = 0 then addArrayItem(factors, num)
+    num = num + 1
+  wend
+
+  return factors[len(factors) - 1]
+end function
+
+
 function initCanvas()
   setCanvasWidth(cardGridWidth)
   setCanvasHeight(cardGridHeight)
@@ -141,11 +158,33 @@ end function
 
 
 function drawCardGrid()
-  var deckIndex
+  var deckIndex, card
 
   for deckIndex = 0 to len(cardDeck) - 1
-    drawImage(cardBackImage, cardDeck[deckIndex].x, cardDeck[deckIndex].y, cardWidth, cardHeight)
+    drawCard(cardDeck[deckIndex])
   next deckIndex
+end function
+
+
+function drawCard(card)
+  var borderColor, image
+
+  if card.isFlipped then
+    image = card.image
+  else
+    image = cardBackImage
+  end if
+
+  if card.isSelected then
+    borderColor = cardSelectedBorderColor
+  else
+    borderColor = cardUnselectedBorderColor
+  end if
+
+  setLineColor(borderColor)
+  setLineSize(cardBorderSize)
+  drawRect(card.x - (cardBorderSize / 2), card.y - (cardBorderSize / 2), cardWidth + cardBorderSize, cardHeight + cardBorderSize, false)
+  drawImage(image, card.x, card.y, cardWidth, cardHeight)
 end function
 
 
@@ -162,32 +201,7 @@ end function
 
 
 function cardOnPointerUp(card)
-  var borderColor, image
-
-  if card.isFlipped then
-    borderColor = "white"
-    image = cardBackImage
-  else
-    borderColor = "gold"
-    image = card.image
-  end if
-
-  setLineColor(borderColor)
-  setLineSize(cardBorderSize)
-  drawRect(card.x - (cardBorderSize / 2), card.y - (cardBorderSize / 2), cardWidth + cardBorderSize, cardHeight + cardBorderSize, false)
-  drawImage(image, card.x, card.y, cardWidth, cardHeight)
   card.isFlipped = not card.isFlipped
-end function
-
-
-function getClosestSquareGridColumns(gridItemCount)
-  array factors[0]
-  var num = 1
-
-  while (num ^ 2) <= gridItemCount
-    if (gridItemCount % num) = 0 then addArrayItem(factors, num)
-    num = num + 1
-  wend
-
-  return factors[len(factors) - 1]
+  card.isSelected = not card.isSelected
+  drawCard(card)
 end function
