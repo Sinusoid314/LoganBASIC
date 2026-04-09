@@ -3,6 +3,9 @@
 
 
 [Features]
+    - Convert About page to a popup dialog on the main page.
+    - Add ability to show the About dialog when the main page loads.
+    - Add more calls-to-action to the About dialog.
     - Add Memory Match game to examples.
 
     - Standard functions for array searching.

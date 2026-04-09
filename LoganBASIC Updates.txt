@@ -1,3 +1,7 @@
+(April 8, 2026)
+[v2.0.2.78]
+	- Added ability to auto-run the example programs when opened.
+
 (April 5, 2026)
 [v2.0.2.77]
 	- Added to Memory Match example.

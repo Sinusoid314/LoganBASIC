@@ -1,8 +1,14 @@
 #menu-frame
 {
   float: left;
-  width: 160px;
+  width: 185px;
   height: 100%;
+}
+
+#runOnOpenToggle
+{
+  margin-top: 10px;
+  margin-bottom: 20px;
 }
 
 #menu
@@ -16,7 +22,7 @@
 
 #docview-frame
 {
-  margin-left: 160px;
+  margin-left: 185px;
   height: 100%;
 }
 
