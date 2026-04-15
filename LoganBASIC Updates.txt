@@ -1,3 +1,7 @@
+(April 14, 2026)
+[v2.0.2.80]
+	- Modified window_onLoad event to display the About dialog if no program is being opened on startup.
+
 (April 10, 2026)
 [v2.0.2.79]
 	- Converted About page to a popup dialog on the main page.

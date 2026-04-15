@@ -311,7 +311,10 @@ function window_onLoad(event)
     mainDiv.insertAdjacentHTML("beforeend", versionHTML);
     
     if(paramFileURL == "")
+    {
+      aboutDialog.showModal();
       return;
+    }
 
     loadSourceFile(paramFileURL)
     .then((fileData) => 
