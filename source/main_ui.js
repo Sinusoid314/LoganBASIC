@@ -136,8 +136,12 @@ var progWorker = null;
 var uiMessageMap = new Map();
 var paramFileURL = "";
 var autoRun = false;
+const HAS_VISITED_KEY = "hasVisited";
+var hasVisited = false;
 
 readURLParams();
+
+checkVisitStatus();
 
 initWorker();
 
@@ -166,6 +170,15 @@ function readURLParams()
     if(urlParams.has("autoRun"))
       autoRun = (urlParams.get("autoRun").toLowerCase() == "true");
   }
+}
+
+function checkVisitStatus()
+{
+  if(window.localStorage.getItem(HAS_VISITED_KEY))
+    hasVisited = true;
+
+  if(!hasVisited)
+    window.localStorage.setItem(HAS_VISITED_KEY, String(true));
 }
 
 function initWorker()
@@ -312,7 +325,9 @@ function window_onLoad(event)
     
     if(paramFileURL == "")
     {
-      aboutDialog.showModal();
+      if(!hasVisited)
+        aboutDialog.showModal();
+
       return;
     }
 

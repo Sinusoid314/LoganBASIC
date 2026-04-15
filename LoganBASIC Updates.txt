@@ -1,3 +1,7 @@
+(April 15, 2026)
+[v2.0.2.80]
+	- Added hasVisited flag and checkVisitStatus() function to make the About dialog only show on the first visit to the main page.
+
 (April 14, 2026)
 [v2.0.2.80]
 	- Modified window_onLoad event to display the About dialog if no program is being opened on startup.

@@ -1,27 +1,27 @@
 var runOnOpenToggle = document.getElementById("runOnOpenToggle");
-var runOnOpenKey = "runExampleOnOpen";
-var runOnOpenValue = window.localStorage.getItem(runOnOpenKey);
+const RUN_ON_OPEN_KEY = "runExampleOnOpen";
+var runOnOpen = window.localStorage.getItem(RUN_ON_OPEN_KEY);
 
 runOnOpenToggle.addEventListener("change", runOnOpenToggle_onChange);
 document.querySelectorAll("a").forEach(link => link.addEventListener("click", link_onClick));
 
-if(runOnOpenValue == null)
+if(runOnOpen == null)
 {
-  runOnOpenValue = String(true);
-  window.localStorage.setItem(runOnOpenKey, runOnOpenValue);
+  runOnOpen = String(true);
+  window.localStorage.setItem(RUN_ON_OPEN_KEY, runOnOpen);
 }
 
-runOnOpenToggle.checked = (runOnOpenValue == String(true));
+runOnOpenToggle.checked = (runOnOpen == String(true));
 
 
 function runOnOpenToggle_onChange(event)
 {
-  runOnOpenValue = String(runOnOpenToggle.checked);
-  window.localStorage.setItem(runOnOpenKey, runOnOpenValue);
+  runOnOpen = String(runOnOpenToggle.checked);
+  window.localStorage.setItem(RUN_ON_OPEN_KEY, runOnOpen);
 }
 
 function link_onClick(event)
 {
-  window.open(event.target.href + "&autoRun=" + runOnOpenValue, "docview");
+  window.open(event.target.href + "&autoRun=" + runOnOpen, "docview");
   event.preventDefault();
 }
