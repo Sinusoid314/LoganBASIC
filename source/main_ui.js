@@ -136,12 +136,9 @@ var progWorker = null;
 var uiMessageMap = new Map();
 var paramFileURL = "";
 var autoRun = false;
-const HAS_VISITED_KEY = "hasVisited";
-var hasVisited = false;
+const WELCOME_HAS_BEEN_SHOWN_KEY = "welcomeHasBeenShown";
 
 readURLParams();
-
-checkVisitStatus();
 
 initWorker();
 
@@ -172,13 +169,17 @@ function readURLParams()
   }
 }
 
-function checkVisitStatus()
+function checkIfWelcomeHasBeenShown()
 {
-  if(window.localStorage.getItem(HAS_VISITED_KEY))
-    hasVisited = true;
+  var welcomeHasBeenShown = window.localStorage.getItem(WELCOME_HAS_BEEN_SHOWN_KEY);
 
-  if(!hasVisited)
-    window.localStorage.setItem(HAS_VISITED_KEY, String(true));
+  if(!welcomeHasBeenShown)
+  {
+    window.localStorage.setItem(WELCOME_HAS_BEEN_SHOWN_KEY, "true");
+    return false;
+  }
+  
+  return true;
 }
 
 function initWorker()
@@ -323,13 +324,11 @@ function window_onLoad(event)
     setToggleEvents();
     mainDiv.insertAdjacentHTML("beforeend", versionHTML);
     
-    if(paramFileURL == "")
-    {
-      if(!hasVisited)
-        aboutDialog.showModal();
+    if(!checkIfWelcomeHasBeenShown() && !autoRun)
+      aboutDialog.showModal();
 
+    if(paramFileURL == "")
       return;
-    }
 
     loadSourceFile(paramFileURL)
     .then((fileData) => 

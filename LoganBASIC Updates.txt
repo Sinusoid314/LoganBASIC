@@ -1,3 +1,7 @@
+(April 16, 2026)
+[v2.0.2.81]
+	- Modified the mechanism for showing the About dialog only on the first visit to the main page.
+
 (April 15, 2026)
 [v2.0.2.80]
 	- Added hasVisited flag and checkVisitStatus() function to make the About dialog only show on the first visit to the main page.
