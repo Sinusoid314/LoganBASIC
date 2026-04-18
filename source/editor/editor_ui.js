@@ -82,6 +82,23 @@ document.head.appendChild(document.createElement('style')).textContent =
   border: 1px solid red;
   background-color: rgb(255, 190, 210);
 }
+
+#aboutDialog
+{
+  margin-block: auto;
+  margin-inline: 15em;
+}
+
+#aboutForm
+{
+  text-align: center;
+}
+
+#aboutCloseBtn
+{
+  padding-inline: 1.5em;
+  padding-block: 0.5em;
+}
 `;
 
 
@@ -116,6 +133,21 @@ mainDiv.insertAdjacentHTML("afterbegin",
   <button id="debugToggleBtn">Debug</button>
   <div class="bar-seperator"></div>
 </div>
+
+<dialog id="aboutDialog">
+  <form id="aboutForm" method="dialog">
+    <div id="aboutContent">
+      <h1>Welcome to Logan BASIC!</h1>
+      <p>
+        Logan BASIC is an online BASIC interpreter that can be used to create both text-based and graphics-based programs
+        that run directly in the web browser. If you have any questions, comments, or bug reports, drop me a line at
+        <a href="mailto:sinusoid314@gmail.com">sinusoid314@gmail.com</a>. See more of my projects at 
+        <a href="https://sinusoft.com" target="_blank">sinusoft.com</a>
+      </p>
+    </div>
+    <button id="aboutCloseBtn" type="submit">Close</button>
+  </form>
+</dialog>
 `);
 
 
@@ -131,6 +163,7 @@ var editorGutter = document.getElementById("editorGutter");
 var runBtn = document.getElementById("runBtn");
 var stopBtn = document.getElementById("stopBtn");
 var debugToggleBtn = document.getElementById("debugToggleBtn");
+var aboutDialog = document.getElementById("aboutDialog");
 var prevLineCount = 1;
 
 setEditorUIEvents();

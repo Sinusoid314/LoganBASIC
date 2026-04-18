@@ -76,23 +76,6 @@ button
 {
   margin-top: 30px;
 }
-
-#aboutDialog
-{
-  margin-block: auto;
-  margin-inline: 15em;
-}
-
-#aboutForm
-{
-  text-align: center;
-}
-
-#aboutCloseBtn
-{
-  padding-inline: 1.5em;
-  padding-block: 0.5em;
-}
 `;
 
 
@@ -102,21 +85,6 @@ document.body.insertAdjacentHTML("afterbegin",
 <div id="mainDiv">
   <div id="statusBar">Ready.</div>
 </div>
-
-<dialog id="aboutDialog">
-  <form id="aboutForm" method="dialog">
-    <div id="aboutContent">
-      <h1>Welcome to Logan BASIC!</h1>
-      <p>
-        Logan BASIC is an online BASIC interpreter that can be used to create both text-based and graphics-based programs
-        that run directly in the web browser. If you have any questions, comments, or bug reports, drop me a line at
-        <a href="mailto:sinusoid314@gmail.com">sinusoid314@gmail.com</a>. See more of my projects at 
-        <a href="https://sinusoft.com" target="_blank">sinusoft.com</a>
-      </p>
-    </div>
-    <button id="aboutCloseBtn" type="submit">Close</button>
-  </form>
-</dialog>
 `);
 
 
@@ -127,7 +95,6 @@ const PROG_EXIT_STATUS_TERMINATED = 3;
 const versionHTML = `<div id="version">Version ` + lbVersion + ` - <a href="updates.html" target="_blank">Updates</a></div>`;
 var mainDiv = document.getElementById("mainDiv");
 var statusBar = document.getElementById("statusBar");
-var aboutDialog = document.getElementById("aboutDialog");
 
 var isRunning = false;
 var uiOnProgStartHandlers = [];
