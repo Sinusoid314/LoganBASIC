@@ -1,6 +1,7 @@
 (April 17, 2026)
 [v2.0.2.82]
 	- Moved the About dialog from main_ui module to editor_ui module.
+	- Moved the Updates link from main_ui module to a button in editor_ui module.
 
 (April 16, 2026)
 [v2.0.2.81]

@@ -114,6 +114,7 @@ mainDiv.insertAdjacentHTML("afterbegin",
   <button id="examplesBtn">Examples</button>
   <button id="helpBtn">Help</button>
   <button id="aboutBtn">About</button>
+  <button id="updatesBtn">Updates</button>
 </div>
 
 <div id="editorDiv">
@@ -158,6 +159,7 @@ var saveBtn = document.getElementById("saveBtn");
 var examplesBtn = document.getElementById("examplesBtn");
 var helpBtn = document.getElementById("helpBtn");
 var aboutBtn = document.getElementById("aboutBtn");
+var updatesBtn = document.getElementById("updatesBtn");
 var editorCode = document.getElementById("editorCode");
 var editorGutter = document.getElementById("editorGutter");
 var runBtn = document.getElementById("runBtn");
@@ -181,6 +183,7 @@ function setEditorUIEvents()
   examplesBtn.addEventListener("click", examplesBtn_onClick);
   helpBtn.addEventListener("click", helpBtn_onClick);
   aboutBtn.addEventListener("click", aboutBtn_onClick);
+  updatesBtn.addEventListener("click", updatesBtn_onClick);
   editorCode.addEventListener("input", editor_onInput);
   editorCode.addEventListener("scroll", editor_onScroll);
   runBtn.addEventListener("click", runBtn_onClick);
@@ -378,10 +381,15 @@ function helpBtn_onClick(event)
 }
 
 function aboutBtn_onClick(event)
-//Open the About page
+//Open the About dialog box
 {
-  //window.open("../about.html", "_blank");
   aboutDialog.showModal();
+}
+
+function updatesBtn_onClick(event)
+//Open the Updates page
+{
+  window.open("../updates.html", "_blank");
 }
 
 function editor_onInput(event)
