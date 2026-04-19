@@ -1,3 +1,7 @@
+(April 18, 2026)
+[v2.0.2.83]
+	- Added more calls-to-action to the About dialog.
+
 (April 17, 2026)
 [v2.0.2.82]
 	- Moved the About dialog from main_ui module to editor_ui module.

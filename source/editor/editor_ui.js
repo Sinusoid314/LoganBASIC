@@ -94,6 +94,11 @@ document.head.appendChild(document.createElement('style')).textContent =
   text-align: center;
 }
 
+#aboutForm ul
+{
+  text-align: center;
+}
+
 #aboutCloseBtn
 {
   padding-inline: 1.5em;
@@ -140,10 +145,19 @@ mainDiv.insertAdjacentHTML("afterbegin",
     <div id="aboutContent">
       <h1>Welcome to Logan BASIC!</h1>
       <p>
-        Logan BASIC is an online BASIC interpreter that can be used to create both text-based and graphics-based programs
-        that run directly in the web browser. If you have any questions, comments, or bug reports, drop me a line at
-        <a href="mailto:sinusoid314@gmail.com">sinusoid314@gmail.com</a>. See more of my projects at 
-        <a href="https://sinusoft.com" target="_blank">sinusoft.com</a>
+        Logan BASIC is an online version of the <a href="https://en.wikipedia.org/wiki/BASIC">BASIC programming language</a>
+        that creates both text-based and graphics-based programs that run directly in the web browser.
+        <br><br>
+        To get started, you can:
+        <ul>
+          <li>Check out the <a href="../examples/examples.html" target="_blank">example programs</a>.</li>
+          <li>Browse the help <a href="../docs/help/help.html" target="_blank">files</a>.</li>
+          <li>Write your code in the Code Editor, hit the Run button, and watch your program come to life!</li>
+        </ul>
+        <br>
+        Send any questions, comments, or bug reports to <a href="mailto:sinusoid314@gmail.com">sinusoid314@gmail.com</a>.
+        <br>
+        See more of my projects at <a href="https://sinusoft.com" target="_blank">sinusoft.com</a>
       </p>
     </div>
     <button id="aboutCloseBtn" type="submit">Close</button>

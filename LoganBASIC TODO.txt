@@ -3,8 +3,7 @@
 
 
 [Features]
-    - Add ability to show the About dialog when the main page loads.
-    - Add more calls-to-action to the About dialog.
+    - Highlight the Updates button when the user first visits a new version of the site.
     - Add Memory Match game to examples.
 
     - Standard functions for array searching.
