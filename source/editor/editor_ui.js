@@ -1,6 +1,28 @@
 //Editor CSS
 document.head.appendChild(document.createElement('style')).textContent =
 `
+.buttonFace
+{
+  background-color: lightgray;
+  padding: 6px;
+}
+
+.buttonFaceReleased
+{
+  border-bottom: 1px solid gray;
+  border-right: 1px solid gray;
+  border-top: 1px solid white;
+  border-left: 1px solid white;
+}
+
+.buttonFacePressed
+{
+  border-bottom: 1px solid white;
+  border-right: 1px solid white;
+  border-top: 1px solid gray;
+  border-left: 1px solid gray;
+}
+
 #menuBar
 {
   margin-bottom: 15px;
@@ -140,12 +162,12 @@ mainDiv.insertAdjacentHTML("afterbegin",
   <div class="bar-seperator"></div>
 </div>
 
-<dialog id="aboutDialog">
+<dialog id="aboutDialog" class="buttonFace buttonFaceReleased">
   <form id="aboutForm" method="dialog">
     <div id="aboutContent">
       <h1>Welcome to Logan BASIC!</h1>
       <p>
-        Logan BASIC is an online version of the <a href="https://en.wikipedia.org/wiki/BASIC">BASIC programming language</a>
+        Logan BASIC is an online version of the <a href="https://en.wikipedia.org/wiki/BASIC" target="_blank">BASIC programming language</a>
         that creates both text-based and graphics-based programs that run directly in the web browser.
         <br><br>
         To get started, you can:
