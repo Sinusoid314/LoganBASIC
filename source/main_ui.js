@@ -6,6 +6,11 @@ document.head.appendChild(document.createElement('style')).textContent =
   box-sizing: border-box;
 }
 
+body
+{
+  background-color: lightgray;
+}
+
 .buttonFace,
 button,
 .bar,

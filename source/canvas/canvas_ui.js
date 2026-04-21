@@ -6,6 +6,7 @@ document.head.appendChild(document.createElement('style')).textContent =
   border: 1px solid black;
   margin-top: 5px;
   touch-action: none;
+  background-color: white;
 }
 `;
 

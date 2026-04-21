@@ -71,20 +71,20 @@ document.head.appendChild(document.createElement('style')).textContent =
 {
   padding-inline: 1.5em;
   padding-block: 0.15em;
-  background-color: rgb(190, 255, 210);
+  background-color: rgb(136, 236, 166);
 }
 
 #stopBtn
 {
   padding-inline: 1.5em;
   padding-block: 0.15em;
-  background-color: rgb(255, 190, 210);
+  background-color: rgb(242, 168, 168);
 }
 
 #aboutDialog
 {
   margin-block: auto;
-  margin-inline: 20em;
+  margin-inline: 20%;
 }
 
 #aboutForm
