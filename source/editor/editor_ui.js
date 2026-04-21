@@ -84,17 +84,28 @@ document.head.appendChild(document.createElement('style')).textContent =
 #aboutDialog
 {
   margin-block: auto;
-  margin-inline: 15em;
+  margin-inline: 20em;
 }
 
 #aboutForm
 {
+  margin-inline: 2em;
   text-align: center;
 }
 
 #aboutForm ul
 {
-  text-align: center;
+  display: inline-block;
+  text-align: left;
+  margin-top: 0;
+  margin-inline: 5em;
+  font-weight: bolder;
+  border: 0px solid black;
+}
+
+#aboutForm ul li
+{
+  margin-block: 0.3em;
 }
 
 #aboutCloseBtn
@@ -152,7 +163,6 @@ mainDiv.insertAdjacentHTML("afterbegin",
           <li>Browse the help <a href="../docs/help/help.html" target="_blank">files</a>.</li>
           <li>Write your code in the Code Editor, hit the Run button, and watch your program come to life!</li>
         </ul>
-        <br>
         Send any questions, comments, or bug reports to <a href="mailto:sinusoid314@gmail.com">sinusoid314@gmail.com</a>.
         <br>
         See more of my projects at <a href="https://sinusoft.com" target="_blank">sinusoft.com</a>
