@@ -1,28 +1,6 @@
 //Editor CSS
 document.head.appendChild(document.createElement('style')).textContent =
 `
-.buttonFace
-{
-  background-color: lightgray;
-  padding: 6px;
-}
-
-.buttonFaceReleased
-{
-  border-bottom: 1px solid gray;
-  border-right: 1px solid gray;
-  border-top: 1px solid white;
-  border-left: 1px solid white;
-}
-
-.buttonFacePressed
-{
-  border-bottom: 1px solid white;
-  border-right: 1px solid white;
-  border-top: 1px solid gray;
-  border-left: 1px solid gray;
-}
-
 #menuBar
 {
   margin-bottom: 15px;
@@ -93,7 +71,6 @@ document.head.appendChild(document.createElement('style')).textContent =
 {
   padding-inline: 1.5em;
   padding-block: 0.15em;
-  border: 1px solid green;
   background-color: rgb(190, 255, 210);
 }
 
@@ -101,7 +78,6 @@ document.head.appendChild(document.createElement('style')).textContent =
 {
   padding-inline: 1.5em;
   padding-block: 0.15em;
-  border: 1px solid red;
   background-color: rgb(255, 190, 210);
 }
 

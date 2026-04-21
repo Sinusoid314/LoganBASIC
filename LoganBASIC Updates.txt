@@ -1,3 +1,7 @@
+(April 21, 2026)
+[v2.0.2.84]
+	- Modified the toolbar and button styles to resemble a "Windows98" look.
+
 (April 19, 2026)
 [v2.0.2.83]
 	- Added a button-face style to the About dialog.

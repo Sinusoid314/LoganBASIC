@@ -1,20 +1,49 @@
 //Main CSS
 document.head.appendChild(document.createElement('style')).textContent =
 `
-button
+*
 {
-  margin-right: 2px;
-  margin-left: 2px;
-  text-shadow: 1px 1px white;
+  box-sizing: border-box;
 }
 
+.buttonFace,
+button,
+.bar,
+#statusBar
+{
+  background-color: lightgray;
+  padding: 4px;
+  border: 1px solid lightgray;
+}
+
+.buttonFaceReleased,
+button:not(:disabled):not(:active):hover,
 .bar
 {
-  padding-top: 5px;
-  padding-bottom: 5px;
-  padding-left: 2px;
-  background-color: #ccccff;
-  box-shadow: 1px 1px gray;
+  border-bottom: 1px solid gray;
+  border-right: 1px solid gray;
+  border-top: 1px solid white;
+  border-left: 1px solid white;
+}
+
+.buttonFacePressed,
+button:not(:disabled):active,
+#statusBar
+{
+  border-bottom: 1px solid white;
+  border-right: 1px solid white;
+  border-top: 1px solid gray;
+  border-left: 1px solid gray;
+}
+
+button:focus-visible
+{
+  outline: 1px solid black;
+}
+
+button
+{
+  text-shadow: 1px 1px white;
 }
 
 .bar-seperator
@@ -64,12 +93,7 @@ button
 #statusBar
 {
   margin-bottom: 20px;
-  padding-top: 1px;
-  padding-bottom: 1px;
-  padding-left: 2px;
-  border: inset 2px;
   white-space: pre-wrap;
-  background-color: rgb(231, 241, 241);
 }
 
 #version
