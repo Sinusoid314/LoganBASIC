@@ -120,15 +120,15 @@ document.head.appendChild(document.createElement('style')).textContent =
 mainDiv.insertAdjacentHTML("afterbegin",
 `
 <div id="menuBar" class="bar">
-  <button id="newBtn">New</button>
-  <button id="openFileBtn">Open File</button>
-  <button id="openURLBtn">Open URL</button>
-  <button id="saveBtn">Save</button>
+  <button id="newBtn"><img src="/assests/new.png" alt="New"><span>New</span></button>
+  <button id="openFileBtn"><img src="/assests/open_file.png" alt="Open File"><span>Open File</span></button>
+  <button id="openURLBtn"><img src="/assests/open_url.png" alt="Open URL"><span>Open URL</span></button>
+  <button id="saveBtn"><img src="/assests/save.png" alt="Save"><span>Save</span></button>
   <div class="bar-seperator"></div>
-  <button id="examplesBtn">Examples</button>
-  <button id="helpBtn">Help</button>
-  <button id="aboutBtn">About</button>
-  <button id="updatesBtn">Updates</button>
+  <button id="examplesBtn"><img src="/assests/examples.png" alt="Examples"><span>Examples</span></button>
+  <button id="helpBtn"><img src="/assests/help.png" alt="Help"><span>Help</span></button>
+  <button id="aboutBtn"><img src="/assests/about.png" alt="About"><span>About</span></button>
+  <button id="updatesBtn"><img src="/assests/updates.png" alt="Updates"><span>Updates</span></button>
 </div>
 
 <div id="editorDiv">
@@ -142,10 +142,10 @@ mainDiv.insertAdjacentHTML("afterbegin",
 </div>
 
 <div id="commandBar" class="bar">
-  <button id="runBtn">Run</button>
-  <button id="stopBtn" disabled>Stop</button>
+  <button id="runBtn"><img src="/assests/run.png" alt="Run"><span>Run</span></button>
+  <button id="stopBtn" disabled><img src="/assests/stop.png" alt="Stop"><span>Stop</span></button>
   <div class="bar-seperator"></div>
-  <button id="debugToggleBtn">Debug</button>
+  <button id="debugToggleBtn"><img src="/assests/debug.png" alt="Debug"><span>Debug</span></button>
   <div class="bar-seperator"></div>
 </div>
 

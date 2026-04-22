@@ -3,6 +3,7 @@
 	- Modified the toolbar and button styles to resemble a "Windows98" look.
 	- Fixed the styling for the About dialog's call-to-action list to make it centered and bold.
 	- Tweaked the main page style.
+	- Added icon images to the Editor buttons.
 
 (April 19, 2026)
 [v2.0.2.83]

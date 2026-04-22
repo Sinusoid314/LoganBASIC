@@ -11,6 +11,23 @@ body
   background-color: lightgray;
 }
 
+button img
+{
+  vertical-align: middle;
+  margin-right: 0.3em;
+}
+
+button:disabled img
+{
+  opacity: 0.5;
+  filter: grayscale(100%);
+}
+
+button span
+{
+  vertical-align: middle;
+}
+
 .buttonFace,
 button,
 .bar,
