@@ -1,3 +1,7 @@
+(April 22, 2026)
+[v2.0.2.85]
+	- Added icon images to the Debugger buttons.
+
 (April 21, 2026)
 [v2.0.2.84]
 	- Modified the toolbar and button styles to resemble a "Windows98" look.
