@@ -3,7 +3,6 @@
 
 
 [Features]
-    - Highlight the Updates button when the user first visits a new version of the site.
     - Add Memory Match game to examples.
 
     - Standard functions for array searching.

@@ -11,6 +11,25 @@ body
   background-color: lightgray;
 }
 
+@keyframes buttonBlinkAnimation {
+  0%, 100%
+  {
+    background-color: lightgray;
+    color: black;
+    text-shadow: 1px 1px white;
+  }
+  50%
+  {
+    background-color: royalblue;
+    color: white;
+    text-shadow: none;
+  }
+}
+
+.buttonBlink {
+  animation: buttonBlinkAnimation 2.5s infinite;
+}
+
 button img
 {
   vertical-align: middle;
@@ -150,6 +169,7 @@ var uiMessageMap = new Map();
 var paramFileURL = "";
 var autoRun = false;
 const WELCOME_HAS_BEEN_SHOWN_KEY = "welcomeHasBeenShown";
+const LAST_VISITED_VERSION_KEY = "lastVisitedVersion";
 
 readURLParams();
 
@@ -183,6 +203,7 @@ function readURLParams()
 }
 
 function checkIfWelcomeHasBeenShown()
+//
 {
   var welcomeHasBeenShown = window.localStorage.getItem(WELCOME_HAS_BEEN_SHOWN_KEY);
 
@@ -193,6 +214,20 @@ function checkIfWelcomeHasBeenShown()
   }
   
   return true;
+}
+
+function checkIfVersionHasChanged()
+//
+{
+  var lastVisitedVersion = window.localStorage.getItem(LAST_VISITED_VERSION_KEY);
+
+  if(!lastVisitedVersion || lastVisitedVersion != lbVersion)
+  {
+    window.localStorage.setItem(LAST_VISITED_VERSION_KEY, lbVersion);
+    return true;
+  }
+
+  return false;
 }
 
 function initWorker()
@@ -339,6 +374,12 @@ function window_onLoad(event)
     
     if(!checkIfWelcomeHasBeenShown() && !autoRun)
       aboutDialog.showModal();
+
+    if(checkIfVersionHasChanged() && !autoRun)
+    {
+      updatesBtn.classList.add("buttonBlink");
+      updatesBtn.querySelector("span").textContent = "See what's new!";
+    }
 
     if(paramFileURL == "")
       return;

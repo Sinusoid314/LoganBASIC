@@ -1,6 +1,7 @@
 (April 22, 2026)
 [v2.0.2.85]
 	- Added icon images to the Debugger buttons.
+	- Modified the Updates button to be highlighted when the user first visits a new version of the site.
 
 (April 21, 2026)
 [v2.0.2.84]

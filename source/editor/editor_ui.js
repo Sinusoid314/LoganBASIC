@@ -412,6 +412,9 @@ function updatesBtn_onClick(event)
 //Open the Updates page
 {
   window.open("../updates.html", "_blank");
+
+  updatesBtn.classList.remove("buttonBlink");
+  updatesBtn.querySelector("span").textContent = "Updates";
 }
 
 function editor_onInput(event)
