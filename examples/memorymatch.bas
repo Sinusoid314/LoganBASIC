@@ -20,7 +20,7 @@ end structure
 
 var maxSelections = 2
 array cardDeck[len(cardFaceImages) * maxSelections]
-array selectedCards[maxSelections]
+array selectedCards[0]
 
 var cardBorderSize = 4
 var cardUnselectedBorderColor = "palegreen"
@@ -201,7 +201,12 @@ end function
 
 
 function cardOnPointerUp(card)
-  card.isFlipped = not card.isFlipped
-  card.isSelected = not card.isSelected
+  if card.isFlipped then return
+  if result <> RESULTPENDING then return
+
+  card.isFlipped = true
+  card.isSelected = true
+  addArrayItem(selectedCards, card)
+
   drawCard(card)
 end function
