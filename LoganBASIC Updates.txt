@@ -1,3 +1,7 @@
+(April 23, 2026)
+[v2.0.2.85]
+	- Modified the condition for highlighting the Updates button to not highlight it if the About dialog is shown on the first page visit.
+
 (April 22, 2026)
 [v2.0.2.85]
 	- Added icon images to the Debugger buttons.

@@ -373,10 +373,14 @@ function window_onLoad(event)
     mainDiv.insertAdjacentHTML("beforeend", versionHTML);
     
     if(!checkIfWelcomeHasBeenShown() && !autoRun)
+    {
       aboutDialog.showModal();
-
-    if(checkIfVersionHasChanged() && !autoRun)
-      toggleUpdatesBtnHighlighted();
+    }
+    else
+    {
+      if(checkIfVersionHasChanged() && !autoRun)
+        toggleUpdatesBtnHighlighted();
+    }
 
     if(paramFileURL == "")
       return;
