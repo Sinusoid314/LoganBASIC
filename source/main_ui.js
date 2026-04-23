@@ -27,7 +27,7 @@ body
 }
 
 .buttonBlink {
-  animation: buttonBlinkAnimation 2.5s infinite;
+  animation: buttonBlinkAnimation 2s 3;
 }
 
 button img
