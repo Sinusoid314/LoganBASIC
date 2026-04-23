@@ -224,6 +224,15 @@ function switchEditorMode()
   editorCode.readOnly = !editorCode.readOnly;
 }
 
+function toggleUpdatesBtnHighlighted()
+//
+{
+  if(updatesBtn.classList.toggle("buttonBlink"))
+    updatesBtn.querySelector("span").textContent = "See what's new!";
+  else
+    updatesBtn.querySelector("span").textContent = "Updates";
+}
+
 function updateEditorGutter()
 {
   var currLineCount = editorCode.value.split("\n").length;
@@ -412,9 +421,7 @@ function updatesBtn_onClick(event)
 //Open the Updates page
 {
   window.open("../updates.html", "_blank");
-
-  updatesBtn.classList.remove("buttonBlink");
-  updatesBtn.querySelector("span").textContent = "Updates";
+  toggleUpdatesBtnHighlighted();
 }
 
 function editor_onInput(event)

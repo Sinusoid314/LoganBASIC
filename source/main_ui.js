@@ -376,10 +376,7 @@ function window_onLoad(event)
       aboutDialog.showModal();
 
     if(checkIfVersionHasChanged() && !autoRun)
-    {
-      updatesBtn.classList.add("buttonBlink");
-      updatesBtn.querySelector("span").textContent = "See what's new!";
-    }
+      toggleUpdatesBtnHighlighted();
 
     if(paramFileURL == "")
       return;
