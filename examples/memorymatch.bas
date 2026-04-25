@@ -221,15 +221,39 @@ end function
 
 
 function compareSelectedCards()
+  var cardIndex
 
+  for cardIndex = 1 to len(selectedCards)
+    if selectedCards[0].image <> selectedCards[cardIndex].image then return RESULTFAIL
+  next cardIndex
+
+  return RESULTSUCCESS
 end function
 
 
 function displayResult()
+  var resultImage, imageX, imageY
+
+  if result = RESULTSUCCESS then
+    resultImage = successImage
+  else
+    resultImage = failImage
+  end if
+
+  imageX = (cardGridWidth / 2) - (getImageWidth(resultImage) / 2)
+  imageY = (cardGridHeight / 2) - (getImageHeight(resultImage) / 2)
+
+  drawImage(resultImage, imageX, imageY)
+
   pauseFor(resultDisplayDuration)
 end function
 
 
 function startNewTry()
+  var cardIndex
 
+  for cardIndex = 0 to len(selectedCards) - 1
+    selectedCards[cardIndex].isSelected = false
+    if result = RESULTFAIL then selectedCards[cardIndex].isFlippedx = false
+  netx cardIndex
 end function
