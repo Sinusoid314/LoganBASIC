@@ -209,4 +209,27 @@ function cardOnPointerUp(card)
   addArrayItem(selectedCards, card)
 
   drawCard(card)
+
+  if len(selectedCards) < maxSelections then return
+
+  result = compareSelectedCards()
+
+  displayResult()
+
+  startNewTry()
+end function
+
+
+function compareSelectedCards()
+
+end function
+
+
+function displayResult()
+  pauseFor(resultDisplayDuration)
+end function
+
+
+function startNewTry()
+
 end function
