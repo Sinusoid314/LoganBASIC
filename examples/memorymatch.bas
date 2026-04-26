@@ -21,6 +21,7 @@ end structure
 var maxSelections = 2
 array cardDeck[len(cardFaceImages) * maxSelections]
 array selectedCards[0]
+var flippedCardsCount = 0
 
 var cardBorderSize = 4
 var cardUnselectedBorderColor = "palegreen"
@@ -207,6 +208,7 @@ function cardOnPointerUp(card)
   card.isFlipped = true
   card.isSelected = true
   addArrayItem(selectedCards, card)
+  flippedCardsCount = flippedCardsCount + 1
 
   drawCard(card)
 
@@ -223,7 +225,7 @@ end function
 function compareSelectedCards()
   var cardIndex
 
-  for cardIndex = 1 to len(selectedCards)
+  for cardIndex = 1 to len(selectedCards) - 1
     if selectedCards[0].image <> selectedCards[cardIndex].image then return RESULTFAIL
   next cardIndex
 
@@ -254,6 +256,26 @@ function startNewTry()
 
   for cardIndex = 0 to len(selectedCards) - 1
     selectedCards[cardIndex].isSelected = false
-    if result = RESULTFAIL then selectedCards[cardIndex].isFlippedx = false
-  netx cardIndex
+    if result = RESULTFAIL then
+      selectedCards[cardIndex].isFlipped = false
+      flippedCardsCount = flippedCardsCount - 1
+    end if
+  next cardIndex
+
+  redim selectedCards[0]
+
+  result = RESULTPENDING
+
+  drawCardGrid()
+
+  if flippedCardsCount = len(cardDeck) then
+    gameOver = true
+    displayGameOver()
+  end if
+end function
+
+
+function displayGameOver()
+  setTextFont("50px bold")
+  drawText("GAME OVER", 20, 200)
 end function
