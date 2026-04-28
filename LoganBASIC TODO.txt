@@ -4,12 +4,11 @@
 
 [Features]
     - Add Memory Match game to examples.
+    - getTextWidth() and getTextHeight() canvas native functions.
 
     - Standard functions for array searching.
     - Inline-If standard function.
     - Ability to include underscore characters in identifiers.
-    - getTextWidth() and getTextHeight() canvas native functions.
-    - getSpriteSheetFrameWith() and getSpriteSheetFrameHeight() sprite native functions.
 
     - Ability of run() native function to return error messages instead of terminating the program.
     - Ability to run code in debugger.
