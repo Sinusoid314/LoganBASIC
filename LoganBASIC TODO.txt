@@ -4,7 +4,6 @@
 
 [Features]
     - Add Memory Match game to examples.
-    - getTextWidth() and getTextHeight() canvas native functions.
 
     - Standard functions for array searching.
     - Inline-If standard function.

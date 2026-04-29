@@ -37,7 +37,9 @@ const canvasNativeFuncs = [
                   new ObjNativeFunc("resetDeltaTime", 0, 0, funcResetDeltaTime),
                   new ObjNativeFunc("getDeltaTime", 0, 0, funcGetDeltaTime),
                   new ObjNativeFunc("setMaxDeltaTime", 1, 1, funcSetMaxDeltaTime),
-                  new ObjNativeFunc("getMaxDeltaTime", 0, 0, funcGetMaxDeltaTime)
+                  new ObjNativeFunc("getMaxDeltaTime", 0, 0, funcGetMaxDeltaTime),
+                  new ObjNativeFunc("getTextDrawWidth", 1, 1, funcGetTextDrawWidth),
+                  new ObjNativeFunc("getTextDrawHeight", 1, 1, funcGetTextDrawHeight)
                  ];
 
 var canvasEvents = [
@@ -51,6 +53,7 @@ var canvasEvents = [
 var drawBufferDoneEvent = new CanvasEvent("drawbufferdone", 0, null);
 var drawBufferInProgress = false;
 var imageResultCallback = null;
+var contextResultCallback = null;
 var deltaTime = 0;
 var maxDeltaTime = 0.03;
 var prevTime =  0;
@@ -68,6 +71,7 @@ function setCanvasWorkerEvents()
   workerOnProgEndHandlers.push(canvasWorker_onProgEnd);
 
   workerMessageMap.set(MSGID_IMAGE_REQUEST_RESULT, onMsgImageRequestResult);
+  workerMessageMap.set(MSGID_CONTEXT_REQUEST_RESULT, onMsgContextRequestResult);
   workerMessageMap.set(MSGID_CANVAS_EVENT, onMsgCanvasEvent);
   workerMessageMap.set(MSGID_DRAW_CANVAS_BUFFER_DONE, onMsgDrawCanvasBufferDone);
 }
@@ -101,12 +105,42 @@ function sendImageRequest(vm, msgId, msgData)
   vm.runLoopExitFlag = true;
 }
 
+function onMsgContextRequestResult(msgData)
+//
+{
+  if(!contextResultCallback)
+    return;
+
+  if(msgData.errorMsg != "")
+    contextResultCallback.vm.runError(msgData.errorMsg);
+  else
+  {
+    contextResultCallback.vm.stack.push(msgData.resultVal);
+    contextResultCallback.resumeVM();
+  }
+}
+
+function sendContextRequest(vm, msgId, msgData)
+//
+{
+  if(!contextResultCallback)
+    contextResultCallback = new CallbackContext(vm);
+  else
+    contextResultCallback.vm = vm;
+
+  postMessage({msgId: msgId, msgData: msgData});
+
+  expectedResultMessageID = MSGID_CONTEXT_REQUEST_RESULT;
+  vm.runLoopExitFlag = true;
+}
+
 function canvasWorker_onProgEnd()
 //
 {
   canvasEvents.forEach(event => event.callback = null);
   drawBufferInProgress = false;
   imageResultCallback = null;
+  contextResultCallback = null;
 }
 
 function onMsgCanvasEvent(msgData)
@@ -479,17 +513,34 @@ function funcResetDeltaTime(vm, args)
 }
 
 function funcGetDeltaTime(vm, args)
+//
 {
   return deltaTime;
 }
 
 function funcSetMaxDeltaTime(vm, args)
+//
 {
   maxDeltaTime = args[0];
   return null;
 }
 
 function funcGetMaxDeltaTime(vm, args)
+//
 {
   return maxDeltaTime;
+}
+
+function funcGetTextDrawWidth(vm, args)
+//
+{
+  sendContextRequest(vm, MSGID_GET_TEXT_DRAW_WIDTH_REQUEST, {text: args[0]});
+  return undefined;
+}
+
+function funcGetTextDrawHeight(vm, args)
+//
+{
+  sendContextRequest(vm, MSGID_GET_TEXT_DRAW_HEIGHT_REQUEST, {text: args[0]});
+  return undefined;
 }

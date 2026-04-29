@@ -67,6 +67,8 @@ function setCanvasUIEvents()
   uiMessageMap.set(MSGID_SET_FILL_COLOR, onMsgSetFillColor);
   uiMessageMap.set(MSGID_SET_LINE_COLOR, onMsgSetLineColor);
   uiMessageMap.set(MSGID_SET_LINE_SIZE, onMsgSetLineSize);
+  uiMessageMap.set(MSGID_GET_TEXT_DRAW_WIDTH_REQUEST, onMsgGetTextDrawWidthRequest);
+  uiMessageMap.set(MSGID_GET_TEXT_DRAW_HEIGHT_REQUEST, onMsgGetTextDrawHeightRequest);
 }
 
 function resetCanvas()
@@ -131,6 +133,12 @@ function sendImageRequestResult(resultVal, errorMsg = "")
 //
 {
   progWorker.postMessage({msgId: MSGID_IMAGE_REQUEST_RESULT, msgData: {resultVal: resultVal, errorMsg: errorMsg}});
+}
+
+function sendContextRequestResult(resultVal, errorMsg = "")
+//
+{
+  progWorker.postMessage({msgId: MSGID_CONTEXT_REQUEST_RESULT, msgData: {resultVal: resultVal, errorMsg: errorMsg}});
 }
 
 function image_onLoad(event)
@@ -478,3 +486,20 @@ function onMsgSetLineSize(msgData)
   activeContext.lineWidth = msgData.size;
 }
 
+function onMsgGetTextDrawWidthRequest(msgData)
+//
+{
+  var metrics = activeContext.measureText(msgData.text);
+  var drawWidth = metrics.width;
+
+  sendContextRequestResult(drawWidth);
+}
+
+function onMsgGetTextDrawHeightRequest(msgData)
+//
+{
+  var metrics = activeContext.measureText(msgData.text);
+  var drawHeight = metrics.actualBoundingBoxAscent + metrics.actualBoundingBoxDescent;
+
+  sendContextRequestResult(drawHeight);
+}

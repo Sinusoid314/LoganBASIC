@@ -1,0 +1,46 @@
+<html>
+
+<head>
+  <title></title>
+  <link rel="stylesheet" type="text/css" href="../../reference_doc.css"></link>
+  <script defer="defer" type="text/javascript" src="../../reference_doc.js"></script>
+</head>
+
+<body>
+
+<h3>getTextDrawWidth(text)</h3>
+
+<h4>Description</h4>
+<p id="description">
+Returns the width, in pixels, of <i>text</i> as it would appear when drawn with the current text font.
+</p>
+
+<h4>Usage</h4>
+<code id="usageCode">
+var canvasWidth = 400
+var canvasHeight = 400
+var helloText = "Hello"
+var worldText = "World!"
+var drawX = 0
+var drawY = 100
+
+setCanvasWidth(canvasWidth)
+setCanvasHeight(canvasHeight)
+showCanvas()
+
+setTextFont("30px system-ui")
+drawX = (canvasWidth / 2) - (<b>getTextDrawWidth(helloText)</b> / 2)
+drawText(helloText, drawX, drawY)
+
+setTextFont("48px cursive")
+drawX = (canvasWidth / 2) - (<b>getTextDrawWidth(worldText)</b> / 2)
+drawY = drawY + getTextDrawHeight(helloText)
+drawText(worldText, drawX, drawY)
+</code>
+
+<a id="usageRun" href="../../../../">Run</a>
+|
+<a id="usageOpen" href="../../../../">Open in Code Editor</a>
+
+</body>
+</html>
