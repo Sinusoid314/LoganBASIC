@@ -1,6 +1,7 @@
 (April 28, 2026)
 [v2.0.2.86]
 	- Added getTextDrawWidth() and getTextDrawHeight() canvas native functions.
+	- Fixed bug with canvas text being drawn relative to its bottom position instead of its top.
 
 (April 25, 2026)
 [v2.0.2.85]

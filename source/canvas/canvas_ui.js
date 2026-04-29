@@ -426,6 +426,8 @@ function onMsgRemoveCanvasEvent(msgData)
 function onMsgDrawText(msgData)
 //
 {
+  activeContext.textBaseline = "top";
+  
   if(msgData.isFilled)
     activeContext.fillText(msgData.text, msgData.drawX, msgData.drawY);
   else
