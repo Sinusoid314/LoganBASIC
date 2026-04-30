@@ -216,7 +216,7 @@ function cardOnPointerUp(card)
 
   result = compareSelectedCards()
 
-  displayResult()
+  drawResult()
 
   startNewTry()
 end function
@@ -233,7 +233,7 @@ function compareSelectedCards()
 end function
 
 
-function displayResult()
+function drawResult()
   var resultImage, imageX, imageY
 
   if result = RESULTSUCCESS then
@@ -270,12 +270,37 @@ function startNewTry()
 
   if flippedCardsCount = len(cardDeck) then
     gameOver = true
-    displayGameOver()
+    drawGameOver()
   end if
 end function
 
 
-function displayGameOver()
+function drawGameOver()
+  var textX, textY, textWidth, textHeight
+  var rectX, rectY, rectWidth, rectHeight
+  var text = "GAME OVER"
+
   setTextFont("50px bold")
-  drawText("GAME OVER", 20, 200)
+
+  textWidth = getTextDrawWidth(text)
+  textHeight = getTextDrawHeight(text)
+  textX = (cardGridWidth / 2) - (textWidth / 2)
+  textY = (cardGridHeight / 2) - (textHeight / 2)
+
+  rectWidth = textWidth * 1.05
+  rectHeight = textHeight * 1.65
+  rectX = textX - ((rectWidth - textWidth) / 2)
+  rectY = textY - ((rectHeight - textHeight) / 2)
+
+  setFillColor("black")
+  drawRect(rectX + 1, rectY + 1, rectWidth, rectHeight, true)
+
+  setFillColor("palegreen")
+  drawRect(rectX, rectY, rectWidth, rectHeight, true)
+
+  setFillColor("white")
+  drawText(text, textX + 2, textY + 2)
+
+  setFillColor("black")
+  drawText(text, textX, textY)
 end function
