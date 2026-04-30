@@ -1,3 +1,7 @@
+'Memory Match
+'
+'Flip over any two cards and see if they match.
+
 var imagePath = "../examples/images/"
 var successImage = "success"
 var failImage = "fail"
@@ -23,24 +27,31 @@ array cardDeck[len(cardFaceImages) * maxSelections]
 array selectedCards[0]
 var flippedCardsCount = 0
 
-var cardBorderSize = 4
 var cardUnselectedBorderColor = "palegreen"
 var cardSelectedBorderColor = "gold"
+var cardBorderSize = 4
 var cardWidth = 100, cardHeight = 100
+var cardGridX, cardGridY
 var cardGridWidth, cardGridHeight
+var triesText = "Tries:  "
+var headerX, headerY
+var headerWidth, headerHeight
+var canvasWidth, canvasHeight
 
 var resultDisplayDuration = 700
 var RESULTPENDING = "pending"
 var RESULTSUCCESS = "success"
 var RESULTFAIL = "fail"
 var result = RESULTPENDING
+var tryCount = 0
 var gameOver = false
 
 loadResources()
 createCardDeck()
 shuffleCardDeck()
-calcCardGridLayout()
+calcDrawLayout()
 initCanvas()
+drawHeader()
 drawCardGrid()
 
 wait
@@ -116,21 +127,31 @@ function shuffleCardDeck()
 end function
 
 
-function calcCardGridLayout()
+function calcDrawLayout()
   var totalColumns = getClosestSquareGridColumns(len(cardDeck))
   var totalRows = len(cardDeck) / totalColumns
   var row, column, deckIndex
 
+  headerX = 0
+  headerY = 0
+  headerHeight = 30
+
+  cardGridX = 0
+  cardGridY = headerY + headerHeight
+  cardGridWidth = (totalColumns * ((cardBorderSize * 2) + cardWidth))
+  cardGridHeight = (totalRows * ((cardBorderSize * 2) + cardHeight))
+
+  headerWidth = cardGridWidth
+  canvasWidth = cardGridWidth
+  canvasHeight = cardGridY + cardGridHeight
+
   for row = 0 to totalRows - 1
     for column = 0 to totalColumns - 1
       deckIndex = (row * totalColumns) + column
-      cardDeck[deckIndex].x = (column * ((cardBorderSize * 2) + cardWidth)) + cardBorderSize
-      cardDeck[deckIndex].y = (row * ((cardBorderSize * 2) + cardHeight)) + cardBorderSize
+      cardDeck[deckIndex].x = (column * ((cardBorderSize * 2) + cardWidth)) + cardBorderSize + cardGridX
+      cardDeck[deckIndex].y = (row * ((cardBorderSize * 2) + cardHeight)) + cardBorderSize + cardGridY
     next column
   next row
-
-  cardGridWidth = (totalColumns * ((cardBorderSize * 2) + cardWidth))
-  cardGridHeight = (totalRows * ((cardBorderSize * 2) + cardHeight))
 end function
 
 
@@ -148,13 +169,33 @@ end function
 
 
 function initCanvas()
-  setCanvasWidth(cardGridWidth)
-  setCanvasHeight(cardGridHeight)
+  setCanvasWidth(canvasWidth)
+  setCanvasHeight(canvasHeight)
 
   hideConsole()
   showCanvas()
 
   setCanvasEvent("pointerup", canvasOnPointerUp)
+end function
+
+
+function drawHeader()
+  var textX, textY
+
+  setFillColor("lightgray")
+  drawRect(headerX, headerY, headerWidth, headerHeight, true)
+
+  setLineSize(1)
+  setLineColor("black")
+  drawRect(headerX, headerY, headerWidth, headerHeight, false)
+
+  setFillColor("black")
+  setTextFont("14px system-ui")
+
+  textX = 10
+  textY = (headerHeight / 2) - (getTextDrawHeight(triesText) / 2)
+  drawText(triesText, textX,  textY)
+  drawText(str(tryCount), textX + getTextDrawWidth(triesText), textY)
 end function
 
 
@@ -265,7 +306,9 @@ function startNewTry()
   redim selectedCards[0]
 
   result = RESULTPENDING
+  tryCount = tryCount + 1
 
+  drawHeader()
   drawCardGrid()
 
   if flippedCardsCount = len(cardDeck) then

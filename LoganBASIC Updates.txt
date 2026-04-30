@@ -1,3 +1,7 @@
+(April 30, 2026)
+[v2.0.2.86]
+	- Added a try counter to Memory Match example.
+
 (April 29, 2026)
 [v2.0.2.86]
 	- Added to Memory Match example.
