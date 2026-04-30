@@ -1,3 +1,8 @@
+(April 29, 2026)
+[v2.0.2.86]
+	- Added to Memory Match example.
+	- Changed the debugger pane's style to the 'button face' style.
+
 (April 28, 2026)
 [v2.0.2.86]
 	- Added getTextDrawWidth() and getTextDrawHeight() canvas native functions.

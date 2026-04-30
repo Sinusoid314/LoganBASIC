@@ -46,7 +46,7 @@ document.head.appendChild(document.createElement('style')).textContent =
   position: fixed;
   top: 0;
   left: 0;
-  background-color: rgb(231, 241, 241);
+  background-color: lightgray;
   overflow-x: hidden;
   display: none;
 }
@@ -58,7 +58,6 @@ document.head.appendChild(document.createElement('style')).textContent =
   padding: 0;
   cursor: ew-resize;
   display: block;
-  background: lightsteelblue;
   float: right;
 }
 
@@ -85,8 +84,8 @@ document.head.appendChild(document.createElement('style')).textContent =
 //Debugger HTML
 mainDiv.insertAdjacentHTML("beforebegin",
 `
-<div id="debugDiv">
-  <div id="debugResizer"></div>
+<div id="debugDiv" class="bar">
+  <div id="debugResizer" class="bar"></div>
   
   <div id="debugWrapper">
     <div id="debugBar" class="bar">
