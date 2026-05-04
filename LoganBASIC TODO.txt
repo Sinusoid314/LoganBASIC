@@ -1,10 +1,11 @@
 [Bugs]
-    - 
+    - Flickering when drawing header in Memory Match example.
 
 
 [Features]
     - Add Memory Match game to examples.
 
+    - timerIsRunning() standard function.
     - Standard functions for array searching.
     - Inline-If standard function.
     - Ability to include underscore characters in identifiers.
