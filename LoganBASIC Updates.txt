@@ -1,3 +1,7 @@
+(May 5, 2026)
+[v2.0.2.87]
+	- Added timerIsRunning() standard function.
+
 (May 3, 2026)
 [v2.0.2.86]
 	- Added a game timer to Memory Match example.

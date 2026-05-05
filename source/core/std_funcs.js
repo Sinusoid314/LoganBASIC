@@ -22,6 +22,7 @@ const stdNativeFuncs = [
                   new ObjNativeFunc("val", 1, 1, funcVal),
                   new ObjNativeFunc("startTimer", 2, 2, funcStartTimer),
                   new ObjNativeFunc("stopTimer", 0, 0, funcStopTimer),
+                  new ObjNativeFunc("timerIsRunning", 0, 0, funcTimerIsRunning),
                   new ObjNativeFunc("addArrayItem", 2, 3, funcAddArrayItem),
                   new ObjNativeFunc("removeArrayItem", 2, 2, funcRemoveArrayItem),
                   new ObjNativeFunc("clamp", 3, 3, funcClamp),
@@ -298,6 +299,12 @@ function funcStopTimer(vm, args)
   timerID = 0;
 
   return null;
+}
+
+function funcTimerIsRunning(vm, args)
+//
+{
+  return (timerID != 0);
 }
 
 function funcAddArrayItem(vm, args)
