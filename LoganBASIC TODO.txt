@@ -1,6 +1,6 @@
 [Bugs]
-    - Program hangs when calling the input() function.
     - Flickering when drawing header in Memory Match example.
+    - Text drawn on canvas is incorrectly positioned.
 
 
 [Features]

@@ -30,7 +30,10 @@ do
     if not <b>timerIsRunning()</b> then startTimer(1000, onTick)
   end if
 
-  if choice = "stop" then stopTimer()
+  if choice = "stop" then
+    stopTimer()
+    tickCount = 0
+  end if
 loop while choice <> "q"
 
 stopTimer()

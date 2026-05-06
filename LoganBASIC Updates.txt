@@ -1,3 +1,7 @@
+(May 6, 2026)
+[v2.0.2.88]
+	- Changed all of the message ID values in the common modules to unique string values.
+
 (May 5, 2026)
 [v2.0.2.87]
 	- Added timerIsRunning() standard function.
