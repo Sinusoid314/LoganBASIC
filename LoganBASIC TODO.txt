@@ -1,6 +1,5 @@
 [Bugs]
     - Flickering when drawing header in Memory Match example.
-    - Text drawn on canvas is incorrectly positioned.
 
 
 [Features]

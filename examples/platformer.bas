@@ -142,8 +142,8 @@ function mainLoop()
   
   drawSprites()
   
-  drawText(str(deltaTime * 1000) + " ms", 10, 10)
-  drawText(str(getSpriteVelocityX("bubba")) + ", " + str(getSpriteVelocityY("bubba")), 10, 20)
+  drawText(str(deltaTime * 1000) + " ms", 10, 5)
+  drawText(str(getSpriteVelocityX("bubba")) + ", " + str(getSpriteVelocityY("bubba")), 10, 15)
 
   displayControls()
   
@@ -355,5 +355,5 @@ end function
 function displayControls()
   setTextFont("12px system-ui")
   setFillColor("black")
-  drawText("Controls:    Left/right arrow keys = Move left/right,    Spacebar (tap) = Short jump,    Spacebar (hold) = High jump,    Q = Quit", 10, canvasHeight - 5)
+  drawText("Controls:    Left/right arrow keys = Move left/right,    Spacebar (tap) = Short jump,    Spacebar (hold) = High jump,    Q = Quit", 10, canvasHeight - 15)
 end function

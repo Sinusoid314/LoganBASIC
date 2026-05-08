@@ -55,7 +55,7 @@ for countIndex = 0 to alphabetSize - 1
   drawRect(barX, barY, barWidth, barHeight, false)
 
   setFillColor("black")
-  drawText(chr(asc("A") + countIndex), barX + 5, barViewHeight + 15)
+  drawText(chr(asc("A") + countIndex), barX + 5, barViewHeight + 5)
 
   print chr(asc("A") + countIndex) + " - " + letterCounts[countIndex]
 next countIndex

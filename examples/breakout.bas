@@ -75,7 +75,7 @@ end function
 function mainLoop()
   if gameOver then
     disableCanvasBuffer()
-    drawText("GAME OVER", canvasWidth / 2, canvasHeight / 2)
+    drawText("GAME OVER", (canvasWidth / 2) - 30, canvasHeight / 2)
     end
   end if
   
@@ -232,5 +232,5 @@ end function
 function displayControls()
   setTextFont("12px system-ui")
   setFillColor("black")
-  drawText("Controls:    Left/right arrow keys = Move paddle left/right", 10, canvasHeight - 5)
+  drawText("Controls:    Left/right arrow keys = Move paddle left/right", 10, canvasHeight - 15)
 end function

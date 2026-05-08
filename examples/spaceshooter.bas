@@ -172,15 +172,15 @@ function introLoop()
 
   setTextFont("42px system-ui")
   setFillColor("red")
-  drawText("Space Shooter", int((canvasWidth - 260) / 2) , int(canvasHeight / 2) - 70)
+  drawText("Space Shooter", int((canvasWidth - 260) / 2) , int(canvasHeight / 2) - 110)
 
   setTextFont("12px system-ui")
   setFillColor("goldenrod")
-  drawText("A totally original game. Trust me, bro.", int((canvasWidth - 190) / 2) , int(canvasHeight / 2) - 40)
+  drawText("A totally original game. Trust me, bro.", int((canvasWidth - 190) / 2) , int(canvasHeight / 2) - 60)
 
   setTextFont("16px system-ui")
   setFillColor("white")
-  drawText("Press any key to continue...", int((canvasWidth - 185) / 2) , int(canvasHeight / 2) + 50)
+  drawText("Press any key to continue...", int((canvasWidth - 185) / 2) , int(canvasHeight / 2) + 10)
 
   drawCanvasBuffer()
 end function
@@ -607,14 +607,14 @@ end function
 function displayScore()
   setTextFont("12px system-ui")
   setFillColor("white")
-  drawText("Score: " + str(score), 10, 15)
+  drawText("Score: " + str(score), 10, 5)
 end function
 
 'Display the control intstructions on the screen
 function displayControls()
   setTextFont("12px system-ui")
   setFillColor("white")
-  drawText("Controls:    Arrow keys = Move ship,    Spacebar = Shoot,    Q = Quit", 110, 15)
+  drawText("Controls:    Arrow keys = Move ship,    Spacebar = Shoot,    Q = Quit", 110, 5)
 end function
 
 
@@ -622,5 +622,5 @@ end function
 function displayGameOver()
   setTextFont("30px system-ui")
   setFillColor("red")
-  drawText("Game Over", int((canvasWidth - 150) / 2) , int(canvasHeight / 2))
+  drawText("Game Over", int((canvasWidth - 150) / 2) , int(canvasHeight / 2) - 30)
 end function

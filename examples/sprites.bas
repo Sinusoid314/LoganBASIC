@@ -87,7 +87,7 @@ function mainLoop()
   clearCanvas()
   drawImage("bg", 0, 0, canvasWidth, canvasHeight)
   drawSprites()
-  drawText(str(deltaTime * 1000) + " ms", 10, 10)
+  drawText(str(deltaTime * 1000) + " ms", 10, 0)
   
   drawCanvasBuffer(mainLoop)
 end function
