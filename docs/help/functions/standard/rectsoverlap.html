@@ -35,6 +35,8 @@ setLineSize(2)
 drawRect(rectX1, rectY1, rectWidth, rectHeight, false)
 drawRect(rectX2, rectY2, rectWidth, rectHeight, false)
 
+setCanvasEvent("drawbufferdone", mainLoop)
+
 mainLoop()
 
 wait
@@ -55,7 +57,7 @@ function mainLoop()
 
   if rectX2 = 0 then end
 
-  drawCanvasBuffer(mainLoop)
+  drawCanvasBuffer()
 end function
 </code>
 

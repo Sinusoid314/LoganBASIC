@@ -30,6 +30,7 @@ setSpriteFrameRange("bubba", 0, 3)
 setSpriteFrameRate("bubba", 0.24)
 
 setCanvasEvent("pointerup", onPointerUp)
+setCanvasEvent("drawbufferdone", mainLoop)
 
 mainLoop()
 
@@ -48,7 +49,7 @@ function mainLoop()
 
   drawSprites()
 
-  drawCanvasBuffer(mainLoop)
+  drawCanvasBuffer()
 end function
 
 function onPointerUp(pointerX, pointerY)

@@ -33,6 +33,8 @@ setLineSize(2)
 
 initMaxDeltaTime = getMaxDeltaTime()
 
+setCanvasEvent("drawbufferdone", mainLoop)
+
 mainLoop()
 
 wait
@@ -61,7 +63,7 @@ function mainLoop()
 
   pauseFor(200)
 
-  drawCanvasBuffer(mainLoop)
+  drawCanvasBuffer()
 end function
 </code>
 

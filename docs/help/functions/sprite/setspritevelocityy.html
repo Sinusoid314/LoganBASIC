@@ -33,6 +33,8 @@ setSpriteFrameRange("bubba", 4, 4)
 setSpriteVelocityX("bubba", 100)
 <b>setSpriteVelocityY("bubba", -100)</b>
 
+setCanvasEvent("drawbufferdone", mainLoop)
+
 mainLoop()
 
 wait
@@ -55,7 +57,7 @@ function mainLoop()
 
   drawSprites()
 
-  drawCanvasBuffer(mainLoop)
+  drawCanvasBuffer()
 end function
 </code>
 

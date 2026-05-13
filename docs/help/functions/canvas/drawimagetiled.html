@@ -34,6 +34,8 @@ setCanvasWidth(imageWidth)
 setCanvasHeight(imageHeight)
 enableCanvasBuffer()
 
+setCanvasEvent("drawbufferdone", mainLoop)
+
 mainLoop()
 
 wait
@@ -47,7 +49,7 @@ function mainLoop()
 
   offsetX = offsetX + 5
 
-  drawCanvasBuffer(mainLoop)
+  drawCanvasBuffer()
 end function
 </code>
 

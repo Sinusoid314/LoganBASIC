@@ -26,6 +26,8 @@ loadSpriteSheet("bubba-sheet", "../examples/images/bubba.png", 5, 2)
 addSprite("bubba", "bubba-sheet", 10, 10)
 setSpriteFrameRange("bubba", 0, 0)
 
+setCanvasEvent("drawbufferdone", mainLoop)
+
 mainLoop()
 
 wait
@@ -43,7 +45,7 @@ function mainLoop()
 
   drawSprites()
 
-  drawCanvasBuffer(mainLoop)
+  drawCanvasBuffer()
 end function
 </code>
 

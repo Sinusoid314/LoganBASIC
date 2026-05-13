@@ -12,7 +12,7 @@
   <h1>Logan BASIC Updates</h1>
 
   <div class="update">
-    <div class="version">v2.0.2</div>
+    <div class="version">v2.1.0</div>
     <div class="date"></div>
     <ul class="features">
       <li>Added "drawbufferdone" event to setCanvasEvent() function that fires after the canvas backbuffer has
@@ -32,6 +32,9 @@
           update counts to measure sprite frame duration</li>
       <li>Added "Memory Match" game example.</li>
       <li>Added getTextDrawWidth() and getTextDrawHeight() canvas native functions.</li>
+      <li>Removed the callback-function parameter for the drawCanvasBuffer() canvas native function. Now, calling
+          setCanvasEvent() with the "drawbufferdone" event is the only way to set an event handler for when the canvas
+          buffer is done drawing, making the assignment of the event handler more explicit.</li>
     </ul>
   </div>
 

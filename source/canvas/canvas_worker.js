@@ -321,31 +321,8 @@ function funcDisableCanvasBuffer(vm, args)
 function funcDrawCanvasBuffer(vm, args)
 //
 {
-  var callbackUserFunc;
-
   if(drawBufferInProgress)
     return;
-
-  if(args.length > 0)
-  {
-    callbackUserFunc = args[0];
-
-    if(!(callbackUserFunc instanceof ObjUserFunc))
-      vm.runError("Argument of DrawCanvasBuffer() must be a function.");
-
-    if(callbackUserFunc.paramCount != 0)
-      vm.runError("Callback function for DrawCanvasBuffer() must have zero parameters.");
-
-    if(!drawBufferDoneEvent.callback)
-    {
-      drawBufferDoneEvent.callback = new CallbackContext(vm, callbackUserFunc);
-    }
-    else
-    {
-      drawBufferDoneEvent.callback.vm = vm;
-      drawBufferDoneEvent.callback.userFunc = callbackUserFunc;
-    }
-  }
 
   postMessage({msgId: MSGID_DRAW_CANVAS_BUFFER, msgData: null});
   drawBufferInProgress = true;
@@ -361,14 +338,14 @@ function funcSetCanvasEvent(vm, args)
   var eventUserFunc;
 
   if(eventIndex == -1)
-    vm.runError("SetCanvasEvent() does not recognize event named '" + eventName + "'.");
+    vm.runError("setCanvasEvent() does not recognize event named '" + eventName + "'.");
 
   if(args.length == 2)
   {
     eventUserFunc = args[1];
 
     if(!(eventUserFunc instanceof ObjUserFunc))
-      vm.runError("Second argument of SetCanvasEvent() must be a function.");
+      vm.runError("Second argument of setCanvasEvent() must be a function.");
 
     if(eventUserFunc.paramCount != canvasEvents[eventIndex].paramCount)
       vm.runError("Handler function " + eventUserFunc.ident + "() for event '" + eventName + "' must have " + canvasEvents[eventIndex].paramCount + " parameters.");

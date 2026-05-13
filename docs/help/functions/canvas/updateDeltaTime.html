@@ -33,6 +33,8 @@ enableCanvasBuffer()
 setFillColor("red")
 setLineSize(2)
 
+setCanvasEvent("drawbufferdone", mainLoop)
+
 mainLoop()
 
 wait
@@ -53,7 +55,7 @@ function mainLoop()
 
   if x > 100 then reset()
 
-  drawCanvasBuffer(mainLoop)
+  drawCanvasBuffer()
 end function
 </code>
 

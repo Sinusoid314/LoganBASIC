@@ -34,6 +34,8 @@ setLineSize(2)
 drawCircle(circleX1, circleY1, circleRadius, false)
 drawCircle(circleX2, circleY2, circleRadius, false)
 
+setCanvasEvent("drawbufferdone", mainLoop)
+
 mainLoop()
 
 wait
@@ -54,7 +56,7 @@ function mainLoop()
 
   if circleX2 = 50 then end
 
-  drawCanvasBuffer(mainLoop)
+  drawCanvasBuffer()
 end function
 </code>
 

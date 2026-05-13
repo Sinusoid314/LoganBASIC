@@ -29,6 +29,7 @@ addSprite("bubba", "bubba-sheet", 50, 50)
 setSpritePlaying("bubba", false)
 
 setCanvasEvent("pointerup", onPointerUp)
+setCanvasEvent("drawbufferdone", mainLoop)
 
 mainLoop()
 
@@ -47,7 +48,7 @@ function mainLoop()
 
   drawSprites()
 
-  drawCanvasBuffer(mainLoop)
+  drawCanvasBuffer()
 end function
 
 function onPointerUp(pointerX, pointerY)

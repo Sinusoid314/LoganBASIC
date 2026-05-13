@@ -30,6 +30,8 @@ setSpriteFrameRate("ship1", 0.06)
 addSprite("ship2", "ship-sheet", 400, 400)
 setSpriteFrameRate("ship2", 0.12)
 
+setCanvasEvent("drawbufferdone", mainLoop)
+
 mainLoop()
 
 wait
@@ -57,7 +59,7 @@ function mainLoop()
 
   drawSprites()
 
-  drawCanvasBuffer(mainLoop)
+  drawCanvasBuffer()
 end function
 </code>
 

@@ -73,6 +73,8 @@ function setup()
   enableCanvasBuffer()
   
   setFillColor("white")
+
+  setCanvasEvent("drawbufferdone", mainLoop)
 end function
 
 
@@ -89,7 +91,7 @@ function mainLoop()
   drawSprites()
   drawText(str(deltaTime * 1000) + " ms", 10, 0)
   
-  drawCanvasBuffer(mainLoop)
+  drawCanvasBuffer()
 end function
 
 

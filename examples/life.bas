@@ -26,9 +26,12 @@ showCanvas()
 
 enableCanvasBuffer()
 
+setCanvasEvent("drawbufferdone", mainLoop)
+
 setupCells()
 drawCells()
-drawCanvasBuffer(mainLoop)
+
+drawCanvasBuffer()
 
 wait
 
@@ -55,7 +58,7 @@ function mainLoop()
     drawCells()
   end if
 
-  drawCanvasBuffer(mainLoop)
+  drawCanvasBuffer()
 end function
 
 

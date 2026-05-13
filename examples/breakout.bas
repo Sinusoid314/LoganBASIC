@@ -50,6 +50,7 @@ setupBricks()
 
 setCanvasEvent("keydown", onKeyDown)
 setCanvasEvent("keyup", onKeyUp)
+setCanvasEvent("drawbufferdone", mainLoop)
 
 draw()
 
@@ -124,7 +125,7 @@ function draw()
   setFillColor(paddleColor)
   drawRect(paddleX, paddleY, paddleWidth, paddleHeight)
   
-  drawCanvasBuffer(mainLoop)
+  drawCanvasBuffer()
 end function
 
 

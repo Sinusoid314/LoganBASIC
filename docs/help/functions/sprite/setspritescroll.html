@@ -31,6 +31,7 @@ setScrollY(-100)
 
 setCanvasEvent("pointerup", onPointerUp)
 setCanvasEvent("keyup", onKeyUp)
+setCanvasEvent("drawbufferdone", mainLoop)
 
 mainLoop()
 
@@ -41,7 +42,7 @@ function mainLoop()
 
   drawSprites()
 
-  drawCanvasBuffer(mainLoop)
+  drawCanvasBuffer()
 end function
 
 function onPointerUp(pointerX, pointerY)

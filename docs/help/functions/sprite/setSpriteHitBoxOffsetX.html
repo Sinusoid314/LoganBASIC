@@ -51,6 +51,8 @@ setSpriteHitBoxHeight("ship1", getSpriteDrawHeight("ship1") - 20)
 setLineSize(2)
 setLineColor("red")
 
+setCanvasEvent("drawbufferdone", mainLoop)
+
 mainLoop()
 
 wait
@@ -73,7 +75,7 @@ function mainLoop()
   drawHitBox("ship1")
   drawHitBox("ship2")
   
-  drawCanvasBuffer(mainLoop)
+  drawCanvasBuffer()
 end function
 
 function drawHitBox(spriteName)

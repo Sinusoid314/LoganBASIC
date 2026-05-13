@@ -36,6 +36,8 @@ setLineSize(2)
 drawCircle(circleX, circleY, circleRadius, false)
 drawRect(rectX, rectY, rectWidth, rectHeight, false)
 
+setCanvasEvent("drawbufferdone", mainLoop)
+
 mainLoop()
 
 wait
@@ -56,7 +58,7 @@ function mainLoop()
 
   if rectX = 0 then end
 
-  drawCanvasBuffer(mainLoop)
+  drawCanvasBuffer()
 end function
 </code>
 

@@ -32,6 +32,8 @@ setSpriteFrameRange("sprite", 0, 3)
 setSpriteVelocityX("sprite", 60)
 setSpriteFrameRate("sprite", 0.24)
 
+setCanvasEvent("drawbufferdone", mainLoop)
+
 mainLoop()
 
 wait
@@ -56,7 +58,7 @@ function mainLoop()
 
   drawSprites()
 
-  drawCanvasBuffer(mainLoop)
+  drawCanvasBuffer()
 end function
 </code>
 

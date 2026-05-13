@@ -103,6 +103,7 @@ function setup()
   
   setCanvasEvent("keydown", onKeyDown)
   setCanvasEvent("keyup", onKeyUp)
+  setCanvasEvent("drawbufferdone", mainLoop)
 end function
 
 
@@ -147,7 +148,7 @@ function mainLoop()
 
   displayControls()
   
-  drawCanvasBuffer(mainLoop)
+  drawCanvasBuffer()
 end function
 
 
