@@ -51,7 +51,6 @@ var canvasEvents = [
                  ];
 
 var drawBufferDoneEvent = new CanvasEvent("drawbufferdone", 0, null);
-var drawBufferInProgress = false;
 var imageResultCallback = null;
 var contextResultCallback = null;
 var deltaTime = 0;
@@ -138,7 +137,6 @@ function canvasWorker_onProgEnd()
 //
 {
   canvasEvents.forEach(event => event.callback = null);
-  drawBufferInProgress = false;
   imageResultCallback = null;
   contextResultCallback = null;
 }
@@ -164,7 +162,6 @@ function onMsgDrawCanvasBufferDone(msgData)
     postMessage({msgId: MSGID_DRAW_CANVAS_BUFFER, msgData: null});
   else
   {
-    drawBufferInProgress = false;
     drawBufferDoneEvent.callback.resumeVM();
   }
 }
@@ -321,11 +318,7 @@ function funcDisableCanvasBuffer(vm, args)
 function funcDrawCanvasBuffer(vm, args)
 //
 {
-  if(drawBufferInProgress)
-    return;
-
   postMessage({msgId: MSGID_DRAW_CANVAS_BUFFER, msgData: null});
-  drawBufferInProgress = true;
 
   return null;
 }
