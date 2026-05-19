@@ -30,9 +30,6 @@ var bufferCanvasContext = bufferCanvas.getContext("2d");
 var activeContext = progCanvasContext;
 var images = new Map();
 
-bufferCanvas.width = progCanvas.width;
-bufferCanvas.width = progCanvas.height;
-
 setCanvasUIEvents();
 
 
@@ -492,7 +489,7 @@ function onMsgGetTextDrawWidthRequest(msgData)
 //
 {
   var metrics = activeContext.measureText(msgData.text);
-  var drawWidth = metrics.width;
+  var drawWidth = Math.round(metrics.width);
 
   sendContextRequestResult(drawWidth);
 }
@@ -501,7 +498,7 @@ function onMsgGetTextDrawHeightRequest(msgData)
 //
 {
   var metrics = activeContext.measureText(msgData.text);
-  var drawHeight = metrics.actualBoundingBoxAscent + metrics.actualBoundingBoxDescent;
+  var drawHeight = Math.round(metrics.actualBoundingBoxAscent + metrics.actualBoundingBoxDescent);
 
   sendContextRequestResult(drawHeight);
 }

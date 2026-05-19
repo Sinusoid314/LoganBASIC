@@ -177,6 +177,8 @@ function initCanvas()
   hideConsole()
   showCanvas()
 
+  enableCanvasBuffer()
+
   setCanvasEvent("pointerup", canvasOnPointerUp)
 end function
 
@@ -199,14 +201,16 @@ function drawHeader()
   setTextFont("14px system-ui")
 
   textX = 10
-  textY = (headerHeight / 2) - (getTextDrawHeight(triesLabel) / 2)
+  textY = int((headerHeight / 2) - (getTextDrawHeight(triesLabel) / 2))
   drawText(triesLabel, textX,  textY)
   drawText(triesText, textX + getTextDrawWidth(triesLabel), textY)
 
-  textX = textX + getTextDrawWidth(triesLabel + triesText) + 50
-  textY = (headerHeight / 2) - (getTextDrawHeight(timeLabel) / 2)
+  textX = int(textX + getTextDrawWidth(triesLabel + triesText) + 50)
+  textY = int((headerHeight / 2) - (getTextDrawHeight(timeLabel) / 2))
   drawText(timeLabel, textX,  textY)
   drawText(timeText, textX + getTextDrawWidth(timeLabel), textY)
+
+  drawCanvasBuffer()
 end function
 
 
@@ -238,6 +242,8 @@ function drawCard(card)
   setLineSize(cardBorderSize)
   drawRect(card.x - (cardBorderSize / 2), card.y - (cardBorderSize / 2), cardWidth + cardBorderSize, cardHeight + cardBorderSize, false)
   drawImage(image, card.x, card.y, cardWidth, cardHeight)
+
+  drawCanvasBuffer()
 end function
 
 
@@ -255,7 +261,7 @@ function drawResult()
 
   drawImage(resultImage, imageX, imageY)
 
-  pauseFor(resultDisplayDuration)
+  drawCanvasBuffer()
 end function
 
 
@@ -287,6 +293,8 @@ function drawGameOver()
 
   setFillColor("black")
   drawText(text, textX, textY)
+
+  drawCanvasBuffer()
 end function
 
 
@@ -323,6 +331,7 @@ function cardOnPointerUp(card)
   result = compareSelectedCards()
 
   drawResult()
+  pauseFor(resultDisplayDuration)
 
   startNewTry()
 end function
@@ -361,6 +370,7 @@ function startNewTry()
   if flippedCardsCount = len(cardDeck) then
     drawGameOver()
     stopTimer()
+    pauseFor(resultDisplayDuration)
     end
   end if
 end function

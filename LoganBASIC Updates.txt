@@ -1,3 +1,7 @@
+(May 19, 2026)
+[v2.1.0.3]
+	- Modified getTextDrawWidth() and getTextDrawHeight() native functions to return only integers.
+
 (May 13, 2026)
 [v2.1.0.2]
 	- Removed the note regard the drawBufferInProgress check from the drawCanvasBuffer() help page.

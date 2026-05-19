@@ -1,9 +1,10 @@
 [Bugs]
-    - Flickering when drawing header in Memory Match example.
+    - Text with random transparent patches when drawing header in Memory Match example.
 
 
 [Features]
-    - Add Memory Match game to examples.
+    - drawCanvasBufferClip() canvas native function.
+    - Finish Memory Match game to examples.
 
     - Standard functions for array searching.
     - Inline-If standard function.
