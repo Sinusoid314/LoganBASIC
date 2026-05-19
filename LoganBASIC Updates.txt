@@ -1,6 +1,8 @@
 (May 19, 2026)
 [v2.1.0.3]
 	- Modified getTextDrawWidth() and getTextDrawHeight() native functions to return only integers.
+	- Fixed bug in Memory Match example, where text had random transparent patches when drawing header, by making
+	  the buffer canvas an OffscreenCanvas object.
 
 (May 13, 2026)
 [v2.1.0.2]

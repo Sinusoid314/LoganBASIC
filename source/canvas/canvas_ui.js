@@ -25,7 +25,7 @@ mainDiv.insertAdjacentHTML("beforeend",
 
 var progCanvas = document.getElementById("progCanvas");
 var progCanvasContext = progCanvas.getContext("2d");
-var bufferCanvas = document.createElement("canvas");
+var bufferCanvas = new OffscreenCanvas(progCanvas.width, progCanvas.height);
 var bufferCanvasContext = bufferCanvas.getContext("2d");
 var activeContext = progCanvasContext;
 var images = new Map();
