@@ -1,0 +1,39 @@
+<html>
+
+<head>
+  <title></title>
+  <link rel="stylesheet" type="text/css" href="../../reference_doc.css"></link>
+  <script defer="defer" type="text/javascript" src="../../reference_doc.js"></script>
+</head>
+
+<body>
+
+<h3>clearRect(rectX, rectY, rectWidth, rectHeight)</h3>
+
+<h4>Description</h4>
+<p id="description">
+Erases all graphics within the given rectangle from the canvas, or the canvas buffer if it is enabled.
+</p>
+
+<h4>Usage</h4>
+<code id="usageCode">
+showCanvas()
+
+loadImage("ship", "../examples/images/ship1.png")
+
+input("Press enter to draw image...")
+drawImage("ship", 10, 10)
+
+input("Press enter to clear a patch of the image...")
+<b>clearRect(25, 20, 70, 10)</b>
+
+unloadImage("ship")
+print "Done."
+</code>
+
+<a id="usageRun" href="../../../../">Run</a>
+|
+<a id="usageOpen" href="../../../../">Open in Code Editor</a>
+
+</body>
+</html>

@@ -14,6 +14,7 @@ const canvasNativeFuncs = [
                   new ObjNativeFunc("setCanvasWidth", 1, 1, funcSetCanvasWidth),
                   new ObjNativeFunc("setCanvasHeight", 1, 1, funcSetCanvasHeight),
                   new ObjNativeFunc("clearCanvas", 0, 0, funcClearCanvas),
+                  new ObjNativeFunc("clearRect", 4, 4, funcClearRect),
                   new ObjNativeFunc("loadImage", 2, 2, funcLoadImage),
                   new ObjNativeFunc("unloadImage", 1, 1, funcUnloadImage),
                   new ObjNativeFunc("drawImage", 3, 5, funcDrawImage),
@@ -198,6 +199,20 @@ function funcClearCanvas(vm, args)
 //Send a message to the canvas to clear it
 {
   postMessage({msgId: MSGID_CLEAR_CANVAS, msgData: null});
+  return null;
+}
+
+function funcClearRect(vm, args)
+//
+{
+  var msgData = {
+      rectX: args[0],
+      rectY: args[1],
+      rectWidth: args[2],
+      rectHeight: args[3]
+  };
+
+  postMessage({msgId: MSGID_CLEAR_RECT, msgData: msgData});
   return null;
 }
 

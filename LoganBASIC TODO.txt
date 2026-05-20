@@ -3,8 +3,9 @@
 
 
 [Features]
+    - Utilize timerIsRunning() native function in Memory Match example.
     - drawCanvasBufferClip() canvas native function.
-    - Finish Memory Match game to examples.
+    - Utilize clearRect() and drawCanvasBufferClip() native functions in Memory Match example.
 
     - Standard functions for array searching.
     - Inline-If standard function.

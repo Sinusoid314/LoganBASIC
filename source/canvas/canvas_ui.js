@@ -44,6 +44,7 @@ function setCanvasUIEvents()
   uiMessageMap.set(MSGID_SET_CANVAS_WIDTH, onMsgSetCanvasWidth);
   uiMessageMap.set(MSGID_SET_CANVAS_HEIGHT, onMsgSetCanvasHeight);
   uiMessageMap.set(MSGID_CLEAR_CANVAS, onMsgClearCanvas);
+  uiMessageMap.set(MSGID_CLEAR_RECT, onMsgClearRect);
   uiMessageMap.set(MSGID_LOAD_IMAGE_REQUEST, onMsgLoadImageRequest);
   uiMessageMap.set(MSGID_UNLOAD_IMAGE_REQUEST, onMsgUnloadImageRequest);
   uiMessageMap.set(MSGID_DRAW_IMAGE_REQUEST, onMsgDrawImageRequest);
@@ -259,6 +260,12 @@ function onMsgClearCanvas(msgData)
 //
 {
   clearCanvas();
+}
+
+function onMsgClearRect(msgData)
+//
+{
+  activeContext.clearRect(msgData.rectX, msgData.rectY, msgData.rectWidth, msgData.rectHeight);
 }
 
 function onMsgLoadImageRequest(msgData)
