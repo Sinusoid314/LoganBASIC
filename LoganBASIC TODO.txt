@@ -3,7 +3,6 @@
 
 
 [Features]
-    - drawCanvasBufferClip() canvas native function.
     - Utilize clearRect() and drawCanvasBufferClip() native functions in Memory Match example.
 
     - Standard functions for array searching.
@@ -24,6 +23,7 @@
 
 
 [Refactors]
+    - Use inline-if operator to assign optional argument values in all native function implementations.
     - Consolidate the request/result thread-message code from each component into the main modules.
     - Change the core modules into ES6 modules.
     - Change the component modules into ES6 modules.

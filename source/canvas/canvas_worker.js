@@ -24,7 +24,8 @@ const canvasNativeFuncs = [
                   new ObjNativeFunc("getImageHeight", 1, 1, funcGetImageHeight),
                   new ObjNativeFunc("enableCanvasBuffer", 0, 0, funcEnableCanvasBuffer),
                   new ObjNativeFunc("disableCanvasBuffer", 0, 0, funcDisableCanvasBuffer),
-                  new ObjNativeFunc("drawCanvasBuffer", 0, 1, funcDrawCanvasBuffer),
+                  new ObjNativeFunc("drawCanvasBuffer", 0, 0, funcDrawCanvasBuffer),
+                  new ObjNativeFunc("drawCanvasBufferClip", 6, 8, funcDrawCanvasBufferClip),
                   new ObjNativeFunc("setCanvasEvent", 1, 2, funcSetCanvasEvent),
                   new ObjNativeFunc("drawText", 3, 4, funcDrawText),
                   new ObjNativeFunc("drawRect", 4, 5, funcDrawRect),
@@ -263,15 +264,9 @@ function funcDrawImageClip(vm, args)
       clipHeight: args[4],
       drawX: args[5],
       drawY: args[6],
-      drawWidth: args[3],
-      drawHeight: args[4]
+      drawWidth: (args.length >= 8) ? args[7] : args[3],
+      drawHeight: (args.length == 9) ? args[8] : args[4]
   };
-
-  if(args.length >= 8)
-    msgData.drawWidth = args[7];
-
-  if(args.length == 9)
-    msgData.drawHeight = args[8];
 
   sendImageRequest(vm, MSGID_DRAW_IMAGE_CLIP_REQUEST, msgData);
 
@@ -334,6 +329,25 @@ function funcDrawCanvasBuffer(vm, args)
 //
 {
   postMessage({msgId: MSGID_DRAW_CANVAS_BUFFER, msgData: null});
+
+  return null;
+}
+
+function funcDrawCanvasBufferClip(vm, args)
+//
+{
+  var msgData = {
+      clipX: args[0],
+      clipY: args[1],
+      clipWidth: args[2],
+      clipHeight: args[3],
+      drawX: args[4],
+      drawY: args[5],
+      drawWidth: (args.length >= 7) ? args[6] : args[2],
+      drawHeight: (args.length == 8) ? args[7] : args[3]
+  };
+
+  postMessage({msgId: MSGID_DRAW_CANVAS_BUFFER_CLIP, msgData: msgData});
 
   return null;
 }

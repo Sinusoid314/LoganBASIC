@@ -8,11 +8,13 @@
 
 <body>
 
-<h3>drawCanvasBuffer()</h3>
+<h3>drawCanvasBufferClip(clipX, clipY, clipWidth, clipHeight, drawX, drawY [ ,drawWidth ] [ ,drawHeight ])</h3>
 
 <h4>Description</h4>
 <p id="description">
-Transers all graphics from the offscreen buffer to the visible canvas.
+Draws part of the offscreen buffer to the visible canvas at the position <i>(drawX, drawY)</i>. <i>clipX, clipY,
+clipWidth</i>, and <i>clipHeight</i> specify the part of the buffer to draw. If <i>drawWidth</i>
+or <i>drawHeight</i> are specified, the buffer clip is stretched or shrunk to that size.
 <br><br>
 To set a callback for when the buffer draw has completed, use <a href="setcanvasevent.html">setCanvasEvent()</a>.
 </p>
@@ -27,12 +29,9 @@ enableCanvasBuffer()
 input("Press enter to draw image to buffer...")
 drawImage("ship", 10, 10)
 
-input("Press enter to draw image to canvas...")
-disableCanvasBuffer()
-drawImage("ship", 50, 50)
-
-input("Press enter to draw buffer to canvas...")
-<b>drawCanvasBuffer()</b>
+input("Press enter to draw buffer clips to canvas...")
+<b>drawCanvasBufferClip(10, 10, 20, 20, 10, 10)</b>
+<b>drawCanvasBufferClip(10, 10, 20, 20, 100, 100, 100, 100)</b>
 
 input("Press enter to unload image...")
 unloadImage("ship")

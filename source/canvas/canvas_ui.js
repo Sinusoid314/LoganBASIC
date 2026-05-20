@@ -55,6 +55,7 @@ function setCanvasUIEvents()
   uiMessageMap.set(MSGID_ENABLE_CANVAS_BUFFER, onMsgEnableCanvasBuffer);
   uiMessageMap.set(MSGID_DISABLE_CANVAS_BUFFER, onMsgDisableCanvasBuffer);
   uiMessageMap.set(MSGID_DRAW_CANVAS_BUFFER, onMsgDrawCanvasBuffer);
+  uiMessageMap.set(MSGID_DRAW_CANVAS_BUFFER_CLIP, onMsgDrawCanvasBufferClip);
   uiMessageMap.set(MSGID_ADD_CANVAS_EVENT, onMsgAddCanvasEvent);
   uiMessageMap.set(MSGID_REMOVE_CANVAS_EVENT, onMsgRemoveCanvasEvent);
   uiMessageMap.set(MSGID_DRAW_TEXT, onMsgDrawText);
@@ -165,17 +166,23 @@ function image_onError(event)
   sendImageRequestResult(false)
 }
 
-function canvas_onAnimationFrame()
+function canvas_onAnimationFrame(drawData)
 //
 {
-  //var imageData = bufferCanvasContext.getImageData(0, 0, bufferCanvas.width, bufferCanvas.height);
-  //progCanvasContext.putImageData(imageData, 0, 0);
-
   if(!isRunning)
     return;
 
-  progCanvasContext.clearRect(0, 0, progCanvas.width, progCanvas.height);
-  progCanvasContext.drawImage(bufferCanvas, 0, 0);
+  if(drawData)
+  {
+    progCanvasContext.clearRect(drawData.drawX, drawData.drawY, drawData.drawWidth, drawData.drawHeight);
+    progCanvasContext.drawImage(bufferCanvas, drawData.clipX, drawData.clipY, drawData.clipWidth, drawData.clipHeight,
+                                drawData.drawX, drawData.drawY, drawData.drawWidth, drawData.drawHeight);
+  }
+  else
+  {
+    progCanvasContext.clearRect(0, 0, progCanvas.width, progCanvas.height);
+    progCanvasContext.drawImage(bufferCanvas, 0, 0);
+  }
 
   progWorker.postMessage({msgId: MSGID_DRAW_CANVAS_BUFFER_DONE, msgData: null});
 }
@@ -412,7 +419,13 @@ function onMsgDisableCanvasBuffer(msgData)
 function onMsgDrawCanvasBuffer(msgData)
 //
 {
-  window.requestAnimationFrame(canvas_onAnimationFrame);
+  window.requestAnimationFrame(() => canvas_onAnimationFrame(null));
+}
+
+function onMsgDrawCanvasBufferClip(msgData)
+//
+{
+  window.requestAnimationFrame(() => canvas_onAnimationFrame(msgData));
 }
 
 function onMsgAddCanvasEvent(msgData)
