@@ -46,7 +46,6 @@ var RESULTFAIL = "fail"
 var result = RESULTPENDING
 var tryCount = 0
 var gameTime = 0
-var gameTimerIsRunning = false
 
 loadResources()
 createCardDeck()
@@ -321,10 +320,7 @@ function cardOnPointerUp(card)
 
   drawCard(card)
 
-  if not gameTimerIsRunning then
-    startTimer(1000, gameTimerOnTick)
-    gameTimerIsRunning = true
-  end if
+  if not timerIsRunning() then startTimer(1000, gameTimerOnTick)
 
   if len(selectedCards) < maxSelections then return
 

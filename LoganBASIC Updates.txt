@@ -1,3 +1,7 @@
+(May 20, 2026)
+[v2.1.0.5]
+	- Modified Memory Match example to utilize the timerIsRunning() native function.
+
 (May 19, 2026)
 [v2.1.0.4]
 	- Added clearRect() canvas native function.

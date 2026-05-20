@@ -3,7 +3,6 @@
 
 
 [Features]
-    - Utilize timerIsRunning() native function in Memory Match example.
     - drawCanvasBufferClip() canvas native function.
     - Utilize clearRect() and drawCanvasBufferClip() native functions in Memory Match example.
 
