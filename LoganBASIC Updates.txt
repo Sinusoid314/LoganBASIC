@@ -1,4 +1,6 @@
 (May 20, 2026)
+[v2.1.0.6]
+	- Modified Memory Match example to utilize the  clearRect() and drawCanvasBufferClip() native functions.
 [v2.1.0.5]
 	- Modified Memory Match example to utilize the timerIsRunning() native function.
 	- Added drawCanvasBufferClip() canvas native function.

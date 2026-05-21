@@ -176,8 +176,6 @@ function initCanvas()
   hideConsole()
   showCanvas()
 
-  enableCanvasBuffer()
-
   setCanvasEvent("pointerup", canvasOnPointerUp)
 end function
 
@@ -188,6 +186,9 @@ function drawHeader()
   var timeMinutes = int(gameTime / 60)
   var timeSeconds = gameTime % 60
   var timeText = str(timeMinutes) + "m:" + str(timeSeconds) + "s"
+
+  enableCanvasBuffer()
+  clearRect(headerX, headerY, headerWidth, headerHeight)
 
   setFillColor("lightgray")
   drawRect(headerX, headerY, headerWidth, headerHeight, true)
@@ -209,7 +210,8 @@ function drawHeader()
   drawText(timeLabel, textX,  textY)
   drawText(timeText, textX + getTextDrawWidth(timeLabel), textY)
 
-  drawCanvasBuffer()
+  drawCanvasBufferClip(headerX, headerY, headerWidth, headerHeight, headerX, headerY)
+  disableCanvasBuffer()
 end function
 
 
@@ -241,8 +243,6 @@ function drawCard(card)
   setLineSize(cardBorderSize)
   drawRect(card.x - (cardBorderSize / 2), card.y - (cardBorderSize / 2), cardWidth + cardBorderSize, cardHeight + cardBorderSize, false)
   drawImage(image, card.x, card.y, cardWidth, cardHeight)
-
-  drawCanvasBuffer()
 end function
 
 
@@ -259,8 +259,6 @@ function drawResult()
   imageY = (cardGridHeight / 2) - (getImageHeight(resultImage) / 2)
 
   drawImage(resultImage, imageX, imageY)
-
-  drawCanvasBuffer()
 end function
 
 
@@ -292,8 +290,6 @@ function drawGameOver()
 
   setFillColor("black")
   drawText(text, textX, textY)
-
-  drawCanvasBuffer()
 end function
 
 
