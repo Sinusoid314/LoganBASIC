@@ -238,15 +238,9 @@ function funcDrawImage(vm, args)
       imageName: args[0],
       drawX: args[1],
       drawY: args[2],
-      drawWidth: null,
-      drawHeight: null
+      drawWidth: (args.length >= 4) ? args[3] : null,
+      drawHeight: (args.length == 5) ? args[4] : null
   };
-
-  if(args.length >= 4)
-    msgData.drawWidth = args[3];
-
-  if(args.length == 5)
-    msgData.drawHeight = args[4];
 
   sendImageRequest(vm, MSGID_DRAW_IMAGE_REQUEST, msgData);
 
@@ -282,15 +276,9 @@ function funcDrawImageTiled(vm, args)
       drawY: args[2],
       drawWidth: args[3],
       drawHeight: args[4],
-      offsetX: 0,
-      offsetY: 0
+      offsetX: (args.length >= 6) ? args[5] : 0,
+      offsetY: (args.length == 7) ? args[6] : 0
   };
-
-  if(args.length >= 6)
-    msgData.offsetX = args[5];
-
-  if(args.length == 7)
-    msgData.offsetY = args[6];
 
   sendImageRequest(vm, MSGID_DRAW_IMAGE_TILED_REQUEST, msgData);
 
@@ -400,11 +388,8 @@ function funcDrawText(vm, args)
       text: args[0],
       drawX: args[1],
       drawY: args[2],
-      isFilled: true
+      isFilled: (args.length == 4) ? args[3] : true
   };
-
-  if(args.length == 4)
-    msgData.isFilled = args[3];
 
   postMessage({msgId: MSGID_DRAW_TEXT, msgData: msgData});
 
@@ -419,11 +404,8 @@ function funcDrawRect(vm, args)
       drawY: args[1],
       drawWidth: args[2],
       drawHeight: args[3],
-      isFilled: true
+      isFilled: (args.length == 5) ? args[4] : true
   };
-
-  if(args.length == 5)
-    msgData.isFilled = args[4];
 
   postMessage({msgId: MSGID_DRAW_RECT, msgData: msgData});
 
@@ -437,11 +419,8 @@ function funcDrawCircle(vm, args)
       centerX: args[0],
       centerY: args[1],
       radius: args[2],
-      isFilled: true
+      isFilled: (args.length == 4) ? args[3] : true
   };
-
-  if(args.length == 4)
-    msgData.isFilled = args[3];
 
   postMessage({msgId: MSGID_DRAW_CIRCLE, msgData: msgData});
 

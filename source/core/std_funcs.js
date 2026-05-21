@@ -312,11 +312,8 @@ function funcAddArrayItem(vm, args)
 {
   var array = args[0];
   var newVal = args[1];
-  var beforeIndex = -1;
+  var beforeIndex = (args.length == 3) ? args[2] : -1;
   var errorMsg = "";
-
-  if(args.length == 3)
-    beforeIndex = args[2];
 
   if(!(array instanceof ObjArray))
     vm.runError("First argument of addArrayItem() must be an array.");
@@ -482,11 +479,8 @@ function funcWord(vm, args)
 {
   var string = args[0];
   var wordIndex = args[1] - 1;
-  var delimiter = " ";
+  var delimiter = (args.length == 3) ? args[2] : " ";
   var words;
-
-  if(args.length == 3)
-    delimiter = args[2];
 
   words = string.split(delimiter);
 
