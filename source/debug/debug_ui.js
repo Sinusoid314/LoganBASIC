@@ -357,7 +357,7 @@ function debugToggleDiv()
   {
     debugToggleBtn.style.border = "inset 2px";
 	  debugDiv.style.display = "block";
-    mainDiv.style.marginLeft = debugDiv.clientWidth + "px";
+    mainDiv.style.marginLeft = debugDiv.offsetWidth + "px";
 
     progWorker.postMessage({msgId: MSGID_DEBUG_ENABLE, msgData: null});
   }
@@ -382,8 +382,8 @@ function document_onMouseMove(event)
   if(!debugIsResizing)
     return false;
 
-  debugDiv.style.width = event.clientX + "px";
-  mainDiv.style.marginLeft = event.clientX + "px";
+  debugDiv.style.width = event.clientX + (debugDiv.offsetWidth - debugDiv.clientWidth) + "px";
+  mainDiv.style.marginLeft = event.clientX + (debugDiv.offsetWidth - debugDiv.clientWidth) + "px";
 }
 
 function document_onMouseUp(event)

@@ -1,3 +1,7 @@
+(May 25, 2026)
+[v2.1.0.8]
+	- Fixed bug with debug pane not positioning properly when displaying and resizing.
+
 (May 21, 2026)
 [v2.1.0.7]
 	- Modified some native function implementations to use inline-if operators to assign optional argument values.
