@@ -1,6 +1,7 @@
 (May 25, 2026)
 [v2.1.0.8]
 	- Fixed bug with debug pane not positioning properly when displaying and resizing.
+	- Modified debug pane resizing to take the pane's border size into account when calculating its scrollbar width.
 
 (May 21, 2026)
 [v2.1.0.7]

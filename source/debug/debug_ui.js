@@ -382,8 +382,12 @@ function document_onMouseMove(event)
   if(!debugIsResizing)
     return false;
 
-  debugDiv.style.width = event.clientX + (debugDiv.offsetWidth - debugDiv.clientWidth) + "px";
-  mainDiv.style.marginLeft = event.clientX + (debugDiv.offsetWidth - debugDiv.clientWidth) + "px";
+  const borderLeft = parseFloat(window.getComputedStyle(debugDiv).borderLeftWidth);
+  const borderRight = parseFloat(window.getComputedStyle(debugDiv).borderRightWidth);
+  const scrollbarWidth = debugDiv.offsetWidth - debugDiv.clientWidth + (borderLeft + borderRight);
+
+  debugDiv.style.width = event.clientX + scrollbarWidth + "px";
+  mainDiv.style.marginLeft = event.clientX + scrollbarWidth + "px";
 }
 
 function document_onMouseUp(event)
