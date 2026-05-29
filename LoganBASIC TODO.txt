@@ -1,5 +1,5 @@
 [Bugs]
-    - 
+    - 'Open File' button fails to open selected file.
 
 
 [Features]
@@ -21,7 +21,6 @@
 
 
 [Refactors]
-    - Update help page images.
     - Consolidate the request/result thread-message code from each component into the main modules.
     - Change the core modules into ES6 modules.
     - Change the component modules into ES6 modules.

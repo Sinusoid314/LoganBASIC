@@ -1,3 +1,7 @@
+(May 29, 2026)
+[v2.1.0.9]
+	- Updated the images for the Code Editor and Debugger help pages to reflect the new UI design.
+
 (May 25, 2026)
 [v2.1.0.8]
 	- Fixed bug with debug pane not positioning properly when displaying and resizing.
