@@ -362,7 +362,7 @@ function newBtn_onClick(event)
 function openFileBtn_onClick(event)
 //Open a source file from disk
 {
-    fileInput = document.createElement("input");
+    var fileInput = document.createElement("input");
     fileInput.type = "file";
     fileInput.accept = "*.bas";
 
