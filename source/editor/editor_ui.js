@@ -189,6 +189,7 @@ var stopBtn = document.getElementById("stopBtn");
 var debugToggleBtn = document.getElementById("debugToggleBtn");
 var aboutDialog = document.getElementById("aboutDialog");
 var prevLineCount = 1;
+var codeHasChanged = false;
 
 setEditorUIEvents();
 
@@ -356,20 +357,21 @@ function loadSourceFile(fileURL)
 function newBtn_onClick(event)
 //Open a blank editor in a new tab
 {
-  window.open("index.html", "_blank");
+  window.location.replace("index.html");
 }
 
 function openFileBtn_onClick(event)
 //Open a source file from disk
 {
     var fileInput = document.createElement("input");
+
     fileInput.type = "file";
     fileInput.accept = "*.bas";
 
     fileInput.onchange = function()
     {
       this.files[0].text().then(fileData => window.localStorage.setItem("fileData", fileData));
-      window.open("index.html?open=local", "_blank");
+      window.location.replace("index.html?open=local");
     };
 
     fileInput.click();
@@ -383,7 +385,7 @@ function openURLBtn_onClick(event)
   if((fileURL == null) || (fileURL == ""))
     return;
 
-  window.open("index.html?open=" + fileURL, "_blank");
+  window.location.replace("index.html?open=" + fileURL);
 }
 
 function saveBtn_onClick(event)
@@ -396,6 +398,9 @@ function saveBtn_onClick(event)
   fileLink.href = url;
   fileLink.download = "untitled.bas";
   fileLink.click();
+
+  codeHasChanged = false;
+
   setTimeout(() => URL.revokeObjectURL(url), 0);
 }
 
@@ -427,6 +432,7 @@ function updatesBtn_onClick(event)
 function editor_onInput(event)
 {
   updateEditorGutter();
+  codeHasChanged = true;
 }
 
 function editor_onScroll(event)
