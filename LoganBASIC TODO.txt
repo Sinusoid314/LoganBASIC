@@ -1,5 +1,5 @@
 [Bugs]
-    - 'Open File' button fails to open selected file.
+    - 'Open URL' button fails to open target file.
 
 
 [Features]

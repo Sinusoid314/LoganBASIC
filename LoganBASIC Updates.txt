@@ -1,3 +1,9 @@
+(June 4, 2026)
+[v2.1.0.10]
+	- Modified editor module to open new and existing files in the same tab, fixing a bug where the browser was blocking the opening of a
+	  new tab following the use of the file picker.
+	- Added codeHadChanged flag to warn the user if there are unsaved code changes when the tab is set to unload.
+
 (May 29, 2026)
 [v2.1.0.9]
 	- Updated the images for the Code Editor and Debugger help pages to reflect the new UI design.

@@ -244,6 +244,7 @@ function setMainUIEvents()
   uiMessageMap.set(MSGID_STATUS_CHANGE, onMsgStatusChange);
   
   window.addEventListener("load", window_onLoad);
+  window.addEventListener("beforeunload", window_onBeforeUnload);
 }
 
 function loadUIComponents()
@@ -401,6 +402,16 @@ function window_onLoad(event)
   //   hideToggles();
   //   return;
   // }
+}
+
+function window_onBeforeUnload(event)
+//
+{
+  if(codeHasChanged)
+  {
+    event.preventDefault();
+    event.returnValue = "";
+  }
 }
 
 function mainUI_onMessage(message)
