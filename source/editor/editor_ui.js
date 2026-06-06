@@ -190,6 +190,7 @@ var debugToggleBtn = document.getElementById("debugToggleBtn");
 var aboutDialog = document.getElementById("aboutDialog");
 var prevLineCount = 1;
 var codeHasChanged = false;
+var codeFileName = "untitled.bas";
 
 setEditorUIEvents();
 
@@ -396,7 +397,7 @@ function saveBtn_onClick(event)
   var fileLink = document.createElement("a");
 
   fileLink.href = url;
-  fileLink.download = "untitled.bas";
+  fileLink.download = codeFileName;
   fileLink.click();
 
   codeHasChanged = false;

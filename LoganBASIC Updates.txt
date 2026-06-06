@@ -1,3 +1,7 @@
+(June 6, 2026)
+[v2.1.0.11]
+	- Added codeFileName to editor_ui module.
+
 (June 4, 2026)
 [v2.1.0.10]
 	- Modified editor module to open new and existing files in the same tab, fixing a bug where the browser was blocking the opening of a
