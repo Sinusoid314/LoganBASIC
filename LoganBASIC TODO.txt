@@ -1,5 +1,5 @@
 [Bugs]
-    - 'Open URL' button fails to open target file.
+    - 
 
 
 [Features]

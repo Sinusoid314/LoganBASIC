@@ -1,3 +1,10 @@
+(June 7, 2026)
+[v2.1.0.12]
+	- Modified the 'Save' button event handler in the editor_ui module to temporarily attach the anchor element to the document body
+	  before activating it.
+	- Modified the 'Open File' button event handler in the editor_ui module to temporarily attach the input element to the document body
+	  before activating it.
+
 (June 6, 2026)
 [v2.1.0.11]
 	- Added codeFileName to editor_ui module.

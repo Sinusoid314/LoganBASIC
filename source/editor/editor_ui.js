@@ -368,14 +368,17 @@ function openFileBtn_onClick(event)
 
     fileInput.type = "file";
     fileInput.accept = "*.bas";
+    //fileInput.style.display = "none";
 
-    fileInput.onchange = function()
+    fileInput.addEventListener("change", (event) =>
     {
-      this.files[0].text().then(fileData => window.localStorage.setItem("fileData", fileData));
+      event.target.files[0].text().then(fileData => window.localStorage.setItem("fileData", fileData));
       window.location.replace("index.html?open=local");
-    };
+    });
 
+    document.body.appendChild(fileInput);
     fileInput.click();
+    document.body.removeChild(fileInput);
 }
 
 function openURLBtn_onClick(event)
@@ -398,11 +401,15 @@ function saveBtn_onClick(event)
 
   fileLink.href = url;
   fileLink.download = codeFileName;
-  fileLink.click();
+  fileLink.style.display = "none";
 
-  codeHasChanged = false;
+  document.body.appendChild(fileLink);
+  fileLink.click();
+  document.body.removeChild(fileLink);
 
   setTimeout(() => URL.revokeObjectURL(url), 0);
+
+  codeHasChanged = false;
 }
 
 function examplesBtn_onClick(event)
