@@ -6,6 +6,14 @@ document.head.appendChild(document.createElement('style')).textContent =
   margin-bottom: 15px;
 }
 
+#codeFileNameDisplay
+{
+  margin-left: 20px;
+  padding: 4px;
+  field-sizing: content;
+  min-width: 20px;
+}
+
 .editorBreakpoint
 {
   background: darkred;
@@ -133,6 +141,7 @@ mainDiv.insertAdjacentHTML("afterbegin",
 
 <div id="editorDiv">
   <label id="editorToggle" class="toggle-open">Code Editor</label>
+  <span><input id="codeFileNameDisplay" type="text"></span>
   <div id="editorPane" class="pane-open">
     <div id="editorWrapper">
       <div id="editorGutter"></div>
@@ -182,6 +191,7 @@ var examplesBtn = document.getElementById("examplesBtn");
 var helpBtn = document.getElementById("helpBtn");
 var aboutBtn = document.getElementById("aboutBtn");
 var updatesBtn = document.getElementById("updatesBtn");
+var codeFileNameDisplay = document.getElementById("codeFileNameDisplay");
 var editorCode = document.getElementById("editorCode");
 var editorGutter = document.getElementById("editorGutter");
 var runBtn = document.getElementById("runBtn");
@@ -191,6 +201,8 @@ var aboutDialog = document.getElementById("aboutDialog");
 var prevLineCount = 1;
 var codeHasChanged = false;
 var codeFileName = "untitled.bas";
+
+codeFileNameDisplay.value = codeFileName;
 
 setEditorUIEvents();
 

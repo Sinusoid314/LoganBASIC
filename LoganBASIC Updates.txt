@@ -1,3 +1,7 @@
+(June 8, 2026)
+[v2.1.0.13]
+	- Added a file name display to the editor.
+
 (June 7, 2026)
 [v2.1.0.12]
 	- Modified the 'Save' button event handler in the editor_ui module to temporarily attach the anchor element to the document body
