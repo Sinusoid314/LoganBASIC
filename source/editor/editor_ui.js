@@ -220,6 +220,7 @@ function setEditorUIEvents()
   helpBtn.addEventListener("click", helpBtn_onClick);
   aboutBtn.addEventListener("click", aboutBtn_onClick);
   updatesBtn.addEventListener("click", updatesBtn_onClick);
+  codeFileNameDisplay.addEventListener("input", codeFileNameDisplay_onInput);
   editorCode.addEventListener("input", editor_onInput);
   editorCode.addEventListener("scroll", editor_onScroll);
   runBtn.addEventListener("click", runBtn_onClick);
@@ -380,7 +381,6 @@ function openFileBtn_onClick(event)
 
     fileInput.type = "file";
     fileInput.accept = "*.bas";
-    //fileInput.style.display = "none";
 
     fileInput.addEventListener("change", (event) =>
     {
@@ -447,6 +447,12 @@ function updatesBtn_onClick(event)
 {
   window.open("../updates.html", "_blank");
   toggleUpdatesBtnHighlighted();
+}
+
+function codeFileNameDisplay_onInput(event)
+//
+{
+  codeFileName = event.target.value;
 }
 
 function editor_onInput(event)
