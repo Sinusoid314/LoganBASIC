@@ -6,7 +6,7 @@ document.head.appendChild(document.createElement('style')).textContent =
   margin-bottom: 15px;
 }
 
-#codeFileNameDisplay
+#codeFileNameInput
 {
   margin-left: 20px;
   padding: 4px;
@@ -141,7 +141,7 @@ mainDiv.insertAdjacentHTML("afterbegin",
 
 <div id="editorDiv">
   <label id="editorToggle" class="toggle-open">Code Editor</label>
-  <span><input id="codeFileNameDisplay" type="text"></span>
+  <span><input id="codeFileNameInput" type="text"></span>
   <div id="editorPane" class="pane-open">
     <div id="editorWrapper">
       <div id="editorGutter"></div>
@@ -191,7 +191,7 @@ var examplesBtn = document.getElementById("examplesBtn");
 var helpBtn = document.getElementById("helpBtn");
 var aboutBtn = document.getElementById("aboutBtn");
 var updatesBtn = document.getElementById("updatesBtn");
-var codeFileNameDisplay = document.getElementById("codeFileNameDisplay");
+var codeFileNameInput = document.getElementById("codeFileNameInput");
 var editorCode = document.getElementById("editorCode");
 var editorGutter = document.getElementById("editorGutter");
 var runBtn = document.getElementById("runBtn");
@@ -202,7 +202,7 @@ var prevLineCount = 1;
 var codeHasChanged = false;
 var codeFileName = "untitled.bas";
 
-codeFileNameDisplay.value = codeFileName;
+codeFileNameInput.value = codeFileName;
 
 setEditorUIEvents();
 
@@ -220,7 +220,7 @@ function setEditorUIEvents()
   helpBtn.addEventListener("click", helpBtn_onClick);
   aboutBtn.addEventListener("click", aboutBtn_onClick);
   updatesBtn.addEventListener("click", updatesBtn_onClick);
-  codeFileNameDisplay.addEventListener("input", codeFileNameDisplay_onInput);
+  codeFileNameInput.addEventListener("input", codeFileNameInput_onInput);
   editorCode.addEventListener("input", editor_onInput);
   editorCode.addEventListener("scroll", editor_onScroll);
   runBtn.addEventListener("click", runBtn_onClick);
@@ -384,7 +384,11 @@ function openFileBtn_onClick(event)
 
     fileInput.addEventListener("change", (event) =>
     {
-      event.target.files[0].text().then(fileData => window.localStorage.setItem("fileData", fileData));
+      event.target.files[0].text().then((fileData) =>
+      {
+        window.localStorage.setItem("fileData", fileData);
+      });
+      
       window.location.replace("index.html?open=local");
     });
 
@@ -449,7 +453,7 @@ function updatesBtn_onClick(event)
   toggleUpdatesBtnHighlighted();
 }
 
-function codeFileNameDisplay_onInput(event)
+function codeFileNameInput_onInput(event)
 //
 {
   codeFileName = event.target.value;

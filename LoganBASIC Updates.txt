@@ -2,6 +2,7 @@
 [v2.1.0.13]
 	- Added a file name display to the editor.
 	- Added an input event handler to the file name display to make its value correlate with the value of codeFileName.
+	- Renamed codeFileNameDisplay element to codeFileNameInput.
 
 (June 7, 2026)
 [v2.1.0.12]
