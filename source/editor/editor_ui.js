@@ -14,6 +14,11 @@ document.head.appendChild(document.createElement('style')).textContent =
   min-width: 20px;
 }
 
+#codeHasChangedDisplay
+{
+  color: red;
+}
+
 .editorBreakpoint
 {
   background: darkred;
@@ -141,7 +146,10 @@ mainDiv.insertAdjacentHTML("afterbegin",
 
 <div id="editorDiv">
   <label id="editorToggle" class="toggle-open">Code Editor</label>
-  <span><input id="codeFileNameInput" type="text"></span>
+  <span>
+    <input id="codeFileNameInput" type="text">
+    <span id="codeHasChangedDisplay"></span>
+  </span>
   <div id="editorPane" class="pane-open">
     <div id="editorWrapper">
       <div id="editorGutter"></div>
@@ -192,6 +200,7 @@ var helpBtn = document.getElementById("helpBtn");
 var aboutBtn = document.getElementById("aboutBtn");
 var updatesBtn = document.getElementById("updatesBtn");
 var codeFileNameInput = document.getElementById("codeFileNameInput");
+var codeHasChangedDisplay = document.getElementById("codeHasChangedDisplay");
 var editorCode = document.getElementById("editorCode");
 var editorGutter = document.getElementById("editorGutter");
 var runBtn = document.getElementById("runBtn");
@@ -426,6 +435,7 @@ function saveBtn_onClick(event)
   setTimeout(() => URL.revokeObjectURL(url), 0);
 
   codeHasChanged = false;
+  codeHasChangedDisplay.innerText = "";
 }
 
 function examplesBtn_onClick(event)
@@ -463,6 +473,7 @@ function editor_onInput(event)
 {
   updateEditorGutter();
   codeHasChanged = true;
+  codeHasChangedDisplay.innerText = "*";
 }
 
 function editor_onScroll(event)

@@ -3,7 +3,6 @@
 
 
 [Features]
-    - Add a codeHasChangedDisplay element to the editor_ui module.
     - Add ability to display the name of a file opened with 'Open File' or 'Open URL'.
 
     - Standard functions for array searching.
