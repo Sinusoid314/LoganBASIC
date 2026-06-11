@@ -12,11 +12,6 @@ document.head.appendChild(document.createElement('style')).textContent =
   padding: 4px;
 }
 
-#codeHasChangedDisplay
-{
-  color: red;
-}
-
 .editorBreakpoint
 {
   background: darkred;
@@ -145,8 +140,7 @@ mainDiv.insertAdjacentHTML("afterbegin",
 <div id="editorDiv">
   <label id="editorToggle" class="toggle-open">Code Editor</label>
   <span>
-    <span id="codeFileNameDisplay"></span>
-    <span id="codeHasChangedDisplay"></span>
+    <span id="codeFileNameDisplay" class="buttonFacePressed"></span>
   </span>
   <div id="editorPane" class="pane-open">
     <div id="editorWrapper">
@@ -198,7 +192,6 @@ var helpBtn = document.getElementById("helpBtn");
 var aboutBtn = document.getElementById("aboutBtn");
 var updatesBtn = document.getElementById("updatesBtn");
 var codeFileNameDisplay = document.getElementById("codeFileNameDisplay");
-var codeHasChangedDisplay = document.getElementById("codeHasChangedDisplay");
 var editorCode = document.getElementById("editorCode");
 var editorGutter = document.getElementById("editorGutter");
 var runBtn = document.getElementById("runBtn");
@@ -387,6 +380,7 @@ function openFileBtn_onClick(event)
 
     fileInput.type = "file";
     fileInput.accept = "*.bas";
+    fileInput.style.display = "none";
 
     fileInput.addEventListener("change", (event) =>
     {
@@ -427,15 +421,11 @@ function saveBtn_onClick(event)
 
   document.body.appendChild(fileLink);
   fileLink.click();
-
-  setTimeout(() =>
-  {
-    document.body.removeChild(fileLink);
-    URL.revokeObjectURL(url);
-  }, 0);
+  document.body.removeChild(fileLink);
+  URL.revokeObjectURL(url);
 
   codeHasChanged = false;
-  codeHasChangedDisplay.innerText = "";
+  codeFileNameDisplay.innerText = codeFileName;
 }
 
 function examplesBtn_onClick(event)
@@ -467,7 +457,7 @@ function editor_onInput(event)
 {
   updateEditorGutter();
   codeHasChanged = true;
-  codeHasChangedDisplay.innerText = "*";
+  codeFileNameDisplay.innerText = codeFileName + "*";
 }
 
 function editor_onScroll(event)
