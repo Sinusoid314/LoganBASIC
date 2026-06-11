@@ -6,12 +6,10 @@ document.head.appendChild(document.createElement('style')).textContent =
   margin-bottom: 15px;
 }
 
-#codeFileNameInput
+#codeFileNameDisplay
 {
   margin-left: 20px;
   padding: 4px;
-  field-sizing: content;
-  min-width: 20px;
 }
 
 #codeHasChangedDisplay
@@ -147,7 +145,7 @@ mainDiv.insertAdjacentHTML("afterbegin",
 <div id="editorDiv">
   <label id="editorToggle" class="toggle-open">Code Editor</label>
   <span>
-    <input id="codeFileNameInput" type="text">
+    <span id="codeFileNameDisplay"></span>
     <span id="codeHasChangedDisplay"></span>
   </span>
   <div id="editorPane" class="pane-open">
@@ -199,7 +197,7 @@ var examplesBtn = document.getElementById("examplesBtn");
 var helpBtn = document.getElementById("helpBtn");
 var aboutBtn = document.getElementById("aboutBtn");
 var updatesBtn = document.getElementById("updatesBtn");
-var codeFileNameInput = document.getElementById("codeFileNameInput");
+var codeFileNameDisplay = document.getElementById("codeFileNameDisplay");
 var codeHasChangedDisplay = document.getElementById("codeHasChangedDisplay");
 var editorCode = document.getElementById("editorCode");
 var editorGutter = document.getElementById("editorGutter");
@@ -211,7 +209,7 @@ var prevLineCount = 1;
 var codeHasChanged = false;
 var codeFileName = "untitled.bas";
 
-codeFileNameInput.value = codeFileName;
+codeFileNameDisplay.innerText = codeFileName;
 
 setEditorUIEvents();
 
@@ -229,7 +227,6 @@ function setEditorUIEvents()
   helpBtn.addEventListener("click", helpBtn_onClick);
   aboutBtn.addEventListener("click", aboutBtn_onClick);
   updatesBtn.addEventListener("click", updatesBtn_onClick);
-  codeFileNameInput.addEventListener("input", codeFileNameInput_onInput);
   editorCode.addEventListener("input", editor_onInput);
   editorCode.addEventListener("scroll", editor_onScroll);
   runBtn.addEventListener("click", runBtn_onClick);
@@ -430,9 +427,12 @@ function saveBtn_onClick(event)
 
   document.body.appendChild(fileLink);
   fileLink.click();
-  document.body.removeChild(fileLink);
 
-  setTimeout(() => URL.revokeObjectURL(url), 0);
+  setTimeout(() =>
+  {
+    document.body.removeChild(fileLink);
+    URL.revokeObjectURL(url);
+  }, 0);
 
   codeHasChanged = false;
   codeHasChangedDisplay.innerText = "";
@@ -461,12 +461,6 @@ function updatesBtn_onClick(event)
 {
   window.open("../updates.html", "_blank");
   toggleUpdatesBtnHighlighted();
-}
-
-function codeFileNameInput_onInput(event)
-//
-{
-  codeFileName = event.target.value;
 }
 
 function editor_onInput(event)

@@ -1,3 +1,7 @@
+(June 10, 2026)
+[v2.1.0.15]
+	- Renamed codeFileNameInput back to codeFileNameDisplay and removed ability to edit its contents.
+
 (June 9, 2026)
 [v2.1.0.14]
 	- Add a codeHasChangedDisplay element to the editor_ui module.

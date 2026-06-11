@@ -49,7 +49,6 @@ button span
 
 .buttonFace,
 button,
-input,
 .bar,
 #statusBar
 {
@@ -70,7 +69,6 @@ button:not(:disabled):not(:active):hover,
 
 .buttonFacePressed,
 button:not(:disabled):active,
-input,
 #statusBar
 {
   border-bottom: 1px solid white;
