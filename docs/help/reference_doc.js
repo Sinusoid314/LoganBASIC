@@ -11,7 +11,9 @@ function usage_onClick(event)
 {
   var autoRun = event.target == usageRun;
   
+  window.localStorage.setItem("fileName", "");
   window.localStorage.setItem("fileData", fileData);
+
   window.open(event.target.href + "index.html?open=local&autoRun=" + autoRun, "_blank");
 
   event.preventDefault();

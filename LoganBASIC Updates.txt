@@ -2,6 +2,7 @@
 [v2.1.0.15]
 	- Renamed codeFileNameInput back to codeFileNameDisplay and removed ability to edit its contents.
 	- Removed codeHasChangedDisplay and replaced it by just adding an asterisk to the end of the codeFileNameDisplay text.
+	- Add ability to display the name of a file opened with 'Open File' or 'Open URL'.
 
 (June 9, 2026)
 [v2.1.0.14]

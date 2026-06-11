@@ -327,13 +327,16 @@ function loadSourceFile(fileURL)
 
   return new Promise((resolve, reject) =>
   {
+    var fileName;
     var fileData;
 
     if(fileURL == "local")
     {
+      fileName = window.localStorage.getItem("fileName");
       fileData = window.localStorage.getItem("fileData");
+
       if(fileData)
-        resolve(fileData);
+        resolve({fileName, fileData});
       else
         reject("Failed to read local storage data.");
     }
@@ -347,12 +350,19 @@ function loadSourceFile(fileURL)
 
         return response.text();
       })
-      .then(fileData => resolve(fileData))
+      .then((fileData) =>
+      {
+        fileName = fileURL.split('/').pop();
+        resolve({fileName, fileData})
+      })
       .catch(error => reject(`Failed to load '${fileURL}': ${error}`));
     }
   })
-  .then((fileData) =>
+  .then(({fileName, fileData}) =>
   {
+    codeFileName = (fileName == "") ? "untitled.bas" : fileName;
+    codeFileNameDisplay.innerText = codeFileName;
+
     editorCode.value = fileData;
     updateEditorGutter();
     statusBar.innerText = "Ready.";
@@ -384,8 +394,11 @@ function openFileBtn_onClick(event)
 
     fileInput.addEventListener("change", (event) =>
     {
-      event.target.files[0].text().then((fileData) =>
+      var file = event.target.files[0];
+
+      file.text().then((fileData) =>
       {
+        window.localStorage.setItem("fileName", file.name);
         window.localStorage.setItem("fileData", fileData);
       });
       

@@ -43,7 +43,9 @@ function link_onClick(event)
       let fileData = (new DOMParser()).parseFromString(text, 'text/html').querySelector('#usageCode')?.innerText;
       if(!fileData) return;
 
+      window.localStorage.setItem("fileName", "");
       window.localStorage.setItem("fileData", fileData);
+
       window.open("../../../index.html?open=local&autoRun=true", "docview");
     });
 
