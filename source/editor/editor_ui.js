@@ -127,7 +127,7 @@ mainDiv.insertAdjacentHTML("afterbegin",
 `
 <div id="menuBar" class="bar">
   <button id="newBtn"><img src="/assests/new.png" alt="New"><span>New</span></button>
-  <button id="openFileBtn"><img src="/assests/open_file.png" alt="Open File"><span>Open File</span></button>
+  <button id="openBtn"><img src="/assests/open.png" alt="Open"><span>Open</span></button>
   <button id="saveBtn"><img src="/assests/save.png" alt="Save"><span>Save</span></button>
   <div class="bar-seperator"></div>
   <button id="examplesBtn"><img src="/assests/examples.png" alt="Examples"><span>Examples</span></button>
@@ -183,7 +183,7 @@ mainDiv.insertAdjacentHTML("afterbegin",
 
 
 var newBtn = document.getElementById("newBtn");
-var openFileBtn = document.getElementById("openFileBtn");
+var openBtn = document.getElementById("openBtn");
 var saveBtn = document.getElementById("saveBtn");
 var examplesBtn = document.getElementById("examplesBtn");
 var helpBtn = document.getElementById("helpBtn");
@@ -211,7 +211,7 @@ function setEditorUIEvents()
 //
 {
   newBtn.addEventListener("click", newBtn_onClick);
-  openFileBtn.addEventListener("click", openFileBtn_onClick);
+  openBtn.addEventListener("click", openBtn_onClick);
   saveBtn.addEventListener("click", saveBtn_onClick);
   examplesBtn.addEventListener("click", examplesBtn_onClick);
   helpBtn.addEventListener("click", helpBtn_onClick);
@@ -380,7 +380,7 @@ function newBtn_onClick(event)
   window.location.replace("index.html");
 }
 
-function openFileBtn_onClick(event)
+function openBtn_onClick(event)
 //Open a source file from disk
 {
     var fileInput = document.createElement("input");
