@@ -128,7 +128,6 @@ mainDiv.insertAdjacentHTML("afterbegin",
 <div id="menuBar" class="bar">
   <button id="newBtn"><img src="/assests/new.png" alt="New"><span>New</span></button>
   <button id="openFileBtn"><img src="/assests/open_file.png" alt="Open File"><span>Open File</span></button>
-  <button id="openURLBtn"><img src="/assests/open_url.png" alt="Open URL"><span>Open URL</span></button>
   <button id="saveBtn"><img src="/assests/save.png" alt="Save"><span>Save</span></button>
   <div class="bar-seperator"></div>
   <button id="examplesBtn"><img src="/assests/examples.png" alt="Examples"><span>Examples</span></button>
@@ -185,7 +184,6 @@ mainDiv.insertAdjacentHTML("afterbegin",
 
 var newBtn = document.getElementById("newBtn");
 var openFileBtn = document.getElementById("openFileBtn");
-var openURLBtn = document.getElementById("openURLBtn");
 var saveBtn = document.getElementById("saveBtn");
 var examplesBtn = document.getElementById("examplesBtn");
 var helpBtn = document.getElementById("helpBtn");
@@ -214,7 +212,6 @@ function setEditorUIEvents()
 {
   newBtn.addEventListener("click", newBtn_onClick);
   openFileBtn.addEventListener("click", openFileBtn_onClick);
-  openURLBtn.addEventListener("click", openURLBtn_onClick);
   saveBtn.addEventListener("click", saveBtn_onClick);
   examplesBtn.addEventListener("click", examplesBtn_onClick);
   helpBtn.addEventListener("click", helpBtn_onClick);
@@ -408,17 +405,6 @@ function openFileBtn_onClick(event)
     document.body.appendChild(fileInput);
     fileInput.click();
     document.body.removeChild(fileInput);
-}
-
-function openURLBtn_onClick(event)
-//Open a source file from a URL
-{
-  var fileURL = prompt("Enter file URL: ");
-
-  if((fileURL == null) || (fileURL == ""))
-    return;
-
-  window.location.replace("index.html?open=" + fileURL);
 }
 
 function saveBtn_onClick(event)
