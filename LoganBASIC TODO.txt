@@ -3,10 +3,10 @@
 
 
 [Features]
-    - Disable file button on program run.
     - Pre-load worker file URL.
     - Reset/load editor on file new/open instead of reloading page.
     - Reset all components on file new/open.
+    - Add ability to store an open file's handle in editor_ui module.
 
     - Standard functions for array searching.
     - Inline-If standard function.

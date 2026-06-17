@@ -230,9 +230,12 @@ function setEditorUIEvents()
 function switchEditorMode()
 //Switch between run and edit modes
 {
+  newBtn.disabled = !newBtn.disabled;
+  openBtn.disabled = !openBtn.disabled;
+  saveBtn.disabled = !saveBtn.disabled;
+  editorCode.readOnly = !editorCode.readOnly;
   runBtn.disabled = !runBtn.disabled;
   stopBtn.disabled = !stopBtn.disabled;
-  editorCode.readOnly = !editorCode.readOnly;
 }
 
 function toggleUpdatesBtnHighlighted()
