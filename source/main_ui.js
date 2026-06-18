@@ -337,6 +337,8 @@ function hideToggles()
 function resetMain()
 //
 {
+  statusBar.innerText = "Ready.";
+  
   uiOnMainResetHandlers.forEach(handler => handler());
 }
 
