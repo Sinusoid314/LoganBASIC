@@ -321,7 +321,7 @@ function selectEditorLine(selLine)
   editorCode.scrollTop = ((editorCode.scrollHeight / lines.length) * selLine) - (editorCode.clientHeight / 2);
 }
 
-function readCodeFileFromURL(fileURL)
+function loadSourceFile(fileURL)
 //Load source file from local storage or a given URL
 {
   statusBar.innerText = `Loading '${fileURL}'...`;
