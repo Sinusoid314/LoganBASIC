@@ -355,7 +355,7 @@ function startProg(source)
   isRunning = true;
 }
 
-function mainUI_onProgEnd(exitMessage, exitStatus, error)
+function endProg(exitMessage, exitStatus, error)
 //Set the UI to reflect that the program has stopped running
 {
   if(!isRunning)
@@ -436,9 +436,9 @@ function onMsgProgDone(msgData)
 //The worker thread has signaled that the program has ended
 {
   if(msgData.error)
-    mainUI_onProgEnd(msgData.error.message, PROG_EXIT_STATUS_ERROR, msgData.error);
+    endProg(msgData.error.message, PROG_EXIT_STATUS_ERROR, msgData.error);
   else
-    mainUI_onProgEnd("Program run successfully.", PROG_EXIT_STATUS_SUCCESS, null);
+    endProg("Program run successfully.", PROG_EXIT_STATUS_SUCCESS, null);
 }
 
 function onMsgStatusChange(msgData)

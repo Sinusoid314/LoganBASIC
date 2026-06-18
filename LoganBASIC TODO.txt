@@ -3,8 +3,7 @@
 
 
 [Features]
-    - Rename loadSourceFile() to loadCodeFileFromURL().
-    - Rename mainUI_onProgEnd() to endProg().
+    - Rename loadSourceFile() to readCodeFileFromURL().
     - Extract file content-handling code from openBtn_onClick() and saveBtn_onClick() functions into their own functions.
     - Add ability to store an open file's handle in editor_ui module.
     - Pre-load worker file URL.

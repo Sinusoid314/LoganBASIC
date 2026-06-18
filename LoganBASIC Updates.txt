@@ -1,3 +1,7 @@
+(June 18, 2026)
+[v2.1.0.19]
+	- Renamed mainUI_onProgEnd() to endProg() in main_ui module.
+
 (June 17, 2026)
 [v2.1.0.18]
 	- Modified UI modules to reset on file new/open, instead of reloading the whole page.

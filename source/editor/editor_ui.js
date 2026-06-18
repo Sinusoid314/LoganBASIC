@@ -506,7 +506,7 @@ function runBtn_onClick(event)
 function stopBtn_onClick(event)
 //
 {
-  mainUI_onProgEnd("Program stopped.", PROG_EXIT_STATUS_TERMINATED, null);
+  endProg("Program stopped.", PROG_EXIT_STATUS_TERMINATED, null);
 }
 
 function debugToggleBtn_onClick(event)
