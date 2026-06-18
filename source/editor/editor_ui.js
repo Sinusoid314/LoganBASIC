@@ -409,7 +409,7 @@ function openBtn_onClick(event)
     {
       resetMain();
 
-      codeFileName = fileName;
+      codeFileName = file.name;
       codeFileNameDisplay.innerText = codeFileName;
 
       editorCode.value = fileData;
