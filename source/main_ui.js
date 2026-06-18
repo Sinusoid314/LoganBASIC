@@ -395,7 +395,7 @@ function window_onLoad(event)
     if(paramFileURL == "")
       return;
 
-    loadSourceFile(paramFileURL)
+    loadCodeFileFromURL(paramFileURL)
     .then((fileData) => 
     {
       if(autoRun)

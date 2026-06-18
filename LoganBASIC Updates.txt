@@ -1,6 +1,7 @@
 (June 18, 2026)
 [v2.1.0.19]
 	- Renamed mainUI_onProgEnd() to endProg() in main_ui module.
+	- Renamed loadSourceFile() to loadCodeFileFromURL().
 
 (June 17, 2026)
 [v2.1.0.18]
