@@ -223,6 +223,7 @@ function setEditorUIEvents()
   stopBtn.addEventListener("click", stopBtn_onClick);
   debugToggleBtn.addEventListener("click", debugToggleBtn_onClick);
   
+  uiOnMainResetHandlers.push(editorUI_onMainReset);
   uiOnProgStartHandlers.push(editorUI_onProgStart);
   uiOnProgEndHandlers.push(editorUI_onProgEnd);
 }
@@ -380,42 +381,59 @@ function loadSourceFile(fileURL)
 function newBtn_onClick(event)
 //Open a blank editor in a new tab
 {
-  window.location.replace("index.html");
+  if(isRunning)
+    return;
+  
+  resetMain();
 }
 
 function openBtn_onClick(event)
 //Open a source file from disk
 {
-    var fileInput = document.createElement("input");
+  var fileInput;
 
-    fileInput.type = "file";
-    fileInput.accept = "*.bas";
-    fileInput.style.display = "none";
+  if(isRunning)
+    return;
 
-    fileInput.addEventListener("change", (event) =>
+  fileInput = document.createElement("input");
+
+  fileInput.type = "file";
+  fileInput.accept = "*.bas";
+  fileInput.style.display = "none";
+
+  fileInput.addEventListener("change", (event) =>
+  {
+    var file = event.target.files[0];
+
+    file.text().then((fileData) =>
     {
-      var file = event.target.files[0];
+      resetMain();
 
-      file.text().then((fileData) =>
-      {
-        window.localStorage.setItem("fileName", file.name);
-        window.localStorage.setItem("fileData", fileData);
-      });
-      
-      window.location.replace("index.html?open=local");
+      codeFileName = fileName;
+      codeFileNameDisplay.innerText = codeFileName;
+
+      editorCode.value = fileData;
+      updateEditorGutter();
+      statusBar.innerText = "Ready.";
     });
+  });
 
-    document.body.appendChild(fileInput);
-    fileInput.click();
-    document.body.removeChild(fileInput);
+  document.body.appendChild(fileInput);
+  fileInput.click();
+  document.body.removeChild(fileInput);
 }
 
 function saveBtn_onClick(event)
 //Save the current source code to disk
 {
-  var blob = new Blob([editorCode.value], {type: 'text/plain'});
-  var url = URL.createObjectURL(blob);
-  var fileLink = document.createElement("a");
+  var blob, url, fileLink;
+
+  if(isRunning)
+    return;
+
+  blob = new Blob([editorCode.value], {type: 'text/plain'});
+  url = URL.createObjectURL(blob);
+  fileLink = document.createElement("a");
 
   fileLink.href = url;
   fileLink.download = codeFileName;
@@ -495,6 +513,16 @@ function debugToggleBtn_onClick(event)
 //
 {
   debugToggleDiv();
+}
+
+function editorUI_onMainReset()
+//
+{
+  codeHasChanged = false;
+  codeFileName = "untitled.bas";
+  codeFileNameDisplay.innerText = codeFileName;
+  editorCode.value = "";
+  updateEditorGutter();
 }
 
 function editorUI_onProgStart()

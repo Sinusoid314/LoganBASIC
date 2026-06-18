@@ -36,6 +36,7 @@ setCanvasUIEvents();
 function setCanvasUIEvents()
 //
 {
+  uiOnMainResetHandlers.push(canvasUI_onMainReset);
   uiOnProgStartHandlers.push(canvasUI_onProgStart);
   uiOnProgEndHandlers.push(canvasUI_onProgEnd);
   
@@ -209,6 +210,12 @@ function canvas_onEvent(event)
   }
 
   event.preventDefault();
+}
+
+function canvasUI_onMainReset()
+//
+{
+  resetCanvas();
 }
 
 function canvasUI_onProgStart()

@@ -30,7 +30,7 @@ setSpriteUIEvents();
 function setSpriteUIEvents()
 //
 {
-  uiOnProgEndHandlers.push(sprite_onProgEnd);
+  uiOnProgEndHandlers.push(spriteUI_onProgEnd);
 
   uiMessageMap.set(MSGID_SPRITE_SHEET_REF_REQUEST, onMsgSpriteSheetRefRequest);
   uiMessageMap.set(MSGID_LOAD_SPRITE_SHEET_REQUEST, onMsgLoadSpriteSheetRequest);
@@ -78,7 +78,7 @@ function spriteSheet_onError(event)
   sendSpriteSheetRequestResult(false)
 }
 
-function sprite_onProgEnd(exitStatus, error)
+function spriteUI_onProgEnd(exitStatus, error)
 //
 {
   cleanupSpriteSheets();

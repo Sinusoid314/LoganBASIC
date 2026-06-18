@@ -159,8 +159,9 @@ function setDebugUIEvents()
   debugSkipBtn.addEventListener("click", debugSkipBtn_onClick);
   debugCallStackList.addEventListener("change", debugCallStackList_onChange);
   
-  uiOnProgStartHandlers.push(debug_onProgStart);
-  uiOnProgEndHandlers.push(debug_onProgEnd);
+  uiOnMainResetHandlers.push(debugUI_onMainReset);
+  uiOnProgStartHandlers.push(debugUI_onProgStart);
+  uiOnProgEndHandlers.push(debugUI_onProgEnd);
   
   uiMessageMap.set(MSGID_DEBUG_UPDATE_UI, onMsgDebugUpdateUI);
 }
@@ -470,13 +471,19 @@ function debugVarListItem_onClick(event)
     debugExpandVarListItem(parentItem, itemValueMap, childList);
 }
 
-function debug_onProgStart()
+function debugUI_onMainReset()
 //
 {
   debugClearDisplays();
 }
 
-function debug_onProgEnd(exitStatus, error)
+function debugUI_onProgStart()
+//
+{
+  debugClearDisplays();
+}
+
+function debugUI_onProgEnd(exitStatus, error)
 //
 {
   debugChangeUIStatus(DEBUG_UI_STATUS_DISABLED);

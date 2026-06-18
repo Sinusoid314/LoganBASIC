@@ -164,6 +164,7 @@ var statusBar = document.getElementById("statusBar");
 var isRunning = false;
 var uiOnProgStartHandlers = [];
 var uiOnProgEndHandlers = [];
+var uiOnMainResetHandlers = [];
 var progWorker = null;
 var uiMessageMap = new Map();
 var paramFileURL = "";
@@ -331,6 +332,12 @@ function hideToggles()
 
   for(var i = 0; i < toggles.length; i++)
     toggles[i].style.display = "none";
+}
+
+function resetMain()
+//
+{
+  uiOnMainResetHandlers.forEach(handler => handler());
 }
 
 function startProg(source)

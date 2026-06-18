@@ -3,10 +3,11 @@
 
 
 [Features]
-    - Pre-load worker file URL.
-    - Reset/load editor on file new/open instead of reloading page.
-    - Reset all components on file new/open.
+    - Rename loadSourceFile() to loadCodeFileFromURL().
+    - Rename mainUI_onProgEnd() to endProg().
+    - Extract file content-handling code from openBtn_onClick() and saveBtn_onClick() functions into their own functions.
     - Add ability to store an open file's handle in editor_ui module.
+    - Pre-load worker file URL.
 
     - Standard functions for array searching.
     - Inline-If standard function.
