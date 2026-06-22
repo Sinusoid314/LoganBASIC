@@ -361,21 +361,25 @@ function loadCodeFileFromURL(fileURL)
   })
   .then(({fileName, fileData}) =>
   {
-    codeFileName = (fileName == "") ? "untitled.bas" : fileName;
-    codeFileNameDisplay.innerText = codeFileName;
-
-    editorCode.value = fileData;
-    updateEditorGutter();
-    statusBar.innerText = "Ready.";
-
+    loadCodeFile({fileName: fileName, fileData: fileData});
     return fileData;
   })
   .catch((errorMessage) =>
   {
     statusBar.innerText = errorMessage;
-
     return Promise.reject(errorMessage);
   });
+}
+
+function loadCodeFile({fileName, fileData})
+//
+{
+  codeFileName = (fileName == "") ? "untitled.bas" : fileName;
+  codeFileNameDisplay.innerText = codeFileName;
+
+  editorCode.value = fileData;
+  updateEditorGutter();
+  statusBar.innerText = "Ready.";
 }
 
 function newBtn_onClick(event)
@@ -408,13 +412,7 @@ function openBtn_onClick(event)
     file.text().then((fileData) =>
     {
       resetMain();
-
-      codeFileName = file.name;
-      codeFileNameDisplay.innerText = codeFileName;
-
-      editorCode.value = fileData;
-      updateEditorGutter();
-      statusBar.innerText = "Ready.";
+      loadCodeFile({fileName: file.name, fileData: fileData});
     });
   });
 
