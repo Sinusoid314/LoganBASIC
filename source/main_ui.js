@@ -398,12 +398,12 @@ function window_onLoad(event)
     statusBar.innerText = `Loading '${paramFileURL}'...`;
 
     readCodeFileFromURL(paramFileURL)
-    .then(({fileName, fileData}) =>
+    .then((codeFile) =>
     {
-      loadCodeFile({fileName: fileName, fileData: fileData});
+      loadCodeFile(codeFile);
 
       if(autoRun)
-        startProg(fileData);
+        startProg(codeFile.data);
     })
     .catch((errorMessage) =>
     {

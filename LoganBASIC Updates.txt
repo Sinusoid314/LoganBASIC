@@ -1,4 +1,7 @@
 (June 23, 2026)
+[v2.1.0.22]
+	- Created CodeFile class to hold file name and data when reading/loading a code file.
+
 [v2.1.0.21]
 	- Renamed loadCodeFileFromURL() to readCodeFileFromURL(), and moved its loadCodeFile() call to window_onLoad() in main_ui module.
 

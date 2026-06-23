@@ -182,6 +182,15 @@ mainDiv.insertAdjacentHTML("afterbegin",
 `);
 
 
+class CodeFile
+{
+  constructor(name, data)
+  {
+    this.name = name;
+    this.data = data;
+  }
+}
+
 var newBtn = document.getElementById("newBtn");
 var openBtn = document.getElementById("openBtn");
 var saveBtn = document.getElementById("saveBtn");
@@ -335,7 +344,7 @@ function readCodeFileFromURL(fileURL)
       fileData = window.localStorage.getItem("fileData");
 
       if(fileData)
-        resolve({fileName: fileName, fileData: fileData});
+        resolve(new CodeFile(fileName, fileData));
       else
         reject("Failed to read local storage data.");
     }
@@ -352,20 +361,23 @@ function readCodeFileFromURL(fileURL)
       .then((fileData) =>
       {
         fileName = fileURL.split('/').pop();
-        resolve({fileName: fileName, fileData: fileData})
+        resolve(new CodeFile(fileName, fileData));
       })
-      .catch(error => reject(`Failed to load '${fileURL}': ${error}`));
+      .catch(error =>
+      {
+        reject(`Failed to load '${fileURL}': ${error}`);
+      });
     }
   });
 }
 
-function loadCodeFile({fileName, fileData})
+function loadCodeFile(codeFile)
 //
 {
-  codeFileName = (fileName == "") ? "untitled.bas" : fileName;
+  codeFileName = (codeFile.name == "") ? "untitled.bas" : codeFile.name;
   codeFileNameDisplay.innerText = codeFileName;
 
-  editorCode.value = fileData;
+  editorCode.value = codeFile.data;
   updateEditorGutter();
   statusBar.innerText = "Ready.";
 }
@@ -400,7 +412,7 @@ function openBtn_onClick(event)
     file.text().then((fileData) =>
     {
       resetMain();
-      loadCodeFile({fileName: file.name, fileData: fileData});
+      loadCodeFile(new CodeFile(file.name, fileData));
     });
   });
 
