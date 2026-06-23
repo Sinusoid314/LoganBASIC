@@ -395,13 +395,20 @@ function window_onLoad(event)
     if(paramFileURL == "")
       return;
 
-    loadCodeFileFromURL(paramFileURL)
-    .then((fileData) => 
+    statusBar.innerText = `Loading '${paramFileURL}'...`;
+
+    readCodeFileFromURL(paramFileURL)
+    .then(({fileName, fileData}) =>
     {
+      loadCodeFile({fileName: fileName, fileData: fileData});
+
       if(autoRun)
         startProg(fileData);
     })
-    .catch(errorMessage => null);
+    .catch((errorMessage) =>
+    {
+      statusBar.innerText = errorMessage;
+    });
 
     return;
   }

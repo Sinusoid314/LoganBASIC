@@ -321,11 +321,9 @@ function selectEditorLine(selLine)
   editorCode.scrollTop = ((editorCode.scrollHeight / lines.length) * selLine) - (editorCode.clientHeight / 2);
 }
 
-function loadCodeFileFromURL(fileURL)
+function readCodeFileFromURL(fileURL)
 //Load source file from local storage or a given URL
 {
-  statusBar.innerText = `Loading '${fileURL}'...`;
-
   return new Promise((resolve, reject) =>
   {
     var fileName;
@@ -337,7 +335,7 @@ function loadCodeFileFromURL(fileURL)
       fileData = window.localStorage.getItem("fileData");
 
       if(fileData)
-        resolve({fileName, fileData});
+        resolve({fileName: fileName, fileData: fileData});
       else
         reject("Failed to read local storage data.");
     }
@@ -354,20 +352,10 @@ function loadCodeFileFromURL(fileURL)
       .then((fileData) =>
       {
         fileName = fileURL.split('/').pop();
-        resolve({fileName, fileData})
+        resolve({fileName: fileName, fileData: fileData})
       })
       .catch(error => reject(`Failed to load '${fileURL}': ${error}`));
     }
-  })
-  .then(({fileName, fileData}) =>
-  {
-    loadCodeFile({fileName: fileName, fileData: fileData});
-    return fileData;
-  })
-  .catch((errorMessage) =>
-  {
-    statusBar.innerText = errorMessage;
-    return Promise.reject(errorMessage);
   });
 }
 
