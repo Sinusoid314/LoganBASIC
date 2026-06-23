@@ -331,7 +331,7 @@ function selectEditorLine(selLine)
 }
 
 function readCodeFileFromURL(fileURL)
-//Load source file from local storage or a given URL
+//Read code file from local storage or a given URL
 {
   return new Promise((resolve, reject) =>
   {
@@ -363,7 +363,7 @@ function readCodeFileFromURL(fileURL)
         fileName = fileURL.split('/').pop();
         resolve(new CodeFile(fileName, fileData));
       })
-      .catch(error =>
+      .catch((error) =>
       {
         reject(`Failed to load '${fileURL}': ${error}`);
       });
@@ -371,8 +371,40 @@ function readCodeFileFromURL(fileURL)
   });
 }
 
+function readCodeFileFromInput()
+//Read code file from an Input element
+{
+  return new Promise((resolve, reject) => 
+  {
+    var fileInput = document.createElement("input");
+
+    fileInput.type = "file";
+    fileInput.accept = "*.bas";
+    fileInput.style.display = "none";
+
+    fileInput.addEventListener("change", (event) =>
+    {
+      var file = event.target.files[0];
+
+      file.text()
+      .then((fileData) =>
+      {
+        resolve(new CodeFile(file.name, fileData));
+      })
+      .catch((error) =>
+      {
+        reject(`Failed to load '${file.name}': ${error}`);
+      });
+    });
+
+    document.body.appendChild(fileInput);
+    fileInput.click();
+    document.body.removeChild(fileInput);
+  });
+}
+
 function loadCodeFile(codeFile)
-//
+//Load the code file's name and contents into the editor
 {
   codeFileName = (codeFile.name == "") ? "untitled.bas" : codeFile.name;
   codeFileNameDisplay.innerText = codeFileName;
@@ -382,52 +414,10 @@ function loadCodeFile(codeFile)
   statusBar.innerText = "Ready.";
 }
 
-function newBtn_onClick(event)
-//Open a blank editor in a new tab
-{
-  if(isRunning)
-    return;
-  
-  resetMain();
-}
-
-function openBtn_onClick(event)
-//Open a source file from disk
-{
-  var fileInput;
-
-  if(isRunning)
-    return;
-
-  fileInput = document.createElement("input");
-
-  fileInput.type = "file";
-  fileInput.accept = "*.bas";
-  fileInput.style.display = "none";
-
-  fileInput.addEventListener("change", (event) =>
-  {
-    var file = event.target.files[0];
-
-    file.text().then((fileData) =>
-    {
-      resetMain();
-      loadCodeFile(new CodeFile(file.name, fileData));
-    });
-  });
-
-  document.body.appendChild(fileInput);
-  fileInput.click();
-  document.body.removeChild(fileInput);
-}
-
-function saveBtn_onClick(event)
-//Save the current source code to disk
+function saveCodeFileFromAnchor()
+//Save code file from an Anchor element
 {
   var blob, url, fileLink;
-
-  if(isRunning)
-    return;
 
   blob = new Blob([editorCode.value], {type: 'text/plain'});
   url = URL.createObjectURL(blob);
@@ -441,6 +431,42 @@ function saveBtn_onClick(event)
   fileLink.click();
   document.body.removeChild(fileLink);
   URL.revokeObjectURL(url);
+}
+
+function newBtn_onClick(event)
+//Open a blank editor in a new tab
+{
+  if(isRunning)
+    return;
+  
+  resetMain();
+}
+
+function openBtn_onClick(event)
+//Open a code file from disk
+{
+  if(isRunning)
+    return;
+
+  readCodeFileFromInput()
+  .then((codeFile) =>
+  {
+    resetMain();
+    loadCodeFile(codeFile);
+  })
+  .catch((errorMessage) =>
+  {
+    statusBar.innerText = errorMessage;
+  });
+}
+
+function saveBtn_onClick(event)
+//Save the current code to disk
+{
+  if(isRunning)
+    return;
+
+  saveCodeFileFromAnchor();
 
   codeHasChanged = false;
   codeFileNameDisplay.innerText = codeFileName;

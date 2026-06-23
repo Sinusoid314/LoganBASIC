@@ -1,13 +1,14 @@
 (June 23, 2026)
 [v2.1.0.22]
 	- Created CodeFile class to hold file name and data when reading/loading a code file.
-
+	- Extracted code-file-reading logic from openBtn_onClick(), and put it into the new function readCodeFileFromInput().
+	- Extracted code-file-saving logic from saveBtn_onClick(), and put it into the new function saveCodeFileFromAnchor().
 [v2.1.0.21]
 	- Renamed loadCodeFileFromURL() to readCodeFileFromURL(), and moved its loadCodeFile() call to window_onLoad() in main_ui module.
 
 (June 22, 2026)
 [v2.1.0.20]
-	- Extracted editor code-loading logic from loadCodeFileFromURL() and openBtn_onClick, and put it into the new function loadCodeFile().
+	- Extracted editor code-loading logic from loadCodeFileFromURL() and openBtn_onClick(), and put it into the new function loadCodeFile().
 
 (June 18, 2026)
 [v2.1.0.19]
