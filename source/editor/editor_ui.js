@@ -403,7 +403,7 @@ function readCodeFileFromInput()
   });
 }
 
-function loadCodeFile(codeFile)
+function loadCodeFileIntoEditor(codeFile)
 //Load the code file's name and contents into the editor
 {
   codeFileName = (codeFile.name == "") ? "untitled.bas" : codeFile.name;
@@ -461,7 +461,7 @@ function openBtn_onClick(event)
   .then((codeFile) =>
   {
     resetMain();
-    loadCodeFile(codeFile);
+    loadCodeFileIntoEditor(codeFile);
   })
   .catch((errorMessage) =>
   {

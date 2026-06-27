@@ -400,7 +400,7 @@ function window_onLoad(event)
     readCodeFileFromURL(paramFileURL)
     .then((codeFile) =>
     {
-      loadCodeFile(codeFile);
+      loadCodeFileIntoEditor(codeFile);
 
       if(autoRun)
         startProg(codeFile.data);
