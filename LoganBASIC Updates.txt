@@ -2,6 +2,7 @@
 [v2.1.0.23]
 	- Moved logic of saveBtn_onClick() function into new function saveCodeFile() in editor_ui module.
 	- Renamed loadCodeFile() to loadCodeFileIntoEditor() in editor_ui module.
+	- Added 'save changes' confirmation to newBtn_onClick() and openBtn_onClick() functions in editor_ui module.
 
 (June 23, 2026)
 [v2.1.0.22]

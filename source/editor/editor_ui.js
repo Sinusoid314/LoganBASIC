@@ -447,6 +447,12 @@ function newBtn_onClick(event)
 {
   if(isRunning)
     return;
+
+  if(codeHasChanged)
+  {
+    if(confirm("Save changes to '" + codeFileName + "'?"))
+      saveCodeFile();
+  }
   
   resetMain();
 }
@@ -456,6 +462,12 @@ function openBtn_onClick(event)
 {
   if(isRunning)
     return;
+
+  if(codeHasChanged)
+  {
+    if(confirm("Save changes to '" + codeFileName + "'?"))
+      saveCodeFile();
+  }
 
   readCodeFileFromInput()
   .then((codeFile) =>
