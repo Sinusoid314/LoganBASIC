@@ -4,7 +4,6 @@
 
 [Features]
     - Add ability to store an open file's handle in editor_ui module.
-    - Pre-load worker file URL.
 
     - Standard functions for array searching.
     - Inline-If standard function.

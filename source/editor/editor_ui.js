@@ -414,6 +414,15 @@ function loadCodeFile(codeFile)
   statusBar.innerText = "Ready.";
 }
 
+function saveCodeFile()
+//
+{
+  saveCodeFileFromAnchor();
+
+  codeHasChanged = false;
+  codeFileNameDisplay.innerText = codeFileName;
+}
+
 function saveCodeFileFromAnchor()
 //Save code file from an Anchor element
 {
@@ -466,10 +475,7 @@ function saveBtn_onClick(event)
   if(isRunning)
     return;
 
-  saveCodeFileFromAnchor();
-
-  codeHasChanged = false;
-  codeFileNameDisplay.innerText = codeFileName;
+  saveCodeFile();
 }
 
 function examplesBtn_onClick(event)

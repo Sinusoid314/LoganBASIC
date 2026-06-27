@@ -1,3 +1,7 @@
+(June 26, 2026)
+[v2.1.0.23]
+	- Moved logic of saveBtn_onClick() function into new function saveCodeFile() in editor_ui module.
+
 (June 23, 2026)
 [v2.1.0.22]
 	- Created CodeFile class to hold file name and data when reading/loading a code file.
