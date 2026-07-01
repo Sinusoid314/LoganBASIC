@@ -337,6 +337,7 @@ function readCodeFileFromURL(fileURL)
   {
     var fileName;
     var fileData;
+    var fetchResponse;
 
     if(fileURL == "local")
     {
@@ -382,19 +383,20 @@ function readCodeFileFromInput()
     fileInput.accept = "*.bas";
     fileInput.style.display = "none";
 
-    fileInput.addEventListener("change", (event) =>
+    fileInput.addEventListener("change", async (event) =>
     {
       var file = event.target.files[0];
+      var fileData;
 
-      file.text()
-      .then((fileData) =>
+      try
       {
+        fileData = await file.text();
         resolve(new CodeFile(file.name, fileData));
-      })
-      .catch((error) =>
+      }
+      catch(error)
       {
         reject(`Failed to load '${file.name}': ${error}`);
-      });
+      }
     });
 
     document.body.appendChild(fileInput);
@@ -457,9 +459,11 @@ function newBtn_onClick(event)
   resetMain();
 }
 
-function openBtn_onClick(event)
+async function openBtn_onClick(event)
 //Open a code file from disk
 {
+  var codeFile;
+
   if(isRunning)
     return;
 
@@ -469,16 +473,16 @@ function openBtn_onClick(event)
       saveCodeFile();
   }
 
-  readCodeFileFromInput()
-  .then((codeFile) =>
+  try
   {
+    codeFile = await readCodeFileFromInput();
     resetMain();
     loadCodeFileIntoEditor(codeFile);
-  })
-  .catch((errorMessage) =>
+  }
+  catch(errorMessage)
   {
     statusBar.innerText = errorMessage;
-  });
+  }
 }
 
 function saveBtn_onClick(event)

@@ -374,9 +374,11 @@ function endProg(exitMessage, exitStatus, error)
   isRunning = false;
 }
 
-function window_onLoad(event)
+async function window_onLoad(event)
 //
 {
+  var codeFile;
+
   if(mainMode == MAIN_MODE_EDIT)
   {
     setToggleEvents();
@@ -397,18 +399,18 @@ function window_onLoad(event)
 
     statusBar.innerText = `Loading '${paramFileURL}'...`;
 
-    readCodeFileFromURL(paramFileURL)
-    .then((codeFile) =>
+    try
     {
+      codeFile = await readCodeFileFromURL(paramFileURL);
       loadCodeFileIntoEditor(codeFile);
 
       if(autoRun)
         startProg(codeFile.data);
-    })
-    .catch((errorMessage) =>
+    }
+    catch(errorMessage)
     {
       statusBar.innerText = errorMessage;
-    });
+    }
 
     return;
   }

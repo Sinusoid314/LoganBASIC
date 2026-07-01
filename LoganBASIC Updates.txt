@@ -1,3 +1,7 @@
+(July 1, 2026)
+[v2.1.0.24]
+	- Modified readCodeFileFromInput(), openBtn_onClick(), and window_onLoad() to use async/await.
+
 (June 26, 2026)
 [v2.1.0.23]
 	- Moved logic of saveBtn_onClick() function into new function saveCodeFile() in editor_ui module.
