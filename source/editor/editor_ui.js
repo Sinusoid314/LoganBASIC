@@ -330,54 +330,47 @@ function selectEditorLine(selLine)
   editorCode.scrollTop = ((editorCode.scrollHeight / lines.length) * selLine) - (editorCode.clientHeight / 2);
 }
 
-function readCodeFileFromLocalStorage()
+async function readCodeFileFromLocalStorage()
 //
 {
-  return new Promise((resolve, reject) =>
-  {
-    var fileName;
-    var fileData;
+  var fileName;
+  var fileData;
 
-    fileName = window.localStorage.getItem("fileName");
-    fileData = window.localStorage.getItem("fileData");
+  fileName = window.localStorage.getItem("fileName");
+  fileData = window.localStorage.getItem("fileData");
 
-    if(fileData)
-      resolve(new CodeFile(fileName, fileData));
-    else
-      reject("Failed to read local storage data.");
-  });
+  if(fileData)
+    return new CodeFile(fileName, fileData);
+  else
+    throw "Failed to read local storage data.";
 }
 
-function readCodeFileFromURL(fileURL)
+async function readCodeFileFromURL(fileURL)
 //Read code file from local storage or a given URL
 {
-  return new Promise((resolve, reject) =>
+  var fileName;
+  var fileData;
+  var fetchResponse;
+
+  try
   {
-    var fileName;
-    var fileData;
-    var fetchResponse;
+    fetchResponse = await fetch(fileURL);
 
-    fetch(fileURL)
-    .then((response) =>
-    {
-      if(!response.ok)
-          return Promise.reject(response.statusText);
+    if(!fetchResponse.ok)
+      throw fetchResponse.statusText;
 
-      return response.text();
-    })
-    .then((fileData) =>
-    {
-      fileName = fileURL.split('/').pop();
-      resolve(new CodeFile(fileName, fileData));
-    })
-    .catch((error) =>
-    {
-      reject(`Failed to load '${fileURL}': ${error}`);
-    });
-  });
+    fileData = await fetchResponse.text();
+    fileName = fileURL.split('/').pop();
+
+    return new CodeFile(fileName, fileData);
+  }
+  catch(error)
+  {
+    throw `Failed to load '${fileURL}': ${error}`;
+  }
 }
 
-function readCodeFileFromInput()
+async function readCodeFileFromInput()
 //Read code file from an Input element
 {
   return new Promise((resolve, reject) => 

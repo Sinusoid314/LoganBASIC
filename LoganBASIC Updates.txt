@@ -1,4 +1,6 @@
 (July 1, 2026)
+[v2.1.0.26]
+	- Modified readCodeFileFromURL() and readCodeFileFromLocalStorage() in editor_ui module to be async.
 [v2.1.0.25]
 	- Extracted logic for reading code files from local storage from readCodeFileFromURL() to the
 	  new function readCodeFileFromLocalStorage() in editor_ui module.
