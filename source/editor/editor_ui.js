@@ -330,6 +330,24 @@ function selectEditorLine(selLine)
   editorCode.scrollTop = ((editorCode.scrollHeight / lines.length) * selLine) - (editorCode.clientHeight / 2);
 }
 
+function readCodeFileFromLocalStorage()
+//
+{
+  return new Promise((resolve, reject) =>
+  {
+    var fileName;
+    var fileData;
+
+    fileName = window.localStorage.getItem("fileName");
+    fileData = window.localStorage.getItem("fileData");
+
+    if(fileData)
+      resolve(new CodeFile(fileName, fileData));
+    else
+      reject("Failed to read local storage data.");
+  });
+}
+
 function readCodeFileFromURL(fileURL)
 //Read code file from local storage or a given URL
 {
@@ -339,36 +357,23 @@ function readCodeFileFromURL(fileURL)
     var fileData;
     var fetchResponse;
 
-    if(fileURL == "local")
+    fetch(fileURL)
+    .then((response) =>
     {
-      fileName = window.localStorage.getItem("fileName");
-      fileData = window.localStorage.getItem("fileData");
-
-      if(fileData)
-        resolve(new CodeFile(fileName, fileData));
-      else
-        reject("Failed to read local storage data.");
-    }
-    else
-    {
-      fetch(fileURL)
-      .then((response) =>
-      {
-        if(!response.ok)
+      if(!response.ok)
           return Promise.reject(response.statusText);
 
-        return response.text();
-      })
-      .then((fileData) =>
-      {
-        fileName = fileURL.split('/').pop();
-        resolve(new CodeFile(fileName, fileData));
-      })
-      .catch((error) =>
-      {
-        reject(`Failed to load '${fileURL}': ${error}`);
-      });
-    }
+      return response.text();
+    })
+    .then((fileData) =>
+    {
+      fileName = fileURL.split('/').pop();
+      resolve(new CodeFile(fileName, fileData));
+    })
+    .catch((error) =>
+    {
+      reject(`Failed to load '${fileURL}': ${error}`);
+    });
   });
 }
 

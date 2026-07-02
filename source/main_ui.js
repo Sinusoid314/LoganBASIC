@@ -401,7 +401,7 @@ async function window_onLoad(event)
 
     try
     {
-      codeFile = await readCodeFileFromURL(paramFileURL);
+      codeFile = await ((paramFileURL == "local") ? readCodeFileFromLocalStorage() : readCodeFileFromURL(paramFileURL));
       loadCodeFileIntoEditor(codeFile);
 
       if(autoRun)
