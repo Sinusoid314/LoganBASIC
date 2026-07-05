@@ -1,3 +1,7 @@
+(July 4, 2026)
+[v2.1.0.26]
+	- Added skeleton code for opening/saving a file using a file handle in editor_ui module.
+
 (July 1, 2026)
 [v2.1.0.26]
 	- Modified readCodeFileFromURL() and readCodeFileFromLocalStorage() in editor_ui module to be async.

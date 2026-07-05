@@ -184,8 +184,9 @@ mainDiv.insertAdjacentHTML("afterbegin",
 
 class CodeFile
 {
-  constructor(name, data)
+  constructor(name, data, handle)
   {
+    this.handle = this.handle;
     this.name = name;
     this.data = data;
   }
@@ -208,6 +209,7 @@ var aboutDialog = document.getElementById("aboutDialog");
 var prevLineCount = 1;
 var codeHasChanged = false;
 var codeFileName = "untitled.bas";
+var codeFileHandle = null;
 
 codeFileNameDisplay.innerText = codeFileName;
 
@@ -403,6 +405,12 @@ async function readCodeFileFromInput()
   });
 }
 
+async function readCodeFileFromHandle()
+//
+{
+
+}
+
 function loadCodeFileIntoEditor(codeFile)
 //Load the code file's name and contents into the editor
 {
@@ -414,16 +422,16 @@ function loadCodeFileIntoEditor(codeFile)
   statusBar.innerText = "Ready.";
 }
 
-function saveCodeFile()
+async function saveCodeFile()
 //
 {
-  saveCodeFileFromAnchor();
+  await saveCodeFileFromAnchor();
 
   codeHasChanged = false;
   codeFileNameDisplay.innerText = codeFileName;
 }
 
-function saveCodeFileFromAnchor()
+async function saveCodeFileFromAnchor()
 //Save code file from an Anchor element
 {
   var blob, url, fileLink;
@@ -442,7 +450,13 @@ function saveCodeFileFromAnchor()
   URL.revokeObjectURL(url);
 }
 
-function newBtn_onClick(event)
+async function saveCodeFileFromHandle()
+//
+{
+
+}
+
+async function newBtn_onClick(event)
 //Open a blank editor in a new tab
 {
   if(isRunning)
@@ -451,7 +465,7 @@ function newBtn_onClick(event)
   if(codeHasChanged)
   {
     if(confirm("Save changes to '" + codeFileName + "'?"))
-      saveCodeFile();
+      await saveCodeFile();
   }
   
   resetMain();
@@ -468,7 +482,7 @@ async function openBtn_onClick(event)
   if(codeHasChanged)
   {
     if(confirm("Save changes to '" + codeFileName + "'?"))
-      saveCodeFile();
+      await saveCodeFile();
   }
 
   try
@@ -483,13 +497,13 @@ async function openBtn_onClick(event)
   }
 }
 
-function saveBtn_onClick(event)
+async function saveBtn_onClick(event)
 //Save the current code to disk
 {
   if(isRunning)
     return;
 
-  saveCodeFile();
+  await saveCodeFile();
 }
 
 function examplesBtn_onClick(event)
