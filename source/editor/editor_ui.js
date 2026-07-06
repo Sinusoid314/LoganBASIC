@@ -422,15 +422,6 @@ function loadCodeFileIntoEditor(codeFile)
   statusBar.innerText = "Ready.";
 }
 
-async function saveCodeFile()
-//
-{
-  await saveCodeFileFromAnchor();
-
-  codeHasChanged = false;
-  codeFileNameDisplay.innerText = codeFileName;
-}
-
 async function saveCodeFileFromAnchor()
 //Save code file from an Anchor element
 {
@@ -464,8 +455,8 @@ async function newBtn_onClick(event)
 
   if(codeHasChanged)
   {
-    if(confirm("Save changes to '" + codeFileName + "'?"))
-      await saveCodeFile();
+    if(!confirm("You have unsaved changes to '" + codeFileName + "'. Are you sure you want to start a new file?"))
+      return;
   }
   
   resetMain();
@@ -481,8 +472,8 @@ async function openBtn_onClick(event)
 
   if(codeHasChanged)
   {
-    if(confirm("Save changes to '" + codeFileName + "'?"))
-      await saveCodeFile();
+    if(!confirm("You have unsaved changes to '" + codeFileName + "'. Are you sure you want to open another file?"))
+      return;
   }
 
   try
@@ -503,7 +494,10 @@ async function saveBtn_onClick(event)
   if(isRunning)
     return;
 
-  await saveCodeFile();
+  await saveCodeFileFromAnchor();
+
+  codeHasChanged = false;
+  codeFileNameDisplay.innerText = codeFileName;
 }
 
 function examplesBtn_onClick(event)

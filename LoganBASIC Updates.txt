@@ -1,3 +1,8 @@
+(July 5, 2026)
+[v2.1.0.27]
+	- In editor_ui module, modified newBtn_onClick() and openBtn_onClick() to confirm the new/open action instead of
+	  the save action, and moved the logic of saveCodeFile() back into saveBtn_onClick().
+
 (July 4, 2026)
 [v2.1.0.26]
 	- Added skeleton code for opening/saving a file using a file handle in editor_ui module.
