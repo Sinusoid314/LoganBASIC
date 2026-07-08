@@ -498,9 +498,15 @@ async function saveBtn_onClick(event)
   if(isRunning)
     return;
 
-  await saveCodeFileFromAnchor();
-
-  codeFileNameDisplay.innerText = codeFileName + (codeHasChanged ? "*" : "");
+  try
+  {
+    await saveCodeFileFromAnchor();
+    codeFileNameDisplay.innerText = codeFileName + (codeHasChanged ? "*" : "");
+  }
+  catch(errorMessage)
+  {
+    statusBar.innerText = errorMessage;
+  }
 }
 
 function examplesBtn_onClick(event)

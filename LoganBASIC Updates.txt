@@ -3,6 +3,7 @@
 	- Modified loadCodeFileIntoEditor() in editor_ui module to only change codeFileName if the given CodeFile's name isn't empty.
 	- Moved codeHasChanged check from saveBtn_onClick() to saveCodeFileFromAnchor() in editor_ui module.
 	- Modified editorUI_onMainReset() to set codeFileHandle to null.
+	- Added try/catch blocks to saveBtn_onClick().
 
 (July 5, 2026)
 [v2.1.0.27]
