@@ -441,6 +441,8 @@ async function saveCodeFileFromAnchor()
   fileLink.click();
   document.body.removeChild(fileLink);
   URL.revokeObjectURL(url);
+
+  codeHasChanged = false;
 }
 
 async function saveCodeFileFromHandle()
@@ -498,8 +500,7 @@ async function saveBtn_onClick(event)
 
   await saveCodeFileFromAnchor();
 
-  codeHasChanged = false;
-  codeFileNameDisplay.innerText = codeFileName;
+  codeFileNameDisplay.innerText = codeFileName + (codeHasChanged ? "*" : "");
 }
 
 function examplesBtn_onClick(event)
