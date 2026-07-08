@@ -192,6 +192,16 @@ class CodeFile
   }
 }
 
+const filePickerOptions =
+{
+  types:
+  [{
+    description: "BASIC Source File",
+    accept: { "text/plain": [".bas"] }
+  }],
+  multiple: false
+};
+
 var newBtn = document.getElementById("newBtn");
 var openBtn = document.getElementById("openBtn");
 var saveBtn = document.getElementById("saveBtn");
