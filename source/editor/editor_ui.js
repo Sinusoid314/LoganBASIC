@@ -414,11 +414,13 @@ async function readCodeFileFromHandle()
 function loadCodeFileIntoEditor(codeFile)
 //Load the code file's name and contents into the editor
 {
-  codeFileName = (codeFile.name == "") ? "untitled.bas" : codeFile.name;
-  codeFileNameDisplay.innerText = codeFileName;
-
+  if(codeFile.name != "") codeFileName = codeFile.name;
+  codeFileHandle = codeFile.handle;
   editorCode.value = codeFile.data;
+
   updateEditorGutter();
+
+  codeFileNameDisplay.innerText = codeFileName;
   statusBar.innerText = "Ready.";
 }
 
