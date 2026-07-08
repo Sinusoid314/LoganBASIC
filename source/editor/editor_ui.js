@@ -575,6 +575,7 @@ function editorUI_onMainReset()
 {
   codeHasChanged = false;
   codeFileName = "untitled.bas";
+  codeFileHandle = null;
   codeFileNameDisplay.innerText = codeFileName;
   editorCode.value = "";
   updateEditorGutter();
