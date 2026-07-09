@@ -186,7 +186,7 @@ class CodeFile
 {
   constructor(name, data, handle)
   {
-    this.handle = this.handle;
+    this.handle = handle;
     this.name = name;
     this.data = data;
   }
