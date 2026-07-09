@@ -1,4 +1,6 @@
 (July 9, 2026)
+[v2.1.0.31]
+	- Updated the images for the Code Editor and Debugger help pages.
 [v2.1.0.30]
 	- Fixed bug with codeFileHandle remaining 'undefined' after opening a code file in editor_ui module.
 
