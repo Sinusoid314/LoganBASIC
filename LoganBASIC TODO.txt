@@ -3,8 +3,6 @@
 
 
 [Features]
-    - Add ability to store an open file's handle in editor_ui module.
-
     - Standard functions for array searching.
     - Inline-If standard function.
     - Ability to include underscore characters in identifiers.

@@ -345,11 +345,8 @@ function selectEditorLine(selLine)
 async function readCodeFileFromLocalStorage()
 //
 {
-  var fileName;
-  var fileData;
-
-  fileName = window.localStorage.getItem("fileName");
-  fileData = window.localStorage.getItem("fileData");
+  const fileName = window.localStorage.getItem("fileName");
+  const fileData = window.localStorage.getItem("fileData");
 
   if(fileData)
     return new CodeFile(fileName, fileData);
@@ -360,19 +357,15 @@ async function readCodeFileFromLocalStorage()
 async function readCodeFileFromURL(fileURL)
 //Read code file from local storage or a given URL
 {
-  var fileName;
-  var fileData;
-  var fetchResponse;
-
   try
   {
-    fetchResponse = await fetch(fileURL);
+    const fetchResponse = await fetch(fileURL);
 
     if(!fetchResponse.ok)
       throw fetchResponse.statusText;
 
-    fileData = await fetchResponse.text();
-    fileName = fileURL.split('/').pop();
+    const fileData = await fetchResponse.text();
+    const fileName = fileURL.split('/').pop();
 
     return new CodeFile(fileName, fileData);
   }
@@ -387,7 +380,7 @@ async function readCodeFileFromInput()
 {
   return new Promise((resolve, reject) => 
   {
-    var fileInput = document.createElement("input");
+    const fileInput = document.createElement("input");
 
     fileInput.type = "file";
     fileInput.accept = "*.bas";
@@ -395,12 +388,11 @@ async function readCodeFileFromInput()
 
     fileInput.addEventListener("change", async (event) =>
     {
-      var file = event.target.files[0];
-      var fileData;
+      const file = event.target.files[0];
 
       try
       {
-        fileData = await file.text();
+        const fileData = await file.text();
         resolve(new CodeFile(file.name, fileData));
       }
       catch(error)
@@ -418,7 +410,21 @@ async function readCodeFileFromInput()
 async function readCodeFileFromHandle()
 //
 {
+  try
+  {
+    const [fileHandle] = await window.showOpenFilePicker(filePickerOptions);
+    const file = await fileHandle.getFile();
+    const fileData = await file.text();
 
+    return new CodeFile(file.name, fileData, fileHandle);
+  }
+  catch(error)
+  {
+    if(error.name == "AbortError")
+      throw "File open cancelled.";
+    else
+      throw `Failed to load file: ${error}`;
+  }
 }
 
 function loadCodeFileIntoEditor(codeFile)
@@ -431,17 +437,15 @@ function loadCodeFileIntoEditor(codeFile)
   updateEditorGutter();
 
   codeFileNameDisplay.innerText = codeFileName;
-  statusBar.innerText = "Ready.";
+  statusBar.innerText = "File opened successfully.";
 }
 
 async function saveCodeFileFromAnchor()
 //Save code file from an Anchor element
 {
-  var blob, url, fileLink;
-
-  blob = new Blob([editorCode.value], {type: 'text/plain'});
-  url = URL.createObjectURL(blob);
-  fileLink = document.createElement("a");
+  const blob = new Blob([editorCode.value], {type: 'text/plain'});
+  const url = URL.createObjectURL(blob);
+  const fileLink = document.createElement("a");
 
   fileLink.href = url;
   fileLink.download = codeFileName;
@@ -451,14 +455,30 @@ async function saveCodeFileFromAnchor()
   fileLink.click();
   document.body.removeChild(fileLink);
   URL.revokeObjectURL(url);
-
-  codeHasChanged = false;
 }
 
 async function saveCodeFileFromHandle()
 //
 {
+  try
+  {
+    if(!codeFileHandle)
+    {
+      codeFileHandle = await window.showSaveFilePicker(filePickerOptions);
+      codeFileName = codeFileHandle.name;
+    }
 
+    const stream = await codeFileHandle.createWritable();
+    await stream.write(editorCode.value);
+    await stream.close();
+  }
+  catch(error)
+  {
+    if(error.name == "AbortError")
+      throw "File save cancelled.";
+    else
+      throw `Failed to save file: ${error}`;
+  }
 }
 
 async function newBtn_onClick(event)
@@ -479,8 +499,6 @@ async function newBtn_onClick(event)
 async function openBtn_onClick(event)
 //Open a code file from disk
 {
-  var codeFile;
-
   if(isRunning)
     return;
 
@@ -492,7 +510,7 @@ async function openBtn_onClick(event)
 
   try
   {
-    codeFile = await readCodeFileFromInput();
+    const codeFile = await (("showOpenFilePicker" in window) ? readCodeFileFromHandle() : readCodeFileFromInput());
     resetMain();
     loadCodeFileIntoEditor(codeFile);
   }
@@ -510,8 +528,14 @@ async function saveBtn_onClick(event)
 
   try
   {
-    await saveCodeFileFromAnchor();
-    codeFileNameDisplay.innerText = codeFileName + (codeHasChanged ? "*" : "");
+    if("showOpenFilePicker" in window)
+      await saveCodeFileFromHandle();
+    else
+      await saveCodeFileFromAnchor();
+
+    codeHasChanged = false;
+    codeFileNameDisplay.innerText = codeFileName;
+    statusBar.innerText = "File saved successfully.";
   }
   catch(errorMessage)
   {
