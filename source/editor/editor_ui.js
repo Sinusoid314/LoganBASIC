@@ -201,6 +201,7 @@ const filePickerOptions =
   }],
   multiple: false
 };
+const DEFAULT_FILE_NAME = "untitled.bas";
 
 var newBtn = document.getElementById("newBtn");
 var openBtn = document.getElementById("openBtn");
@@ -218,7 +219,7 @@ var debugToggleBtn = document.getElementById("debugToggleBtn");
 var aboutDialog = document.getElementById("aboutDialog");
 var prevLineCount = 1;
 var codeHasChanged = false;
-var codeFileName = "untitled.bas";
+var codeFileName = DEFAULT_FILE_NAME;
 var codeFileHandle = null;
 
 codeFileNameDisplay.innerText = codeFileName;
@@ -614,7 +615,7 @@ function editorUI_onMainReset()
 //
 {
   codeHasChanged = false;
-  codeFileName = "untitled.bas";
+  codeFileName = DEFAULT_FILE_NAME;
   codeFileHandle = null;
   codeFileNameDisplay.innerText = codeFileName;
   editorCode.value = "";
