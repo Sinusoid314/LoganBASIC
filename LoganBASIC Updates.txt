@@ -1,3 +1,7 @@
+(July 15, 2026)
+[v2.1.0.32]
+	- Updated test checklist.
+
 (July 14, 2026)
 [v2.1.0.32]
 	- Fixed typos in Updates page.
