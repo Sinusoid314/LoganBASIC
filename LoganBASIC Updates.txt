@@ -1,6 +1,7 @@
 (July 15, 2026)
 [v2.1.0.32]
 	- Updated test checklist.
+	- Added a compressed file of the current production version to the local repository.
 
 (July 14, 2026)
 [v2.1.0.32]
