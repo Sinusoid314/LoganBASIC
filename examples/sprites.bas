@@ -22,12 +22,12 @@ function setup()
 
   print "Loading images..."
 
-  if not loadImage("bg", "../examples/images/space.bmp") then
+  if not loadImage("bg", "./examples/images/space.bmp") then
     print "Failed to load image 'bg.bmp'."
     end
   end if
   
-  if not loadSpriteSheet("ship-sheet", "../examples/images/ship-sheet.png", 2, 1) then
+  if not loadSpriteSheet("ship-sheet", "./examples/images/ship-sheet.png", 2, 1) then
     print "Failed to load image 'ship-sheet.png'."
     end
   end if
@@ -36,7 +36,7 @@ function setup()
   
   print "Loading sound file..."
   
-  if not loadSound("25c", "../examples/sounds/25c.wav") then
+  if not loadSound("25c", "./examples/sounds/25c.wav") then
     print "Failed to load sound '25c.wav'."
     end
   end if

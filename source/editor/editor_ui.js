@@ -126,14 +126,14 @@ document.head.appendChild(document.createElement('style')).textContent =
 mainDiv.insertAdjacentHTML("afterbegin",
 `
 <div id="menuBar" class="bar">
-  <button id="newBtn"><img src="/assests/new.png" alt="New"><span>New</span></button>
-  <button id="openBtn"><img src="/assests/open.png" alt="Open"><span>Open</span></button>
-  <button id="saveBtn"><img src="/assests/save.png" alt="Save"><span>Save</span></button>
+  <button id="newBtn"><img src="./assests/new.png" alt="New"><span>New</span></button>
+  <button id="openBtn"><img src="./assests/open.png" alt="Open"><span>Open</span></button>
+  <button id="saveBtn"><img src="./assests/save.png" alt="Save"><span>Save</span></button>
   <div class="bar-seperator"></div>
-  <button id="examplesBtn"><img src="/assests/examples.png" alt="Examples"><span>Examples</span></button>
-  <button id="helpBtn"><img src="/assests/help.png" alt="Help"><span>Help</span></button>
-  <button id="aboutBtn"><img src="/assests/about.png" alt="About"><span>About</span></button>
-  <button id="updatesBtn"><img src="/assests/updates.png" alt="Updates"><span>Updates</span></button>
+  <button id="examplesBtn"><img src="./assests/examples.png" alt="Examples"><span>Examples</span></button>
+  <button id="helpBtn"><img src="./assests/help.png" alt="Help"><span>Help</span></button>
+  <button id="aboutBtn"><img src="./assests/about.png" alt="About"><span>About</span></button>
+  <button id="updatesBtn"><img src="./assests/updates.png" alt="Updates"><span>Updates</span></button>
 </div>
 
 <div id="editorDiv">
@@ -150,10 +150,10 @@ mainDiv.insertAdjacentHTML("afterbegin",
 </div>
 
 <div id="commandBar" class="bar">
-  <button id="runBtn"><img src="/assests/run.png" alt="Run"><span>Run</span></button>
-  <button id="stopBtn" disabled><img src="/assests/stop.png" alt="Stop"><span>Stop</span></button>
+  <button id="runBtn"><img src="./assests/run.png" alt="Run"><span>Run</span></button>
+  <button id="stopBtn" disabled><img src="./assests/stop.png" alt="Stop"><span>Stop</span></button>
   <div class="bar-seperator"></div>
-  <button id="debugToggleBtn"><img src="/assests/debug.png" alt="Debug"><span>Debug</span></button>
+  <button id="debugToggleBtn"><img src="./assests/debug.png" alt="Debug"><span>Debug</span></button>
   <div class="bar-seperator"></div>
 </div>
 
@@ -167,8 +167,8 @@ mainDiv.insertAdjacentHTML("afterbegin",
         <br><br>
         To get started, you can:
         <ul>
-          <li>Check out the <a href="../examples/examples.html" target="_blank">example programs</a>.</li>
-          <li>Browse the help <a href="../docs/help/help.html" target="_blank">files</a>.</li>
+          <li>Check out the <a href="./examples/examples.html" target="_blank">example programs</a>.</li>
+          <li>Browse the <a href="./docs/help/help.html" target="_blank">help files</a>.</li>
           <li>Write your code in the Code Editor, hit the Run button, and watch your program come to life!</li>
         </ul>
         Send any questions, comments, or bug reports to <a href="mailto:sinusoid314@gmail.com">sinusoid314@gmail.com</a>.
@@ -574,13 +574,13 @@ async function saveBtn_onClick(event)
 function examplesBtn_onClick(event)
 //Open the examples page
 {
-  window.open("../examples/examples.html", "_blank");
+  window.open("./examples/examples.html", "_blank");
 }
 
 function helpBtn_onClick(event)
 //Open the help files page
 {
-  window.open("../docs/help/help.html", "_blank");
+  window.open("./docs/help/help.html", "_blank");
 }
 
 function aboutBtn_onClick(event)
@@ -592,7 +592,7 @@ function aboutBtn_onClick(event)
 function updatesBtn_onClick(event)
 //Open the Updates page
 {
-  window.open("../updates.html", "_blank");
+  window.open("./updates.html", "_blank");
   toggleUpdatesBtnHighlighted();
 }
 

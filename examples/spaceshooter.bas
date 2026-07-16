@@ -73,49 +73,49 @@ wait
 function loadResources()
   print "Loading images..."
 
-  if not loadImage(bgImage, "../examples/images/space2.png") then
+  if not loadImage(bgImage, "./examples/images/space2.png") then
     print "Failed to load image 'space2.png'."
     end
   end if
   
-  if not loadSpriteSheet(playerShipSheet, "../examples/images/player-ship-sheet.png", 1, 1) then
+  if not loadSpriteSheet(playerShipSheet, "./examples/images/player-ship-sheet.png", 1, 1) then
     print "Failed to load image 'player-ship-sheet.png'."
     end
   end if
 
-  if not loadSpriteSheet(enemyShipSheet, "../examples/images/enemy-ship-sheet.png", 1, 1) then
+  if not loadSpriteSheet(enemyShipSheet, "./examples/images/enemy-ship-sheet.png", 1, 1) then
     print "Failed to load image 'enemy-ship-sheet.png'."
     end
   end if
 
-  if not loadSpriteSheet(bulletSheet, "../examples/images/bullet-sheet.png", 1, 1) then
+  if not loadSpriteSheet(bulletSheet, "./examples/images/bullet-sheet.png", 1, 1) then
     print "Failed to load image 'bullet-sheet.png'."
     end
   end if
 
-  if not loadSpriteSheet(explosionSheet, "../examples/images/explosion-sheet.png", 4, 1) then
+  if not loadSpriteSheet(explosionSheet, "./examples/images/explosion-sheet.png", 4, 1) then
     print "Failed to load image 'explosion-sheet.png'."
     end
   end if
 
   print "Images loaded."
 
-  if not loadSound(bgSound, "../examples/sounds/bg-sound.mp3") then
+  if not loadSound(bgSound, "./examples/sounds/bg-sound.mp3") then
     print "Failed to load sound 'bg-sound.mp3'."
     end
   end if
 
-  if not loadSound(playerFireSound, "../examples/sounds/player-fire.mp3") then
+  if not loadSound(playerFireSound, "./examples/sounds/player-fire.mp3") then
     print "Failed to load sound 'player-fire.mp3'."
     end
   end if
 
-  if not loadSound(enemyFireSound, "../examples/sounds/enemy-fire.mp3") then
+  if not loadSound(enemyFireSound, "./examples/sounds/enemy-fire.mp3") then
     print "Failed to load sound 'enemy-fire.mp3'."
     end
   end if
 
-  if not loadSound(explosionSound, "../examples/sounds/explosion.mp3") then
+  if not loadSound(explosionSound, "./examples/sounds/explosion.mp3") then
     print "Failed to load sound 'explosion.mp3'."
     end
   end if

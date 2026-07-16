@@ -2,7 +2,7 @@
 '
 'Flip over any two cards and see if they match.
 
-var imagePath = "../examples/images/"
+var imagePath = "./examples/images/"
 var successImage = "success"
 var failImage = "fail"
 var cardBackImage = "card-back"

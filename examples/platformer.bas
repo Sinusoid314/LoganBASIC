@@ -48,27 +48,27 @@ wait
 function setup()
   print "Loading images..."
 
-  if not loadImage("bg", "../examples/images/street.bmp") then
+  if not loadImage("bg", "./examples/images/street.bmp") then
     print "Failed to load image 'street.bmp'."
     end
   end if
   
-  if not loadSpriteSheet("bubba-sheet", "../examples/images/bubba.png", 5, 2) then
+  if not loadSpriteSheet("bubba-sheet", "./examples/images/bubba.png", 5, 2) then
     print "Failed to load image 'bubba.png'."
     end
   end if
   
-  if not loadSpriteSheet("curb-sheet", "../examples/images/curb.png", 1, 1) then
+  if not loadSpriteSheet("curb-sheet", "./examples/images/curb.png", 1, 1) then
     print "Failed to load image 'curb.png'."
     end
   end if
   
-  if not loadSpriteSheet("platform-sheet", "../examples/images/platform.png", 1, 1) then
+  if not loadSpriteSheet("platform-sheet", "./examples/images/platform.png", 1, 1) then
     print "Failed to load image 'platform.png'."
     end
   end if
   
-  if not loadSpriteSheet("car-sheet", "../examples/images/car.png", 1, 1) then
+  if not loadSpriteSheet("car-sheet", "./examples/images/car.png", 1, 1) then
     print "Failed to load image 'car.png'."
     end
   end if

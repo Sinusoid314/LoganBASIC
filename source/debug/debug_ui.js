@@ -89,12 +89,12 @@ mainDiv.insertAdjacentHTML("beforebegin",
   
   <div id="debugWrapper">
     <div id="debugBar" class="bar">
-      <button id="debugResumeBtn" disabled><img src="/assests/run.png" alt="Resume"><span>Resume</span></button>
+      <button id="debugResumeBtn" disabled><img src="./assests/run.png" alt="Resume"><span>Resume</span></button>
       <div class="bar-seperator"></div>
-      <button id="debugStepIntoBtn" disabled><img src="/assests/step_into.png" alt="Step Into"><span>Step Into</span></button>
-      <button id="debugStepOverBtn" disabled><img src="/assests/step_over.png" alt="Step Over"><span>Step Over</span></button>
-      <button id="debugStepOutBtn" disabled><img src="/assests/step_out.png" alt="Step Out"><span>Step Out</span></button>
-      <button id="debugSkipBtn" disabled><img src="/assests/skip.png" alt="Skip"><span>Skip</span></button>
+      <button id="debugStepIntoBtn" disabled><img src="./assests/step_into.png" alt="Step Into"><span>Step Into</span></button>
+      <button id="debugStepOverBtn" disabled><img src="./assests/step_over.png" alt="Step Over"><span>Step Over</span></button>
+      <button id="debugStepOutBtn" disabled><img src="./assests/step_out.png" alt="Step Out"><span>Step Out</span></button>
+      <button id="debugSkipBtn" disabled><img src="./assests/skip.png" alt="Skip"><span>Skip</span></button>
     </div>
   
     <div id="debugCallStackDiv" class="debugSubDiv">
