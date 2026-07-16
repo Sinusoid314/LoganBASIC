@@ -3,6 +3,7 @@
 	- Fixed bug with incorrect relative URLs in Examples page.
 	- Fixed bug with incorrect relative URLS when using auto-run in the main Help page.
 	- Fixed bug with the favicon not loading.
+	- Added to TODO list.
 
 (July 15, 2026)
 [v2.1.0.34]
