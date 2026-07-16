@@ -397,19 +397,21 @@ async function window_onLoad(event)
     if(paramFileURL == "")
       return;
 
-    statusBar.innerText = `Loading '${paramFileURL}'...`;
-
     try
     {
+      beginFileOpAwait(`Loading '${paramFileURL}'...`);
+
       codeFile = await ((paramFileURL == "local") ? readCodeFileFromLocalStorage() : readCodeFileFromURL(paramFileURL));
       loadCodeFileIntoEditor(codeFile);
+
+      endFileOpAwait("File loaded successfully.");
 
       if(autoRun)
         startProg(codeFile.data);
     }
     catch(errorMessage)
     {
-      statusBar.innerText = errorMessage;
+      endFileOpAwait(errorMessage);
     }
 
     return;

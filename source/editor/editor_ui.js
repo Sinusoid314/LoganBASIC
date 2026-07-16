@@ -221,6 +221,7 @@ var prevLineCount = 1;
 var codeHasChanged = false;
 var codeFileName = DEFAULT_FILE_NAME;
 var codeFileHandle = null;
+var fileOpInProgress = false;
 
 codeFileNameDisplay.innerText = codeFileName;
 
@@ -438,7 +439,6 @@ function loadCodeFileIntoEditor(codeFile)
   updateEditorGutter();
 
   codeFileNameDisplay.innerText = codeFileName;
-  statusBar.innerText = "File opened successfully.";
 }
 
 async function saveCodeFileFromAnchor()
@@ -482,10 +482,30 @@ async function saveCodeFileFromHandle()
   }
 }
 
+function beginFileOpAwait(statusMessage)
+//
+{
+  newBtn.disabled = true;
+  openBtn.disabled = true;
+  saveBtn.disabled = true;
+  statusBar.innerText = statusMessage;
+  fileOpInProgress = true;
+}
+
+function endFileOpAwait(statusMessage)
+//
+{
+  newBtn.disabled = false;
+  openBtn.disabled = false;
+  saveBtn.disabled = false;
+  statusBar.innerText = statusMessage;
+  fileOpInProgress = false;
+}
+
 async function newBtn_onClick(event)
 //Open a blank editor in a new tab
 {
-  if(isRunning)
+  if(isRunning || fileOpInProgress)
     return;
 
   if(codeHasChanged)
@@ -500,7 +520,7 @@ async function newBtn_onClick(event)
 async function openBtn_onClick(event)
 //Open a code file from disk
 {
-  if(isRunning)
+  if(isRunning || fileOpInProgress)
     return;
 
   if(codeHasChanged)
@@ -511,24 +531,30 @@ async function openBtn_onClick(event)
 
   try
   {
+    beginFileOpAwait("Opening file...");
+
     const codeFile = await (("showOpenFilePicker" in window) ? readCodeFileFromHandle() : readCodeFileFromInput());
     resetMain();
     loadCodeFileIntoEditor(codeFile);
+
+    endFileOpAwait("File opened successfully.");
   }
   catch(errorMessage)
   {
-    statusBar.innerText = errorMessage;
+    endFileOpAwait(errorMessage);
   }
 }
 
 async function saveBtn_onClick(event)
 //Save the current code to disk
 {
-  if(isRunning)
+  if(isRunning || fileOpInProgress)
     return;
 
   try
   {
+    beginFileOpAwait("Saving file...");
+
     if("showOpenFilePicker" in window)
       await saveCodeFileFromHandle();
     else
@@ -536,11 +562,12 @@ async function saveBtn_onClick(event)
 
     codeHasChanged = false;
     codeFileNameDisplay.innerText = codeFileName;
-    statusBar.innerText = "File saved successfully.";
+
+    endFileOpAwait("File saved successfully.");
   }
   catch(errorMessage)
   {
-    statusBar.innerText = errorMessage;
+    endFileOpAwait(errorMessage);
   }
 }
 

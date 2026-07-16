@@ -1,4 +1,7 @@
 (July 15, 2026)
+[v2.1.0.33]
+	- Added guard flags to the new, open, and save operations in the code editor to keep multiple operations from being
+	  initiated simultaneously.
 [v2.1.0.32]
 	- Updated test checklist.
 	- Added a compressed file of the current production version to the local repository.
