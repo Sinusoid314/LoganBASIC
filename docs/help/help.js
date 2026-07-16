@@ -46,7 +46,7 @@ function link_onClick(event)
       window.localStorage.setItem("fileName", "");
       window.localStorage.setItem("fileData", fileData);
 
-      window.open("../../../index.html?open=local&autoRun=true", "docview");
+      window.open("../../index.html?open=local&autoRun=true", "docview");
     });
 
   event.preventDefault();
