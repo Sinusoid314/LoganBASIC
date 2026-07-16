@@ -1,3 +1,7 @@
+(July 16, 2026)
+[v2.1.0.35]
+	- Fixed bug with incorrect relative URLs in Examples page.
+
 (July 15, 2026)
 [v2.1.0.34]
 	- Fixed bug with incorrect relative URLs.
