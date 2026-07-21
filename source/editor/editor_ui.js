@@ -101,7 +101,7 @@ document.head.appendChild(document.createElement('style')).textContent =
 
 #aboutForm ul
 {
-  display: inline-block;
+  display: block;
   text-align: left;
   margin-top: 0;
   margin-inline: 5em;
