@@ -93,6 +93,11 @@ document.head.appendChild(document.createElement('style')).textContent =
   margin-inline: 20%;
 }
 
+#aboutIcon
+{
+  float: left;
+}
+
 #aboutForm
 {
   margin-inline: 2em;
@@ -160,7 +165,7 @@ mainDiv.insertAdjacentHTML("afterbegin",
 <dialog id="aboutDialog" class="buttonFace buttonFaceReleased">
   <form id="aboutForm" method="dialog">
     <div id="aboutContent">
-      <h1>Welcome to Logan BASIC!</h1>
+      <h1><img id="aboutIcon" src="./favicon.ico"> Welcome to Logan BASIC!</h1>
       <p>
         Logan BASIC is an online version of the <a href="https://en.wikipedia.org/wiki/BASIC" target="_blank">BASIC programming language</a>
         that creates both text-based and graphics-based programs that run directly in the web browser.
