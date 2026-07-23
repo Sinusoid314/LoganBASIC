@@ -1,4 +1,8 @@
-(July 121, 2026)
+(July 22, 2026)
+[v2.2.0.0]
+	- Started version 2.2.0.
+
+(July 21, 2026)
 [v2.1.0.36]
 	- Changed the About dialog's call-to-action list style from inline-block to block.
 	- Added an icon image to the About dialog.
