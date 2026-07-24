@@ -1,5 +1,6 @@
 [Bugs]
-    - In Firefox, the canvas does not scroll into view when gaining focus.
+    - In Firefox, the background image of the Platformer example has a visible seem between its render copies.
+    - In Firefox, the text of the MemoryMatch example's header randomly gets rendered wrong.
 
 
 [Features]
