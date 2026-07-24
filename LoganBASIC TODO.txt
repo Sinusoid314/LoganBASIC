@@ -1,5 +1,5 @@
 [Bugs]
-    - In Firefox, the canvas does not scroll into view when gaining focus.
+    - 
 
 
 [Features]
