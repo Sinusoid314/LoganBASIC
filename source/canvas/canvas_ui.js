@@ -236,6 +236,7 @@ function onMsgShowCanvas(msgData)
   var toggle = document.getElementById("canvasToggle");
   var pane = document.getElementById("canvasPane");
 
+  progCanvas.scrollIntoView();
   progCanvas.focus()
 
   if(toggle.classList.contains("toggle-closed"))
