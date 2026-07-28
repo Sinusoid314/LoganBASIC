@@ -236,14 +236,14 @@ function onMsgShowCanvas(msgData)
   var toggle = document.getElementById("canvasToggle");
   var pane = document.getElementById("canvasPane");
 
-  progCanvas.scrollIntoView();
-  progCanvas.focus()
-
   if(toggle.classList.contains("toggle-closed"))
   {
     toggle.classList.toggle("toggle-closed");
     pane.classList.toggle("pane-closed");
   }
+
+  progCanvas.scrollIntoView();
+  progCanvas.focus()
 }
 
 function onMsgHideCanvas(msgData)
