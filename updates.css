@@ -10,26 +10,27 @@ body
   display: block;
   margin-right: 50px; 
   margin-left: 50px;
-  margin-top: 50px;
+  margin-top: 6px;
 }
 
 .version
 {
   text-align: left;
   font-weight: bold;
-  font-size: 120%
+  font-size: 1.1em;
 }
 
 .date
 {
   text-align: left;
-  font-weight: bold;
+  font-size: 0.9em;
 }
 
 .features
 {
   display: block;
   text-align: left;
+  margin-top: 6px;
 }
 
 .features li
