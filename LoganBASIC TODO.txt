@@ -1,6 +1,6 @@
 [Bugs]
-    - In Firefox, the background image of the Platformer example has a visible seem between its render copies.
-    - In Firefox, the text of the MemoryMatch example's header randomly gets rendered wrong.
+    - In Firefox, the background image of the Platformer example has a visible seem between its tiles.
+    - A reentrant, race-condition call to drawHeader() in the Memory Match example.
 
 
 [Features]
