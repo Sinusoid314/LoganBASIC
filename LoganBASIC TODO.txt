@@ -11,8 +11,9 @@
     - Ability of run() native function to return error messages instead of terminating the program.
     - Ability to run code in debugger.
     - A "deploy" mode to run a pre-compiled ObjUserFunc object from a JSON file.
+    - Tutorial help files. 
+
     - Syntax highlighting.
-    
     - Breakpoint display to debugger pane.
     - Variable display persistence between breakpoints in debugger.
     - Ability to display different sources in debugger.
@@ -26,4 +27,5 @@
     - Dynamically add the usageRun and usageOpen links to all reference_doc help files in order to centralize the relative URLs they use.
     - Consolidate the request/result thread-message code from each component into the main modules.
     - Change the core modules into ES6 modules.
+    - Extract the core modules into their own repo.
     - Change the component modules into ES6 modules.
