@@ -1,6 +1,6 @@
 [Bugs]
     - In Firefox, the background image of the Platformer example has a visible seem between its tiles.
-    - A reentrant, race-condition call to drawHeader() in the Memory Match example.
+    - The user-function callback for the timer in std_funcs module can interrupt another user-function that is waiting to finish executing.
 
 
 [Features]
