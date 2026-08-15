@@ -1,8 +1,10 @@
 token -> 
 
-scanner -> 
+scanner -> token.TOKEN_*
+                .Token
 
-compiler -> 
+compiler -> token.TOKEN_*
+         -> scanner.Scanner
 
 bytecode -> 
 
