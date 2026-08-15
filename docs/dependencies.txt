@@ -5,12 +5,61 @@ scanner -> token.TOKEN_*
 
 compiler -> token.TOKEN_*
          -> scanner.Scanner
+         -> bytecode.SCOPE_*
+                    .OPCODE_*
+                    .IndexRange
+         -> objects.SOURCE_LEVEL_*
+                   .ObjUserFunc
+                   .ObjStructureDef
+         -> vm.VM_STATUS_*
+              .VM_EVENT_*
+              .VMError
 
 bytecode -> 
 
-objects -> 
+objects -> bytecode.opNames
 
-vm -> 
+vm -> compiler.Compiler
+   -> bytecode.SCOPE_*
+              .OPCODE_*
+   -> objects.ObjUserFunc
+             .ObjNativeFunc
+             .ObjArray
+             .ObjStructureDef
+             .ObjStructure
 
-std_funcs -> 
+std_funcs -> objects.ObjUserFunc
+                    .ObjNativeFunc
+                    .ObjArray
+                    .ObjStructure
+          -> vm.INTERPRET_*
+               .CallbackContext
 
+
+
+main_worker -> objects.ObjNativeFunc
+            -> vm.VM_STATUS_*
+                 .VM_EVENT_*
+                 .VM
+            -> std_funcs.stdNativeFuncs
+                        .resetStd()
+
+canvas_worker -> objects.ObjUserFunc
+                        .ObjNativeFunc
+              -> vm.CallbackContext
+
+console_worker -> objects.ObjNativeFunc
+               -> vm.VM_EVENT_*
+                    .CallbackContext
+
+sound_worker -> objects.ObjNativeFunc
+             -> vm.CallbackContext
+
+sprite_worker -> objects.ObjNativeFunc
+                        .ObjStructure
+              -> vm.CallbackContext
+
+debug_worker -> vm.VM_EVENT_*
+
+debug_ui -> objects.OBJ_TYPE_*
+                   .ObjArray
