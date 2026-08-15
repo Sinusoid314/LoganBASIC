@@ -266,7 +266,7 @@ function loadUIComponents()
 function loadDebugUI()
 //
 {
-  loadScript("./source/core/object.js");
+  loadScript("./source/core/objects.js");
   loadScript("./source/debug/debug_common.js");
   loadScript("./source/debug/debug_ui.js");
 }

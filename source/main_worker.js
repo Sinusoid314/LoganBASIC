@@ -1,4 +1,4 @@
-importScripts('./core/object.js', './core/token.js', './core/bytecode.js', './core/std_funcs.js',
+importScripts('./core/objects.js', './core/token.js', './core/bytecode.js', './core/std_funcs.js',
               './core/scanner.js', './core/compiler.js', './core/vm.js');
 importScripts('main_common.js');
 
