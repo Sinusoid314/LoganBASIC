@@ -122,7 +122,6 @@ mainDiv.insertAdjacentHTML("beforebegin",
 `);
 
 
-var mainDiv = document.getElementById("mainDiv");
 var debugDiv = document.getElementById("debugDiv");
 var debugResizer = document.getElementById("debugResizer");
 var debugResumeBtn = document.getElementById("debugResumeBtn");
