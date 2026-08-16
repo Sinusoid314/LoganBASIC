@@ -98,6 +98,14 @@
                           .MAIN_MODE_*
                           .lbVersion
                           .mainMode
+            -> editor_ui.aboutDialog
+                        .codeHasChanged
+                        .toggleUpdatesBtnHighlighted()
+                        .readCodeFileFromLocalStorage()
+                        .readCodeFileFromURL()
+                        .loadCodeFileIntoEditor()
+                        .beginFileOpAwait()
+                        .endFileOpAwait()
 
 ( ) canvas_ui -> main_ui.mainDiv
                         .isRunning
@@ -131,6 +139,8 @@
              -> debug_common.MSGID_*
                             .DEBUG_UI_STATUS_*
                             .DebugBreakpoint
+             -> editor_ui.debugToggleBtn
+                         .selectEditorLine()
 
 ( ) editor_ui -> main_common.mainSourceName
               -> main_ui.PROG_EXIT_STATUS_*
@@ -143,6 +153,9 @@
                         .resetMain()
                         .startProg()
                         .endProg()
+              -> debug_ui.debugAddBreakpoint()
+                         .debugRemoveBreakpoint()
+                         .debugToggleDiv()
 
 ( ) sound_ui -> main_ui.isRunning
                        .uiOnProgEndHandlers
@@ -155,4 +168,5 @@
                         .progWorker
                         .uiMessageMap
               -> sprite_common.MSGID_*
+              -> canvas_ui.activeContext
 
