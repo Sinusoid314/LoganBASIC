@@ -1,3 +1,6 @@
+IMPORTS
+---------
+
 ( ) token -> 
 
 ( ) scanner -> token.TOKEN_*
@@ -170,3 +173,111 @@
               -> sprite_common.MSGID_*
               -> canvas_ui.activeContext
 
+
+
+
+EXPORTS
+---------
+
+( ) token
+      - TOKEN_*
+      - Token
+
+( ) scanner
+      - Scanner
+
+( ) compiler
+      - Compiler
+
+( ) bytecode
+      - SCOPE_*
+      - OPCODE_*
+      - opNames
+      - IndexRange
+      
+( ) objects
+      - SOURCE_LEVEL_*
+      - OBJ_TYPE_*
+      - ObjUserFunc
+      - ObjNativeFunc
+      - ObjArray
+      - ObjStructureDef
+      - ObjStructure
+
+( ) vm
+      - VM_STATUS_*
+      - VM_EVENT_*
+      - INTERPRET_*
+      - VMError
+      - CallbackContext
+      - VM
+
+( ) std_funcs
+      - stdNativeFuncs
+      - resetStd()
+
+
+( ) main_worker
+      - workerOnProgEndHandlers
+      - expectedResultMessageID
+      - workerMessageMap
+      - mainVM
+
+( ) canvas_worker
+      - 
+
+( ) console_worker
+      - 
+
+( ) debug_worker
+      - 
+
+( ) sound_worker
+      - 
+
+( ) sprite_worker
+      - 
+
+
+( ) main_ui
+      - PROG_EXIT_STATUS_*
+      - mainDiv
+      - statusBar
+      - isRunning
+      - uiOnProgStartHandlers
+      - uiOnProgEndHandlers
+      - uiOnMainResetHandlers
+      - progWorker
+      - uiMessageMap
+      - resetMain()
+      - startProg()
+      - endProg()
+
+( ) canvas_ui
+      - activeContext
+
+( ) console_ui
+      - 
+
+( ) debug_ui
+      - debugAddBreakpoint()
+      - debugRemoveBreakpoint()
+      - debugToggleDiv()
+
+( ) editor_ui
+      - debugToggleBtn
+      - aboutDialog
+      - codeHasChanged
+      - toggleUpdatesBtnHighlighted()
+      - selectEditorLine()
+      - readCodeFileFromLocalStorage()
+      - readCodeFileFromURL()
+      - loadCodeFileIntoEditor()
+      - beginFileOpAwait()
+      - endFileOpAwait()
+
+( ) sound_ui
+      - 
+
+( ) sprite_ui
+      - 
