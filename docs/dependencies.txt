@@ -1,7 +1,7 @@
 IMPORTS
 ---------
 
-( ) token -> 
+(X) token -> 
 
 ( ) scanner -> token.TOKEN_*
                     .Token
@@ -179,7 +179,7 @@ IMPORTS
 EXPORTS
 ---------
 
-( ) token
+(X) token
       - TOKEN_*
       - Token
 

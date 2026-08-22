@@ -1,3 +1,6 @@
+import * as token from "./token.js";
+
+
 const keywordList = {
                    "nothing": TOKEN_NOTHING,
                    "true": TOKEN_TRUE,
