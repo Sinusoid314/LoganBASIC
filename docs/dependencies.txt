@@ -3,7 +3,7 @@ IMPORTS
 
 (X) token -> 
 
-( ) scanner -> token.TOKEN_*
+(X) scanner -> token.TOKEN_*
                     .Token
 
 ( ) compiler -> token.TOKEN_*
@@ -183,7 +183,7 @@ EXPORTS
       - TOKEN_*
       - Token
 
-( ) scanner
+(X) scanner
       - Scanner
 
 ( ) compiler
