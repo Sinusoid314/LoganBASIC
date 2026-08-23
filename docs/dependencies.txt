@@ -6,7 +6,7 @@ IMPORTS
 (X) scanner -> token.TOKEN_*
                     .Token
 
-( ) compiler -> token.TOKEN_*
+(X) compiler -> token.TOKEN_*
              -> scanner.Scanner
              -> bytecode.SCOPE_*
                         .OPCODE_*
@@ -186,7 +186,7 @@ EXPORTS
 (X) scanner
       - Scanner
 
-( ) compiler
+(X) compiler
       - Compiler
 
 ( ) bytecode
