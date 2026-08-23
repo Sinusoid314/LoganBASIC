@@ -1,8 +1,8 @@
-import * as token from "./token.js";
-import * as scanner from "./scanner.js";
-import * as bytecode from "./bytecode.js";
-import * as objects from "./objects.js";
-import * as vm from "./wm.js";
+import * as Token from "./token.js";
+import * as Scanner from "./scanner.js";
+import * as Bytecode from "./bytecode.js";
+import * as Objects from "./objects.js";
+import * as VM from "./wm.js";
 
 
 export class Compiler

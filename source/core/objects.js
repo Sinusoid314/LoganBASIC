@@ -1,3 +1,6 @@
+import * as Bytecode from "./bytecode.js";
+
+
 const OBJ_TYPE_USER_FUNC = "Function";
 const OBJ_TYPE_NATIVE_FUNC = "Native Function";
 const OBJ_TYPE_ARRAY = "Array";
@@ -44,7 +47,7 @@ class ObjUserFunc
     retStr += "Ops:\n------\n";
     for(var opIndex = 0; opIndex < this.ops.length; opIndex++)
     {
-      retStr += opIndex + ":  " + opNames[this.ops[opIndex][0]];
+      retStr += opIndex + ":  " + Bytecode.opNames[this.ops[opIndex][0]];
       for(var operandIndex = 1; operandIndex < this.ops[opIndex].length; operandIndex++)
         retStr += ", " + this.ops[opIndex][operandIndex];
       retStr += '\n';

@@ -1,4 +1,4 @@
-import * as token from "./token.js";
+import * as Token from "./token.js";
 
 
 export class Scanner

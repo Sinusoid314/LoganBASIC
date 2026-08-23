@@ -18,9 +18,9 @@ IMPORTS
                   .VM_EVENT_*
                   .VMError
 
-( ) bytecode -> 
+(X) bytecode -> 
 
-( ) objects -> Bytecode.opNames
+(X) objects -> Bytecode.opNames
 
 ( ) vm -> Compiler.Compiler
        -> Bytecode.SCOPE_*
@@ -189,7 +189,7 @@ EXPORTS
 (X) compiler
       - Compiler
 
-( ) bytecode
+(X) bytecode
       - SCOPE_*
       - OPCODE_*
       - opNames

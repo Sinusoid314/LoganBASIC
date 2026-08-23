@@ -1,56 +1,56 @@
 //Scope types
-const SCOPE_GLOBAL = 0;
-const SCOPE_LOCAL = 1;
+export const SCOPE_GLOBAL = 0;
+export const SCOPE_LOCAL = 1;
 
 //Opcodes
-const OPCODE_LOAD_NOTHING = 0;
-const OPCODE_LOAD_TRUE = 1;
-const OPCODE_LOAD_FALSE = 2;
-const OPCODE_LOAD_INT = 3;
-const OPCODE_LOAD_NATIVE_FUNC = 4;
-const OPCODE_LOAD_LIT = 5;
-const OPCODE_LOAD_VAR = 6;
-const OPCODE_STORE_VAR = 7;
-const OPCODE_STORE_VAR_PERSIST = 8;
-const OPCODE_POP = 9;
-const OPCODE_DEFINE_GLOBAL_VAR = 10;
-const OPCODE_DEFINE_LOCAL_VAR = 11;
+export const OPCODE_LOAD_NOTHING = 0;
+export const OPCODE_LOAD_TRUE = 1;
+export const OPCODE_LOAD_FALSE = 2;
+export const OPCODE_LOAD_INT = 3;
+export const OPCODE_LOAD_NATIVE_FUNC = 4;
+export const OPCODE_LOAD_LIT = 5;
+export const OPCODE_LOAD_VAR = 6;
+export const OPCODE_STORE_VAR = 7;
+export const OPCODE_STORE_VAR_PERSIST = 8;
+export const OPCODE_POP = 9;
+export const OPCODE_DEFINE_GLOBAL_VAR = 10;
+export const OPCODE_DEFINE_LOCAL_VAR = 11;
 
-const OPCODE_SUB = 12;
-const OPCODE_ADD = 13;
-const OPCODE_DIV = 14;
-const OPCODE_MUL = 15;
-const OPCODE_MOD = 16;
+export const OPCODE_SUB = 12;
+export const OPCODE_ADD = 13;
+export const OPCODE_DIV = 14;
+export const OPCODE_MUL = 15;
+export const OPCODE_MOD = 16;
 
-const OPCODE_NEGATE = 17;
-const OPCODE_NOT = 18;
-const OPCODE_EQUAL = 19;
-const OPCODE_GREATER = 20;
-const OPCODE_LESS = 21;
-const OPCODE_POW = 22;
+export const OPCODE_NEGATE = 17;
+export const OPCODE_NOT = 18;
+export const OPCODE_EQUAL = 19;
+export const OPCODE_GREATER = 20;
+export const OPCODE_LESS = 21;
+export const OPCODE_POW = 22;
 
-const OPCODE_PRINT = 23;
-const OPCODE_JUMP = 24;
-const OPCODE_JUMP_IF_FALSE = 25;
-const OPCODE_JUMP_IF_FALSE_PERSIST = 26;
-const OPCODE_JUMP_IF_TRUE = 27;
-const OPCODE_JUMP_IF_TRUE_PERSIST = 28;
-const OPCODE_END = 29;
-const OPCODE_CALL_FUNC = 30;
-const OPCODE_CREATE_ARRAY = 31;
-const OPCODE_REDIM_ARRAY = 32;
-const OPCODE_LOAD_ARRAY_ITEM = 33;
-const OPCODE_STORE_ARRAY_ITEM_PERSIST = 34;
-const OPCODE_CLS = 35;
-const OPCODE_CHECK_COUNTER = 36;
-const OPCODE_INCREMENT_COUNTER = 37;
-const OPCODE_RETURN = 38;
-const OPCODE_PAUSE = 39;
-const OPCODE_CREATE_STRUCT = 40;
-const OPCODE_LOAD_STRUCT_FIELD = 41;
-const OPCODE_STORE_STRUCT_FIELD_PERSIST = 42;
+export const OPCODE_PRINT = 23;
+export const OPCODE_JUMP = 24;
+export const OPCODE_JUMP_IF_FALSE = 25;
+export const OPCODE_JUMP_IF_FALSE_PERSIST = 26;
+export const OPCODE_JUMP_IF_TRUE = 27;
+export const OPCODE_JUMP_IF_TRUE_PERSIST = 28;
+export const OPCODE_END = 29;
+export const OPCODE_CALL_FUNC = 30;
+export const OPCODE_CREATE_ARRAY = 31;
+export const OPCODE_REDIM_ARRAY = 32;
+export const OPCODE_LOAD_ARRAY_ITEM = 33;
+export const OPCODE_STORE_ARRAY_ITEM_PERSIST = 34;
+export const OPCODE_CLS = 35;
+export const OPCODE_CHECK_COUNTER = 36;
+export const OPCODE_INCREMENT_COUNTER = 37;
+export const OPCODE_RETURN = 38;
+export const OPCODE_PAUSE = 39;
+export const OPCODE_CREATE_STRUCT = 40;
+export const OPCODE_LOAD_STRUCT_FIELD = 41;
+export const OPCODE_STORE_STRUCT_FIELD_PERSIST = 42;
 
-opNames = [];
+export const opNames = [];
 opNames[OPCODE_LOAD_NOTHING] = "LOAD_NOTHING";
 opNames[OPCODE_LOAD_TRUE] = "LOAD_TRUE";
 opNames[OPCODE_LOAD_FALSE] = "LOAD_FALSE";
@@ -95,7 +95,7 @@ opNames[OPCODE_CREATE_STRUCT] = "CREATE_STRUCT";
 opNames[OPCODE_LOAD_STRUCT_FIELD] = "LOAD_STRUCT_FIELD";
 opNames[OPCODE_STORE_STRUCT_FIELD_PERSIST] = "STORE_STRUCT_FIELD_PERSIST";
 
-class IndexRange
+export class IndexRange
 {
   constructor(startIndex, endIndex = startIndex)
   {
