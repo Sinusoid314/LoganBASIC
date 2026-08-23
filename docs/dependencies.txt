@@ -195,7 +195,7 @@ EXPORTS
       - opNames
       - IndexRange
       
-( ) objects
+(X) objects
       - SOURCE_LEVEL_*
       - OBJ_TYPE_*
       - ObjUserFunc

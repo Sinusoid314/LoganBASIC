@@ -1,16 +1,16 @@
 import * as Bytecode from "./bytecode.js";
 
 
-const OBJ_TYPE_USER_FUNC = "Function";
-const OBJ_TYPE_NATIVE_FUNC = "Native Function";
-const OBJ_TYPE_ARRAY = "Array";
-const OBJ_TYPE_STRUCT_DEF = "Structure Definition";
-const OBJ_TYPE_STRUCT = "Structure Instance";
+export const OBJ_TYPE_USER_FUNC = "Function";
+export const OBJ_TYPE_NATIVE_FUNC = "Native Function";
+export const OBJ_TYPE_ARRAY = "Array";
+export const OBJ_TYPE_STRUCT_DEF = "Structure Definition";
+export const OBJ_TYPE_STRUCT = "Structure Instance";
 
-const SOURCE_LEVEL_TOP = 1;
-const SOURCE_LEVEL_FUNC = 2;
+export const SOURCE_LEVEL_TOP = 1;
+export const SOURCE_LEVEL_FUNC = 2;
 
-class ObjUserFunc
+export class ObjUserFunc
 {
   constructor(ident, sourceName, sourceLevel, declSourceLineNum = 0)
   {
@@ -71,7 +71,7 @@ class ObjUserFunc
   }
 }
 
-class ObjNativeFunc
+export class ObjNativeFunc
 {
   constructor(ident, paramMin, paramMax, jsFunc)
   {
@@ -83,7 +83,7 @@ class ObjNativeFunc
   }
 }
 
-class ObjArray
+export class ObjArray
 {
   constructor()
   {
@@ -192,7 +192,7 @@ class ObjArray
   }
 }
 
-class ObjStructureDef
+export class ObjStructureDef
 {
   constructor(ident)
   {
@@ -217,7 +217,7 @@ class ObjStructureDef
   }
 }
 
-class ObjStructure
+export class ObjStructure
 {
   constructor(def)
   {
