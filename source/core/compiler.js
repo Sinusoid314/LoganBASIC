@@ -10,7 +10,7 @@ export class Compiler
   constructor(vm, source, sourceName)
   {
     this.vm = vm;
-    this.scanner = new scanner.Scanner(source);
+    this.scanner = new Scanner.Scanner(source);
     this.sourceName = sourceName;
     this.topUserFunc = null;
     this.currUserFunc = null;
@@ -29,16 +29,16 @@ export class Compiler
   {
     var prevStatus;
     
-    if(this.status == vm.VM_STATUS_COMPILING)
+    if(this.status == VM.VM_STATUS_COMPILING)
       return;
 
     this.vm.error = null;
     this.vm.currCompiler = this;
-    prevStatus = this.vm.changeStatus(vm.VM_STATUS_COMPILING);
+    prevStatus = this.vm.changeStatus(VM.VM_STATUS_COMPILING);
 
     try
     {
-      this.topUserFunc = new objects.ObjUserFunc(this.sourceName, this.sourceName, objects.SOURCE_LEVEL_TOP);
+      this.topUserFunc = new Objects.ObjUserFunc(this.sourceName, this.sourceName, Objects.SOURCE_LEVEL_TOP);
       this.currUserFunc = this.topUserFunc;
 
       this.initTokens();
@@ -68,16 +68,16 @@ export class Compiler
   parseHoistedDeclaration()
   //Determine the next hoisted declaraion to parse
   {
-    if(this.matchToken(token.TOKEN_STRUCTURE))
+    if(this.matchToken(Token.TOKEN_STRUCTURE))
       this.structDecl();
 
-    else if(this.matchToken(token.TOKEN_FUNCTION))
+    else if(this.matchToken(Token.TOKEN_FUNCTION))
       this.funcDecl();
 
-    else if(this.matchTokenPair(token.TOKEN_END, token.TOKEN_STRUCTURE))
+    else if(this.matchTokenPair(Token.TOKEN_END, Token.TOKEN_STRUCTURE))
       this.compileError("'end structure' without 'structure'.");
 
-    else if(this.matchTokenPair(token.TOKEN_END, token.TOKEN_FUNCTION))
+    else if(this.matchTokenPair(Token.TOKEN_END, Token.TOKEN_FUNCTION))
       this.compileError("'end function' without 'function'.");
 
     else
@@ -97,7 +97,7 @@ export class Compiler
     var ident;
     var litIndex;
 
-    if(this.matchToken(token.TOKEN_IDENTIFIER))
+    if(this.matchToken(Token.TOKEN_IDENTIFIER))
       ident = this.peekPrevToken().lexeme;
     else
       this.compileError("Expected identifier.");
@@ -105,11 +105,11 @@ export class Compiler
     if(!this.matchTerminator())
       this.compileError("Expected terminator after identifier.");
 
-    structDef = new objects.ObjStructureDef(ident);
+    structDef = new Objects.ObjStructureDef(ident);
 
-    while(!this.checkTokenPair(token.TOKEN_END, token.TOKEN_STRUCTURE) && !this.endOfTokens())
+    while(!this.checkTokenPair(Token.TOKEN_END, Token.TOKEN_STRUCTURE) && !this.endOfTokens())
     {
-      if(!this.matchToken(token.TOKEN_IDENTIFIER))
+      if(!this.matchToken(Token.TOKEN_IDENTIFIER))
         this.compileError("Expected identifier.");
 
       structDef.fieldIdents.push(this.peekPrevToken().lexeme);
@@ -118,11 +118,11 @@ export class Compiler
         this.compileError("Expected terminator after identifier.");
     }
 
-    if(!this.matchTokenPair(token.TOKEN_END, token.TOKEN_STRUCTURE))
+    if(!this.matchTokenPair(Token.TOKEN_END, Token.TOKEN_STRUCTURE))
       this.compileError("'structure' without 'end structure'.");
 
     litIndex = this.getLiteralIndex(structDef);
-    this.addOp([bytecode.OPCODE_LOAD_LIT, litIndex], true);
+    this.addOp([Bytecode.OPCODE_LOAD_LIT, litIndex], true);
     this.addVariable(ident, false, true);
   }
 
@@ -131,19 +131,19 @@ export class Compiler
   {
     var newFunc, ident, litIndex;
 
-    if(this.matchToken(token.TOKEN_IDENTIFIER))
+    if(this.matchToken(Token.TOKEN_IDENTIFIER))
       ident = this.peekPrevToken().lexeme;
     else
       this.compileError("Expected identifier.");
 
-    this.currUserFunc = new objects.ObjUserFunc(ident, this.sourceName, objects.SOURCE_LEVEL_FUNC, this.peekPrevToken().lineNum);
+    this.currUserFunc = new Objects.ObjUserFunc(ident, this.sourceName, Objects.SOURCE_LEVEL_FUNC, this.peekPrevToken().lineNum);
 
     this.parseParameters();
 
-    while(!this.checkTokenPair(token.TOKEN_END, token.TOKEN_FUNCTION) && !this.endOfTokens())
+    while(!this.checkTokenPair(Token.TOKEN_END, Token.TOKEN_FUNCTION) && !this.endOfTokens())
       this.parseDeclaration();
 
-    if(!this.matchTokenPair(token.TOKEN_END, token.TOKEN_FUNCTION))
+    if(!this.matchTokenPair(Token.TOKEN_END, Token.TOKEN_FUNCTION))
       this.compileError("'function' without 'end function'.");
 
     this.addReturnOps(false);
@@ -152,17 +152,17 @@ export class Compiler
     this.currUserFunc = this.topUserFunc;
 
     litIndex = this.getLiteralIndex(newFunc);
-    this.addOp([bytecode.OPCODE_LOAD_LIT, litIndex], true);
+    this.addOp([Bytecode.OPCODE_LOAD_LIT, litIndex], true);
     this.addVariable(ident, false, true);
   }
 
   parseDeclaration()
   //Determine the next declaration statement to parse
   {
-    if(this.matchToken(token.TOKEN_VAR))
+    if(this.matchToken(Token.TOKEN_VAR))
       this.varDecl();
 
-    else if(this.matchToken(token.TOKEN_ARRAY))
+    else if(this.matchToken(Token.TOKEN_ARRAY))
       this.arrayDecl();
 
     else
@@ -182,19 +182,19 @@ export class Compiler
 
     do
     {
-      if(this.matchToken(token.TOKEN_IDENTIFIER))
+      if(this.matchToken(Token.TOKEN_IDENTIFIER))
         varIdent = this.peekPrevToken().lexeme;
       else
         this.compileError("Expected identifier.");
 
-      if(this.matchToken(token.TOKEN_EQUAL))
+      if(this.matchToken(Token.TOKEN_EQUAL))
         this.parseExpression();
       else
-        this.addOp([bytecode.OPCODE_LOAD_NOTHING]);
+        this.addOp([Bytecode.OPCODE_LOAD_NOTHING]);
 
       this.addVariable(varIdent, false);
     }
-    while(this.matchToken(token.TOKEN_COMMA));
+    while(this.matchToken(Token.TOKEN_COMMA));
   }
 
   arrayDecl()
@@ -202,22 +202,22 @@ export class Compiler
   {
     var varIdent, dimCount;
 
-    if(this.matchToken(token.TOKEN_IDENTIFIER))
+    if(this.matchToken(Token.TOKEN_IDENTIFIER))
       varIdent = this.peekPrevToken().lexeme;
     else
       this.compileError("Expected identifier.");
 
-    if(!this.matchToken(token.TOKEN_LEFT_BRACKET))
+    if(!this.matchToken(Token.TOKEN_LEFT_BRACKET))
       this.compileError("Expected '[' after identifier.");
 
     dimCount = this.parseArguments();
     if(dimCount == 0)
       this.compileError("Expected one or more dimension expressions.");
 
-    if(!this.matchToken(token.TOKEN_RIGHT_BRACKET))
+    if(!this.matchToken(Token.TOKEN_RIGHT_BRACKET))
       this.compileError("Expected ']' after dimensions.");
 
-    this.addOp([bytecode.OPCODE_CREATE_ARRAY, dimCount]);
+    this.addOp([Bytecode.OPCODE_CREATE_ARRAY, dimCount]);
 
     this.addVariable(varIdent, false);
   }
@@ -225,61 +225,61 @@ export class Compiler
   parseStatement(requireTerminator = true)
   //Determine the next statement to parse
   {
-    if(this.matchToken(token.TOKEN_PRINT))
+    if(this.matchToken(Token.TOKEN_PRINT))
       this.printStmt();
 
-    else if(this.matchToken(token.TOKEN_IF))
+    else if(this.matchToken(Token.TOKEN_IF))
       this.ifStmt();
 
-    else if(this.matchToken(token.TOKEN_ELSE))
+    else if(this.matchToken(Token.TOKEN_ELSE))
       this.compileError("'else' without matching 'if' statement.");
 
-    else if(this.matchTokenPair(token.TOKEN_END, token.TOKEN_IF))
+    else if(this.matchTokenPair(Token.TOKEN_END, Token.TOKEN_IF))
       this.compileError("'end if' without matching 'if' statement.");
 
-    else if(this.matchToken(token.TOKEN_WHILE))
+    else if(this.matchToken(Token.TOKEN_WHILE))
       this.whileStmt();
 
-    else if(this.matchToken(token.TOKEN_WEND))
+    else if(this.matchToken(Token.TOKEN_WEND))
       this.compileError("'wend' without matching 'while' statement.");
 
-    else if(this.matchToken(token.TOKEN_FOR))
+    else if(this.matchToken(Token.TOKEN_FOR))
       this.forStmt();
 
-    else if(this.matchToken(token.TOKEN_NEXT))
+    else if(this.matchToken(Token.TOKEN_NEXT))
       this.compileError("'next' without matching 'for' statement.");
 
-    else if(this.matchToken(token.TOKEN_END))
+    else if(this.matchToken(Token.TOKEN_END))
       this.endStmt();
 
-    else if(this.matchToken(token.TOKEN_REDIM))
+    else if(this.matchToken(Token.TOKEN_REDIM))
       this.reDimStmt();
 
-    else if(this.matchToken(token.TOKEN_CLS))
+    else if(this.matchToken(Token.TOKEN_CLS))
       this.clsStmt();
 
-    else if(this.matchToken(token.TOKEN_WHTERBTOBJ))
+    else if(this.matchToken(Token.TOKEN_WHTERBTOBJ))
       this.whteRbtObjStmt();
 
-    else if(this.matchToken(token.TOKEN_DO))
+    else if(this.matchToken(Token.TOKEN_DO))
       this.doStmt();
 
-    else if(this.matchTokenPair(token.TOKEN_LOOP, token.TOKEN_WHILE))
+    else if(this.matchTokenPair(Token.TOKEN_LOOP, Token.TOKEN_WHILE))
       this.compileError("'loop while' without matching 'do' statement.");
 
-    else if(this.matchTokenPair(token.TOKEN_EXIT, token.TOKEN_WHILE))
+    else if(this.matchTokenPair(Token.TOKEN_EXIT, Token.TOKEN_WHILE))
       this.exitWhileStmt();
 
-    else if(this.matchTokenPair(token.TOKEN_EXIT, token.TOKEN_FOR))
+    else if(this.matchTokenPair(Token.TOKEN_EXIT, Token.TOKEN_FOR))
       this.exitForStmt();
 
-    else if(this.matchTokenPair(token.TOKEN_EXIT, token.TOKEN_DO))
+    else if(this.matchTokenPair(Token.TOKEN_EXIT, Token.TOKEN_DO))
       this.exitDoStmt();
 
-    else if(this.matchToken(token.TOKEN_RETURN))
+    else if(this.matchToken(Token.TOKEN_RETURN))
       this.returnStmt();
 
-    else if(this.matchToken(token.TOKEN_WAIT))
+    else if(this.matchToken(Token.TOKEN_WAIT))
       this.waitStmt();
 
     else
@@ -296,14 +296,14 @@ export class Compiler
   //Parse an expression statement
   {
     this.parseExpression(true);
-    this.addOp([bytecode.OPCODE_POP]);
+    this.addOp([Bytecode.OPCODE_POP]);
   }
 
   printStmt()
   //Parse a Print statement
   {
     this.parseExpression();
-    this.addOp([bytecode.OPCODE_PRINT]);
+    this.addOp([Bytecode.OPCODE_PRINT]);
   }
 
   ifStmt()
@@ -314,9 +314,9 @@ export class Compiler
 
     this.parseExpression();
 
-    thenJumpOpIndex = this.addOp([bytecode.OPCODE_JUMP_IF_FALSE, 0]);
+    thenJumpOpIndex = this.addOp([Bytecode.OPCODE_JUMP_IF_FALSE, 0]);
 
-    if(!this.matchToken(token.TOKEN_THEN))
+    if(!this.matchToken(Token.TOKEN_THEN))
       this.compileError("Expected 'then' after expression.");
 
     if(!this.matchTerminator())
@@ -326,29 +326,29 @@ export class Compiler
       return;
     }
 
-    while(!this.checkTokenPair(token.TOKEN_END, token.TOKEN_IF) && !this.checkToken(token.TOKEN_ELSE)
+    while(!this.checkTokenPair(Token.TOKEN_END, Token.TOKEN_IF) && !this.checkToken(Token.TOKEN_ELSE)
           && !this.endOfTokens())
       this.parseStatement();
 
     if(this.endOfTokens())
       this.compileError("Expected either 'else' or 'end if' at the end of 'if' block.");
 
-    if(this.matchTokenPair(token.TOKEN_END, token.TOKEN_IF))
+    if(this.matchTokenPair(Token.TOKEN_END, Token.TOKEN_IF))
     {
       this.patchJumpOp(thenJumpOpIndex);
     }
-    else if(this.matchToken(token.TOKEN_ELSE))
+    else if(this.matchToken(Token.TOKEN_ELSE))
     {
-        elseJumpOpIndex = this.addOp([bytecode.OPCODE_JUMP, 0]);
+        elseJumpOpIndex = this.addOp([Bytecode.OPCODE_JUMP, 0]);
         this.patchJumpOp(thenJumpOpIndex);
 
         if(!this.matchTerminator())
           this.compileError("Expected terminator after 'else'.");
 
-        while(!this.checkTokenPair(token.TOKEN_END, token.TOKEN_IF) && !this.endOfTokens())
+        while(!this.checkTokenPair(Token.TOKEN_END, Token.TOKEN_IF) && !this.endOfTokens())
           this.parseStatement();
 
-        if(!this.matchTokenPair(token.TOKEN_END, token.TOKEN_IF))
+        if(!this.matchTokenPair(Token.TOKEN_END, Token.TOKEN_IF))
           this.compileError("Expected 'end if' at the end of 'else' block.");
 
         this.patchJumpOp(elseJumpOpIndex);
@@ -363,20 +363,20 @@ export class Compiler
 
     this.parseExpression();
 
-    jumpOpIndex = this.addOp([bytecode.OPCODE_JUMP_IF_FALSE, 0]);
+    jumpOpIndex = this.addOp([Bytecode.OPCODE_JUMP_IF_FALSE, 0]);
 
     this.exitWhileOpIndexes.push([]);
 
     if(!this.matchTerminator())
       this.compileError("Expected terminator after expression.");
 
-    while(!this.checkToken(token.TOKEN_WEND) && !this.endOfTokens())
+    while(!this.checkToken(Token.TOKEN_WEND) && !this.endOfTokens())
       this.parseStatement();
 
-    if(!this.matchToken(token.TOKEN_WEND))
+    if(!this.matchToken(Token.TOKEN_WEND))
       this.compileError("Expected 'wend' at the end of 'while' block.");
 
-    this.addOp([bytecode.OPCODE_JUMP, startOpIndex]);
+    this.addOp([Bytecode.OPCODE_JUMP, startOpIndex]);
     this.patchJumpOp(jumpOpIndex);
 
     for(var n = 0; n < this.exitWhileOpIndexes[this.exitWhileOpIndexes.length - 1].length; n++)
@@ -390,69 +390,69 @@ export class Compiler
     var varIdent, varRef;
     var jumpOpIndex, startOpIndex;
 
-    if(!this.matchToken(token.TOKEN_IDENTIFIER))
+    if(!this.matchToken(Token.TOKEN_IDENTIFIER))
       this.compileError("Expected identifier after 'for'.");
 
     varIdent = this.peekPrevToken().lexeme;
     varRef = this.getVariableReference(varIdent);
 
-    if(!this.matchToken(token.TOKEN_EQUAL))
+    if(!this.matchToken(Token.TOKEN_EQUAL))
       this.compileError("Expected '=' after identifier.");
 
     this.parseExpression();
-    this.addOp([bytecode.OPCODE_STORE_VAR, varRef.scope, varRef.index]);
+    this.addOp([Bytecode.OPCODE_STORE_VAR, varRef.scope, varRef.index]);
 
-    if(!this.matchToken(token.TOKEN_TO))
+    if(!this.matchToken(Token.TOKEN_TO))
       this.compileError("Expected 'to' after start expression.");
 
     this.parseExpression();
 
-    if(this.matchToken(token.TOKEN_STEP))
+    if(this.matchToken(Token.TOKEN_STEP))
       this.parseExpression();
     else
-      this.addOp([bytecode.OPCODE_LOAD_INT, 1]);
+      this.addOp([Bytecode.OPCODE_LOAD_INT, 1]);
 
-    this.addOp([bytecode.OPCODE_LOAD_VAR, varRef.scope, varRef.index]);
+    this.addOp([Bytecode.OPCODE_LOAD_VAR, varRef.scope, varRef.index]);
 
     startOpIndex = this.opsCount();
-    this.addOp([bytecode.OPCODE_CHECK_COUNTER]);
-    jumpOpIndex = this.addOp([bytecode.OPCODE_JUMP_IF_TRUE, 0]);
+    this.addOp([Bytecode.OPCODE_CHECK_COUNTER]);
+    jumpOpIndex = this.addOp([Bytecode.OPCODE_JUMP_IF_TRUE, 0]);
 
     this.exitForOpIndexes.push([]);
 
     if(!this.matchTerminator())
       this.compileError("Expected terminator after expression.");
 
-    while(!this.checkToken(token.TOKEN_NEXT) && !this.endOfTokens())
+    while(!this.checkToken(Token.TOKEN_NEXT) && !this.endOfTokens())
       this.parseStatement();
 
-    if(!this.matchToken(token.TOKEN_NEXT))
+    if(!this.matchToken(Token.TOKEN_NEXT))
       this.compileError("Expected 'next' at the end of 'for' block.");
 
-    if(this.matchToken(token.TOKEN_IDENTIFIER))
+    if(this.matchToken(Token.TOKEN_IDENTIFIER))
     {
       if(varIdent != this.peekPrevToken().lexeme)
         this.compileError("Identifier '" + this.peekPrevToken().lexeme + "' does not match identifier '" + varIdent + "' given in 'for' statement.");
     }
 
-    this.addOp([bytecode.OPCODE_INCREMENT_COUNTER]);
-    this.addOp([bytecode.OPCODE_STORE_VAR_PERSIST, varRef.scope, varRef.index]);
-    this.addOp([bytecode.OPCODE_JUMP, startOpIndex]);
+    this.addOp([Bytecode.OPCODE_INCREMENT_COUNTER]);
+    this.addOp([Bytecode.OPCODE_STORE_VAR_PERSIST, varRef.scope, varRef.index]);
+    this.addOp([Bytecode.OPCODE_JUMP, startOpIndex]);
     this.patchJumpOp(jumpOpIndex);
 
     for(var n = 0; n < this.exitForOpIndexes[this.exitForOpIndexes.length - 1].length; n++)
       this.patchJumpOp(this.exitForOpIndexes[this.exitForOpIndexes.length - 1][n]);
     this.exitForOpIndexes.pop();
 
-    this.addOp([bytecode.OPCODE_POP]);
-    this.addOp([bytecode.OPCODE_POP]);
-    this.addOp([bytecode.OPCODE_POP]);
+    this.addOp([Bytecode.OPCODE_POP]);
+    this.addOp([Bytecode.OPCODE_POP]);
+    this.addOp([Bytecode.OPCODE_POP]);
   }
 
   endStmt()
   //Parse an End statement
   {
-    this.addOp([bytecode.OPCODE_END]);
+    this.addOp([Bytecode.OPCODE_END]);
   }
 
   reDimStmt()
@@ -460,34 +460,34 @@ export class Compiler
   {
     var varIdent, varRef, dimCount;
 
-    if(this.matchToken(token.TOKEN_IDENTIFIER))
+    if(this.matchToken(Token.TOKEN_IDENTIFIER))
     {
       varIdent = this.peekPrevToken().lexeme;
       varRef = this.getVariableReference(varIdent);
-      this.addOp([bytecode.OPCODE_LOAD_VAR, varRef.scope, varRef.index]);
+      this.addOp([Bytecode.OPCODE_LOAD_VAR, varRef.scope, varRef.index]);
     }
     else
     {
       this.compileError("Expected identifier.");
     }
 
-    if(!this.matchToken(token.TOKEN_LEFT_BRACKET))
+    if(!this.matchToken(Token.TOKEN_LEFT_BRACKET))
       this.compileError("Expected '[' after identifier");
 
     dimCount = this.parseArguments();
     if(dimCount == 0)
       this.compileError("Expected one or more dimension expressions.");
 
-    if(!this.matchToken(token.TOKEN_RIGHT_BRACKET))
+    if(!this.matchToken(Token.TOKEN_RIGHT_BRACKET))
       this.compileError("Expected ']' after indexes");
 
-    this.addOp([bytecode.OPCODE_REDIM_ARRAY, dimCount]);
+    this.addOp([Bytecode.OPCODE_REDIM_ARRAY, dimCount]);
   }
 
   clsStmt()
   //Parse a Cls statement
   {
-    this.addOp([bytecode.OPCODE_CLS]);
+    this.addOp([Bytecode.OPCODE_CLS]);
   }
 
   whteRbtObjStmt()
@@ -495,8 +495,8 @@ export class Compiler
   {
     for(var n = 0; n < 10; n++)
     {
-      this.addOp([bytecode.OPCODE_LOAD_LIT, this.getLiteralIndex("Ah ah ah, you didn't say the magic word!")]);
-      this.addOp([bytecode.OPCODE_PRINT]);
+      this.addOp([Bytecode.OPCODE_LOAD_LIT, this.getLiteralIndex("Ah ah ah, you didn't say the magic word!")]);
+      this.addOp([Bytecode.OPCODE_PRINT]);
     }
   }
 
@@ -510,14 +510,14 @@ export class Compiler
 
     this.exitDoOpIndexes.push([]);
 
-    while(!this.endOfTokens() && !this.checkTokenPair(token.TOKEN_LOOP, token.TOKEN_WHILE))
+    while(!this.endOfTokens() && !this.checkTokenPair(Token.TOKEN_LOOP, Token.TOKEN_WHILE))
       this.parseStatement();
 
-    if(!this.matchTokenPair(token.TOKEN_LOOP, token.TOKEN_WHILE))
+    if(!this.matchTokenPair(Token.TOKEN_LOOP, Token.TOKEN_WHILE))
       this.compileError("Expected 'loop while' at the end of 'do' block.");
 
     this.parseExpression();
-    this.addOp([bytecode.OPCODE_JUMP_IF_TRUE, startOpIndex]);
+    this.addOp([Bytecode.OPCODE_JUMP_IF_TRUE, startOpIndex]);
 
     for(var n = 0; n < this.exitDoOpIndexes[this.exitDoOpIndexes.length - 1].length; n++)
       this.patchJumpOp(this.exitDoOpIndexes[this.exitDoOpIndexes.length - 1][n]);
@@ -532,7 +532,7 @@ export class Compiler
     if(this.exitWhileOpIndexes.length == 0)
       this.compileError("'exit while' outside of 'while' block.");
 
-    jumpOpIndex = this.addOp([bytecode.OPCODE_JUMP, 0]);
+    jumpOpIndex = this.addOp([Bytecode.OPCODE_JUMP, 0]);
 
     this.exitWhileOpIndexes[this.exitWhileOpIndexes.length - 1].push(jumpOpIndex);
   }
@@ -545,7 +545,7 @@ export class Compiler
     if(this.exitForOpIndexes.length == 0)
       this.compileError("'exit for' outside of 'for' block.");
 
-    jumpOpIndex = this.addOp([bytecode.OPCODE_JUMP, 0]);
+    jumpOpIndex = this.addOp([Bytecode.OPCODE_JUMP, 0]);
 
     this.exitForOpIndexes[this.exitForOpIndexes.length - 1].push(jumpOpIndex);
   }
@@ -558,7 +558,7 @@ export class Compiler
     if(this.exitDoOpIndexes.length == 0)
       this.compileError("'exit do' outside of 'do' block.");
 
-    jumpOpIndex = this.addOp([bytecode.OPCODE_JUMP, 0]);
+    jumpOpIndex = this.addOp([Bytecode.OPCODE_JUMP, 0]);
 
     this.exitDoOpIndexes[this.exitDoOpIndexes.length - 1].push(jumpOpIndex);
   }
@@ -566,7 +566,7 @@ export class Compiler
   returnStmt()
   //Parse a Return statement
   {
-    if(this.currUserFunc.sourceLevel == objects.SOURCE_LEVEL_TOP)
+    if(this.currUserFunc.sourceLevel == Objects.SOURCE_LEVEL_TOP)
       this.compileError("'return' only allowed within a function.");
 
     if(this.checkTerminator())
@@ -576,7 +576,7 @@ export class Compiler
     else
     {
       this.parseExpression();
-      this.addOp([bytecode.OPCODE_RETURN]);
+      this.addOp([Bytecode.OPCODE_RETURN]);
     }
   }
 
@@ -585,8 +585,8 @@ export class Compiler
   {
     var pauseOpIndex;
 
-    pauseOpIndex = this.addOp([bytecode.OPCODE_PAUSE]);
-    this.addOp([bytecode.OPCODE_JUMP, pauseOpIndex]);
+    pauseOpIndex = this.addOp([Bytecode.OPCODE_PAUSE]);
+    this.addOp([Bytecode.OPCODE_JUMP, pauseOpIndex]);
   }
 
   parseExpression(isStmt = false)
@@ -602,10 +602,10 @@ export class Compiler
 
     this.logicAndExpr(isStmt);
 
-    while(this.matchToken(token.TOKEN_OR))
+    while(this.matchToken(Token.TOKEN_OR))
     {
-      jumpOpIndex = this.addOp([bytecode.OPCODE_JUMP_IF_TRUE_PERSIST, 0]);
-      this.addOp([bytecode.OPCODE_POP]);
+      jumpOpIndex = this.addOp([Bytecode.OPCODE_JUMP_IF_TRUE_PERSIST, 0]);
+      this.addOp([Bytecode.OPCODE_POP]);
 
       this.logicAndExpr(isStmt);
 
@@ -620,10 +620,10 @@ export class Compiler
 
     this.equalityExpr(isStmt);
 
-    while(this.matchToken(token.TOKEN_AND))
+    while(this.matchToken(Token.TOKEN_AND))
     {
-      jumpOpIndex = this.addOp([bytecode.OPCODE_JUMP_IF_FALSE_PERSIST, 0]);
-      this.addOp([bytecode.OPCODE_POP]);
+      jumpOpIndex = this.addOp([Bytecode.OPCODE_JUMP_IF_FALSE_PERSIST, 0]);
+      this.addOp([Bytecode.OPCODE_POP]);
 
       this.equalityExpr(isStmt);
 
@@ -638,20 +638,20 @@ export class Compiler
 
     this.comparisonExpr(isStmt);
 
-    while(this.matchTokenList([token.TOKEN_EQUAL, token.TOKEN_NOT_EQUAL]))
+    while(this.matchTokenList([Token.TOKEN_EQUAL, Token.TOKEN_NOT_EQUAL]))
     {
       operatorType = this.peekPrevToken().type;
       this.comparisonExpr(isStmt);
 
       switch(operatorType)
       {
-        case token.TOKEN_EQUAL:
-          this.addOp([bytecode.OPCODE_EQUAL]);
+        case Token.TOKEN_EQUAL:
+          this.addOp([Bytecode.OPCODE_EQUAL]);
           break;
 
-        case token.TOKEN_NOT_EQUAL:
-          this.addOp([bytecode.OPCODE_EQUAL]);
-          this.addOp([bytecode.OPCODE_NOT]);
+        case Token.TOKEN_NOT_EQUAL:
+          this.addOp([Bytecode.OPCODE_EQUAL]);
+          this.addOp([Bytecode.OPCODE_NOT]);
           break;
       }
     }
@@ -664,29 +664,29 @@ export class Compiler
 
     this.termExpr(isStmt);
 
-    while(this.matchTokenList([token.TOKEN_GREATER, token.TOKEN_GREATER_EQUAL, token.TOKEN_LESS, token.TOKEN_LESS_EQUAL]))
+    while(this.matchTokenList([Token.TOKEN_GREATER, Token.TOKEN_GREATER_EQUAL, Token.TOKEN_LESS, Token.TOKEN_LESS_EQUAL]))
     {
       operatorType = this.peekPrevToken().type;
       this.termExpr(isStmt);
 
       switch(operatorType)
       {
-        case token.TOKEN_GREATER:
-          this.addOp([bytecode.OPCODE_GREATER]);
+        case Token.TOKEN_GREATER:
+          this.addOp([Bytecode.OPCODE_GREATER]);
           break;
 
-        case token.TOKEN_GREATER_EQUAL:
-          this.addOp([bytecode.OPCODE_LESS]);
-          this.addOp([bytecode.OPCODE_NOT]);
+        case Token.TOKEN_GREATER_EQUAL:
+          this.addOp([Bytecode.OPCODE_LESS]);
+          this.addOp([Bytecode.OPCODE_NOT]);
           break;
 
-        case token.TOKEN_LESS:
-          this.addOp([bytecode.OPCODE_LESS]);
+        case Token.TOKEN_LESS:
+          this.addOp([Bytecode.OPCODE_LESS]);
           break;
 
-        case token.TOKEN_LESS_EQUAL:
-          this.addOp([bytecode.OPCODE_GREATER]);
-          this.addOp([bytecode.OPCODE_NOT]);
+        case Token.TOKEN_LESS_EQUAL:
+          this.addOp([Bytecode.OPCODE_GREATER]);
+          this.addOp([Bytecode.OPCODE_NOT]);
           break;
       }
     }
@@ -699,15 +699,15 @@ export class Compiler
 
     this.factorExpr(isStmt);
 
-    while(this.matchTokenList([token.TOKEN_MINUS, token.TOKEN_PLUS]))
+    while(this.matchTokenList([Token.TOKEN_MINUS, Token.TOKEN_PLUS]))
     {
       operatorType = this.peekPrevToken().type;
       this.factorExpr(isStmt);
 
       switch(operatorType)
       {
-        case token.TOKEN_MINUS: this.addOp([bytecode.OPCODE_SUB]); break;
-        case token.TOKEN_PLUS: this.addOp([bytecode.OPCODE_ADD]); break;
+        case Token.TOKEN_MINUS: this.addOp([Bytecode.OPCODE_SUB]); break;
+        case Token.TOKEN_PLUS: this.addOp([Bytecode.OPCODE_ADD]); break;
       }
     }
   }
@@ -719,16 +719,16 @@ export class Compiler
 
     this.powerExpr(isStmt);
 
-    while(this.matchTokenList([token.TOKEN_SLASH, token.TOKEN_STAR, token.TOKEN_PERCENT]))
+    while(this.matchTokenList([Token.TOKEN_SLASH, Token.TOKEN_STAR, Token.TOKEN_PERCENT]))
     {
       operatorType = this.peekPrevToken().type;
       this.powerExpr(isStmt);
 
       switch(operatorType)
       {
-        case token.TOKEN_SLASH: this.addOp([bytecode.OPCODE_DIV]); break;
-        case token.TOKEN_STAR: this.addOp([bytecode.OPCODE_MUL]); break;
-        case token.TOKEN_PERCENT: this.addOp([bytecode.OPCODE_MOD]); break;
+        case Token.TOKEN_SLASH: this.addOp([Bytecode.OPCODE_DIV]); break;
+        case Token.TOKEN_STAR: this.addOp([Bytecode.OPCODE_MUL]); break;
+        case Token.TOKEN_PERCENT: this.addOp([Bytecode.OPCODE_MOD]); break;
       }
     }
   }
@@ -738,10 +738,10 @@ export class Compiler
   {
     this.unaryExpr(isStmt);
 
-    while(this.matchToken(token.TOKEN_CARET))
+    while(this.matchToken(Token.TOKEN_CARET))
     {
       this.unaryExpr(isStmt);
-      this.addOp([bytecode.OPCODE_POW]);
+      this.addOp([Bytecode.OPCODE_POW]);
     }
   }
 
@@ -750,15 +750,15 @@ export class Compiler
   {
     var operatorType;
 
-    if(this.matchTokenList([token.TOKEN_MINUS, token.TOKEN_NOT]))
+    if(this.matchTokenList([Token.TOKEN_MINUS, Token.TOKEN_NOT]))
     {
       operatorType = this.peekPrevToken().type;
       this.unaryExpr(isStmt);
 
       switch(operatorType)
       {
-        case token.TOKEN_MINUS: this.addOp([bytecode.OPCODE_NEGATE]); break;
-        case token.TOKEN_NOT: this.addOp([bytecode.OPCODE_NOT]); break;
+        case Token.TOKEN_MINUS: this.addOp([Bytecode.OPCODE_NEGATE]); break;
+        case Token.TOKEN_NOT: this.addOp([Bytecode.OPCODE_NOT]); break;
       }
 
       return;
@@ -779,50 +779,50 @@ export class Compiler
     while(true)
     {
       //Function call
-      if(this.matchToken(token.TOKEN_LEFT_PAREN))
+      if(this.matchToken(Token.TOKEN_LEFT_PAREN))
       {
         argCount = this.parseArguments();
 
-        if(!this.matchToken(token.TOKEN_RIGHT_PAREN))
+        if(!this.matchToken(Token.TOKEN_RIGHT_PAREN))
           this.compileError("Expected ')' after function arguments.");
 
-        this.addOp([bytecode.OPCODE_CALL_FUNC, argCount]);
+        this.addOp([Bytecode.OPCODE_CALL_FUNC, argCount]);
       }
       //Structure field
-      else if(this.matchToken(token.TOKEN_DOT))
+      else if(this.matchToken(Token.TOKEN_DOT))
       {
-        if(!this.matchToken(token.TOKEN_IDENTIFIER))
+        if(!this.matchToken(Token.TOKEN_IDENTIFIER))
           this.compileError("Expected identifier after '.'.");
 
         fieldIdent = this.peekPrevToken().lexeme;
         fieldLitIndex = this.getLiteralIndex(fieldIdent);
 
-        if(isStmt && this.matchToken(token.TOKEN_EQUAL))
+        if(isStmt && this.matchToken(Token.TOKEN_EQUAL))
         {
           this.parseExpression();
-          this.addOp([bytecode.OPCODE_STORE_STRUCT_FIELD_PERSIST, fieldLitIndex]);
+          this.addOp([Bytecode.OPCODE_STORE_STRUCT_FIELD_PERSIST, fieldLitIndex]);
         }
         else
         {
-          this.addOp([bytecode.OPCODE_LOAD_STRUCT_FIELD, fieldLitIndex]);
+          this.addOp([Bytecode.OPCODE_LOAD_STRUCT_FIELD, fieldLitIndex]);
         }
       }
       //Array item
-      else if(this.matchToken(token.TOKEN_LEFT_BRACKET))
+      else if(this.matchToken(Token.TOKEN_LEFT_BRACKET))
       {
         argCount = this.parseArguments();
 
-        if(!this.matchToken(token.TOKEN_RIGHT_BRACKET))
+        if(!this.matchToken(Token.TOKEN_RIGHT_BRACKET))
           this.compileError("Expected ']' after array indexes.");
 
-        if(isStmt && this.matchToken(token.TOKEN_EQUAL))
+        if(isStmt && this.matchToken(Token.TOKEN_EQUAL))
         {
           this.parseExpression();
-          this.addOp([bytecode.OPCODE_STORE_ARRAY_ITEM_PERSIST, argCount]);
+          this.addOp([Bytecode.OPCODE_STORE_ARRAY_ITEM_PERSIST, argCount]);
         }
         else
         {
-          this.addOp([bytecode.OPCODE_LOAD_ARRAY_ITEM, argCount]);
+          this.addOp([Bytecode.OPCODE_LOAD_ARRAY_ITEM, argCount]);
         }
       }
       else
@@ -839,15 +839,15 @@ export class Compiler
     var structDefIdent;
     var litIndex;
 
-    if(!this.matchToken(token.TOKEN_NEW))
+    if(!this.matchToken(Token.TOKEN_NEW))
     {
       this.primaryExpr(isStmt);
       return;
     }
 
-    if(this.matchToken(token.TOKEN_ARRAY))
+    if(this.matchToken(Token.TOKEN_ARRAY))
     {
-      if(!this.matchToken(token.TOKEN_LEFT_BRACKET))
+      if(!this.matchToken(Token.TOKEN_LEFT_BRACKET))
         this.compileError("Expected '[' after 'array'.");
 
       dimCount = this.parseArguments();
@@ -855,17 +855,17 @@ export class Compiler
       if(dimCount == 0)
         this.compileError("Expected one or more dimension expressions.");
 
-      if(!this.matchToken(token.TOKEN_RIGHT_BRACKET))
+      if(!this.matchToken(Token.TOKEN_RIGHT_BRACKET))
         this.compileError("Expected ']' after dimensions.");
 
-      this.addOp([bytecode.OPCODE_CREATE_ARRAY, dimCount]);
+      this.addOp([Bytecode.OPCODE_CREATE_ARRAY, dimCount]);
     }
-    else if(this.matchToken(token.TOKEN_IDENTIFIER))
+    else if(this.matchToken(Token.TOKEN_IDENTIFIER))
     {
       structDefIdent = this.peekPrevToken().lexeme;
       litIndex = this.getLiteralIndex(structDefIdent);
 
-      this.addOp([bytecode.OPCODE_CREATE_STRUCT, litIndex]);
+      this.addOp([Bytecode.OPCODE_CREATE_STRUCT, litIndex]);
     }
     else
     {
@@ -879,7 +879,7 @@ export class Compiler
     var ident, funcIndex, varRef;
     var litVal, litIndex;
 
-    if(this.matchToken(token.TOKEN_IDENTIFIER))
+    if(this.matchToken(Token.TOKEN_IDENTIFIER))
     {
       ident = this.peekPrevToken().lexeme;
 
@@ -887,56 +887,56 @@ export class Compiler
       if(this.vm.nativeFuncs.has(ident))
       {
         litIndex = this.getLiteralIndex(ident);
-        this.addOp([bytecode.OPCODE_LOAD_NATIVE_FUNC, litIndex]);
+        this.addOp([Bytecode.OPCODE_LOAD_NATIVE_FUNC, litIndex]);
         return;
       }
 
       //Variable
       varRef = this.getVariableReference(ident);
-      if(isStmt && this.matchToken(token.TOKEN_EQUAL))
+      if(isStmt && this.matchToken(Token.TOKEN_EQUAL))
       {
         this.parseExpression();
-        this.addOp([bytecode.OPCODE_STORE_VAR_PERSIST, varRef.scope, varRef.index]);
+        this.addOp([Bytecode.OPCODE_STORE_VAR_PERSIST, varRef.scope, varRef.index]);
       }
       else
-        this.addOp([bytecode.OPCODE_LOAD_VAR, varRef.scope, varRef.index]);
+        this.addOp([Bytecode.OPCODE_LOAD_VAR, varRef.scope, varRef.index]);
 
       return;
     }
 
     //Literals
-    if(this.matchToken(token.TOKEN_NOTHING))
+    if(this.matchToken(Token.TOKEN_NOTHING))
     {
-      this.addOp([bytecode.OPCODE_LOAD_NOTHING]);
+      this.addOp([Bytecode.OPCODE_LOAD_NOTHING]);
       return;
     }
 
-    if(this.matchToken(token.TOKEN_TRUE))
+    if(this.matchToken(Token.TOKEN_TRUE))
     {
-      this.addOp([bytecode.OPCODE_LOAD_TRUE]);
+      this.addOp([Bytecode.OPCODE_LOAD_TRUE]);
       return;
     }
 
-    if(this.matchToken(token.TOKEN_FALSE))
+    if(this.matchToken(Token.TOKEN_FALSE))
     {
-      this.addOp([bytecode.OPCODE_LOAD_FALSE]);
+      this.addOp([Bytecode.OPCODE_LOAD_FALSE]);
       return;
     }
 
-    if(this.matchTokenList([token.TOKEN_STRING_LIT, token.TOKEN_NUMBER_LIT]))
+    if(this.matchTokenList([Token.TOKEN_STRING_LIT, Token.TOKEN_NUMBER_LIT]))
     {
       litVal = this.peekPrevToken().literal;
       litIndex = this.getLiteralIndex(litVal);
-      this.addOp([bytecode.OPCODE_LOAD_LIT, litIndex]);
+      this.addOp([Bytecode.OPCODE_LOAD_LIT, litIndex]);
       return;
     }
 
     //Nested expression
-    if(this.matchToken(token.TOKEN_LEFT_PAREN))
+    if(this.matchToken(Token.TOKEN_LEFT_PAREN))
     {
       this.parseExpression();
 
-      if(!this.matchToken(token.TOKEN_RIGHT_PAREN))
+      if(!this.matchToken(Token.TOKEN_RIGHT_PAREN))
         this.compileError("Expected ')' after expression.");
 
       return;
@@ -951,7 +951,7 @@ export class Compiler
   {
     var argCount = 0;
 
-    if(this.checkToken(token.TOKEN_RIGHT_PAREN))
+    if(this.checkToken(Token.TOKEN_RIGHT_PAREN))
       return argCount;
 
     do
@@ -959,7 +959,7 @@ export class Compiler
       this.parseExpression()
       argCount++;
     }
-    while(this.matchToken(token.TOKEN_COMMA));
+    while(this.matchToken(Token.TOKEN_COMMA));
 
     return argCount;
   }
@@ -967,10 +967,10 @@ export class Compiler
   parseParameters()
   //Parse a comma-seperated list of identifiers surrounded in parentheses
   {
-    if(!this.matchToken(token.TOKEN_LEFT_PAREN))
+    if(!this.matchToken(Token.TOKEN_LEFT_PAREN))
       this.compileError("Expected '(' after function identifier.");
 
-    if(this.matchToken(token.TOKEN_RIGHT_PAREN))
+    if(this.matchToken(Token.TOKEN_RIGHT_PAREN))
     {
       if(!this.matchTerminator())
         this.compileError("Expected terminator after ')'.");
@@ -979,14 +979,14 @@ export class Compiler
 
     do
     {
-      if(!this.matchToken(token.TOKEN_IDENTIFIER))
+      if(!this.matchToken(Token.TOKEN_IDENTIFIER))
         this.compileError("Expected identifier for function parameter.");
 
       this.addVariable(this.peekPrevToken().lexeme, true);
     }
-    while(this.matchToken(token.TOKEN_COMMA));
+    while(this.matchToken(Token.TOKEN_COMMA));
 
-    if(!this.matchToken(token.TOKEN_RIGHT_PAREN))
+    if(!this.matchToken(Token.TOKEN_RIGHT_PAREN))
       this.compileError("Expected ')' after function parameters.");
 
     if(!this.matchTerminator())
@@ -1004,10 +1004,10 @@ export class Compiler
     if(this.vm.nativeFuncs.has(varIdent))
       this.compileError("'" + varIdent + "' is already a built-in function.");
 
-    if(this.currUserFunc.sourceLevel == objects.SOURCE_LEVEL_TOP)
+    if(this.currUserFunc.sourceLevel == Objects.SOURCE_LEVEL_TOP)
     {
       litIndex = this.getLiteralIndex(varIdent);
-      this.addOp([bytecode.OPCODE_DEFINE_GLOBAL_VAR, litIndex], hoistOp);
+      this.addOp([Bytecode.OPCODE_DEFINE_GLOBAL_VAR, litIndex], hoistOp);
     }
     else
     {
@@ -1017,7 +1017,7 @@ export class Compiler
       this.currUserFunc.localIdents.push(varIdent);
 
       if(!isParameter)
-        this.addOp([bytecode.OPCODE_DEFINE_LOCAL_VAR], hoistOp);
+        this.addOp([Bytecode.OPCODE_DEFINE_LOCAL_VAR], hoistOp);
     }
   }
 
@@ -1041,18 +1041,18 @@ export class Compiler
     var varIndex, litIndex;
 
     //Look for local variable
-    if(this.currUserFunc.sourceLevel == objects.SOURCE_LEVEL_FUNC)
+    if(this.currUserFunc.sourceLevel == Objects.SOURCE_LEVEL_FUNC)
     {
       for(varIndex = 0; varIndex < this.currUserFunc.localIdents.length; varIndex++)
       {
         if(this.currUserFunc.localIdents[varIndex] == varIdent)
-          return new VariableReference(bytecode.SCOPE_LOCAL, varIndex);
+          return new VariableReference(Bytecode.SCOPE_LOCAL, varIndex);
       }
     }
 
     //Assume global variable
     litIndex = this.getLiteralIndex(varIdent);
-    return new VariableReference(bytecode.SCOPE_GLOBAL, litIndex);
+    return new VariableReference(Bytecode.SCOPE_GLOBAL, litIndex);
   }
 
   addOp(operandList, hoistOp = false, hasSourceLine = true)
@@ -1082,21 +1082,21 @@ export class Compiler
   addReturnOps(hasSourceLine)
   //Add bytecode ops for returning from a user function
   {
-    this.addOp([bytecode.OPCODE_LOAD_NOTHING], false, hasSourceLine);
-    this.addOp([bytecode.OPCODE_RETURN], false, hasSourceLine);
+    this.addOp([Bytecode.OPCODE_LOAD_NOTHING], false, hasSourceLine);
+    this.addOp([Bytecode.OPCODE_RETURN], false, hasSourceLine);
   }
 
   addHoistedOpsJumpOp()
   //Add a jump op to the beginning of the root user-function's ops that jumps to the hoisted ops
   {
-    this.hoistedOpsJumpOpIndex = this.addOp([bytecode.OPCODE_JUMP, 0], false, false);
+    this.hoistedOpsJumpOpIndex = this.addOp([Bytecode.OPCODE_JUMP, 0], false, false);
   }
 
   addHoistedOps()
   //Add a jump-back op to the hoisted ops, back-patch the jump op at the beginning of the
   //root user-function's ops, and append the hoisted ops to the root user function's ops
   {
-    this.addOp([bytecode.OPCODE_JUMP, this.hoistedOpsJumpOpIndex + 1], true);
+    this.addOp([Bytecode.OPCODE_JUMP, this.hoistedOpsJumpOpIndex + 1], true);
     this.patchJumpOp(this.hoistedOpsJumpOpIndex);
     this.currUserFunc.ops = this.currUserFunc.ops.concat(this.hoistedOps);
   }
@@ -1119,19 +1119,19 @@ export class Compiler
     if(opIndexRange)
       opIndexRange.endIndex = opIndex;
     else
-      map.set(sourceLineNum, new bytecode.IndexRange(opIndex));
+      map.set(sourceLineNum, new Bytecode.IndexRange(opIndex));
   }
 
   matchTerminator()
   //Return true and advance to the next token if the current token is one of the statement terminators
   {
-    return this.matchTokenList([token.TOKEN_NEWLINE, token.TOKEN_COLON, token.TOKEN_EOF]);
+    return this.matchTokenList([Token.TOKEN_NEWLINE, Token.TOKEN_COLON, Token.TOKEN_EOF]);
   }
 
   checkTerminator()
   //Return true if the current token is one of the statement terminators
   {
-    return this.checkTokenList([token.TOKEN_NEWLINE, token.TOKEN_COLON, token.TOKEN_EOF]);
+    return this.checkTokenList([Token.TOKEN_NEWLINE, Token.TOKEN_COLON, Token.TOKEN_EOF]);
   }
 
   initTokens()
@@ -1141,9 +1141,9 @@ export class Compiler
     {
       this.currToken = this.scanner.scanToken();
     }
-    while(this.currToken.type == token.TOKEN_NEWLINE)
+    while(this.currToken.type == Token.TOKEN_NEWLINE)
 
-    if(this.currToken.type == token.TOKEN_ERROR)
+    if(this.currToken.type == Token.TOKEN_ERROR)
       this.compileError(this.currToken.lexeme);
 
     this.nextToken = this.scanner.scanToken();
@@ -1155,7 +1155,7 @@ export class Compiler
     this.prevToken = this.currToken;
     this.currToken = this.nextToken;
 
-    if(this.currToken.type == token.TOKEN_ERROR)
+    if(this.currToken.type == Token.TOKEN_ERROR)
       this.compileError(this.currToken.lexeme);
 
     this.nextToken = this.scanner.scanToken();
@@ -1258,7 +1258,7 @@ export class Compiler
   endOfTokens()
   //Return true if the current token is the end token
   {
-    return (this.peekCurrToken().type == token.TOKEN_EOF)
+    return (this.peekCurrToken().type == Token.TOKEN_EOF)
   }
 
   compileError(message)
@@ -1268,9 +1268,9 @@ export class Compiler
 
     message = "Compile error on line " + sourceLineNum + ": " + message;
 
-    this.vm.error = new vm.VMError(message, sourceLineNum, this.sourceName);
+    this.vm.error = new VM.VMError(message, sourceLineNum, this.sourceName);
 
-    this.vm.eventHooks.get(vm.VM_EVENT_ERROR).forEach(hook => hook(this.vm));
+    this.vm.eventHooks.get(VM.VM_EVENT_ERROR).forEach(hook => hook(this.vm));
 
     throw this.vm.error;
   }

@@ -3,175 +3,175 @@ IMPORTS
 
 (X) token -> 
 
-(X) scanner -> token.TOKEN_*
+(X) scanner -> Token.TOKEN_*
                     .Token
 
-(X) compiler -> token.TOKEN_*
-             -> scanner.Scanner
-             -> bytecode.SCOPE_*
+(X) compiler -> Token.TOKEN_*
+             -> Scanner.Scanner
+             -> Bytecode.SCOPE_*
                         .OPCODE_*
                         .IndexRange
-             -> objects.SOURCE_LEVEL_*
+             -> Objects.SOURCE_LEVEL_*
                        .ObjUserFunc
                        .ObjStructureDef
-             -> vm.VM_STATUS_*
+             -> VM.VM_STATUS_*
                   .VM_EVENT_*
                   .VMError
 
 ( ) bytecode -> 
 
-( ) objects -> bytecode.opNames
+( ) objects -> Bytecode.opNames
 
-( ) vm -> compiler.Compiler
-       -> bytecode.SCOPE_*
+( ) vm -> Compiler.Compiler
+       -> Bytecode.SCOPE_*
                   .OPCODE_*
-       -> objects.ObjUserFunc
+       -> Objects.ObjUserFunc
                  .ObjNativeFunc
                  .ObjArray
                  .ObjStructureDef
                  .ObjStructure
 
-( ) std_funcs -> objects.ObjUserFunc
+( ) std_funcs -> Objects.ObjUserFunc
                         .ObjNativeFunc
                         .ObjArray
                         .ObjStructure
-              -> vm.INTERPRET_*
+              -> VM.INTERPRET_*
                    .CallbackContext
 
 
 
-( ) main_worker -> objects.ObjNativeFunc
-                -> vm.VM_STATUS_*
+( ) main_worker -> Objects.ObjNativeFunc
+                -> VM.VM_STATUS_*
                      .VM_EVENT_*
                      .VM
-                -> std_funcs.stdNativeFuncs
-                            .resetStd()
-                -> main_common.MSGID_*
+                -> StdFuncs.stdNativeFuncs
+                           .resetStd()
+                -> MainCommon.MSGID_*
                               .MAIN_MODE_*
                               .mainSourceName
                               .lbVersion
                               .mainMode
 
-( ) canvas_worker -> objects.ObjUserFunc
+( ) canvas_worker -> Objects.ObjUserFunc
                             .ObjNativeFunc
-                  -> vm.CallbackContext
-                  -> main_worker.workerOnProgEndHandlers
-                                .expectedResultMessageID
-                                .workerMessageMap
-                                .mainVM
-                  -> canvas_common.MSGID_*
-
-( ) console_worker -> objects.ObjNativeFunc
-                   -> vm.VM_EVENT_*
-                        .CallbackContext
-                   -> main_worker.workerOnProgEndHandlers
-                                 .workerMessageMap
-                                 .mainVM
-                   -> console_common.MSGID_*
-
-( ) debug_worker -> vm.VM_EVENT_*
-                 -> main_common.mainSourceName
-                 -> main_worker.workerOnProgEndHandlers
-                               .workerMessageMap
-                               .mainVM
-                 -> debug_common.MSGID_*
-                                .DEBUG_UI_STATUS_*
-                                .DebugBreakpoint
-
-( ) sound_worker -> objects.ObjNativeFunc
-                 -> vm.CallbackContext
-                 -> main_worker.workerOnProgEndHandlers
+                  -> VM.CallbackContext
+                  -> MainWorker.workerOnProgEndHandlers
                                .expectedResultMessageID
                                .workerMessageMap
                                .mainVM
-                 -> sound_common.MSGID_*
+                  -> CanvasCommon.MSGID_*
 
-( ) sprite_worker -> objects.ObjNativeFunc
-                            .ObjStructure
-                  -> vm.CallbackContext
-                  -> main_worker.workerOnProgEndHandlers
-                                .expectedResultMessageID
+( ) console_worker -> Objects.ObjNativeFunc
+                   -> VM.VM_EVENT_*
+                        .CallbackContext
+                   -> MainWorker.workerOnProgEndHandlers
                                 .workerMessageMap
                                 .mainVM
-                  -> sprite_common.MSGID_*
+                   -> ConsoleCommon.MSGID_*
+
+( ) debug_worker -> VM.VM_EVENT_*
+                 -> MainCommon.mainSourceName
+                 -> MainWorker.workerOnProgEndHandlers
+                              .workerMessageMap
+                              .mainVM
+                 -> DebugCommon.MSGID_*
+                               .DEBUG_UI_STATUS_*
+                               .DebugBreakpoint
+
+( ) sound_worker -> Objects.ObjNativeFunc
+                 -> VM.CallbackContext
+                 -> MainWorker.workerOnProgEndHandlers
+                              .expectedResultMessageID
+                              .workerMessageMap
+                              .mainVM
+                 -> SoundCommon.MSGID_*
+
+( ) sprite_worker -> Objects.ObjNativeFunc
+                            .ObjStructure
+                  -> VM.CallbackContext
+                  -> MainWorker.workerOnProgEndHandlers
+                               .expectedResultMessageID
+                               .workerMessageMap
+                               .mainVM
+                  -> SpriteCommon.MSGID_*
 
 
 
-( ) main_ui -> main_common.MSGID_*
-                          .MAIN_MODE_*
-                          .lbVersion
-                          .mainMode
-            -> editor_ui.aboutDialog
-                        .codeHasChanged
-                        .toggleUpdatesBtnHighlighted()
-                        .readCodeFileFromLocalStorage()
-                        .readCodeFileFromURL()
-                        .loadCodeFileIntoEditor()
-                        .beginFileOpAwait()
-                        .endFileOpAwait()
+( ) main_ui -> MainCommon.MSGID_*
+                         .MAIN_MODE_*
+                         .lbVersion
+                         .mainMode
+            -> EditorUI.aboutDialog
+                       .codeHasChanged
+                       .toggleUpdatesBtnHighlighted()
+                       .readCodeFileFromLocalStorage()
+                       .readCodeFileFromURL()
+                       .loadCodeFileIntoEditor()
+                       .beginFileOpAwait()
+                       .endFileOpAwait()
 
-( ) canvas_ui -> main_ui.mainDiv
-                        .isRunning
-                        .uiOnProgStartHandlers
-                        .uiOnProgEndHandlers
-                        .uiOnMainResetHandlers
-                        .progWorker
-                        .uiMessageMap
-              -> canvas_common.MSGID_*
-
-( ) console_ui -> main_ui.mainDiv
-                         .isRunning
-                         .uiOnProgStartHandlers
-                         .uiOnProgEndHandlers
-                         .uiOnMainResetHandlers
-                         .progWorker
-                         .uiMessageMap
-               -> console_common.MSGID_*
-
-( ) debug_ui -> objects.OBJ_TYPE_*
-                       .ObjArray
-             -> main_common.mainSourceName
-             -> main_ui.PROG_EXIT_STATUS_*
-                       .mainDiv
+( ) canvas_ui -> MainUI.mainDiv
                        .isRunning
                        .uiOnProgStartHandlers
                        .uiOnProgEndHandlers
                        .uiOnMainResetHandlers
                        .progWorker
                        .uiMessageMap
-             -> debug_common.MSGID_*
-                            .DEBUG_UI_STATUS_*
-                            .DebugBreakpoint
-             -> editor_ui.debugToggleBtn
-                         .selectEditorLine()
+              -> CanvasCommon.MSGID_*
 
-( ) editor_ui -> main_common.mainSourceName
-              -> main_ui.PROG_EXIT_STATUS_*
-                        .mainDiv
-                        .statusBar
+( ) console_ui -> MainUI.mainDiv
                         .isRunning
                         .uiOnProgStartHandlers
                         .uiOnProgEndHandlers
                         .uiOnMainResetHandlers
-                        .resetMain()
-                        .startProg()
-                        .endProg()
-              -> debug_ui.debugAddBreakpoint()
-                         .debugRemoveBreakpoint()
-                         .debugToggleDiv()
+                        .progWorker
+                        .uiMessageMap
+               -> ConsoleCommon.MSGID_*
 
-( ) sound_ui -> main_ui.isRunning
+( ) debug_ui -> Objects.OBJ_TYPE_*
+                       .ObjArray
+             -> MainCommon.mainSourceName
+             -> MainUI.PROG_EXIT_STATUS_*
+                      .mainDiv
+                      .isRunning
+                      .uiOnProgStartHandlers
+                      .uiOnProgEndHandlers
+                      .uiOnMainResetHandlers
+                      .progWorker
+                      .uiMessageMap
+             -> DebugCommon.MSGID_*
+                           .DEBUG_UI_STATUS_*
+                           .DebugBreakpoint
+             -> EditorUI.debugToggleBtn
+                        .selectEditorLine()
+
+( ) editor_ui -> MainCommon.mainSourceName
+              -> MainUI.PROG_EXIT_STATUS_*
+                       .mainDiv
+                       .statusBar
+                       .isRunning
+                       .uiOnProgStartHandlers
+                       .uiOnProgEndHandlers
+                       .uiOnMainResetHandlers
+                       .resetMain()
+                       .startProg()
+                       .endProg()
+              -> DebugUI.debugAddBreakpoint()
+                        .debugRemoveBreakpoint()
+                        .debugToggleDiv()
+
+( ) sound_ui -> MainUI.isRunning
+                      .uiOnProgEndHandlers
+                      .progWorker
+                      .uiMessageMap
+             -> SoundCommon.MSGID_*
+
+( ) sprite_ui -> MainUI.isRunning
                        .uiOnProgEndHandlers
                        .progWorker
                        .uiMessageMap
-             -> sound_common.MSGID_*
-
-( ) sprite_ui -> main_ui.isRunning
-                        .uiOnProgEndHandlers
-                        .progWorker
-                        .uiMessageMap
-              -> sprite_common.MSGID_*
-              -> canvas_ui.activeContext
+              -> SpriteCommon.MSGID_*
+              -> CanvasUI.activeContext
 
 
 

@@ -34,56 +34,56 @@ export class Scanner
         return this.consumeNewLines();
 
       case ':':
-        return this.makeToken(token.TOKEN_COLON);
+        return this.makeToken(Token.TOKEN_COLON);
 
       case '_':
-        return this.makeToken(token.TOKEN_UNDERSCORE);
+        return this.makeToken(Token.TOKEN_UNDERSCORE);
 
       case '(':
-        return this.makeToken(token.TOKEN_LEFT_PAREN);
+        return this.makeToken(Token.TOKEN_LEFT_PAREN);
 
       case ')':
-        return this.makeToken(token.TOKEN_RIGHT_PAREN);
+        return this.makeToken(Token.TOKEN_RIGHT_PAREN);
 
       case '[':
-        return this.makeToken(token.TOKEN_LEFT_BRACKET);
+        return this.makeToken(Token.TOKEN_LEFT_BRACKET);
 
       case ']':
-        return this.makeToken(token.TOKEN_RIGHT_BRACKET);
+        return this.makeToken(Token.TOKEN_RIGHT_BRACKET);
 
       case ',':
-        return this.makeToken(token.TOKEN_COMMA);
+        return this.makeToken(Token.TOKEN_COMMA);
 
       case '.':
-        return this.makeToken(token.TOKEN_DOT);
+        return this.makeToken(Token.TOKEN_DOT);
 
       case '-':
-        return this.makeToken(token.TOKEN_MINUS);
+        return this.makeToken(Token.TOKEN_MINUS);
 
       case '+':
-        return this.makeToken(token.TOKEN_PLUS);
+        return this.makeToken(Token.TOKEN_PLUS);
 
       case '/':
-        return this.makeToken(token.TOKEN_SLASH);
+        return this.makeToken(Token.TOKEN_SLASH);
 
       case '*':
-        return this.makeToken(token.TOKEN_STAR);
+        return this.makeToken(Token.TOKEN_STAR);
 
       case '%':
-        return this.makeToken(token.TOKEN_PERCENT);
+        return this.makeToken(Token.TOKEN_PERCENT);
 
       case '=':
-        return this.makeToken(token.TOKEN_EQUAL);
+        return this.makeToken(Token.TOKEN_EQUAL);
 
       case '^':
-        return this.makeToken(token.TOKEN_CARET);
+        return this.makeToken(Token.TOKEN_CARET);
 
       case '>':
-        return this.makeToken(this.matchChar('=') ? token.TOKEN_GREATER_EQUAL : token.TOKEN_GREATER);
+        return this.makeToken(this.matchChar('=') ? Token.TOKEN_GREATER_EQUAL : Token.TOKEN_GREATER);
 
       case '<':
-        return this.makeToken(this.matchChar('=') ? token.TOKEN_LESS_EQUAL
-                                          : (this.matchChar('>') ? token.TOKEN_NOT_EQUAL : token.TOKEN_LESS));
+        return this.makeToken(this.matchChar('=') ? Token.TOKEN_LESS_EQUAL
+                                          : (this.matchChar('>') ? Token.TOKEN_NOT_EQUAL : Token.TOKEN_LESS));
 
       case '"':
         return this.consumeStringLiteral();
@@ -102,19 +102,19 @@ export class Scanner
   //Create and return a new token
   {
     var lexeme = this.source.substring(this.startCharIndex, this.currCharIndex);
-    return new token.Token(type, lexeme, literal, this.currLineNum);
+    return new Token.Token(type, lexeme, literal, this.currLineNum);
   }
 
   makeErrorToken(errorMsg)
   //Create and return an error token
   {
-    return new token.Token(token.TOKEN_ERROR, errorMsg, undefined, this.currLineNum);
+    return new Token.Token(Token.TOKEN_ERROR, errorMsg, undefined, this.currLineNum);
   }
 
   makeEOFToken()
   //Create and return an EOF token
   {
-    return new token.Token(token.TOKEN_EOF, "EOF", undefined, this.currLineNum);
+    return new Token.Token(Token.TOKEN_EOF, "EOF", undefined, this.currLineNum);
   }
 
   skipWhitespace()
@@ -162,7 +162,7 @@ export class Scanner
   consumeNewLines()
   //
   {
-    var token = this.makeToken(token.TOKEN_NEWLINE);
+    var token = this.makeToken(Token.TOKEN_NEWLINE);
 
     do
     {
@@ -188,7 +188,7 @@ export class Scanner
     this.consumeChar();
 
     literal = this.source.substring(this.startCharIndex + 1, this.currCharIndex - 1);
-    return this.makeToken(token.TOKEN_STRING_LIT, literal);
+    return this.makeToken(Token.TOKEN_STRING_LIT, literal);
   }
 
   consumeNumberLiteral()
@@ -207,7 +207,7 @@ export class Scanner
     }
 
     literal = Number(this.source.substring(this.startCharIndex, this.currCharIndex));
-    return this.makeToken(token.TOKEN_NUMBER_LIT, literal);
+    return this.makeToken(Token.TOKEN_NUMBER_LIT, literal);
   }
 
   consumeIdentifier()
@@ -224,7 +224,7 @@ export class Scanner
     if(keywordList.hasOwnProperty(lexeme))
       tokenType = keywordList[lexeme];
     else
-      tokenType = token.TOKEN_IDENTIFIER;
+      tokenType = Token.TOKEN_IDENTIFIER;
 
     return this.makeToken(tokenType);
   }
@@ -293,34 +293,34 @@ export class Scanner
 
 
 const keywordList = {
-                   "nothing": token.TOKEN_NOTHING,
-                   "true": token.TOKEN_TRUE,
-                   "false": token.TOKEN_FALSE,
-                   "not": token.TOKEN_NOT,
-                   "or": token.TOKEN_OR,
-                   "and": token.TOKEN_AND,
-                   "var": token.TOKEN_VAR,
-                   "array": token.TOKEN_ARRAY,
-                   "print": token.TOKEN_PRINT,
-                   "if": token.TOKEN_IF,
-                   "then": token.TOKEN_THEN,
-                   "else": token.TOKEN_ELSE,
-                   "end": token.TOKEN_END,
-                   "while": token.TOKEN_WHILE,
-                   "wend": token.TOKEN_WEND,
-                   "for": token.TOKEN_FOR,
-                   "to": token.TOKEN_TO,
-                   "step": token.TOKEN_STEP,
-                   "next": token.TOKEN_NEXT,
-                   "redim": token.TOKEN_REDIM,
-                   "cls": token.TOKEN_CLS,
-                   "whterbtobj": token.TOKEN_WHTERBTOBJ,
-                   "do": token.TOKEN_DO,
-                   "loop": token.TOKEN_LOOP,
-                   "exit": token.TOKEN_EXIT,
-                   "function": token.TOKEN_FUNCTION,
-                   "return": token.TOKEN_RETURN,
-                   "wait": token.TOKEN_WAIT,
-                   "structure": token.TOKEN_STRUCTURE,
-                   "new": token.TOKEN_NEW
+                   "nothing": Token.TOKEN_NOTHING,
+                   "true": Token.TOKEN_TRUE,
+                   "false": Token.TOKEN_FALSE,
+                   "not": Token.TOKEN_NOT,
+                   "or": Token.TOKEN_OR,
+                   "and": Token.TOKEN_AND,
+                   "var": Token.TOKEN_VAR,
+                   "array": Token.TOKEN_ARRAY,
+                   "print": Token.TOKEN_PRINT,
+                   "if": Token.TOKEN_IF,
+                   "then": Token.TOKEN_THEN,
+                   "else": Token.TOKEN_ELSE,
+                   "end": Token.TOKEN_END,
+                   "while": Token.TOKEN_WHILE,
+                   "wend": Token.TOKEN_WEND,
+                   "for": Token.TOKEN_FOR,
+                   "to": Token.TOKEN_TO,
+                   "step": Token.TOKEN_STEP,
+                   "next": Token.TOKEN_NEXT,
+                   "redim": Token.TOKEN_REDIM,
+                   "cls": Token.TOKEN_CLS,
+                   "whterbtobj": Token.TOKEN_WHTERBTOBJ,
+                   "do": Token.TOKEN_DO,
+                   "loop": Token.TOKEN_LOOP,
+                   "exit": Token.TOKEN_EXIT,
+                   "function": Token.TOKEN_FUNCTION,
+                   "return": Token.TOKEN_RETURN,
+                   "wait": Token.TOKEN_WAIT,
+                   "structure": Token.TOKEN_STRUCTURE,
+                   "new": Token.TOKEN_NEW
                   };
