@@ -22,7 +22,7 @@ IMPORTS
 
 (X) objects -> Bytecode.opNames
 
-( ) vm -> Compiler.Compiler
+(X) vm -> Compiler.Compiler
        -> Bytecode.SCOPE_*
                   .OPCODE_*
        -> Objects.ObjUserFunc
@@ -204,7 +204,7 @@ EXPORTS
       - ObjStructureDef
       - ObjStructure
 
-( ) vm
+(X) vm
       - VM_STATUS_*
       - VM_EVENT_*
       - INTERPRET_*

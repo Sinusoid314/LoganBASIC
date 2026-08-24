@@ -1,20 +1,24 @@
-const VM_STATUS_IDLE = 1;
-const VM_STATUS_COMPILING = 2;
-const VM_STATUS_RUNNING = 3;
-
-const VM_EVENT_STATUS_CHANGE = 1;
-const VM_EVENT_ERROR = 2;
-const VM_EVENT_PRINT = 3;
-const VM_EVENT_USER_FUNC_CALL = 4;
-const VM_EVENT_USER_FUNC_RETURN = 5;
-const VM_EVENT_SOURCE_LINE_CHANGE = 6;
-
-const INTERPRET_COMPILE_ERROR = 1;
-const INTERPRET_RUNTIME_ERROR = 2;
-const INTERPRET_SUCCESS = 3;
+import * as Compiler from "./compiler.js";
+import * as Bytecode from "./bytecode.js";
+import * as Objects from "./objects.js";
 
 
-class VMError
+export const VM_STATUS_IDLE = 1;
+export const VM_STATUS_COMPILING = 2;
+export const VM_STATUS_RUNNING = 3;
+
+export const VM_EVENT_STATUS_CHANGE = 1;
+export const VM_EVENT_ERROR = 2;
+export const VM_EVENT_PRINT = 3;
+export const VM_EVENT_USER_FUNC_CALL = 4;
+export const VM_EVENT_USER_FUNC_RETURN = 5;
+export const VM_EVENT_SOURCE_LINE_CHANGE = 6;
+
+export const INTERPRET_COMPILE_ERROR = 1;
+export const INTERPRET_RUNTIME_ERROR = 2;
+export const INTERPRET_SUCCESS = 3;
+
+export class VMError
 {
   constructor(message, sourceLineNum, sourceName)
   {
@@ -24,7 +28,7 @@ class VMError
   }
 }
 
-class CallbackContext
+export class CallbackContext
 {
   constructor(vm, userFunc = null, callFrameFlags = {popReturnVal: true, exitOnReturn: true, isUnwindRoot: false})
   {
@@ -55,21 +59,7 @@ class CallbackContext
   }
 }
 
-class CallFrame
-{
-  constructor(func, funcStackIndex, localsStackIndex, localsCount, flags)
-  {
-    this.func = func;
-    this.funcStackIndex = funcStackIndex;
-    this.localsStackIndex = localsStackIndex;
-    this.localsCount = localsCount;
-    this.flags = flags;
-    this.currOpIndex = -1;
-    this.nextOpIndex = 0;
-  }
-}
-
-class VM
+export class VM
 {
   constructor()
   {
@@ -95,56 +85,56 @@ class VM
     
     //Allow the op methods to be called by indexing into a function array using the opcode constants
     this.opFuncs = [null];
-    this.opFuncs[OPCODE_LOAD_NOTHING] = this.opLoadNothing.bind(this);
-    this.opFuncs[OPCODE_LOAD_TRUE] = this.opLoadTrue.bind(this);
-    this.opFuncs[OPCODE_LOAD_FALSE] = this.opLoadFalse.bind(this);
-    this.opFuncs[OPCODE_LOAD_INT] = this.opLoadInt.bind(this);
-    this.opFuncs[OPCODE_LOAD_NATIVE_FUNC] = this.opLoadNativeFunc.bind(this);
-    this.opFuncs[OPCODE_LOAD_LIT] = this.opLoadLit.bind(this);
-    this.opFuncs[OPCODE_LOAD_VAR] = this.opLoadVar.bind(this);
-    this.opFuncs[OPCODE_STORE_VAR] = this.opStoreVar.bind(this);
-    this.opFuncs[OPCODE_STORE_VAR_PERSIST] = this.opStoreVarPersist.bind(this);
-    this.opFuncs[OPCODE_POP] = this.opPop.bind(this);
-    this.opFuncs[OPCODE_DEFINE_GLOBAL_VAR] = this.opDefineGlobalVar.bind(this);
-    this.opFuncs[OPCODE_DEFINE_LOCAL_VAR] = this.opDefineLocalVar.bind(this);
-    this.opFuncs[OPCODE_SUB] = this.opSub.bind(this);
-    this.opFuncs[OPCODE_ADD] = this.opAdd.bind(this);
-    this.opFuncs[OPCODE_DIV] = this.opDiv.bind(this);
-    this.opFuncs[OPCODE_MUL] = this.opMul.bind(this);
-    this.opFuncs[OPCODE_MOD] = this.opMod.bind(this);
-    this.opFuncs[OPCODE_NEGATE] = this.opNegate.bind(this);
-    this.opFuncs[OPCODE_NOT] = this.opNot.bind(this);
-    this.opFuncs[OPCODE_EQUAL] = this.opEqual.bind(this);
-    this.opFuncs[OPCODE_GREATER] = this.opGreater.bind(this);
-    this.opFuncs[OPCODE_LESS] = this.opLess.bind(this);
-    this.opFuncs[OPCODE_POW] = this.opPow.bind(this);
-    this.opFuncs[OPCODE_PRINT] = this.opPrint.bind(this);
-    this.opFuncs[OPCODE_JUMP] = this.opJump.bind(this);
-    this.opFuncs[OPCODE_JUMP_IF_FALSE] = this.opJumpIfFalse.bind(this);
-    this.opFuncs[OPCODE_JUMP_IF_FALSE_PERSIST] = this.opJumpIfFalsePersist.bind(this);
-    this.opFuncs[OPCODE_JUMP_IF_TRUE] = this.opJumpIfTrue.bind(this);
-    this.opFuncs[OPCODE_JUMP_IF_TRUE_PERSIST] = this.opJumpIfTruePersist.bind(this);
-    this.opFuncs[OPCODE_END] = this.opEnd.bind(this);
-    this.opFuncs[OPCODE_CALL_FUNC] = this.opCallFunc.bind(this);
-    this.opFuncs[OPCODE_CREATE_ARRAY] = this.opCreateArray.bind(this);
-    this.opFuncs[OPCODE_REDIM_ARRAY] = this.opReDimArray.bind(this);
-    this.opFuncs[OPCODE_LOAD_ARRAY_ITEM] = this.opLoadArrayItem.bind(this);
-    this.opFuncs[OPCODE_STORE_ARRAY_ITEM_PERSIST] = this.opStoreArrayItemPersist.bind(this);
-    this.opFuncs[OPCODE_CLS] = this.opCls.bind(this);
-    this.opFuncs[OPCODE_CHECK_COUNTER] = this.opCheckCounter.bind(this);
-    this.opFuncs[OPCODE_INCREMENT_COUNTER] = this.opIncrementCounter.bind(this);
-    this.opFuncs[OPCODE_RETURN] = this.opReturn.bind(this);
-    this.opFuncs[OPCODE_PAUSE] = this.opPause.bind(this);
-    this.opFuncs[OPCODE_CREATE_STRUCT] = this.opCreateStruct.bind(this);
-    this.opFuncs[OPCODE_LOAD_STRUCT_FIELD] = this.opLoadStructField.bind(this);
-    this.opFuncs[OPCODE_STORE_STRUCT_FIELD_PERSIST] = this.opStoreStructFieldPersist.bind(this);
+    this.opFuncs[Bytecode.OPCODE_LOAD_NOTHING] = this.opLoadNothing.bind(this);
+    this.opFuncs[Bytecode.OPCODE_LOAD_TRUE] = this.opLoadTrue.bind(this);
+    this.opFuncs[Bytecode.OPCODE_LOAD_FALSE] = this.opLoadFalse.bind(this);
+    this.opFuncs[Bytecode.OPCODE_LOAD_INT] = this.opLoadInt.bind(this);
+    this.opFuncs[Bytecode.OPCODE_LOAD_NATIVE_FUNC] = this.opLoadNativeFunc.bind(this);
+    this.opFuncs[Bytecode.OPCODE_LOAD_LIT] = this.opLoadLit.bind(this);
+    this.opFuncs[Bytecode.OPCODE_LOAD_VAR] = this.opLoadVar.bind(this);
+    this.opFuncs[Bytecode.OPCODE_STORE_VAR] = this.opStoreVar.bind(this);
+    this.opFuncs[Bytecode.OPCODE_STORE_VAR_PERSIST] = this.opStoreVarPersist.bind(this);
+    this.opFuncs[Bytecode.OPCODE_POP] = this.opPop.bind(this);
+    this.opFuncs[Bytecode.OPCODE_DEFINE_GLOBAL_VAR] = this.opDefineGlobalVar.bind(this);
+    this.opFuncs[Bytecode.OPCODE_DEFINE_LOCAL_VAR] = this.opDefineLocalVar.bind(this);
+    this.opFuncs[Bytecode.OPCODE_SUB] = this.opSub.bind(this);
+    this.opFuncs[Bytecode.OPCODE_ADD] = this.opAdd.bind(this);
+    this.opFuncs[Bytecode.OPCODE_DIV] = this.opDiv.bind(this);
+    this.opFuncs[Bytecode.OPCODE_MUL] = this.opMul.bind(this);
+    this.opFuncs[Bytecode.OPCODE_MOD] = this.opMod.bind(this);
+    this.opFuncs[Bytecode.OPCODE_NEGATE] = this.opNegate.bind(this);
+    this.opFuncs[Bytecode.OPCODE_NOT] = this.opNot.bind(this);
+    this.opFuncs[Bytecode.OPCODE_EQUAL] = this.opEqual.bind(this);
+    this.opFuncs[Bytecode.OPCODE_GREATER] = this.opGreater.bind(this);
+    this.opFuncs[Bytecode.OPCODE_LESS] = this.opLess.bind(this);
+    this.opFuncs[Bytecode.OPCODE_POW] = this.opPow.bind(this);
+    this.opFuncs[Bytecode.OPCODE_PRINT] = this.opPrint.bind(this);
+    this.opFuncs[Bytecode.OPCODE_JUMP] = this.opJump.bind(this);
+    this.opFuncs[Bytecode.OPCODE_JUMP_IF_FALSE] = this.opJumpIfFalse.bind(this);
+    this.opFuncs[Bytecode.OPCODE_JUMP_IF_FALSE_PERSIST] = this.opJumpIfFalsePersist.bind(this);
+    this.opFuncs[Bytecode.OPCODE_JUMP_IF_TRUE] = this.opJumpIfTrue.bind(this);
+    this.opFuncs[Bytecode.OPCODE_JUMP_IF_TRUE_PERSIST] = this.opJumpIfTruePersist.bind(this);
+    this.opFuncs[Bytecode.OPCODE_END] = this.opEnd.bind(this);
+    this.opFuncs[Bytecode.OPCODE_CALL_FUNC] = this.opCallFunc.bind(this);
+    this.opFuncs[Bytecode.OPCODE_CREATE_ARRAY] = this.opCreateArray.bind(this);
+    this.opFuncs[Bytecode.OPCODE_REDIM_ARRAY] = this.opReDimArray.bind(this);
+    this.opFuncs[Bytecode.OPCODE_LOAD_ARRAY_ITEM] = this.opLoadArrayItem.bind(this);
+    this.opFuncs[Bytecode.OPCODE_STORE_ARRAY_ITEM_PERSIST] = this.opStoreArrayItemPersist.bind(this);
+    this.opFuncs[Bytecode.OPCODE_CLS] = this.opCls.bind(this);
+    this.opFuncs[Bytecode.OPCODE_CHECK_COUNTER] = this.opCheckCounter.bind(this);
+    this.opFuncs[Bytecode.OPCODE_INCREMENT_COUNTER] = this.opIncrementCounter.bind(this);
+    this.opFuncs[Bytecode.OPCODE_RETURN] = this.opReturn.bind(this);
+    this.opFuncs[Bytecode.OPCODE_PAUSE] = this.opPause.bind(this);
+    this.opFuncs[Bytecode.OPCODE_CREATE_STRUCT] = this.opCreateStruct.bind(this);
+    this.opFuncs[Bytecode.OPCODE_LOAD_STRUCT_FIELD] = this.opLoadStructField.bind(this);
+    this.opFuncs[Bytecode.OPCODE_STORE_STRUCT_FIELD_PERSIST] = this.opStoreStructFieldPersist.bind(this);
   }
 
   interpret(source, sourceName = "", callFrameFlags = {popReturnVal: true, exitOnReturn: true, isUnwindRoot: true})
   //Compile and run the given source code
   {
     var topUserFunc;
-    var compiler = new Compiler(this, source, sourceName);
+    var compiler = new Compiler.Compiler(this, source, sourceName);
 
     topUserFunc = compiler.compile();
     if(this.error != null)
@@ -258,7 +248,7 @@ class VM
     var index = this.currOp[2];
     var ident, val;
 
-    if(scope == SCOPE_GLOBAL)
+    if(scope == Bytecode.SCOPE_GLOBAL)
     {
       ident = this.currCallFrame.func.literals[index];
 
@@ -281,7 +271,7 @@ class VM
     var val = this.stack.pop();
     var ident;
 
-    if(scope == SCOPE_GLOBAL)
+    if(scope == Bytecode.SCOPE_GLOBAL)
     {
       ident = this.currCallFrame.func.literals[index];
 
@@ -302,7 +292,7 @@ class VM
     var val = this.stack[this.stack.length - 1];
     var ident;
 
-    if(scope == SCOPE_GLOBAL)
+    if(scope == Bytecode.SCOPE_GLOBAL)
     {
       ident = this.currCallFrame.func.literals[index];
 
@@ -503,9 +493,9 @@ class VM
     var argCount = this.currOp[1];
     var func = this.stack[this.stack.length - argCount - 1];
 
-    if(func instanceof ObjNativeFunc)
+    if(func instanceof Objects.ObjNativeFunc)
       this.callNativeFunc(argCount);
-    else if(func instanceof ObjUserFunc)
+    else if(func instanceof Objects.ObjUserFunc)
       this.callUserFunc(argCount, {popReturnVal: false, exitOnReturn: false, isUnwindRoot: false});
     else
       this.runError("Can only call functions.");
@@ -521,7 +511,7 @@ class VM
     for(var n = dimCount - 1; n >= 0; n--)
       dimSizes[n] = this.stack.pop();
 
-    arrayRef = new ObjArray();
+    arrayRef = new Objects.ObjArray();
     arrayRef.reDim(dimSizes);
 
     this.stack.push(arrayRef);
@@ -539,7 +529,7 @@ class VM
 
     arrayRef = this.stack.pop();
 
-    if(!(arrayRef instanceof ObjArray))
+    if(!(arrayRef instanceof Objects.ObjArray))
       this.runError("Expected array.");
 
     arrayRef.reDim(dimSizes);
@@ -557,7 +547,7 @@ class VM
 
     arrayRef = this.stack.pop();
 
-    if(!(arrayRef instanceof ObjArray))
+    if(!(arrayRef instanceof Objects.ObjArray))
       this.runError("Expected array.");
 
     linearIndex = arrayRef.getLinearIndex(indexList);
@@ -581,7 +571,7 @@ class VM
 
     arrayRef = this.stack.pop();
 
-    if(!(arrayRef instanceof ObjArray))
+    if(!(arrayRef instanceof Objects.ObjArray))
       this.runError("Expected array.");
 
     linearIndex = arrayRef.getLinearIndex(indexList);
@@ -656,10 +646,10 @@ class VM
 
     structDef = this.globals.get(ident);
 
-    if(!(structDef instanceof ObjStructureDef))
+    if(!(structDef instanceof Objects.ObjStructureDef))
       this.runError("'" + ident + "' is not a structure definition.");
 
-    this.stack.push(new ObjStructure(structDef));
+    this.stack.push(new Objects.ObjStructure(structDef));
   }
 
   opLoadStructField()
@@ -669,7 +659,7 @@ class VM
     var fieldIdent = this.currCallFrame.func.literals[fieldLitIndex];
     var struct = this.stack.pop();
 
-    if(!(struct instanceof ObjStructure))
+    if(!(struct instanceof Objects.ObjStructure))
       this.runError("Expected structure.");
 
     if(!struct.fieldMap.has(fieldIdent))
@@ -686,7 +676,7 @@ class VM
     var fieldVal = this.stack.pop();
     var struct = this.stack.pop();
 
-    if(!(struct instanceof ObjStructure))
+    if(!(struct instanceof Objects.ObjStructure))
       this.runError("Expected structure.");
 
     if(!struct.fieldMap.has(fieldIdent))
@@ -851,7 +841,7 @@ class VM
   addNativeFunc(ident, paramMin, paramMax, jsFunc)
   //Add a new native function object to the VM
   {
-    this.nativeFuncs.set(ident, new ObjNativeFunc(ident, paramMin, paramMax, jsFunc));
+    this.nativeFuncs.set(ident, new Objects.ObjNativeFunc(ident, paramMin, paramMax, jsFunc));
   }
 
   addNativeFuncArray(funcArray)
@@ -888,3 +878,17 @@ class VM
   }
 }
 
+
+class CallFrame
+{
+  constructor(func, funcStackIndex, localsStackIndex, localsCount, flags)
+  {
+    this.func = func;
+    this.funcStackIndex = funcStackIndex;
+    this.localsStackIndex = localsStackIndex;
+    this.localsCount = localsCount;
+    this.flags = flags;
+    this.currOpIndex = -1;
+    this.nextOpIndex = 0;
+  }
+}
