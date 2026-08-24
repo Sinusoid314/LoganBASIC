@@ -1,54 +1,53 @@
-const stdNativeFuncs = [
-                  new ObjNativeFunc("rnd", 0, 0, funcRnd),
-                  new ObjNativeFunc("time", 0, 0, funcTime),
-                  new ObjNativeFunc("int", 1, 1, funcInt),
-                  new ObjNativeFunc("len", 1, 1, funcLen),
-                  new ObjNativeFunc("upper", 1, 1, funcUpper),
-                  new ObjNativeFunc("lower", 1, 1, funcLower),
-                  new ObjNativeFunc("left", 2, 2, funcLeft),
-                  new ObjNativeFunc("right", 2, 2, funcRight),
-                  new ObjNativeFunc("mid", 2, 3, funcMid),
-                  new ObjNativeFunc("trim", 1, 1, funcTrim),
-                  new ObjNativeFunc("ltrim", 1, 1, funcLTrim),
-                  new ObjNativeFunc("rtrim", 1, 1, funcRTrim),
-                  new ObjNativeFunc("instr", 2, 3, funcInstr),
-                  new ObjNativeFunc("abs", 1, 1, funcAbs),
-                  new ObjNativeFunc("asc", 1, 1, funcAsc),
-                  new ObjNativeFunc("chr", 1, 1, funcChr),
-                  new ObjNativeFunc("min", 2, 2, funcMin),
-                  new ObjNativeFunc("max", 2, 2, funcMax),
-                  new ObjNativeFunc("sqr", 1, 1, funcSqr),
-                  new ObjNativeFunc("str", 1, 1, funcStr),
-                  new ObjNativeFunc("val", 1, 1, funcVal),
-                  new ObjNativeFunc("startTimer", 2, 2, funcStartTimer),
-                  new ObjNativeFunc("stopTimer", 0, 0, funcStopTimer),
-                  new ObjNativeFunc("timerIsRunning", 0, 0, funcTimerIsRunning),
-                  new ObjNativeFunc("addArrayItem", 2, 3, funcAddArrayItem),
-                  new ObjNativeFunc("removeArrayItem", 2, 2, funcRemoveArrayItem),
-                  new ObjNativeFunc("clamp", 3, 3, funcClamp),
-                  new ObjNativeFunc("pointInRect", 6, 6, funcPointInRect),
-                  new ObjNativeFunc("pointInCircle", 5, 5, funcPointInCircle),
-                  new ObjNativeFunc("rectsOverlap", 8, 8, funcRectsOverlap),
-                  new ObjNativeFunc("circlesOverlap", 6, 6, funcCirclesOverlap),
-                  new ObjNativeFunc("rectOverlapsCircle", 7, 7, funcRectOverlapsCircle),
-                  new ObjNativeFunc("cos", 1, 1, funcCos),
-                  new ObjNativeFunc("sin", 1, 1, funcSin),
-                  new ObjNativeFunc("tan", 1, 1, funcTan),
-                  new ObjNativeFunc("round", 1, 2, funcRound),
-                  new ObjNativeFunc("word", 2, 3, funcWord),
-                  new ObjNativeFunc("splitStr", 2, 2, funcSplitStr),
-                  new ObjNativeFunc("pauseFor", 1, 1, funcPauseFor),
-                  new ObjNativeFunc("import", 1, 1, funcImport),
-                  new ObjNativeFunc("run", 1, 1, funcRun),
-                  new ObjNativeFunc("rayIntersectsRect", 8, 9, funcRayIntersectsRect)
+import * as Objects from "./objects.js";
+import * as VM from "./wm.js";
+
+
+export const stdNativeFuncs = [
+                  new Objects.ObjNativeFunc("rnd", 0, 0, funcRnd),
+                  new Objects.ObjNativeFunc("time", 0, 0, funcTime),
+                  new Objects.ObjNativeFunc("int", 1, 1, funcInt),
+                  new Objects.ObjNativeFunc("len", 1, 1, funcLen),
+                  new Objects.ObjNativeFunc("upper", 1, 1, funcUpper),
+                  new Objects.ObjNativeFunc("lower", 1, 1, funcLower),
+                  new Objects.ObjNativeFunc("left", 2, 2, funcLeft),
+                  new Objects.ObjNativeFunc("right", 2, 2, funcRight),
+                  new Objects.ObjNativeFunc("mid", 2, 3, funcMid),
+                  new Objects.ObjNativeFunc("trim", 1, 1, funcTrim),
+                  new Objects.ObjNativeFunc("ltrim", 1, 1, funcLTrim),
+                  new Objects.ObjNativeFunc("rtrim", 1, 1, funcRTrim),
+                  new Objects.ObjNativeFunc("instr", 2, 3, funcInstr),
+                  new Objects.ObjNativeFunc("abs", 1, 1, funcAbs),
+                  new Objects.ObjNativeFunc("asc", 1, 1, funcAsc),
+                  new Objects.ObjNativeFunc("chr", 1, 1, funcChr),
+                  new Objects.ObjNativeFunc("min", 2, 2, funcMin),
+                  new Objects.ObjNativeFunc("max", 2, 2, funcMax),
+                  new Objects.ObjNativeFunc("sqr", 1, 1, funcSqr),
+                  new Objects.ObjNativeFunc("str", 1, 1, funcStr),
+                  new Objects.ObjNativeFunc("val", 1, 1, funcVal),
+                  new Objects.ObjNativeFunc("startTimer", 2, 2, funcStartTimer),
+                  new Objects.ObjNativeFunc("stopTimer", 0, 0, funcStopTimer),
+                  new Objects.ObjNativeFunc("timerIsRunning", 0, 0, funcTimerIsRunning),
+                  new Objects.ObjNativeFunc("addArrayItem", 2, 3, funcAddArrayItem),
+                  new Objects.ObjNativeFunc("removeArrayItem", 2, 2, funcRemoveArrayItem),
+                  new Objects.ObjNativeFunc("clamp", 3, 3, funcClamp),
+                  new Objects.ObjNativeFunc("pointInRect", 6, 6, funcPointInRect),
+                  new Objects.ObjNativeFunc("pointInCircle", 5, 5, funcPointInCircle),
+                  new Objects.ObjNativeFunc("rectsOverlap", 8, 8, funcRectsOverlap),
+                  new Objects.ObjNativeFunc("circlesOverlap", 6, 6, funcCirclesOverlap),
+                  new Objects.ObjNativeFunc("rectOverlapsCircle", 7, 7, funcRectOverlapsCircle),
+                  new Objects.ObjNativeFunc("cos", 1, 1, funcCos),
+                  new Objects.ObjNativeFunc("sin", 1, 1, funcSin),
+                  new Objects.ObjNativeFunc("tan", 1, 1, funcTan),
+                  new Objects.ObjNativeFunc("round", 1, 2, funcRound),
+                  new Objects.ObjNativeFunc("word", 2, 3, funcWord),
+                  new Objects.ObjNativeFunc("splitStr", 2, 2, funcSplitStr),
+                  new Objects.ObjNativeFunc("pauseFor", 1, 1, funcPauseFor),
+                  new Objects.ObjNativeFunc("import", 1, 1, funcImport),
+                  new Objects.ObjNativeFunc("run", 1, 1, funcRun),
+                  new Objects.ObjNativeFunc("rayIntersectsRect", 8, 9, funcRayIntersectsRect)
                  ];
 
-var timerID = 0;
-var timerCallback = null;
-var pauseForCallback = null;
-var importCallback = null;
-
-function resetStd()
+export function resetStd()
 //
 {
   if(timerID != 0)
@@ -59,6 +58,12 @@ function resetStd()
   pauseForCallback = null;
   importCallback = null;
 }
+
+
+var timerID = 0;
+var timerCallback = null;
+var pauseForCallback = null;
+var importCallback = null;
 
 function timer_onTick()
 //
@@ -98,7 +103,7 @@ function import_onLoad()
 
   result = importCallback.vm.interpret(source, sourceName, {popReturnVal: true, exitOnReturn: false, isUnwindRoot: false});
 
-  if(result == INTERPRET_COMPILE_ERROR)
+  if(result == VM.INTERPRET_COMPILE_ERROR)
     importCallback.resumeVM();
 }
 
@@ -135,7 +140,7 @@ function funcLen(vm, args)
 {
   var len;
 
-  if(args[0] instanceof ObjArray)
+  if(args[0] instanceof Objects.ObjArray)
     len = args[0].items.length;
   else
     len = args[0].length;
@@ -265,7 +270,7 @@ function funcStartTimer(vm, args)
   var timeout = args[0];
   var callbackUserFunc = args[1];
 
-  if(!(callbackUserFunc instanceof ObjUserFunc))
+  if(!(callbackUserFunc instanceof Objects.ObjUserFunc))
     vm.runError("Second argument of startTimer() must be a function.");
 
   if(callbackUserFunc.paramCount != 0)
@@ -276,7 +281,7 @@ function funcStartTimer(vm, args)
 
   if(!timerCallback)
   {
-    timerCallback = new CallbackContext(vm, callbackUserFunc);
+    timerCallback = new VM.CallbackContext(vm, callbackUserFunc);
   }
   else
   {
@@ -315,7 +320,7 @@ function funcAddArrayItem(vm, args)
   var beforeIndex = (args.length == 3) ? args[2] : -1;
   var errorMsg = "";
 
-  if(!(array instanceof ObjArray))
+  if(!(array instanceof Objects.ObjArray))
     vm.runError("First argument of addArrayItem() must be an array.");
 
   errorMsg = array.addItem(newVal, beforeIndex);
@@ -333,7 +338,7 @@ function funcRemoveArrayItem(vm, args)
   var itemIndex = args[1];
   var errorMsg = "";
 
-  if(!(array instanceof ObjArray))
+  if(!(array instanceof Objects.ObjArray))
     vm.runError("First argument of removeArrayItem() must be an array.");
 
   errorMsg = array.removeItem(itemIndex);
@@ -500,7 +505,7 @@ function funcSplitStr(vm, args)
 
   words = string.split(delimiter);
 
-  wordArray = new ObjArray();
+  wordArray = new Objects.ObjArray();
   wordArray.reDim([words.length]);
 
   words.forEach((word, index) => wordArray.items[index] = word);
@@ -514,7 +519,7 @@ function funcPauseFor(vm, args)
   var timeout = args[0];
 
   if(!pauseForCallback)
-    pauseForCallback = new CallbackContext(vm);
+    pauseForCallback = new VM.CallbackContext(vm);
   else
     pauseForCallback.vm = vm;
 
@@ -532,7 +537,7 @@ function funcImport(vm, args)
   var httpReq = new XMLHttpRequest();
 
   if(!importCallback)
-    importCallback = new CallbackContext(vm);
+    importCallback = new VM.CallbackContext(vm);
   else
     importCallback.vm = vm;
 
@@ -558,7 +563,7 @@ function funcRun(vm, args)
 
   result = vm.interpret(source, sourceName, {popReturnVal: true, exitOnReturn: false, isUnwindRoot: true});
 
-  if(result == INTERPRET_COMPILE_ERROR)
+  if(result == VM.INTERPRET_COMPILE_ERROR)
     vm.runLoopExitFlag = true;
 
   return undefined;
@@ -581,7 +586,7 @@ function funcRayIntersectsRect(vm, args)
   if(args.length == 9)
   {
     contactStruct = args[8];
-    if(!(contactStruct instanceof ObjStructure))
+    if(!(contactStruct instanceof Objects.ObjStructure))
       vm.runError("Last argument of rayIntersectsRect() must be a structure.");
   }
 

@@ -31,7 +31,7 @@ IMPORTS
                  .ObjStructureDef
                  .ObjStructure
 
-( ) std_funcs -> Objects.ObjUserFunc
+(X) std_funcs -> Objects.ObjUserFunc
                         .ObjNativeFunc
                         .ObjArray
                         .ObjStructure
@@ -212,7 +212,7 @@ EXPORTS
       - CallbackContext
       - VM
 
-( ) std_funcs
+(X) std_funcs
       - stdNativeFuncs
       - resetStd()
 
