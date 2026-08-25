@@ -69,11 +69,11 @@ IMPORTS
                                 .mainVM
                    -> ConsoleCommon.MSGID_*
 
-( ) debug_worker -> VM.VM_EVENT_*
-                 -> MainCommon.mainSourceName
+(X) debug_worker -> VM.VM_EVENT_*
                  -> MainWorker.workerOnProgEndHandlers
                               .workerMessageMap
                               .mainVM
+                 -> MainCommon.mainSourceName
                  -> DebugCommon.MSGID_*
                                .DEBUG_UI_STATUS_*
                                .DebugBreakpoint
@@ -232,7 +232,7 @@ EXPORTS
 (X) console_worker
       - 
 
-( ) debug_worker
+(X) debug_worker
       - 
 
 ( ) sound_worker
