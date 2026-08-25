@@ -7,7 +7,7 @@ import * as MainCommon from "./main_common.js";
 export const workerOnProgEndHandlers = [];
 export const workerMessageMap = new Map();
 export var expectedResultMessageID = 0;
-export var mainVM = new VM.VM();
+export const mainVM = new VM.VM();
 
 
 const mainNativeFuncs = [
