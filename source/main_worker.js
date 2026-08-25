@@ -32,7 +32,7 @@ function readURLParams()
   var urlParams = new URLSearchParams(location.search);
 
   if(urlParams.has("mode"))
-    MainCommon.mainMode = urlParams.get("mode");
+    MainCommon.setMainMode(urlParams.get("mode"));
 }
 
 function setMainWorkerEvents()

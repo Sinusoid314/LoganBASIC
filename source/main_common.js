@@ -12,3 +12,9 @@ export const MSGID_PROG_DONE = 1;
 export const MSGID_STATUS_CHANGE = 2;
 
 export var  mainMode = MAIN_MODE_EDIT;
+
+export function setMainMode(newMode)
+//
+{
+  mainMode = newMode;
+}

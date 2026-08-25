@@ -50,6 +50,7 @@ IMPORTS
                              .mainSourceName
                              .lbVersion
                              .mainMode
+                             setMainMode()
 
 ( ) canvas_worker -> Objects.ObjUserFunc
                             .ObjNativeFunc
@@ -99,6 +100,7 @@ IMPORTS
                          .MAIN_MODE_*
                          .lbVersion
                          .mainMode
+                         .setMainMode()
             -> EditorUI.aboutDialog
                        .codeHasChanged
                        .toggleUpdatesBtnHighlighted()
@@ -287,6 +289,7 @@ EXPORTS
       - mainSourceName
       - lbVersion
       - mainMode
+      - setMainMode()
 
 (X) canvas_common
       - MSGID_*

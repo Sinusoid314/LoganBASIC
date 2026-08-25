@@ -196,7 +196,7 @@ function readURLParams()
   if(urlParams.has("open"))
   {
     paramFileURL = urlParams.get("open");
-    mainMode = MAIN_MODE_EDIT;
+    setMainMode(MAIN_MODE_EDIT);
 
     if(urlParams.has("autoRun"))
       autoRun = (urlParams.get("autoRun").toLowerCase() == "true");
