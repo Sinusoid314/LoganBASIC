@@ -1,5 +1,5 @@
 import * as Objects from "./objects.js";
-import * as VM from "./wm.js";
+import * as VM from "./vm.js";
 
 
 export const stdNativeFuncs = [

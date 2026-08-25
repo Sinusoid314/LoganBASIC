@@ -39,7 +39,6 @@ IMPORTS
                    .CallbackContext
 
 
-
 ( ) main_worker -> Objects.ObjNativeFunc
                 -> VM.VM_STATUS_*
                      .VM_EVENT_*
@@ -47,10 +46,10 @@ IMPORTS
                 -> StdFuncs.stdNativeFuncs
                            .resetStd()
                 -> MainCommon.MSGID_*
-                              .MAIN_MODE_*
-                              .mainSourceName
-                              .lbVersion
-                              .mainMode
+                             .MAIN_MODE_*
+                             .mainSourceName
+                             .lbVersion
+                             .mainMode
 
 ( ) canvas_worker -> Objects.ObjUserFunc
                             .ObjNativeFunc
@@ -94,7 +93,6 @@ IMPORTS
                                .workerMessageMap
                                .mainVM
                   -> SpriteCommon.MSGID_*
-
 
 
 ( ) main_ui -> MainCommon.MSGID_*
@@ -281,3 +279,28 @@ EXPORTS
 
 ( ) sprite_ui
       - 
+
+
+(X) main_common
+      - MSGID_*
+      - MAIN_MODE_*
+      - mainSourceName
+      - lbVersion
+      - mainMode
+
+(X) canvas_common
+      - MSGID_*
+
+(X) console_common
+      - MSGID_*
+
+(X) debug_common
+      - MSGID_*
+      - DEBUG_UI_STATUS_*
+      - DebugBreakpoint
+
+(X) sound_common
+      - MSGID_*
+
+(X) sprite_common
+      - MSGID_*

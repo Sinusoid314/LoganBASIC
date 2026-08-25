@@ -1,18 +1,20 @@
-importScripts('./core/objects.js', './core/token.js', './core/bytecode.js', './core/std_funcs.js',
-              './core/scanner.js', './core/compiler.js', './core/vm.js');
-importScripts('main_common.js');
+import * as Objects from "./core/objects.js";
+import * as VM from "./core/vm.js";
+import * as StdFuncs from "./core/std_funcs.js";
+import * as MainCommon from "./main_common.js";
+
 
 const mainNativeFuncs = [
-                new ObjNativeFunc("version", 0, 0, funcVersion),
+                new Objects.ObjNativeFunc("version", 0, 0, funcVersion),
                ];
 
 var workerOnProgEndHandlers = [];
 var expectedResultMessageID = 0;
 var pendingMessages = [];
 var workerMessageMap = new Map();
-var mainVM = new VM();
+var mainVM = new VM.VM();
 
-mainVM.addNativeFuncArray(stdNativeFuncs);
+mainVM.addNativeFuncArray(StdFuncs.stdNativeFuncs);
 mainVM.addNativeFuncArray(mainNativeFuncs);
               
 readURLParams();
@@ -34,12 +36,12 @@ function readURLParams()
 function setMainWorkerEvents()
 //
 {
-  mainVM.addEventHook(VM_EVENT_STATUS_CHANGE, onVMStatusChange);
-  mainVM.addEventHook(VM_EVENT_ERROR, onVMError);
+  mainVM.addEventHook(VM.VM_EVENT_STATUS_CHANGE, onVMStatusChange);
+  mainVM.addEventHook(VM.VM_EVENT_ERROR, onVMError);
   
   onmessage = mainWorker_onMessage;
   
-  workerMessageMap.set(MSGID_START_PROG, onMsgStartProg);
+  workerMessageMap.set(MainCommon.MSGID_START_PROG, onMsgStartProg);
 }
 
 function loadWorkerComponents()
@@ -98,11 +100,11 @@ function dispatchMessage(message)
 function mainWorker_onProgEnd(vm)
 //
 {
-  postMessage({msgId: MSGID_PROG_DONE, msgData: {error: vm.error}});
+  postMessage({msgId: MainCommon.MSGID_PROG_DONE, msgData: {error: vm.error}});
   
   workerOnProgEndHandlers.forEach(handler => handler());
 
-  resetStd();
+  StdFuncs.resetStd();
 
   mainVM.resetActiveRunState();
   mainVM.globals.clear();
@@ -161,8 +163,8 @@ function onVMStatusChange(vm, prevStatus)
 {
   switch(vm.status)
   {
-    case VM_STATUS_IDLE:
-      if(((prevStatus == VM_STATUS_RUNNING) && (vm.callFramesEmpty())) || vm.error)
+    case VM.VM_STATUS_IDLE:
+      if(((prevStatus == VM.VM_STATUS_RUNNING) && (vm.callFramesEmpty())) || vm.error)
       {
         mainWorker_onProgEnd(vm);
         return;
@@ -170,12 +172,12 @@ function onVMStatusChange(vm, prevStatus)
 
       break;
 
-    case VM_STATUS_RUNNING:
-      postMessage({msgId: MSGID_STATUS_CHANGE, msgData: {statusText: "Running..."}});
+    case VM.VM_STATUS_RUNNING:
+      postMessage({msgId: MainCommon.MSGID_STATUS_CHANGE, msgData: {statusText: "Running..."}});
       break;
 
-    case VM_STATUS_COMPILING:
-      postMessage({msgId: MSGID_STATUS_CHANGE, msgData: {statusText: "Compiling..."}});
+    case VM.VM_STATUS_COMPILING:
+      postMessage({msgId: MainCommon.MSGID_STATUS_CHANGE, msgData: {statusText: "Compiling..."}});
       break;
   }
 }
@@ -183,7 +185,7 @@ function onVMStatusChange(vm, prevStatus)
 function onVMError(vm)
 //
 {
-  if(vm.status == VM_STATUS_IDLE)
+  if(vm.status == VM.VM_STATUS_IDLE)
     mainWorker_onProgEnd(vm);
 
   return false;
