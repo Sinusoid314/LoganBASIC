@@ -9,6 +9,12 @@ export const workerMessageMap = new Map();
 export var expectedResultMessageID = 0;
 export const mainVM = new VM.VM();
 
+export function setExpectedResultMessageID(newMessageID)
+//
+{
+  expectedResultMessageID = newMessageID;
+}
+
 
 const mainNativeFuncs = [
                 new Objects.ObjNativeFunc("version", 0, 0, funcVersion),

@@ -50,7 +50,7 @@ IMPORTS
                              .mainSourceName
                              .lbVersion
                              .mainMode
-                             setMainMode()
+                             .setMainMode()
 
 ( ) canvas_worker -> Objects.ObjUserFunc
                             .ObjNativeFunc
@@ -59,6 +59,7 @@ IMPORTS
                                .expectedResultMessageID
                                .workerMessageMap
                                .mainVM
+                               .setExpectedResultMessageID()
                   -> CanvasCommon.MSGID_*
 
 ( ) console_worker -> Objects.ObjNativeFunc
@@ -84,6 +85,7 @@ IMPORTS
                               .expectedResultMessageID
                               .workerMessageMap
                               .mainVM
+                              .setExpectedResultMessageID()
                  -> SoundCommon.MSGID_*
 
 ( ) sprite_worker -> Objects.ObjNativeFunc
@@ -93,6 +95,7 @@ IMPORTS
                                .expectedResultMessageID
                                .workerMessageMap
                                .mainVM
+                               .setExpectedResultMessageID()
                   -> SpriteCommon.MSGID_*
 
 
@@ -222,6 +225,7 @@ EXPORTS
       - expectedResultMessageID
       - workerMessageMap
       - mainVM
+      - setExpectedResultMessageID()
 
 ( ) canvas_worker
       - 

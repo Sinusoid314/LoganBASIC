@@ -102,7 +102,7 @@ function sendImageRequest(vm, msgId, msgData)
 
   postMessage({msgId: msgId, msgData: msgData});
 
-  expectedResultMessageID = MSGID_IMAGE_REQUEST_RESULT;
+  setExpectedResultMessageID(MSGID_IMAGE_REQUEST_RESULT);
   vm.runLoopExitFlag = true;
 }
 
@@ -131,7 +131,7 @@ function sendContextRequest(vm, msgId, msgData)
 
   postMessage({msgId: msgId, msgData: msgData});
 
-  expectedResultMessageID = MSGID_CONTEXT_REQUEST_RESULT;
+  setExpectedResultMessageID(MSGID_CONTEXT_REQUEST_RESULT);
   vm.runLoopExitFlag = true;
 }
 
