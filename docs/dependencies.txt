@@ -39,7 +39,7 @@ IMPORTS
                    .CallbackContext
 
 
-( ) main_worker -> Objects.ObjNativeFunc
+(X) main_worker -> Objects.ObjNativeFunc
                 -> VM.VM_STATUS_*
                      .VM_EVENT_*
                      .VM
@@ -215,7 +215,7 @@ EXPORTS
       - resetStd()
 
 
-( ) main_worker
+(X) main_worker
       - workerOnProgEndHandlers
       - expectedResultMessageID
       - workerMessageMap

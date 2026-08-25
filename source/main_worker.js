@@ -4,15 +4,17 @@ import * as StdFuncs from "./core/std_funcs.js";
 import * as MainCommon from "./main_common.js";
 
 
+export const workerOnProgEndHandlers = [];
+export const workerMessageMap = new Map();
+export var expectedResultMessageID = 0;
+export var mainVM = new VM.VM();
+
+
 const mainNativeFuncs = [
                 new Objects.ObjNativeFunc("version", 0, 0, funcVersion),
                ];
 
-var workerOnProgEndHandlers = [];
-var expectedResultMessageID = 0;
 var pendingMessages = [];
-var workerMessageMap = new Map();
-var mainVM = new VM.VM();
 
 mainVM.addNativeFuncArray(StdFuncs.stdNativeFuncs);
 mainVM.addNativeFuncArray(mainNativeFuncs);
@@ -30,7 +32,7 @@ function readURLParams()
   var urlParams = new URLSearchParams(location.search);
 
   if(urlParams.has("mode"))
-    mainMode = urlParams.get("mode");
+    MainCommon.mainMode = urlParams.get("mode");
 }
 
 function setMainWorkerEvents()
@@ -47,7 +49,7 @@ function setMainWorkerEvents()
 function loadWorkerComponents()
 //
 {
-  if(mainMode == MAIN_MODE_EDIT)
+  if(MainCommon.mainMode == MainCommon.MAIN_MODE_EDIT)
     loadDebugWorker();
 
   loadConsoleWorker();
@@ -155,7 +157,7 @@ function onMsgStartProg(msgData)
   if(!mainVM.callFramesEmpty())
     return;
 
-  mainVM.interpret(msgData.source, mainSourceName);
+  mainVM.interpret(msgData.source, MainCommon.mainSourceName);
 }
 
 function onVMStatusChange(vm, prevStatus)
@@ -194,5 +196,5 @@ function onVMError(vm)
 function funcVersion(vm, args)
 //Return the current Logan BASIC version
 {
-  return lbVersion;
+  return MainCommon.lbVersion;
 }
