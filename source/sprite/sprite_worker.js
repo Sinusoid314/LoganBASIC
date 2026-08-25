@@ -1,3 +1,9 @@
+import * as Objects from "../core/objects.js";
+import * as VM from "../core/vm.js";
+import * as MainWorker from "../main_worker.js";
+import * as SpriteCommon from "./sprite_common.js";
+
+
 class Sprite
 {
   constructor(sheetName, x, y)
@@ -41,65 +47,65 @@ class SpriteContact
 }
 
 const spriteNativeFuncs = [
-                  new ObjNativeFunc("loadSpriteSheet", 4, 4, funcLoadSpriteSheet),
-                  new ObjNativeFunc("unloadSpriteSheet", 1, 1, funcUnloadSpriteSheet),
-                  new ObjNativeFunc("drawSprites", 0, 0, funcDrawSprites),
-                  new ObjNativeFunc("getSpriteFrameWidth", 1, 1, funcGetSpriteFrameWidth),
-                  new ObjNativeFunc("getSpriteFrameHeight", 1, 1, funcGetSpriteFrameHeight),
-                  new ObjNativeFunc("addSprite", 4, 4, funcAddSprite),
-                  new ObjNativeFunc("removeSprite", 1, 1, funcRemoveSprite),
-                  new ObjNativeFunc("setSpriteSheet", 2, 2, funcSetSpriteSheet),
-                  new ObjNativeFunc("updateSprites", 0, 1, funcUpdateSprites),
-                  new ObjNativeFunc("getSpriteFrameCount", 1, 1, funcGetSpriteFrameCount),
-                  new ObjNativeFunc("getSpriteX", 1, 1, funcGetSpriteX),
-                  new ObjNativeFunc("setSpriteX", 2, 2, funcSetSpriteX),
-                  new ObjNativeFunc("getSpriteY", 1, 1, funcGetSpriteY),
-                  new ObjNativeFunc("setSpriteY", 2, 2, funcSetSpriteY),
-                  new ObjNativeFunc("getSpriteDrawWidth", 1, 1, funcGetSpriteDrawWidth),
-                  new ObjNativeFunc("setSpriteDrawWidth", 2, 2, funcSetSpriteDrawWidth),
-                  new ObjNativeFunc("getSpriteDrawHeight", 1, 1, funcGetSpriteDrawHeight),
-                  new ObjNativeFunc("setSpriteDrawHeight", 2, 2, funcSetSpriteDrawHeight),
-                  new ObjNativeFunc("getSpriteVelocityX", 1, 1, funcGetSpriteVelocityX),
-                  new ObjNativeFunc("setSpriteVelocityX", 2, 2, funcSetSpriteVelocityX),
-                  new ObjNativeFunc("getSpriteVelocityY", 1, 1, funcGetSpriteVelocityY),
-                  new ObjNativeFunc("setSpriteVelocityY", 2, 2, funcSetSpriteVelocityY),
-                  new ObjNativeFunc("getSpriteVisible", 1, 1, funcGetSpriteVisible),
-                  new ObjNativeFunc("setSpriteVisible", 2, 2, funcSetSpriteVisible),
-                  new ObjNativeFunc("getSpritePlaying", 1, 1, funcGetSpritePlaying),
-                  new ObjNativeFunc("setSpritePlaying", 2, 2, funcSetSpritePlaying),
-                  new ObjNativeFunc("getSpriteFrameRate", 1, 1, funcGetSpriteFrameRate),
-                  new ObjNativeFunc("setSpriteFrameRate", 2, 2, funcSetSpriteFrameRate),
-                  new ObjNativeFunc("setSpriteFrameRange", 3, 3, funcSetSpriteFrameRange),
-                  new ObjNativeFunc("getSpriteFrame", 1, 1, funcGetSpriteFrame),
-                  new ObjNativeFunc("setSpriteFrame", 2, 2, funcSetSpriteFrame),
-                  new ObjNativeFunc("getSpriteCycles", 1, 1, funcGetSpriteCycles),
-                  new ObjNativeFunc("setSpriteCycles", 2, 2, funcSetSpriteCycles),
-                  new ObjNativeFunc("spritesOverlap", 2, 2, funcSpritesOverlap),
-                  new ObjNativeFunc("pointInSprite", 3, 3, funcPointInSprite),
-                  new ObjNativeFunc("spriteOverlapsRect", 5, 5, funcSpriteOverlapsRect),
-                  new ObjNativeFunc("spriteOverlapsCircle", 4, 4, funcSpriteOverlapsCircle),
-                  new ObjNativeFunc("getScrollX", 0, 0, funcGetScrollX),
-                  new ObjNativeFunc("setScrollX", 1, 1, funcSetScrollX),
-                  new ObjNativeFunc("getScrollY", 0, 0, funcGetScrollY),
-                  new ObjNativeFunc("setScrollY", 1, 1, funcSetScrollY),
-                  new ObjNativeFunc("shiftScrollX", 1, 1, funcShiftScrollX),
-                  new ObjNativeFunc("shiftScrollY", 1, 1, funcShiftScrollY),
-                  new ObjNativeFunc("getSpriteScroll", 1, 1, funcGetSpriteScroll),
-                  new ObjNativeFunc("setSpriteScroll", 2, 2, funcSetSpriteScroll),
-                  new ObjNativeFunc("spriteToBack", 1, 1, funcSpriteToBack),
-                  new ObjNativeFunc("spriteToFront", 1, 1, funcSpriteToFront),
-                  new ObjNativeFunc("getSpriteHitBoxOffsetX", 1, 1, funcGetSpriteHitBoxOffsetX),
-                  new ObjNativeFunc("setSpriteHitBoxOffsetX", 2, 2, funcSetSpriteHitBoxOffsetX),
-                  new ObjNativeFunc("getSpriteHitBoxOffsetY", 1, 1, funcGetSpriteHitBoxOffsetY),
-                  new ObjNativeFunc("setSpriteHitBoxOffsetY", 2, 2, funcSetSpriteHitBoxOffsetY),
-                  new ObjNativeFunc("getSpriteHitBoxWidth", 1, 1, funcGetSpriteHitBoxWidth),
-                  new ObjNativeFunc("setSpriteHitBoxWidth", 2, 2, funcSetSpriteHitBoxWidth),
-                  new ObjNativeFunc("getSpriteHitBoxHeight", 1, 1, funcGetSpriteHitBoxHeight),
-                  new ObjNativeFunc("setSpriteHitBoxHeight", 2, 2, funcSetSpriteHitBoxHeight),
-                  new ObjNativeFunc("spritesCollided", 3, 4, funcSpritesCollided),
-                  new ObjNativeFunc("resolveSpriteCollision", 3, 3, funcResolveSpriteCollision),
-                  new ObjNativeFunc("resolveSpriteCollisionX", 3, 3, funcResolveSpriteCollisionX),
-                  new ObjNativeFunc("resolveSpriteCollisionY", 3, 3, funcResolveSpriteCollisionY)
+                  new Objects.ObjNativeFunc("loadSpriteSheet", 4, 4, funcLoadSpriteSheet),
+                  new Objects.ObjNativeFunc("unloadSpriteSheet", 1, 1, funcUnloadSpriteSheet),
+                  new Objects.ObjNativeFunc("drawSprites", 0, 0, funcDrawSprites),
+                  new Objects.ObjNativeFunc("getSpriteFrameWidth", 1, 1, funcGetSpriteFrameWidth),
+                  new Objects.ObjNativeFunc("getSpriteFrameHeight", 1, 1, funcGetSpriteFrameHeight),
+                  new Objects.ObjNativeFunc("addSprite", 4, 4, funcAddSprite),
+                  new Objects.ObjNativeFunc("removeSprite", 1, 1, funcRemoveSprite),
+                  new Objects.ObjNativeFunc("setSpriteSheet", 2, 2, funcSetSpriteSheet),
+                  new Objects.ObjNativeFunc("updateSprites", 0, 1, funcUpdateSprites),
+                  new Objects.ObjNativeFunc("getSpriteFrameCount", 1, 1, funcGetSpriteFrameCount),
+                  new Objects.ObjNativeFunc("getSpriteX", 1, 1, funcGetSpriteX),
+                  new Objects.ObjNativeFunc("setSpriteX", 2, 2, funcSetSpriteX),
+                  new Objects.ObjNativeFunc("getSpriteY", 1, 1, funcGetSpriteY),
+                  new Objects.ObjNativeFunc("setSpriteY", 2, 2, funcSetSpriteY),
+                  new Objects.ObjNativeFunc("getSpriteDrawWidth", 1, 1, funcGetSpriteDrawWidth),
+                  new Objects.ObjNativeFunc("setSpriteDrawWidth", 2, 2, funcSetSpriteDrawWidth),
+                  new Objects.ObjNativeFunc("getSpriteDrawHeight", 1, 1, funcGetSpriteDrawHeight),
+                  new Objects.ObjNativeFunc("setSpriteDrawHeight", 2, 2, funcSetSpriteDrawHeight),
+                  new Objects.ObjNativeFunc("getSpriteVelocityX", 1, 1, funcGetSpriteVelocityX),
+                  new Objects.ObjNativeFunc("setSpriteVelocityX", 2, 2, funcSetSpriteVelocityX),
+                  new Objects.ObjNativeFunc("getSpriteVelocityY", 1, 1, funcGetSpriteVelocityY),
+                  new Objects.ObjNativeFunc("setSpriteVelocityY", 2, 2, funcSetSpriteVelocityY),
+                  new Objects.ObjNativeFunc("getSpriteVisible", 1, 1, funcGetSpriteVisible),
+                  new Objects.ObjNativeFunc("setSpriteVisible", 2, 2, funcSetSpriteVisible),
+                  new Objects.ObjNativeFunc("getSpritePlaying", 1, 1, funcGetSpritePlaying),
+                  new Objects.ObjNativeFunc("setSpritePlaying", 2, 2, funcSetSpritePlaying),
+                  new Objects.ObjNativeFunc("getSpriteFrameRate", 1, 1, funcGetSpriteFrameRate),
+                  new Objects.ObjNativeFunc("setSpriteFrameRate", 2, 2, funcSetSpriteFrameRate),
+                  new Objects.ObjNativeFunc("setSpriteFrameRange", 3, 3, funcSetSpriteFrameRange),
+                  new Objects.ObjNativeFunc("getSpriteFrame", 1, 1, funcGetSpriteFrame),
+                  new Objects.ObjNativeFunc("setSpriteFrame", 2, 2, funcSetSpriteFrame),
+                  new Objects.ObjNativeFunc("getSpriteCycles", 1, 1, funcGetSpriteCycles),
+                  new Objects.ObjNativeFunc("setSpriteCycles", 2, 2, funcSetSpriteCycles),
+                  new Objects.ObjNativeFunc("spritesOverlap", 2, 2, funcSpritesOverlap),
+                  new Objects.ObjNativeFunc("pointInSprite", 3, 3, funcPointInSprite),
+                  new Objects.ObjNativeFunc("spriteOverlapsRect", 5, 5, funcSpriteOverlapsRect),
+                  new Objects.ObjNativeFunc("spriteOverlapsCircle", 4, 4, funcSpriteOverlapsCircle),
+                  new Objects.ObjNativeFunc("getScrollX", 0, 0, funcGetScrollX),
+                  new Objects.ObjNativeFunc("setScrollX", 1, 1, funcSetScrollX),
+                  new Objects.ObjNativeFunc("getScrollY", 0, 0, funcGetScrollY),
+                  new Objects.ObjNativeFunc("setScrollY", 1, 1, funcSetScrollY),
+                  new Objects.ObjNativeFunc("shiftScrollX", 1, 1, funcShiftScrollX),
+                  new Objects.ObjNativeFunc("shiftScrollY", 1, 1, funcShiftScrollY),
+                  new Objects.ObjNativeFunc("getSpriteScroll", 1, 1, funcGetSpriteScroll),
+                  new Objects.ObjNativeFunc("setSpriteScroll", 2, 2, funcSetSpriteScroll),
+                  new Objects.ObjNativeFunc("spriteToBack", 1, 1, funcSpriteToBack),
+                  new Objects.ObjNativeFunc("spriteToFront", 1, 1, funcSpriteToFront),
+                  new Objects.ObjNativeFunc("getSpriteHitBoxOffsetX", 1, 1, funcGetSpriteHitBoxOffsetX),
+                  new Objects.ObjNativeFunc("setSpriteHitBoxOffsetX", 2, 2, funcSetSpriteHitBoxOffsetX),
+                  new Objects.ObjNativeFunc("getSpriteHitBoxOffsetY", 1, 1, funcGetSpriteHitBoxOffsetY),
+                  new Objects.ObjNativeFunc("setSpriteHitBoxOffsetY", 2, 2, funcSetSpriteHitBoxOffsetY),
+                  new Objects.ObjNativeFunc("getSpriteHitBoxWidth", 1, 1, funcGetSpriteHitBoxWidth),
+                  new Objects.ObjNativeFunc("setSpriteHitBoxWidth", 2, 2, funcSetSpriteHitBoxWidth),
+                  new Objects.ObjNativeFunc("getSpriteHitBoxHeight", 1, 1, funcGetSpriteHitBoxHeight),
+                  new Objects.ObjNativeFunc("setSpriteHitBoxHeight", 2, 2, funcSetSpriteHitBoxHeight),
+                  new Objects.ObjNativeFunc("spritesCollided", 3, 4, funcSpritesCollided),
+                  new Objects.ObjNativeFunc("resolveSpriteCollision", 3, 3, funcResolveSpriteCollision),
+                  new Objects.ObjNativeFunc("resolveSpriteCollisionX", 3, 3, funcResolveSpriteCollisionX),
+                  new Objects.ObjNativeFunc("resolveSpriteCollisionY", 3, 3, funcResolveSpriteCollisionY)
                  ];
 
 var sprites = new Map();
@@ -109,7 +115,7 @@ var scrollY = 0;
 var spriteSheetResultCallback = null;
 var prevUpdateDeltaTime = 0;
 
-mainVM.addNativeFuncArray(spriteNativeFuncs);
+MainWorker.mainVM.addNativeFuncArray(spriteNativeFuncs);
 
 setSpriteWorkerEvents();
 
@@ -206,10 +212,10 @@ function rayIntersectsRect(rayOriginX, rayOriginY, rayDirX, rayDirY, rectX, rect
 function setSpriteWorkerEvents()
 //
 {
-  workerOnProgEndHandlers.push(spriteWorker_onProgEnd);
+  MainWorker.workerOnProgEndHandlers.push(spriteWorker_onProgEnd);
 
-  workerMessageMap.set(MSGID_SPRITE_SHEET_REF_REQUEST_RESULT, onMsgSpriteSheetRefRequestResult);
-  workerMessageMap.set(MSGID_SPRITE_SHEET_REQUEST_RESULT, onMsgSpriteSheetRequestResult);
+  MainWorker.workerMessageMap.set(SpriteCommon.MSGID_SPRITE_SHEET_REF_REQUEST_RESULT, onMsgSpriteSheetRefRequestResult);
+  MainWorker.workerMessageMap.set(SpriteCommon.MSGID_SPRITE_SHEET_REQUEST_RESULT, onMsgSpriteSheetRequestResult);
 }
 
 function spriteWorker_onProgEnd()
@@ -266,16 +272,16 @@ function sendSpriteSheetRequest(vm, msgId, msgData)
 //
 {
   if(!spriteSheetResultCallback)
-    spriteSheetResultCallback = new CallbackContext(vm);
+    spriteSheetResultCallback = new VM.CallbackContext(vm);
   else
     spriteSheetResultCallback.vm = vm;
 
   postMessage({msgId: msgId, msgData: msgData});
 
-  if(msgId == MSGID_SPRITE_SHEET_REF_REQUEST)
-    setExpectedResultMessageID(MSGID_SPRITE_SHEET_REF_REQUEST_RESULT);
+  if(msgId == SpriteCommon.MSGID_SPRITE_SHEET_REF_REQUEST)
+    MainWorker.setExpectedResultMessageID(SpriteCommon.MSGID_SPRITE_SHEET_REF_REQUEST_RESULT);
   else
-    setExpectedResultMessageID(MSGID_SPRITE_SHEET_REQUEST_RESULT);
+    MainWorker.setExpectedResultMessageID(SpriteCommon.MSGID_SPRITE_SHEET_REQUEST_RESULT);
   
   vm.runLoopExitFlag = true;
 }
@@ -290,7 +296,7 @@ function funcLoadSpriteSheet(vm, args)
       rowCount: args[3]
   };
 
-  sendSpriteSheetRequest(vm, MSGID_LOAD_SPRITE_SHEET_REQUEST, msgData);
+  sendSpriteSheetRequest(vm, SpriteCommon.MSGID_LOAD_SPRITE_SHEET_REQUEST, msgData);
 
   return undefined;
 }
@@ -298,7 +304,7 @@ function funcLoadSpriteSheet(vm, args)
 function funcUnloadSpriteSheet(vm, args)
 //
 {
-  sendSpriteSheetRequest(vm, MSGID_UNLOAD_SPRITE_SHEET_REQUEST, {sheetName: args[0]});
+  sendSpriteSheetRequest(vm, SpriteCommon.MSGID_UNLOAD_SPRITE_SHEET_REQUEST, {sheetName: args[0]});
   return undefined;
 }
 
@@ -317,7 +323,7 @@ function funcDrawSprites(vm, args)
       drawData.push([sprite.sheetName, sprite.currFrameIndex, drawX, drawY, sprite.drawWidth, sprite.drawHeight]);
   }
 
-  sendSpriteSheetRequest(vm, MSGID_DRAW_SPRITE_SHEET_FRAMES_REQUEST, {drawData: drawData});
+  sendSpriteSheetRequest(vm, SpriteCommon.MSGID_DRAW_SPRITE_SHEET_FRAMES_REQUEST, {drawData: drawData});
 
   return undefined;
 }
@@ -330,7 +336,7 @@ function funcGetSpriteFrameWidth(vm, args)
   if(!sprites.has(spriteName))
     vm.runError("Sprite '" + spriteName + "' does not exist.");
 
-  sendSpriteSheetRequest(vm, MSGID_GET_SPRITE_SHEET_FRAME_WIDTH_REQUEST, {sheetName: sprites.get(spriteName).sheetName});
+  sendSpriteSheetRequest(vm, SpriteCommon.MSGID_GET_SPRITE_SHEET_FRAME_WIDTH_REQUEST, {sheetName: sprites.get(spriteName).sheetName});
 
   return undefined;
 }
@@ -343,7 +349,7 @@ function funcGetSpriteFrameHeight(vm, args)
   if(!sprites.has(spriteName))
     vm.runError("Sprite '" + spriteName + "' does not exist.");
 
-  sendSpriteSheetRequest(vm, MSGID_GET_SPRITE_SHEET_FRAME_HEIGHT_REQUEST, {sheetName: sprites.get(spriteName).sheetName});
+  sendSpriteSheetRequest(vm, SpriteCommon.MSGID_GET_SPRITE_SHEET_FRAME_HEIGHT_REQUEST, {sheetName: sprites.get(spriteName).sheetName});
 
   return undefined;
 }
@@ -364,7 +370,7 @@ function funcAddSprite(vm, args)
   sprites.set(spriteName, sprite);
   zOrderedSprites.push(sprite);
 
-  sendSpriteSheetRequest(vm, MSGID_SPRITE_SHEET_REF_REQUEST, {sheetName: sheetName, spriteName: spriteName});
+  sendSpriteSheetRequest(vm, SpriteCommon.MSGID_SPRITE_SHEET_REF_REQUEST, {sheetName: sheetName, spriteName: spriteName});
 
   return undefined;
 }
@@ -404,7 +410,7 @@ function funcSetSpriteSheet(vm, args)
   sprite.firstFrameIndex = 0;
   sprite.currFrameIndex = 0;
 
-  sendSpriteSheetRequest(vm, MSGID_SPRITE_SHEET_REF_REQUEST, {sheetName: sheetName, spriteName: spriteName});
+  sendSpriteSheetRequest(vm, SpriteCommon.MSGID_SPRITE_SHEET_REF_REQUEST, {sheetName: sheetName, spriteName: spriteName});
 
   return undefined;
 }
@@ -1084,7 +1090,7 @@ function funcSpritesCollided(vm, args)
   if(args.length == 3)
   {
     contactStruct = args[2];
-    if(!(contactStruct instanceof ObjStructure))
+    if(!(contactStruct instanceof Objects.ObjStructure))
       vm.runError("Last argument of spritesCollided() must be a structure.");
   }
 

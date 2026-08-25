@@ -86,7 +86,7 @@ IMPORTS
                               .setExpectedResultMessageID()
                  -> SoundCommon.MSGID_*
 
-( ) sprite_worker -> Objects.ObjNativeFunc
+(X) sprite_worker -> Objects.ObjNativeFunc
                             .ObjStructure
                   -> VM.CallbackContext
                   -> MainWorker.workerOnProgEndHandlers
