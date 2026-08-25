@@ -61,7 +61,7 @@ IMPORTS
                                .setExpectedResultMessageID()
                   -> CanvasCommon.MSGID_*
 
-( ) console_worker -> Objects.ObjNativeFunc
+(X) console_worker -> Objects.ObjNativeFunc
                    -> VM.VM_EVENT_*
                         .CallbackContext
                    -> MainWorker.workerOnProgEndHandlers
@@ -229,7 +229,7 @@ EXPORTS
 (X) canvas_worker
       - 
 
-( ) console_worker
+(X) console_worker
       - 
 
 ( ) debug_worker

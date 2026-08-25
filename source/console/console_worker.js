@@ -1,12 +1,18 @@
+import * as Objects from "../core/objects.js";
+import * as VM from "../core/vm.js";
+import * as MainWorker from "../main_worker.js";
+import * as ConsoleCommon from "./console_common.js";
+
+
 const consoleNativeFuncs = [
-                  new ObjNativeFunc("showConsole", 0, 0, funcShowConsole),
-                  new ObjNativeFunc("hideConsole", 0, 0, funcHideConsole),
-                  new ObjNativeFunc("input", 1, 1, funcInput)
+                  new Objects.ObjNativeFunc("showConsole", 0, 0, funcShowConsole),
+                  new Objects.ObjNativeFunc("hideConsole", 0, 0, funcHideConsole),
+                  new Objects.ObjNativeFunc("input", 1, 1, funcInput)
                  ];
 
 var inputCallback = null;
 
-mainVM.addNativeFuncArray(consoleNativeFuncs);
+MainWorker.mainVM.addNativeFuncArray(consoleNativeFuncs);
 
 setConsoleWorkerEvents();
 
@@ -14,11 +20,11 @@ setConsoleWorkerEvents();
 function setConsoleWorkerEvents()
 //
 {
-  mainVM.addEventHook(VM_EVENT_PRINT, onVMPrint);
+  MainWorker.mainVM.addEventHook(VM.VM_EVENT_PRINT, onVMPrint);
 
-  workerOnProgEndHandlers.push(consoleWorker_onProgEnd);
+  MainWorker.workerOnProgEndHandlers.push(consoleWorker_onProgEnd);
 
-  workerMessageMap.set(MSGID_INPUT_RESULT, onMsgInputResult);
+  MainWorker.workerMessageMap.set(ConsoleCommon.MSGID_INPUT_RESULT, onMsgInputResult);
 }
 
 function consoleWorker_onProgEnd()
@@ -41,22 +47,22 @@ function onVMPrint(vm, printVal, replaceAll)
 //
 {
   if(replaceAll)
-    postMessage({msgId: MSGID_CLEAR_CONSOLE, msgData: null});
+    postMessage({msgId: ConsoleCommon.MSGID_CLEAR_CONSOLE, msgData: null});
   else
-    postMessage({msgId: MSGID_PRINT, msgData: {printVal: printVal}});
+    postMessage({msgId: ConsoleCommon.MSGID_PRINT, msgData: {printVal: printVal}});
 }
 
 function funcShowConsole(vm, args)
 //Tell the UI thread to show the console pane
 {
-  postMessage({msgId: MSGID_SHOW_CONSOLE, msgData: null});
+  postMessage({msgId: ConsoleCommon.MSGID_SHOW_CONSOLE, msgData: null});
   return null;
 }
 
 function funcHideConsole(vm, args)
 //Tell the UI thread to hide the console pane
 {
-  postMessage({msgId: MSGID_HIDE_CONSOLE, msgData: null});
+  postMessage({msgId: ConsoleCommon.MSGID_HIDE_CONSOLE, msgData: null});
   return null;
 }
 
@@ -64,12 +70,12 @@ function funcInput(vm, args)
 //Prompt user for input from the consol
 {
   if(!inputCallback)
-    inputCallback = new CallbackContext(vm);
+    inputCallback = new VM.CallbackContext(vm);
   else
     inputCallback.vm = vm;
 
-  postMessage({msgId: MSGID_PRINT, msgData: {printVal: args[0]}});
-  postMessage({msgId: MSGID_INPUT_REQUEST, msgData: null});
+  postMessage({msgId: ConsoleCommon.MSGID_PRINT, msgData: {printVal: args[0]}});
+  postMessage({msgId: ConsoleCommon.MSGID_INPUT_REQUEST, msgData: null});
 
   vm.runLoopExitFlag = true;
 
