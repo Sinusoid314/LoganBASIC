@@ -1,3 +1,9 @@
+import * as Objects from "../core/objects.js";
+import * as VM from "../core/vm.js";
+import * as MainWorker from "../main_worker.js";
+import * as CanvasCommon from "./canvas_common.js";
+
+
 class CanvasEvent
 {
   constructor(name, paramCount, callback)
@@ -9,39 +15,39 @@ class CanvasEvent
 }
 
 const canvasNativeFuncs = [
-                  new ObjNativeFunc("showCanvas", 0, 0, funcShowCanvas),
-                  new ObjNativeFunc("hideCanvas", 0, 0, funcHideCanvas),
-                  new ObjNativeFunc("setCanvasWidth", 1, 1, funcSetCanvasWidth),
-                  new ObjNativeFunc("setCanvasHeight", 1, 1, funcSetCanvasHeight),
-                  new ObjNativeFunc("clearCanvas", 0, 0, funcClearCanvas),
-                  new ObjNativeFunc("clearRect", 4, 4, funcClearRect),
-                  new ObjNativeFunc("loadImage", 2, 2, funcLoadImage),
-                  new ObjNativeFunc("unloadImage", 1, 1, funcUnloadImage),
-                  new ObjNativeFunc("drawImage", 3, 5, funcDrawImage),
-                  new ObjNativeFunc("drawImageClip", 7, 9, funcDrawImageClip),
-                  new ObjNativeFunc("drawImageTiled", 5, 7, funcDrawImageTiled),
-                  new ObjNativeFunc("getImageWidth", 1, 1, funcGetImageWidth),
-                  new ObjNativeFunc("getImageHeight", 1, 1, funcGetImageHeight),
-                  new ObjNativeFunc("enableCanvasBuffer", 0, 0, funcEnableCanvasBuffer),
-                  new ObjNativeFunc("disableCanvasBuffer", 0, 0, funcDisableCanvasBuffer),
-                  new ObjNativeFunc("drawCanvasBuffer", 0, 0, funcDrawCanvasBuffer),
-                  new ObjNativeFunc("drawCanvasBufferClip", 6, 8, funcDrawCanvasBufferClip),
-                  new ObjNativeFunc("setCanvasEvent", 1, 2, funcSetCanvasEvent),
-                  new ObjNativeFunc("drawText", 3, 4, funcDrawText),
-                  new ObjNativeFunc("drawRect", 4, 5, funcDrawRect),
-                  new ObjNativeFunc("drawCircle", 3, 4, funcDrawCircle),
-                  new ObjNativeFunc("drawLine", 4, 5, funcDrawLine),
-                  new ObjNativeFunc("setTextFont", 1, 1, funcSetTextFont),
-                  new ObjNativeFunc("setFillColor", 1, 1, funcSetFillColor),
-                  new ObjNativeFunc("setLineColor", 1, 1, funcSetLineColor),
-                  new ObjNativeFunc("setLineSize", 1, 1, funcSetLineSize),
-                  new ObjNativeFunc("updateDeltaTime", 0, 0, funcUpdateDeltaTime),
-                  new ObjNativeFunc("resetDeltaTime", 0, 0, funcResetDeltaTime),
-                  new ObjNativeFunc("getDeltaTime", 0, 0, funcGetDeltaTime),
-                  new ObjNativeFunc("setMaxDeltaTime", 1, 1, funcSetMaxDeltaTime),
-                  new ObjNativeFunc("getMaxDeltaTime", 0, 0, funcGetMaxDeltaTime),
-                  new ObjNativeFunc("getTextDrawWidth", 1, 1, funcGetTextDrawWidth),
-                  new ObjNativeFunc("getTextDrawHeight", 1, 1, funcGetTextDrawHeight)
+                  new Objects.ObjNativeFunc("showCanvas", 0, 0, funcShowCanvas),
+                  new Objects.ObjNativeFunc("hideCanvas", 0, 0, funcHideCanvas),
+                  new Objects.ObjNativeFunc("setCanvasWidth", 1, 1, funcSetCanvasWidth),
+                  new Objects.ObjNativeFunc("setCanvasHeight", 1, 1, funcSetCanvasHeight),
+                  new Objects.ObjNativeFunc("clearCanvas", 0, 0, funcClearCanvas),
+                  new Objects.ObjNativeFunc("clearRect", 4, 4, funcClearRect),
+                  new Objects.ObjNativeFunc("loadImage", 2, 2, funcLoadImage),
+                  new Objects.ObjNativeFunc("unloadImage", 1, 1, funcUnloadImage),
+                  new Objects.ObjNativeFunc("drawImage", 3, 5, funcDrawImage),
+                  new Objects.ObjNativeFunc("drawImageClip", 7, 9, funcDrawImageClip),
+                  new Objects.ObjNativeFunc("drawImageTiled", 5, 7, funcDrawImageTiled),
+                  new Objects.ObjNativeFunc("getImageWidth", 1, 1, funcGetImageWidth),
+                  new Objects.ObjNativeFunc("getImageHeight", 1, 1, funcGetImageHeight),
+                  new Objects.ObjNativeFunc("enableCanvasBuffer", 0, 0, funcEnableCanvasBuffer),
+                  new Objects.ObjNativeFunc("disableCanvasBuffer", 0, 0, funcDisableCanvasBuffer),
+                  new Objects.ObjNativeFunc("drawCanvasBuffer", 0, 0, funcDrawCanvasBuffer),
+                  new Objects.ObjNativeFunc("drawCanvasBufferClip", 6, 8, funcDrawCanvasBufferClip),
+                  new Objects.ObjNativeFunc("setCanvasEvent", 1, 2, funcSetCanvasEvent),
+                  new Objects.ObjNativeFunc("drawText", 3, 4, funcDrawText),
+                  new Objects.ObjNativeFunc("drawRect", 4, 5, funcDrawRect),
+                  new Objects.ObjNativeFunc("drawCircle", 3, 4, funcDrawCircle),
+                  new Objects.ObjNativeFunc("drawLine", 4, 5, funcDrawLine),
+                  new Objects.ObjNativeFunc("setTextFont", 1, 1, funcSetTextFont),
+                  new Objects.ObjNativeFunc("setFillColor", 1, 1, funcSetFillColor),
+                  new Objects.ObjNativeFunc("setLineColor", 1, 1, funcSetLineColor),
+                  new Objects.ObjNativeFunc("setLineSize", 1, 1, funcSetLineSize),
+                  new Objects.ObjNativeFunc("updateDeltaTime", 0, 0, funcUpdateDeltaTime),
+                  new Objects.ObjNativeFunc("resetDeltaTime", 0, 0, funcResetDeltaTime),
+                  new Objects.ObjNativeFunc("getDeltaTime", 0, 0, funcGetDeltaTime),
+                  new Objects.ObjNativeFunc("setMaxDeltaTime", 1, 1, funcSetMaxDeltaTime),
+                  new Objects.ObjNativeFunc("getMaxDeltaTime", 0, 0, funcGetMaxDeltaTime),
+                  new Objects.ObjNativeFunc("getTextDrawWidth", 1, 1, funcGetTextDrawWidth),
+                  new Objects.ObjNativeFunc("getTextDrawHeight", 1, 1, funcGetTextDrawHeight)
                  ];
 
 var canvasEvents = [
@@ -61,7 +67,7 @@ var prevTime =  0;
 
 canvasEvents.push(drawBufferDoneEvent);
 
-mainVM.addNativeFuncArray(canvasNativeFuncs);
+MainWorker.mainVM.addNativeFuncArray(canvasNativeFuncs);
 
 setCanvasWorkerEvents();
 
@@ -69,12 +75,12 @@ setCanvasWorkerEvents();
 function setCanvasWorkerEvents()
 //
 {
-  workerOnProgEndHandlers.push(canvasWorker_onProgEnd);
+  MainWorker.workerOnProgEndHandlers.push(canvasWorker_onProgEnd);
 
-  workerMessageMap.set(MSGID_IMAGE_REQUEST_RESULT, onMsgImageRequestResult);
-  workerMessageMap.set(MSGID_CONTEXT_REQUEST_RESULT, onMsgContextRequestResult);
-  workerMessageMap.set(MSGID_CANVAS_EVENT, onMsgCanvasEvent);
-  workerMessageMap.set(MSGID_DRAW_CANVAS_BUFFER_DONE, onMsgDrawCanvasBufferDone);
+  MainWorker.workerMessageMap.set(CanvasCommon.MSGID_IMAGE_REQUEST_RESULT, onMsgImageRequestResult);
+  MainWorker.workerMessageMap.set(CanvasCommon.MSGID_CONTEXT_REQUEST_RESULT, onMsgContextRequestResult);
+  MainWorker.workerMessageMap.set(CanvasCommon.MSGID_CANVAS_EVENT, onMsgCanvasEvent);
+  MainWorker.workerMessageMap.set(CanvasCommon.MSGID_DRAW_CANVAS_BUFFER_DONE, onMsgDrawCanvasBufferDone);
 }
 
 function onMsgImageRequestResult(msgData)
@@ -96,13 +102,13 @@ function sendImageRequest(vm, msgId, msgData)
 //
 {
   if(!imageResultCallback)
-    imageResultCallback = new CallbackContext(vm);
+    imageResultCallback = new VM.CallbackContext(vm);
   else
     imageResultCallback.vm = vm;
 
   postMessage({msgId: msgId, msgData: msgData});
 
-  setExpectedResultMessageID(MSGID_IMAGE_REQUEST_RESULT);
+  MainWorker.setExpectedResultMessageID(CanvasCommon.MSGID_IMAGE_REQUEST_RESULT);
   vm.runLoopExitFlag = true;
 }
 
@@ -125,13 +131,13 @@ function sendContextRequest(vm, msgId, msgData)
 //
 {
   if(!contextResultCallback)
-    contextResultCallback = new CallbackContext(vm);
+    contextResultCallback = new VM.CallbackContext(vm);
   else
     contextResultCallback.vm = vm;
 
   postMessage({msgId: msgId, msgData: msgData});
 
-  setExpectedResultMessageID(MSGID_CONTEXT_REQUEST_RESULT);
+  MainWorker.setExpectedResultMessageID(CanvasCommon.MSGID_CONTEXT_REQUEST_RESULT);
   vm.runLoopExitFlag = true;
 }
 
@@ -161,7 +167,7 @@ function onMsgDrawCanvasBufferDone(msgData)
     return;
 
   if(drawBufferDoneEvent.callback.vm.inBreakpoint)
-    postMessage({msgId: MSGID_DRAW_CANVAS_BUFFER, msgData: null});
+    postMessage({msgId: CanvasCommon.MSGID_DRAW_CANVAS_BUFFER, msgData: null});
   else
   {
     drawBufferDoneEvent.callback.resumeVM();
@@ -171,35 +177,35 @@ function onMsgDrawCanvasBufferDone(msgData)
 function funcShowCanvas(vm, args)
 //Tell the UI thread to show the canvas pane
 {
-  postMessage({msgId: MSGID_SHOW_CANVAS, msgData: null});
+  postMessage({msgId: CanvasCommon.MSGID_SHOW_CANVAS, msgData: null});
   return null;
 }
 
 function funcHideCanvas(vm, args)
 //Tell the UI thread to hide the canvas pane
 {
-  postMessage({msgId: MSGID_HIDE_CANVAS, msgData: null});
+  postMessage({msgId: CanvasCommon.MSGID_HIDE_CANVAS, msgData: null});
   return null;
 }
 
 function funcSetCanvasWidth(vm, args)
 //
 {
-  postMessage({msgId: MSGID_SET_CANVAS_WIDTH, msgData: {newWidth: args[0]}});
+  postMessage({msgId: CanvasCommon.MSGID_SET_CANVAS_WIDTH, msgData: {newWidth: args[0]}});
   return null;
 }
 
 function funcSetCanvasHeight(vm, args)
 //
 {
-  postMessage({msgId: MSGID_SET_CANVAS_HEIGHT, msgData: {newHeight: args[0]}});
+  postMessage({msgId: CanvasCommon.MSGID_SET_CANVAS_HEIGHT, msgData: {newHeight: args[0]}});
   return null;
 }
 
 function funcClearCanvas(vm, args)
 //Send a message to the canvas to clear it
 {
-  postMessage({msgId: MSGID_CLEAR_CANVAS, msgData: null});
+  postMessage({msgId: CanvasCommon.MSGID_CLEAR_CANVAS, msgData: null});
   return null;
 }
 
@@ -213,21 +219,21 @@ function funcClearRect(vm, args)
       rectHeight: args[3]
   };
 
-  postMessage({msgId: MSGID_CLEAR_RECT, msgData: msgData});
+  postMessage({msgId: CanvasCommon.MSGID_CLEAR_RECT, msgData: msgData});
   return null;
 }
 
 function funcLoadImage(vm, args)
 //Send a message to the canvas to load an image
 {
-  sendImageRequest(vm, MSGID_LOAD_IMAGE_REQUEST, {imageName: args[0], imageSource: args[1]});
+  sendImageRequest(vm, CanvasCommon.MSGID_LOAD_IMAGE_REQUEST, {imageName: args[0], imageSource: args[1]});
   return undefined;
 }
 
 function funcUnloadImage(vm, args)
 //Send a message to the canvas to unload an image
 {
-  sendImageRequest(vm, MSGID_UNLOAD_IMAGE_REQUEST, {imageName: args[0]});
+  sendImageRequest(vm, CanvasCommon.MSGID_UNLOAD_IMAGE_REQUEST, {imageName: args[0]});
   return undefined;
 }
 
@@ -242,7 +248,7 @@ function funcDrawImage(vm, args)
       drawHeight: (args.length == 5) ? args[4] : null
   };
 
-  sendImageRequest(vm, MSGID_DRAW_IMAGE_REQUEST, msgData);
+  sendImageRequest(vm, CanvasCommon.MSGID_DRAW_IMAGE_REQUEST, msgData);
 
   return undefined;
 }
@@ -262,7 +268,7 @@ function funcDrawImageClip(vm, args)
       drawHeight: (args.length == 9) ? args[8] : args[4]
   };
 
-  sendImageRequest(vm, MSGID_DRAW_IMAGE_CLIP_REQUEST, msgData);
+  sendImageRequest(vm, CanvasCommon.MSGID_DRAW_IMAGE_CLIP_REQUEST, msgData);
 
   return undefined;
 }
@@ -280,7 +286,7 @@ function funcDrawImageTiled(vm, args)
       offsetY: (args.length == 7) ? args[6] : 0
   };
 
-  sendImageRequest(vm, MSGID_DRAW_IMAGE_TILED_REQUEST, msgData);
+  sendImageRequest(vm, CanvasCommon.MSGID_DRAW_IMAGE_TILED_REQUEST, msgData);
 
   return undefined;
 }
@@ -288,35 +294,35 @@ function funcDrawImageTiled(vm, args)
 function funcGetImageWidth(vm, args)
 //
 {
-  sendImageRequest(vm, MSGID_GET_IMAGE_WIDTH_REQUEST, {imageName: args[0]});
+  sendImageRequest(vm, CanvasCommon.MSGID_GET_IMAGE_WIDTH_REQUEST, {imageName: args[0]});
   return undefined;
 }
 
 function funcGetImageHeight(vm, args)
 //
 {
-  sendImageRequest(vm, MSGID_GET_IMAGE_HEIGHT_REQUEST, {imageName: args[0]});
+  sendImageRequest(vm, CanvasCommon.MSGID_GET_IMAGE_HEIGHT_REQUEST, {imageName: args[0]});
   return undefined;
 }
 
 function funcEnableCanvasBuffer(vm, args)
 //
 {
-  postMessage({msgId: MSGID_ENABLE_CANVAS_BUFFER, msgData: null});
+  postMessage({msgId: CanvasCommon.MSGID_ENABLE_CANVAS_BUFFER, msgData: null});
   return null;
 }
 
 function funcDisableCanvasBuffer(vm, args)
 //
 {
-  postMessage({msgId: MSGID_DISABLE_CANVAS_BUFFER, msgData: null});
+  postMessage({msgId: CanvasCommon.MSGID_DISABLE_CANVAS_BUFFER, msgData: null});
   return null;
 }
 
 function funcDrawCanvasBuffer(vm, args)
 //
 {
-  postMessage({msgId: MSGID_DRAW_CANVAS_BUFFER, msgData: null});
+  postMessage({msgId: CanvasCommon.MSGID_DRAW_CANVAS_BUFFER, msgData: null});
 
   return null;
 }
@@ -335,7 +341,7 @@ function funcDrawCanvasBufferClip(vm, args)
       drawHeight: (args.length == 8) ? args[7] : args[3]
   };
 
-  postMessage({msgId: MSGID_DRAW_CANVAS_BUFFER_CLIP, msgData: msgData});
+  postMessage({msgId: CanvasCommon.MSGID_DRAW_CANVAS_BUFFER_CLIP, msgData: msgData});
 
   return null;
 }
@@ -354,7 +360,7 @@ function funcSetCanvasEvent(vm, args)
   {
     eventUserFunc = args[1];
 
-    if(!(eventUserFunc instanceof ObjUserFunc))
+    if(!(eventUserFunc instanceof Objects.ObjUserFunc))
       vm.runError("Second argument of setCanvasEvent() must be a function.");
 
     if(eventUserFunc.paramCount != canvasEvents[eventIndex].paramCount)
@@ -362,7 +368,7 @@ function funcSetCanvasEvent(vm, args)
 
     if(!canvasEvents[eventIndex].callback)
     {
-      canvasEvents[eventIndex].callback = new CallbackContext(vm, eventUserFunc);
+      canvasEvents[eventIndex].callback = new VM.CallbackContext(vm, eventUserFunc);
     }
     else
     {
@@ -370,12 +376,12 @@ function funcSetCanvasEvent(vm, args)
       canvasEvents[eventIndex].callback.userFunc = eventUserFunc;
     }
 
-    postMessage({msgId: MSGID_ADD_CANVAS_EVENT, msgData: {eventName: eventName}});
+    postMessage({msgId: CanvasCommon.MSGID_ADD_CANVAS_EVENT, msgData: {eventName: eventName}});
   }
   else
   {
     canvasEvents[eventIndex].callback = null;
-    postMessage({msgId: MSGID_REMOVE_CANVAS_EVENT, msgData: {eventName: eventName}});
+    postMessage({msgId: CanvasCommon.MSGID_REMOVE_CANVAS_EVENT, msgData: {eventName: eventName}});
   }
 
   return null;
@@ -391,7 +397,7 @@ function funcDrawText(vm, args)
       isFilled: (args.length == 4) ? args[3] : true
   };
 
-  postMessage({msgId: MSGID_DRAW_TEXT, msgData: msgData});
+  postMessage({msgId: CanvasCommon.MSGID_DRAW_TEXT, msgData: msgData});
 
   return null;
 }
@@ -407,7 +413,7 @@ function funcDrawRect(vm, args)
       isFilled: (args.length == 5) ? args[4] : true
   };
 
-  postMessage({msgId: MSGID_DRAW_RECT, msgData: msgData});
+  postMessage({msgId: CanvasCommon.MSGID_DRAW_RECT, msgData: msgData});
 
   return null;
 }
@@ -422,7 +428,7 @@ function funcDrawCircle(vm, args)
       isFilled: (args.length == 4) ? args[3] : true
   };
 
-  postMessage({msgId: MSGID_DRAW_CIRCLE, msgData: msgData});
+  postMessage({msgId: CanvasCommon.MSGID_DRAW_CIRCLE, msgData: msgData});
 
   return null;
 }
@@ -437,7 +443,7 @@ function funcDrawLine(vm, args)
       endY: args[3]
   };
 
-  postMessage({msgId: MSGID_DRAW_LINE, msgData: msgData});
+  postMessage({msgId: CanvasCommon.MSGID_DRAW_LINE, msgData: msgData});
 
   return null;
 }
@@ -445,28 +451,28 @@ function funcDrawLine(vm, args)
 function funcSetTextFont(vm, args)
 //
 {
-  postMessage({msgId: MSGID_SET_TEXT_FONT, msgData: {font: args[0]}});
+  postMessage({msgId: CanvasCommon.MSGID_SET_TEXT_FONT, msgData: {font: args[0]}});
   return null;
 }
 
 function funcSetFillColor(vm, args)
 //
 {
-  postMessage({msgId: MSGID_SET_FILL_COLOR, msgData: {color: args[0]}});
+  postMessage({msgId: CanvasCommon.MSGID_SET_FILL_COLOR, msgData: {color: args[0]}});
   return null;
 }
 
 function funcSetLineColor(vm, args)
 //
 {
-  postMessage({msgId: MSGID_SET_LINE_COLOR, msgData: {color: args[0]}});
+  postMessage({msgId: CanvasCommon.MSGID_SET_LINE_COLOR, msgData: {color: args[0]}});
   return null;
 }
 
 function funcSetLineSize(vm, args)
 //
 {
-  postMessage({msgId: MSGID_SET_LINE_SIZE, msgData: {size: args[0]}});
+  postMessage({msgId: CanvasCommon.MSGID_SET_LINE_SIZE, msgData: {size: args[0]}});
   return null;
 }
 
@@ -512,13 +518,13 @@ function funcGetMaxDeltaTime(vm, args)
 function funcGetTextDrawWidth(vm, args)
 //
 {
-  sendContextRequest(vm, MSGID_GET_TEXT_DRAW_WIDTH_REQUEST, {text: args[0]});
+  sendContextRequest(vm, CanvasCommon.MSGID_GET_TEXT_DRAW_WIDTH_REQUEST, {text: args[0]});
   return undefined;
 }
 
 function funcGetTextDrawHeight(vm, args)
 //
 {
-  sendContextRequest(vm, MSGID_GET_TEXT_DRAW_HEIGHT_REQUEST, {text: args[0]});
+  sendContextRequest(vm, CanvasCommon.MSGID_GET_TEXT_DRAW_HEIGHT_REQUEST, {text: args[0]});
   return undefined;
 }

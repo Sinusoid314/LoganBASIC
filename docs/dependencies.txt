@@ -52,11 +52,10 @@ IMPORTS
                              .mainMode
                              .setMainMode()
 
-( ) canvas_worker -> Objects.ObjUserFunc
+(X) canvas_worker -> Objects.ObjUserFunc
                             .ObjNativeFunc
                   -> VM.CallbackContext
                   -> MainWorker.workerOnProgEndHandlers
-                               .expectedResultMessageID
                                .workerMessageMap
                                .mainVM
                                .setExpectedResultMessageID()
@@ -227,7 +226,7 @@ EXPORTS
       - mainVM
       - setExpectedResultMessageID()
 
-( ) canvas_worker
+(X) canvas_worker
       - 
 
 ( ) console_worker
