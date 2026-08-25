@@ -1,18 +1,24 @@
+import * as Objects from "../core/objects.js";
+import * as VM from "../core/vm.js";
+import * as MainWorker from "../main_worker.js";
+import * as SoundCommon from "./sound_common.js";
+
+
 const soundNativeFuncs = [
-                  new ObjNativeFunc("loadSound", 2, 2, funcLoadSound),
-                  new ObjNativeFunc("unloadSound", 1, 1, funcUnloadSound),
-                  new ObjNativeFunc("playSound", 1, 1, funcPlaySound),
-                  new ObjNativeFunc("pauseSound", 1, 1, funcPauseSound),
-                  new ObjNativeFunc("stopSound", 1, 1, funcStopSound),
-                  new ObjNativeFunc("getSoundLen", 1, 1, funcGetSoundLen),
-                  new ObjNativeFunc("getSoundPos", 1, 1, funcGetSoundPos),
-                  new ObjNativeFunc("setSoundPos", 2, 2, funcSetSoundPos),
-                  new ObjNativeFunc("loopSound", 2, 2, funcLoopSound)
+                  new Objects.ObjNativeFunc("loadSound", 2, 2, funcLoadSound),
+                  new Objects.ObjNativeFunc("unloadSound", 1, 1, funcUnloadSound),
+                  new Objects.ObjNativeFunc("playSound", 1, 1, funcPlaySound),
+                  new Objects.ObjNativeFunc("pauseSound", 1, 1, funcPauseSound),
+                  new Objects.ObjNativeFunc("stopSound", 1, 1, funcStopSound),
+                  new Objects.ObjNativeFunc("getSoundLen", 1, 1, funcGetSoundLen),
+                  new Objects.ObjNativeFunc("getSoundPos", 1, 1, funcGetSoundPos),
+                  new Objects.ObjNativeFunc("setSoundPos", 2, 2, funcSetSoundPos),
+                  new Objects.ObjNativeFunc("loopSound", 2, 2, funcLoopSound)
                  ];
 
 var soundResultCallback = null;
 
-mainVM.addNativeFuncArray(soundNativeFuncs);
+MainWorker.mainVM.addNativeFuncArray(soundNativeFuncs);
 
 setSoundWorkerEvents();
 
@@ -20,9 +26,9 @@ setSoundWorkerEvents();
 function setSoundWorkerEvents()
 //
 {
-  workerOnProgEndHandlers.push(soundWorker_onProgEnd);
+  MainWorker.workerOnProgEndHandlers.push(soundWorker_onProgEnd);
 
-  workerMessageMap.set(MSGID_SOUND_REQUEST_RESULT, onMsgSoundRequestResult);
+  MainWorker.workerMessageMap.set(SoundCommon.MSGID_SOUND_REQUEST_RESULT, onMsgSoundRequestResult);
 }
 
 function soundWorker_onProgEnd()
@@ -50,76 +56,76 @@ function sendSoundRequest(vm, msgId, msgData)
 //
 {
   if(!soundResultCallback)
-    soundResultCallback = new CallbackContext(vm);
+    soundResultCallback = new VM.CallbackContext(vm);
   else
     soundResultCallback.vm = vm;
 
   postMessage({msgId: msgId, msgData: msgData});
 
-  setExpectedResultMessageID(MSGID_SOUND_REQUEST_RESULT);
+  MainWorker.setExpectedResultMessageID(SoundCommon.MSGID_SOUND_REQUEST_RESULT);
   vm.runLoopExitFlag = true;
 }
 
 function funcLoadSound(vm, args)
 //Send a message to the UI thread to load a sound
 {
-  sendSoundRequest(vm, MSGID_LOAD_SOUND_REQUEST, {soundName: args[0], soundSource: args[1]});
+  sendSoundRequest(vm, SoundCommon.MSGID_LOAD_SOUND_REQUEST, {soundName: args[0], soundSource: args[1]});
   return undefined;
 }
 
 function funcUnloadSound(vm, args)
 //Send a message to the UI thread to unload a sound
 {
-  sendSoundRequest(vm, MSGID_UNLOAD_SOUND_REQUEST, {soundName: args[0]});
+  sendSoundRequest(vm, SoundCommon.MSGID_UNLOAD_SOUND_REQUEST, {soundName: args[0]});
   return undefined;
 }
 
 function funcPlaySound(vm, args)
 //
 {
-  sendSoundRequest(vm, MSGID_PLAY_SOUND_REQUEST, {soundName: args[0]});
+  sendSoundRequest(vm, SoundCommon.MSGID_PLAY_SOUND_REQUEST, {soundName: args[0]});
   return undefined;
 }
 
 function funcPauseSound(vm, args)
 //
 {
-  sendSoundRequest(vm, MSGID_PAUSE_SOUND_REQUEST, {soundName: args[0]});
+  sendSoundRequest(vm, SoundCommon.MSGID_PAUSE_SOUND_REQUEST, {soundName: args[0]});
   return undefined;
 }
 
 function funcStopSound(vm, args)
 //
 {
-  sendSoundRequest(vm, MSGID_STOP_SOUND_REQUEST, {soundName: args[0]});
+  sendSoundRequest(vm, SoundCommon.MSGID_STOP_SOUND_REQUEST, {soundName: args[0]});
   return undefined;
 }
 
 function funcGetSoundLen(vm, args)
 //
 {
-  sendSoundRequest(vm, MSGID_GET_SOUND_LEN_REQUEST, {soundName: args[0]});
+  sendSoundRequest(vm, SoundCommon.MSGID_GET_SOUND_LEN_REQUEST, {soundName: args[0]});
   return undefined;
 }
 
 function funcGetSoundPos(vm, args)
 //
 {
-  sendSoundRequest(vm, MSGID_GET_SOUND_POS_REQUEST, {soundName: args[0]});
+  sendSoundRequest(vm, SoundCommon.MSGID_GET_SOUND_POS_REQUEST, {soundName: args[0]});
   return undefined;
 }
 
 function funcSetSoundPos(vm, args)
 //
 {
-  sendSoundRequest(vm, MSGID_SET_SOUND_POS_REQUEST, {soundName: args[0], soundPos: args[1]});
+  sendSoundRequest(vm, SoundCommon.MSGID_SET_SOUND_POS_REQUEST, {soundName: args[0], soundPos: args[1]});
   return undefined;
 }
 
 function funcLoopSound(vm, args)
 //
 {
-  sendSoundRequest(vm, MSGID_LOOP_SOUND_REQUEST, {soundName: args[0], isLooped: args[1]});
+  sendSoundRequest(vm, SoundCommon.MSGID_LOOP_SOUND_REQUEST, {soundName: args[0], isLooped: args[1]});
   return undefined;
 }
 

@@ -78,10 +78,9 @@ IMPORTS
                                .DEBUG_UI_STATUS_*
                                .DebugBreakpoint
 
-( ) sound_worker -> Objects.ObjNativeFunc
+(X) sound_worker -> Objects.ObjNativeFunc
                  -> VM.CallbackContext
                  -> MainWorker.workerOnProgEndHandlers
-                              .expectedResultMessageID
                               .workerMessageMap
                               .mainVM
                               .setExpectedResultMessageID()
@@ -91,7 +90,6 @@ IMPORTS
                             .ObjStructure
                   -> VM.CallbackContext
                   -> MainWorker.workerOnProgEndHandlers
-                               .expectedResultMessageID
                                .workerMessageMap
                                .mainVM
                                .setExpectedResultMessageID()
@@ -235,10 +233,10 @@ EXPORTS
 (X) debug_worker
       - 
 
-( ) sound_worker
+(X) sound_worker
       - 
 
-( ) sprite_worker
+(X) sprite_worker
       - 
 
 
