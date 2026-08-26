@@ -166,7 +166,7 @@ IMPORTS
                       .uiMessageMap
              -> SoundCommon.MSGID_*
 
-( ) sprite_ui -> MainUI.isRunning
+(X) sprite_ui -> MainUI.isRunning
                        .uiOnProgEndHandlers
                        .progWorker
                        .uiMessageMap
@@ -280,7 +280,7 @@ EXPORTS
 (X) sound_ui
       - 
 
-( ) sprite_ui
+(X) sprite_ui
       - 
 
 

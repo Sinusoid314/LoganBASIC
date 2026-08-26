@@ -1,5 +1,5 @@
 import * as MainUI from "../main_ui.js";
-import * as CanvasCommon from "./canvas_ui.js";
+import * as CanvasCommon from "./canvas_common.js";
 
 
 export var activeContext;

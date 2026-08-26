@@ -1,3 +1,8 @@
+import * as MainUI from "../main_ui.js";
+import * as SpriteCommon from "./sprite_common.js";
+import * as CanvasUI from "../canvas/canvas_ui.js";
+
+
 class SpriteSheet
 {
   constructor(sheetImage, columnCount, rowCount)
@@ -30,14 +35,14 @@ setSpriteUIEvents();
 function setSpriteUIEvents()
 //
 {
-  uiOnProgEndHandlers.push(spriteUI_onProgEnd);
+  MainUI.uiOnProgEndHandlers.push(spriteUI_onProgEnd);
 
-  uiMessageMap.set(MSGID_SPRITE_SHEET_REF_REQUEST, onMsgSpriteSheetRefRequest);
-  uiMessageMap.set(MSGID_LOAD_SPRITE_SHEET_REQUEST, onMsgLoadSpriteSheetRequest);
-  uiMessageMap.set(MSGID_UNLOAD_SPRITE_SHEET_REQUEST, onMsgUnloadSpriteSheetRequest);
-  uiMessageMap.set(MSGID_DRAW_SPRITE_SHEET_FRAMES_REQUEST, onMsgDrawSpriteSheetFramesRequest);
-  uiMessageMap.set(MSGID_GET_SPRITE_SHEET_FRAME_WIDTH_REQUEST, onMsgGetSpriteSheetFrameWidthRequest);
-  uiMessageMap.set(MSGID_GET_SPRITE_SHEET_FRAME_HEIGHT_REQUEST, onMsgGetSpriteSheetFrameHeightRequest);
+  MainUI.uiMessageMap.set(SpriteCommon.MSGID_SPRITE_SHEET_REF_REQUEST, onMsgSpriteSheetRefRequest);
+  MainUI.uiMessageMap.set(SpriteCommon.MSGID_LOAD_SPRITE_SHEET_REQUEST, onMsgLoadSpriteSheetRequest);
+  MainUI.uiMessageMap.set(SpriteCommon.MSGID_UNLOAD_SPRITE_SHEET_REQUEST, onMsgUnloadSpriteSheetRequest);
+  MainUI.uiMessageMap.set(SpriteCommon.MSGID_DRAW_SPRITE_SHEET_FRAMES_REQUEST, onMsgDrawSpriteSheetFramesRequest);
+  MainUI.uiMessageMap.set(SpriteCommon.MSGID_GET_SPRITE_SHEET_FRAME_WIDTH_REQUEST, onMsgGetSpriteSheetFrameWidthRequest);
+  MainUI.uiMessageMap.set(SpriteCommon.MSGID_GET_SPRITE_SHEET_FRAME_HEIGHT_REQUEST, onMsgGetSpriteSheetFrameHeightRequest);
 }
 
 function cleanupSpriteSheets()
@@ -49,13 +54,13 @@ function cleanupSpriteSheets()
 function sendSpriteSheetRequestResult(resultVal, errorMsg = "")
 //
 {
-  progWorker.postMessage({msgId: MSGID_SPRITE_SHEET_REQUEST_RESULT, msgData: {resultVal: resultVal, errorMsg: errorMsg}});
+  MainUI.progWorker.postMessage({msgId: SpriteCommon.MSGID_SPRITE_SHEET_REQUEST_RESULT, msgData: {resultVal: resultVal, errorMsg: errorMsg}});
 }
 
 function spriteSheet_onLoad(event)
 //
 {
-  if(!isRunning)
+  if(!MainUI.isRunning)
     return;
 
   this.removeEventListener("load", spriteSheet_onLoad);
@@ -69,7 +74,7 @@ function spriteSheet_onLoad(event)
 function spriteSheet_onError(event)
 //
 {
-  if(!isRunning)
+  if(!MainUI.isRunning)
     return;
 
   this.removeEventListener("load", spriteSheet_onLoad);
@@ -92,7 +97,7 @@ function onMsgSpriteSheetRefRequest(msgData)
   if(spriteSheets.has(msgData.sheetName))
   {
     sheet = spriteSheets.get(msgData.sheetName);
-    progWorker.postMessage({msgId: MSGID_SPRITE_SHEET_REF_REQUEST_RESULT,
+    MainUI.progWorker.postMessage({msgId: SpriteCommon.MSGID_SPRITE_SHEET_REF_REQUEST_RESULT,
                             msgData: {errorMsg: "",
                                       spriteName: msgData.spriteName,
                                       frameWidth: sheet.frameWidth,
@@ -100,7 +105,7 @@ function onMsgSpriteSheetRefRequest(msgData)
                                       frameCount: sheet.frameOffsets.length}});
   }
   else
-    progWorker.postMessage({msgId: MSGID_SPRITE_SHEET_REF_REQUEST_RESULT,
+    MainUI.progWorker.postMessage({msgId: SpriteCommon.MSGID_SPRITE_SHEET_REF_REQUEST_RESULT,
                             msgData: {errorMsg: "Sprite sheet '" + msgData.sheetName + "' has not been loaded."}});
 }
 
@@ -168,7 +173,7 @@ function onMsgDrawSpriteSheetFramesRequest(msgData)
       clipWidth = sheet.frameWidth;
       clipHeight = sheet.frameHeight;
 
-      activeContext.drawImage(sheet.sheetImage, clipX, clipY, clipWidth, clipHeight, drawX, drawY, drawWidth, drawHeight);
+      CanvasUI.activeContext.drawImage(sheet.sheetImage, clipX, clipY, clipWidth, clipHeight, drawX, drawY, drawWidth, drawHeight);
     }
     else
     {

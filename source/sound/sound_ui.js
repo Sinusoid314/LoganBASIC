@@ -1,5 +1,5 @@
 import * as MainUI from "../main_ui.js";
-import * as SoundCommon from "./sound_ui.js";
+import * as SoundCommon from "./sound_common.js";
 
 
 var sounds = new Map();

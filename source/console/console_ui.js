@@ -1,5 +1,5 @@
 import * as MainUI from "../main_ui.js";
-import * as ConsoleCommon from "./console_ui.js";
+import * as ConsoleCommon from "./console_common.js";
 
 
 //Console CSS
