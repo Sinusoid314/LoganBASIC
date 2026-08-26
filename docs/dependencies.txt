@@ -96,12 +96,7 @@ IMPORTS
                   -> SpriteCommon.MSGID_*
 
 
-( ) main_ui -> MainCommon.MSGID_*
-                         .MAIN_MODE_*
-                         .lbVersion
-                         .mainMode
-                         .setMainMode()
-            -> EditorUI.aboutDialog
+(X) main_ui -> EditorUI.aboutDialog
                        .codeHasChanged
                        .toggleUpdatesBtnHighlighted()
                        .readCodeFileFromLocalStorage()
@@ -109,6 +104,11 @@ IMPORTS
                        .loadCodeFileIntoEditor()
                        .beginFileOpAwait()
                        .endFileOpAwait()
+            -> MainCommon.MSGID_*
+                         .MAIN_MODE_*
+                         .lbVersion
+                         .mainMode
+                         .setMainMode()
 
 ( ) canvas_ui -> MainUI.mainDiv
                        .isRunning
@@ -240,7 +240,7 @@ EXPORTS
       - 
 
 
-( ) main_ui
+(X) main_ui
       - PROG_EXIT_STATUS_*
       - mainDiv
       - statusBar

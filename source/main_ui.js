@@ -1,3 +1,62 @@
+import * as EditorUI from "./editor/editor_ui.js";
+import * as MainCommon from "./main_ui.js";
+
+
+export const PROG_EXIT_STATUS_SUCCESS = 1;
+export const PROG_EXIT_STATUS_ERROR = 2;
+export const PROG_EXIT_STATUS_TERMINATED = 3;
+
+export const mainDiv = document.getElementById("mainDiv");
+export const statusBar = document.getElementById("statusBar");
+
+export var isRunning = false;
+export const uiOnProgStartHandlers = [];
+export const uiOnProgEndHandlers = [];
+export const uiOnMainResetHandlers = [];
+export var progWorker = null;
+export const uiMessageMap = new Map();
+
+export function resetMain()
+//
+{
+  statusBar.innerText = "Ready.";
+  
+  uiOnMainResetHandlers.forEach(handler => handler());
+}
+
+export function startProg(source)
+//Signal the worker thread to start the program
+{
+  if(isRunning)
+    return;
+
+  uiOnProgStartHandlers.forEach(handler => handler());
+
+  progWorker.postMessage({msgId: MainCommon.MSGID_START_PROG, msgData: {source: source}});
+
+  isRunning = true;
+}
+
+export function endProg(exitMessage, exitStatus, error)
+//Set the UI to reflect that the program has stopped running
+{
+  if(!isRunning)
+    return;
+
+  statusBar.innerText = exitMessage;
+
+  if(exitStatus == PROG_EXIT_STATUS_TERMINATED)
+  {
+    progWorker.terminate();
+    initWorker();
+  }
+
+  uiOnProgEndHandlers.forEach(handler => handler(exitStatus, error));
+
+  isRunning = false;
+}
+
+
 //Main CSS
 document.head.appendChild(document.createElement('style')).textContent =
 `
@@ -153,20 +212,7 @@ document.body.insertAdjacentHTML("afterbegin",
 `);
 
 
-const PROG_EXIT_STATUS_SUCCESS = 1;
-const PROG_EXIT_STATUS_ERROR = 2;
-const PROG_EXIT_STATUS_TERMINATED = 3;
-
-const versionHTML = `<div id="version">Version ` + lbVersion;
-var mainDiv = document.getElementById("mainDiv");
-var statusBar = document.getElementById("statusBar");
-
-var isRunning = false;
-var uiOnProgStartHandlers = [];
-var uiOnProgEndHandlers = [];
-var uiOnMainResetHandlers = [];
-var progWorker = null;
-var uiMessageMap = new Map();
+const versionHTML = `<div id="version">Version ` + MainCommon.lbVersion;
 var paramFileURL = "";
 var autoRun = false;
 const WELCOME_HAS_BEEN_SHOWN_KEY = "welcomeHasBeenShown";
@@ -189,14 +235,14 @@ function readURLParams()
   // if(urlParams.has("run"))
   // {
   //   paramFileURL = urlParams.get("run");
-  //   mainMode = MAIN_MODE_DEPLOY;
+  //   MainCommon.setMainMode(MainCommon.MAIN_MODE_DEPLOY);
   //   return;
   // }
 
   if(urlParams.has("open"))
   {
     paramFileURL = urlParams.get("open");
-    setMainMode(MAIN_MODE_EDIT);
+    MainCommon.setMainMode(MainCommon.MAIN_MODE_EDIT);
 
     if(urlParams.has("autoRun"))
       autoRun = (urlParams.get("autoRun").toLowerCase() == "true");
@@ -222,9 +268,9 @@ function checkIfVersionHasChanged()
 {
   var lastVisitedVersion = window.localStorage.getItem(LAST_VISITED_VERSION_KEY);
 
-  if(!lastVisitedVersion || lastVisitedVersion != lbVersion)
+  if(!lastVisitedVersion || lastVisitedVersion != MainCommon.lbVersion)
   {
-    window.localStorage.setItem(LAST_VISITED_VERSION_KEY, lbVersion);
+    window.localStorage.setItem(LAST_VISITED_VERSION_KEY, MainCommon.lbVersion);
     return true;
   }
 
@@ -234,15 +280,15 @@ function checkIfVersionHasChanged()
 function initWorker()
 //Terminate and restart the worker thread
 {
-  progWorker = new Worker('./source/main_worker.js?mode=' + mainMode);
+  progWorker = new Worker('./source/main_worker.js?mode=' + MainCommon.mainMode);
   progWorker.onmessage = mainUI_onMessage;
 }
 
 function setMainUIEvents()
 //
 {
-  uiMessageMap.set(MSGID_PROG_DONE, onMsgProgDone);
-  uiMessageMap.set(MSGID_STATUS_CHANGE, onMsgStatusChange);
+  uiMessageMap.set(MainCommon.MSGID_PROG_DONE, onMsgProgDone);
+  uiMessageMap.set(MainCommon.MSGID_STATUS_CHANGE, onMsgStatusChange);
   
   window.addEventListener("load", window_onLoad);
   window.addEventListener("beforeunload", window_onBeforeUnload);
@@ -251,7 +297,7 @@ function setMainUIEvents()
 function loadUIComponents()
 //
 {
-  if(mainMode == MAIN_MODE_EDIT)
+  if(MainCommon.mainMode == MainCommon.MAIN_MODE_EDIT)
   {
     loadDebugUI();
     loadEditorUI();
@@ -334,64 +380,24 @@ function hideToggles()
     toggles[i].style.display = "none";
 }
 
-function resetMain()
-//
-{
-  statusBar.innerText = "Ready.";
-  
-  uiOnMainResetHandlers.forEach(handler => handler());
-}
-
-function startProg(source)
-//Signal the worker thread to start the program
-{
-  if(isRunning)
-    return;
-
-  uiOnProgStartHandlers.forEach(handler => handler());
-
-  progWorker.postMessage({msgId: MSGID_START_PROG, msgData: {source: source}});
-
-  isRunning = true;
-}
-
-function endProg(exitMessage, exitStatus, error)
-//Set the UI to reflect that the program has stopped running
-{
-  if(!isRunning)
-    return;
-
-  statusBar.innerText = exitMessage;
-
-  if(exitStatus == PROG_EXIT_STATUS_TERMINATED)
-  {
-    progWorker.terminate();
-    initWorker();
-  }
-
-  uiOnProgEndHandlers.forEach(handler => handler(exitStatus, error));
-
-  isRunning = false;
-}
-
 async function window_onLoad(event)
 //
 {
   var codeFile;
 
-  if(mainMode == MAIN_MODE_EDIT)
+  if(MainCommon.mainMode == MainCommon.MAIN_MODE_EDIT)
   {
     setToggleEvents();
     mainDiv.insertAdjacentHTML("beforeend", versionHTML);
     
     if(!checkIfWelcomeHasBeenShown() && !autoRun)
     {
-      aboutDialog.showModal();
+      EditorUI.aboutDialog.showModal();
     }
     else
     {
       if(checkIfVersionHasChanged() && !autoRun)
-        toggleUpdatesBtnHighlighted();
+        EditorUI.toggleUpdatesBtnHighlighted();
     }
 
     if(paramFileURL == "")
@@ -399,25 +405,25 @@ async function window_onLoad(event)
 
     try
     {
-      beginFileOpAwait(`Loading '${paramFileURL}'...`);
+      EditorUI.beginFileOpAwait(`Loading '${paramFileURL}'...`);
 
-      codeFile = await ((paramFileURL == "local") ? readCodeFileFromLocalStorage() : readCodeFileFromURL(paramFileURL));
-      loadCodeFileIntoEditor(codeFile);
+      codeFile = await ((paramFileURL == "local") ? EditorUI.readCodeFileFromLocalStorage() : EditorUI.readCodeFileFromURL(paramFileURL));
+      EditorUI.loadCodeFileIntoEditor(codeFile);
 
-      endFileOpAwait("File loaded successfully.");
+      EditorUI.endFileOpAwait("File loaded successfully.");
 
       if(autoRun)
         startProg(codeFile.data);
     }
     catch(errorMessage)
     {
-      endFileOpAwait(errorMessage);
+      EditorUI.endFileOpAwait(errorMessage);
     }
 
     return;
   }
 
-  // if(mainMode == MAIN_MODE_DEPLOY)
+  // if(MainCommon.mainMode == MainCommon.MAIN_MODE_DEPLOY)
   // {
   //   hideToggles();
   //   return;
@@ -427,7 +433,7 @@ async function window_onLoad(event)
 function window_onBeforeUnload(event)
 //
 {
-  if(codeHasChanged)
+  if(EditorUI.codeHasChanged)
   {
     event.preventDefault();
     event.returnValue = "";
