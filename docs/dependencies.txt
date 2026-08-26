@@ -110,7 +110,7 @@ IMPORTS
                          .mainMode
                          .setMainMode()
 
-( ) canvas_ui -> MainUI.mainDiv
+(X) canvas_ui -> MainUI.mainDiv
                        .isRunning
                        .uiOnProgStartHandlers
                        .uiOnProgEndHandlers
@@ -254,7 +254,7 @@ EXPORTS
       - startProg()
       - endProg()
 
-( ) canvas_ui
+(X) canvas_ui
       - activeContext
 
 ( ) console_ui
