@@ -1,3 +1,7 @@
+import * as MainUI from "../main_ui.js";
+import * as ConsoleCommon from "./console_ui.js";
+
+
 //Console CSS
 document.head.appendChild(document.createElement('style')).textContent =
 `
@@ -23,7 +27,7 @@ document.head.appendChild(document.createElement('style')).textContent =
 
 
 //Console HTML
-mainDiv.insertAdjacentHTML("beforeend",
+MainUI.mainDiv.insertAdjacentHTML("beforeend",
 `
 <div id="consoleDiv">
   <label id="consoleToggle" class="toggle-open">Console</label>
@@ -52,15 +56,15 @@ function setConsoleUIEvents()
   consoleInput.addEventListener("keydown", consoleInput_onKeydown);
   consoleInputBtn.addEventListener("click", consoleInputBtn_onClick);
   
-  uiOnMainResetHandlers.push(consoleUI_onMainReset);
-  uiOnProgStartHandlers.push(consoleUI_onProgStart);
-  uiOnProgEndHandlers.push(consoleUI_onProgEnd);
+  MainUI.uiOnMainResetHandlers.push(consoleUI_onMainReset);
+  MainUI.uiOnProgStartHandlers.push(consoleUI_onProgStart);
+  MainUI.uiOnProgEndHandlers.push(consoleUI_onProgEnd);
   
-  uiMessageMap.set(MSGID_SHOW_CONSOLE, onMsgShowConsole);
-  uiMessageMap.set(MSGID_HIDE_CONSOLE, onMsgHideConsole);
-  uiMessageMap.set(MSGID_PRINT, onMsgPrint);
-  uiMessageMap.set(MSGID_INPUT_REQUEST, onMsgInputRequest);
-  uiMessageMap.set(MSGID_CLEAR_CONSOLE, onMsgClearConsole);
+  MainUI.uiMessageMap.set(ConsoleCommon.MSGID_SHOW_CONSOLE, onMsgShowConsole);
+  MainUI.uiMessageMap.set(ConsoleCommon.MSGID_HIDE_CONSOLE, onMsgHideConsole);
+  MainUI.uiMessageMap.set(ConsoleCommon.MSGID_PRINT, onMsgPrint);
+  MainUI.uiMessageMap.set(ConsoleCommon.MSGID_INPUT_REQUEST, onMsgInputRequest);
+  MainUI.uiMessageMap.set(ConsoleCommon.MSGID_CLEAR_CONSOLE, onMsgClearConsole);
 }
 
 function clearConsoleOutput()
@@ -80,14 +84,14 @@ function enterConsoleInput()
 //
 {
   consoleOutput.value += consoleInput.value + '\n';
-  progWorker.postMessage({msgId: MSGID_INPUT_RESULT, msgData: {inputVal: consoleInput.value}});
+  MainUI.progWorker.postMessage({msgId: ConsoleCommon.MSGID_INPUT_RESULT, msgData: {inputVal: consoleInput.value}});
   closeConsoleInput();
 }
 
 function consoleInput_onKeydown(event)
 //Process enter key for the console input
 {
-  if(!isRunning)
+  if(!MainUI.isRunning)
     return;
 
   if(event.key === "Enter")
@@ -100,7 +104,7 @@ function consoleInput_onKeydown(event)
 function consoleInputBtn_onClick(event)
 //Process the console input button click
 {
-  if(!isRunning)
+  if(!MainUI.isRunning)
     return;
 
   enterConsoleInput();

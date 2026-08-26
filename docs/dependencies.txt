@@ -119,7 +119,7 @@ IMPORTS
                        .uiMessageMap
               -> CanvasCommon.MSGID_*
 
-( ) console_ui -> MainUI.mainDiv
+(X) console_ui -> MainUI.mainDiv
                         .isRunning
                         .uiOnProgStartHandlers
                         .uiOnProgEndHandlers
@@ -257,7 +257,7 @@ EXPORTS
 (X) canvas_ui
       - activeContext
 
-( ) console_ui
+(X) console_ui
       - 
 
 ( ) debug_ui
