@@ -1,3 +1,7 @@
+import * as MainUI from "../main_ui.js";
+import * as SoundCommon from "./sound_ui.js";
+
+
 var sounds = new Map();
 
 setSoundUIEvents();
@@ -6,17 +10,17 @@ setSoundUIEvents();
 function setSoundUIEvents()
 //
 {
-  uiOnProgEndHandlers.push(soundUI_onProgEnd);
+  MainUI.uiOnProgEndHandlers.push(soundUI_onProgEnd);
 
-  uiMessageMap.set(MSGID_LOAD_SOUND_REQUEST, onMsgLoadSoundRequest);
-  uiMessageMap.set(MSGID_UNLOAD_SOUND_REQUEST, onMsgUnloadSoundRequest);
-  uiMessageMap.set(MSGID_PLAY_SOUND_REQUEST, onMsgPlaySoundRequest);
-  uiMessageMap.set(MSGID_PAUSE_SOUND_REQUEST, onMsgPauseSoundRequest);
-  uiMessageMap.set(MSGID_STOP_SOUND_REQUEST, onMsgStopSoundRequest);
-  uiMessageMap.set(MSGID_GET_SOUND_LEN_REQUEST, onMsgGetSoundLenRequest);
-  uiMessageMap.set(MSGID_GET_SOUND_POS_REQUEST, onMsgGetSoundPosRequest);
-  uiMessageMap.set(MSGID_SET_SOUND_POS_REQUEST, onMsgSetSoundPosRequest);
-  uiMessageMap.set(MSGID_LOOP_SOUND_REQUEST, onMsgLoopSoundRequest);
+  MainUI.uiMessageMap.set(SoundCommon.MSGID_LOAD_SOUND_REQUEST, onMsgLoadSoundRequest);
+  MainUI.uiMessageMap.set(SoundCommon.MSGID_UNLOAD_SOUND_REQUEST, onMsgUnloadSoundRequest);
+  MainUI.uiMessageMap.set(SoundCommon.MSGID_PLAY_SOUND_REQUEST, onMsgPlaySoundRequest);
+  MainUI.uiMessageMap.set(SoundCommon.MSGID_PAUSE_SOUND_REQUEST, onMsgPauseSoundRequest);
+  MainUI.uiMessageMap.set(SoundCommon.MSGID_STOP_SOUND_REQUEST, onMsgStopSoundRequest);
+  MainUI.uiMessageMap.set(SoundCommon.MSGID_GET_SOUND_LEN_REQUEST, onMsgGetSoundLenRequest);
+  MainUI.uiMessageMap.set(SoundCommon.MSGID_GET_SOUND_POS_REQUEST, onMsgGetSoundPosRequest);
+  MainUI.uiMessageMap.set(SoundCommon.MSGID_SET_SOUND_POS_REQUEST, onMsgSetSoundPosRequest);
+  MainUI.uiMessageMap.set(SoundCommon.MSGID_LOOP_SOUND_REQUEST, onMsgLoopSoundRequest);
 }
 
 function cleanupSounds()
@@ -31,13 +35,13 @@ function cleanupSounds()
 function sendSoundRequestResult(resultVal, errorMsg = "")
 //
 {
-  progWorker.postMessage({msgId: MSGID_SOUND_REQUEST_RESULT, msgData: {resultVal: resultVal, errorMsg: errorMsg}});
+  MainUI.progWorker.postMessage({msgId: SoundCommon.MSGID_SOUND_REQUEST_RESULT, msgData: {resultVal: resultVal, errorMsg: errorMsg}});
 }
 
 function sound_onLoad(event)
 //
 {
-  if(!isRunning)
+  if(!MainUI.isRunning)
     return;
 
   event.target.removeEventListener("canplaythrough", sound_onLoad);
@@ -51,7 +55,7 @@ function sound_onLoad(event)
 function sound_onError(event)
 //
 {
-  if(!isRunning)
+  if(!MainUI.isRunning)
     return;
 
   event.target.removeEventListener("canplaythrough", sound_onLoad);
