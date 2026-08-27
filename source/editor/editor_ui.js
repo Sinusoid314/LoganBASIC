@@ -1,3 +1,112 @@
+import * as MainUI from "../main_ui.js";
+import * as DebugUI from "../debug/debug_ui.js";
+import * as MainCommon from "../main_common.js";
+
+
+export const debugToggleBtn = document.getElementById("debugToggleBtn");
+export const aboutDialog = document.getElementById("aboutDialog");
+export var codeHasChanged = false;
+
+export function toggleUpdatesBtnHighlighted()
+//
+{
+  if(updatesBtn.classList.toggle("buttonBlink"))
+    updatesBtn.querySelector("span").textContent = "See what's new!";
+  else
+    updatesBtn.querySelector("span").textContent = "Updates";
+}
+
+export function selectEditorLine(selLine)
+//Select the given editor line number
+{
+  var lines = editorCode.value.split("\n");
+  var startPos = 0, endPos = 0;
+
+  if((selLine < 1) || (selLine > lines.length))
+  {
+    editorCode.focus();
+    editorCode.setSelectionRange(0, 0);
+    return;
+  }
+
+  selLine--;
+
+  for(var currLine = 0; currLine < selLine; currLine++)
+    startPos += lines[currLine].length + 1;
+
+  endPos = startPos + lines[selLine].length;
+
+  editorCode.focus();
+  editorCode.setSelectionRange(startPos, endPos);
+  editorCode.scrollTop = ((editorCode.scrollHeight / lines.length) * selLine) - (editorCode.clientHeight / 2);
+}
+
+export async function readCodeFileFromLocalStorage()
+//
+{
+  const fileName = window.localStorage.getItem("fileName");
+  const fileData = window.localStorage.getItem("fileData");
+
+  if(fileData)
+    return new CodeFile(fileName, fileData);
+  else
+    throw "Failed to read local storage data.";
+}
+
+export async function readCodeFileFromURL(fileURL)
+//Read code file from local storage or a given URL
+{
+  try
+  {
+    const fetchResponse = await fetch(fileURL);
+
+    if(!fetchResponse.ok)
+      throw fetchResponse.statusText;
+
+    const fileData = await fetchResponse.text();
+    const fileName = fileURL.split('/').pop();
+
+    return new CodeFile(fileName, fileData);
+  }
+  catch(error)
+  {
+    throw `Failed to load '${fileURL}': ${error}`;
+  }
+}
+
+export function loadCodeFileIntoEditor(codeFile)
+//Load the code file's name and contents into the editor
+{
+  if(codeFile.name != "") codeFileName = codeFile.name;
+  codeFileHandle = codeFile.handle;
+  editorCode.value = codeFile.data;
+
+  updateEditorGutter();
+
+  codeFileNameDisplay.innerText = codeFileName;
+}
+
+export function beginFileOpAwait(statusMessage)
+//
+{
+  newBtn.disabled = true;
+  openBtn.disabled = true;
+  saveBtn.disabled = true;
+  MainUI.statusBar.innerText = statusMessage;
+  fileOpInProgress = true;
+}
+
+export function endFileOpAwait(statusMessage)
+//
+{
+  newBtn.disabled = false;
+  openBtn.disabled = false;
+  saveBtn.disabled = false;
+  MainUI.statusBar.innerText = statusMessage;
+  fileOpInProgress = false;
+}
+
+
 //Editor CSS
 document.head.appendChild(document.createElement('style')).textContent =
 `
@@ -128,7 +237,7 @@ document.head.appendChild(document.createElement('style')).textContent =
 
 
 //Editor HTML
-mainDiv.insertAdjacentHTML("afterbegin",
+MainUI.mainDiv.insertAdjacentHTML("afterbegin",
 `
 <div id="menuBar" class="bar">
   <button id="newBtn"><img src="./assests/new.png" alt="New"><span>New</span></button>
@@ -220,10 +329,7 @@ var editorCode = document.getElementById("editorCode");
 var editorGutter = document.getElementById("editorGutter");
 var runBtn = document.getElementById("runBtn");
 var stopBtn = document.getElementById("stopBtn");
-var debugToggleBtn = document.getElementById("debugToggleBtn");
-var aboutDialog = document.getElementById("aboutDialog");
 var prevLineCount = 1;
-var codeHasChanged = false;
 var codeFileName = DEFAULT_FILE_NAME;
 var codeFileHandle = null;
 var fileOpInProgress = false;
@@ -251,9 +357,9 @@ function setEditorUIEvents()
   stopBtn.addEventListener("click", stopBtn_onClick);
   debugToggleBtn.addEventListener("click", debugToggleBtn_onClick);
   
-  uiOnMainResetHandlers.push(editorUI_onMainReset);
-  uiOnProgStartHandlers.push(editorUI_onProgStart);
-  uiOnProgEndHandlers.push(editorUI_onProgEnd);
+  MainUI.uiOnMainResetHandlers.push(editorUI_onMainReset);
+  MainUI.uiOnProgStartHandlers.push(editorUI_onProgStart);
+  MainUI.uiOnProgEndHandlers.push(editorUI_onProgEnd);
 }
 
 function switchEditorMode()
@@ -265,15 +371,6 @@ function switchEditorMode()
   editorCode.readOnly = !editorCode.readOnly;
   runBtn.disabled = !runBtn.disabled;
   stopBtn.disabled = !stopBtn.disabled;
-}
-
-function toggleUpdatesBtnHighlighted()
-//
-{
-  if(updatesBtn.classList.toggle("buttonBlink"))
-    updatesBtn.querySelector("span").textContent = "See what's new!";
-  else
-    updatesBtn.querySelector("span").textContent = "Updates";
 }
 
 function updateEditorGutter()
@@ -318,68 +415,10 @@ function removeEditorGutterItem()
   if(editorGutterItem.classList.contains("editorBreakpoint"))
   {
     lineNum = Array.from(document.querySelectorAll(".editorGutterItem")).length;
-    debugRemoveBreakpoint(lineNum, mainSourceName);
+    DebugUI.debugRemoveBreakpoint(lineNum, MainCommon.mainSourceName);
   }
 
   editorGutter.removeChild(editorGutterItem);
-}
-
-function selectEditorLine(selLine)
-//Select the given editor line number
-{
-  var lines = editorCode.value.split("\n");
-  var startPos = 0, endPos = 0;
-
-  if((selLine < 1) || (selLine > lines.length))
-  {
-    editorCode.focus();
-    editorCode.setSelectionRange(0, 0);
-    return;
-  }
-
-  selLine--;
-
-  for(var currLine = 0; currLine < selLine; currLine++)
-    startPos += lines[currLine].length + 1;
-
-  endPos = startPos + lines[selLine].length;
-
-  editorCode.focus();
-  editorCode.setSelectionRange(startPos, endPos);
-  editorCode.scrollTop = ((editorCode.scrollHeight / lines.length) * selLine) - (editorCode.clientHeight / 2);
-}
-
-async function readCodeFileFromLocalStorage()
-//
-{
-  const fileName = window.localStorage.getItem("fileName");
-  const fileData = window.localStorage.getItem("fileData");
-
-  if(fileData)
-    return new CodeFile(fileName, fileData);
-  else
-    throw "Failed to read local storage data.";
-}
-
-async function readCodeFileFromURL(fileURL)
-//Read code file from local storage or a given URL
-{
-  try
-  {
-    const fetchResponse = await fetch(fileURL);
-
-    if(!fetchResponse.ok)
-      throw fetchResponse.statusText;
-
-    const fileData = await fetchResponse.text();
-    const fileName = fileURL.split('/').pop();
-
-    return new CodeFile(fileName, fileData);
-  }
-  catch(error)
-  {
-    throw `Failed to load '${fileURL}': ${error}`;
-  }
 }
 
 async function readCodeFileFromInput()
@@ -434,18 +473,6 @@ async function readCodeFileFromHandle()
   }
 }
 
-function loadCodeFileIntoEditor(codeFile)
-//Load the code file's name and contents into the editor
-{
-  if(codeFile.name != "") codeFileName = codeFile.name;
-  codeFileHandle = codeFile.handle;
-  editorCode.value = codeFile.data;
-
-  updateEditorGutter();
-
-  codeFileNameDisplay.innerText = codeFileName;
-}
-
 async function saveCodeFileFromAnchor()
 //Save code file from an Anchor element
 {
@@ -487,30 +514,10 @@ async function saveCodeFileFromHandle()
   }
 }
 
-function beginFileOpAwait(statusMessage)
-//
-{
-  newBtn.disabled = true;
-  openBtn.disabled = true;
-  saveBtn.disabled = true;
-  statusBar.innerText = statusMessage;
-  fileOpInProgress = true;
-}
-
-function endFileOpAwait(statusMessage)
-//
-{
-  newBtn.disabled = false;
-  openBtn.disabled = false;
-  saveBtn.disabled = false;
-  statusBar.innerText = statusMessage;
-  fileOpInProgress = false;
-}
-
 async function newBtn_onClick(event)
 //Open a blank editor in a new tab
 {
-  if(isRunning || fileOpInProgress)
+  if(MainUI.isRunning || fileOpInProgress)
     return;
 
   if(codeHasChanged)
@@ -519,13 +526,13 @@ async function newBtn_onClick(event)
       return;
   }
   
-  resetMain();
+  MainUI.resetMain();
 }
 
 async function openBtn_onClick(event)
 //Open a code file from disk
 {
-  if(isRunning || fileOpInProgress)
+  if(MainUI.isRunning || fileOpInProgress)
     return;
 
   if(codeHasChanged)
@@ -539,7 +546,7 @@ async function openBtn_onClick(event)
     beginFileOpAwait("Opening file...");
 
     const codeFile = await (("showOpenFilePicker" in window) ? readCodeFileFromHandle() : readCodeFileFromInput());
-    resetMain();
+    MainUI.resetMain();
     loadCodeFileIntoEditor(codeFile);
 
     endFileOpAwait("File opened successfully.");
@@ -553,7 +560,7 @@ async function openBtn_onClick(event)
 async function saveBtn_onClick(event)
 //Save the current code to disk
 {
-  if(isRunning || fileOpInProgress)
+  if(MainUI.isRunning || fileOpInProgress)
     return;
 
   try
@@ -618,9 +625,9 @@ function editorGutterItem_onClick(event)
   var lineNum = Array.from(document.querySelectorAll(".editorGutterItem")).indexOf(event.target) + 1;
 
   if(event.target.classList.contains("editorBreakpoint"))
-    debugRemoveBreakpoint(lineNum, mainSourceName);
+    DebugUI.debugRemoveBreakpoint(lineNum, MainCommon.mainSourceName);
   else
-    debugAddBreakpoint(lineNum, mainSourceName);
+    DebugUI.debugAddBreakpoint(lineNum, MainCommon.mainSourceName);
 
   event.target.classList.toggle("editorBreakpoint");
 }
@@ -628,19 +635,19 @@ function editorGutterItem_onClick(event)
 function runBtn_onClick(event)
 //
 { 
-  startProg(editorCode.value);
+  MainUI.startProg(editorCode.value);
 }
 
 function stopBtn_onClick(event)
 //
 {
-  endProg("Program stopped.", PROG_EXIT_STATUS_TERMINATED, null);
+  MainUI.endProg("Program stopped.", MainUI.PROG_EXIT_STATUS_TERMINATED, null);
 }
 
 function debugToggleBtn_onClick(event)
 //
 {
-  debugToggleDiv();
+  DebugUI.debugToggleDiv();
 }
 
 function editorUI_onMainReset()
@@ -665,9 +672,9 @@ function editorUI_onProgEnd(exitStatus, error)
 {
   switchEditorMode();
 
-  if(exitStatus == PROG_EXIT_STATUS_ERROR)
+  if(exitStatus == MainUI.PROG_EXIT_STATUS_ERROR)
   {
-    if(error.sourceName == mainSourceName)
+    if(error.sourceName == MainCommon.mainSourceName)
       selectEditorLine(error.sourceLineNum);
   }
 }

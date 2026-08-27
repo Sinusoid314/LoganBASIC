@@ -145,7 +145,7 @@ IMPORTS
                            .DEBUG_UI_STATUS_*
                            .DebugBreakpoint
 
-( ) editor_ui -> MainUI.PROG_EXIT_STATUS_*
+(X) editor_ui -> MainUI.PROG_EXIT_STATUS_*
                        .mainDiv
                        .statusBar
                        .isRunning
@@ -265,7 +265,7 @@ EXPORTS
       - debugRemoveBreakpoint()
       - debugToggleDiv()
 
-( ) editor_ui
+(X) editor_ui
       - debugToggleBtn
       - aboutDialog
       - codeHasChanged
