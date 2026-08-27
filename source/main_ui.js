@@ -212,6 +212,7 @@ document.body.insertAdjacentHTML("afterbegin",
 `);
 
 
+var DebugUI, EditorUI, ConsoleUI, CanvasUI, SoundUI, SpriteUI;
 const versionHTML = `<div id="version">Version ` + MainCommon.lbVersion;
 var paramFileURL = "";
 var autoRun = false;
@@ -224,7 +225,7 @@ initWorker();
 
 setMainUIEvents();
 
-loadUIComponents();
+await loadUIComponents();
 
 
 function readURLParams()
@@ -294,72 +295,19 @@ function setMainUIEvents()
   window.addEventListener("beforeunload", window_onBeforeUnload);
 }
 
-function loadUIComponents()
+async function loadUIComponents()
 //
 {
   if(MainCommon.mainMode == MainCommon.MAIN_MODE_EDIT)
   {
-    loadDebugUI();
-    loadEditorUI();
+    DebugUI = await import("./source/debug/debug_ui.js");
+    EditorUI = await import("./source/editor/editor_ui.js");
   }
 
-  loadConsoleUI();
-  loadCanvasUI();
-  loadSoundUI();
-  loadSpriteUI();
-}
-
-function loadDebugUI()
-//
-{
-  loadScript("./source/core/objects.js");
-  loadScript("./source/debug/debug_common.js");
-  loadScript("./source/debug/debug_ui.js");
-}
-
-function loadEditorUI()
-//
-{
-  loadScript("./source/editor/editor_ui.js");
-}
-
-function loadConsoleUI()
-//
-{
-  loadScript("./source/console/console_common.js");
-  loadScript("./source/console/console_ui.js");
-}
-
-function loadCanvasUI()
-//
-{
-  loadScript("./source/canvas/canvas_common.js");
-  loadScript("./source/canvas/canvas_ui.js");
-}
-
-function loadSoundUI()
-//
-{
-  loadScript("./source/sound/sound_common.js");
-  loadScript("./source/sound/sound_ui.js");
-}
-
-function loadSpriteUI()
-//
-{
-  loadScript("./source/sprite/sprite_common.js");
-  loadScript("./source/sprite/sprite_ui.js");
-}
-
-function loadScript(fileURL)
-//
-{
-  var script = document.createElement('script');
-
-  script.type = "text/javascript";
-  script.async = false;
-  script.src = fileURL;
-  document.head.appendChild(script);
+  ConsoleUI = await import("./source/console/console_ui.js");
+  CanvasUI = await import("./source/canvas/canvas_ui.js");
+  SoundUI = await import("./source/sound/sound_ui.js");
+  SpriteUI = await import("./source/sprite/sprite_ui.js");
 }
 
 function setToggleEvents()
@@ -433,10 +381,13 @@ async function window_onLoad(event)
 function window_onBeforeUnload(event)
 //
 {
-  if(EditorUI.codeHasChanged)
+  if(MainCommon.mainMode == MainCommon.MAIN_MODE_EDIT)
   {
-    event.preventDefault();
-    event.returnValue = "";
+    if(EditorUI.codeHasChanged)
+    {
+      event.preventDefault();
+      event.returnValue = "";
+    }
   }
 }
 
