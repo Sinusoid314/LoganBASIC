@@ -128,9 +128,8 @@ IMPORTS
                         .uiMessageMap
                -> ConsoleCommon.MSGID_*
 
-( ) debug_ui -> Objects.OBJ_TYPE_*
+(X) debug_ui -> Objects.OBJ_TYPE_*
                        .ObjArray
-             -> MainCommon.mainSourceName
              -> MainUI.PROG_EXIT_STATUS_*
                       .mainDiv
                       .isRunning
@@ -139,14 +138,14 @@ IMPORTS
                       .uiOnMainResetHandlers
                       .progWorker
                       .uiMessageMap
+             -> EditorUI.debugToggleBtn
+                        .selectEditorLine()
+             -> MainCommon.mainSourceName
              -> DebugCommon.MSGID_*
                            .DEBUG_UI_STATUS_*
                            .DebugBreakpoint
-             -> EditorUI.debugToggleBtn
-                        .selectEditorLine()
 
-( ) editor_ui -> MainCommon.mainSourceName
-              -> MainUI.PROG_EXIT_STATUS_*
+( ) editor_ui -> MainUI.PROG_EXIT_STATUS_*
                        .mainDiv
                        .statusBar
                        .isRunning
@@ -159,6 +158,7 @@ IMPORTS
               -> DebugUI.debugAddBreakpoint()
                         .debugRemoveBreakpoint()
                         .debugToggleDiv()
+              -> MainCommon.mainSourceName
 
 (X) sound_ui -> MainUI.isRunning
                       .uiOnProgEndHandlers
@@ -170,8 +170,8 @@ IMPORTS
                        .uiOnProgEndHandlers
                        .progWorker
                        .uiMessageMap
-              -> SpriteCommon.MSGID_*
               -> CanvasUI.activeContext
+              -> SpriteCommon.MSGID_*
 
 
 
@@ -260,7 +260,7 @@ EXPORTS
 (X) console_ui
       - 
 
-( ) debug_ui
+(X) debug_ui
       - debugAddBreakpoint()
       - debugRemoveBreakpoint()
       - debugToggleDiv()

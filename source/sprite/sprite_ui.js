@@ -1,6 +1,6 @@
 import * as MainUI from "../main_ui.js";
-import * as SpriteCommon from "./sprite_common.js";
 import * as CanvasUI from "../canvas/canvas_ui.js";
+import * as SpriteCommon from "./sprite_common.js";
 
 
 class SpriteSheet

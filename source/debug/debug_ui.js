@@ -1,3 +1,53 @@
+import * as Objects from "../core/objects.js";
+import * as MainUI from "../main_ui.js";
+import * as EditorUI from "../editor/editor_ui.js";
+import * as MainCommon from "../main_common.js";
+import * as DebugCommon from "./debug_common.js";
+
+
+export function debugAddBreakpoint(sourceLineNum, sourceName)
+//
+{
+  var newBreakpoint = new DebugCommon.DebugBreakpoint(sourceLineNum, sourceName);
+
+  debugBreakpointBackups.push(newBreakpoint);
+  MainUI.progWorker.postMessage({msgId: DebugCommon.MSGID_DEBUG_ADD_BREAKPOINT, msgData: newBreakpoint});
+}
+
+export function debugRemoveBreakpoint(sourceLineNum, sourceName)
+//
+{
+  var breakpointIndex = debugBreakpointBackups.findIndex(breakpoint => breakpoint.matches(sourceLineNum, MainCommon.mainSourceName));
+  
+  debugBreakpointBackups.splice(breakpointIndex, 1);
+  MainUI.progWorker.postMessage({msgId: DebugCommon.MSGID_DEBUG_REMOVE_BREAKPOINT, msgData: {sourceLineNum: sourceLineNum, sourceName: sourceName}});
+}
+
+export function debugToggleDiv()
+//
+{
+  if(isDebugging)
+  { 
+    EditorUI.debugToggleBtn.style.border = "";
+	  debugDiv.style.display = "none";
+    MainUI.mainDiv.style.marginLeft = "0";
+    debugChangeUIStatus(DebugCommon.DEBUG_UI_STATUS_DISABLED);
+    
+    MainUI.progWorker.postMessage({msgId: DebugCommon.MSGID_DEBUG_DISABLE, msgData: null});
+  }
+  else
+  {
+    EditorUI.debugToggleBtn.style.border = "inset 2px";
+	  debugDiv.style.display = "block";
+    MainUI.mainDiv.style.marginLeft = debugDiv.offsetWidth + "px";
+
+    MainUI.progWorker.postMessage({msgId: DebugCommon.MSGID_DEBUG_ENABLE, msgData: null});
+  }
+
+  isDebugging = !isDebugging;
+}
+
+
 //Debugger CSS
 document.head.appendChild(document.createElement('style')).textContent =
 `
@@ -82,7 +132,7 @@ document.head.appendChild(document.createElement('style')).textContent =
 
 
 //Debugger HTML
-mainDiv.insertAdjacentHTML("beforebegin",
+MainUI.mainDiv.insertAdjacentHTML("beforebegin",
 `
 <div id="debugDiv" class="bar">
   <div id="debugResizer" class="bar"></div>
@@ -158,21 +208,21 @@ function setDebugUIEvents()
   debugSkipBtn.addEventListener("click", debugSkipBtn_onClick);
   debugCallStackList.addEventListener("change", debugCallStackList_onChange);
   
-  uiOnMainResetHandlers.push(debugUI_onMainReset);
-  uiOnProgStartHandlers.push(debugUI_onProgStart);
-  uiOnProgEndHandlers.push(debugUI_onProgEnd);
+  MainUI.uiOnMainResetHandlers.push(debugUI_onMainReset);
+  MainUI.uiOnProgStartHandlers.push(debugUI_onProgStart);
+  MainUI.uiOnProgEndHandlers.push(debugUI_onProgEnd);
   
-  uiMessageMap.set(MSGID_DEBUG_UPDATE_UI, onMsgDebugUpdateUI);
+  MainUI.uiMessageMap.set(DebugCommon.MSGID_DEBUG_UPDATE_UI, onMsgDebugUpdateUI);
 }
 
 function debugResyncWorker()
 //Reload saved breakpoints into, and reinitialize, the worker thread's debugger component
 {
   for(const breakpoint of debugBreakpointBackups)
-    progWorker.postMessage({msgId: MSGID_DEBUG_ADD_BREAKPOINT, msgData: breakpoint});
+    MainUI.progWorker.postMessage({msgId: DebugCommon.MSGID_DEBUG_ADD_BREAKPOINT, msgData: breakpoint});
 
   if(isDebugging)
-    progWorker.postMessage({msgId: MSGID_DEBUG_ENABLE, msgData: null});
+    MainUI.progWorker.postMessage({msgId: DebugCommon.MSGID_DEBUG_ENABLE, msgData: null});
 }
 
 function debugChangeUIStatus(newStatus)
@@ -181,22 +231,22 @@ function debugChangeUIStatus(newStatus)
   if(!isDebugging)
     return;
 
-  debugResumeBtn.disabled = !((newStatus == DEBUG_UI_STATUS_STEPPING) || (newStatus == DEBUG_UI_STATUS_BREAKPOINT));
+  debugResumeBtn.disabled = !((newStatus == DebugCommon.DEBUG_UI_STATUS_STEPPING) || (newStatus == DebugCommon.DEBUG_UI_STATUS_BREAKPOINT));
 
-  //debugPauseBtn.disabled = !(newStatus == DEBUG_UI_STATUS_RESUMED);
+  //debugPauseBtn.disabled = !(newStatus == DebugCommon.DEBUG_UI_STATUS_RESUMED);
   
-  debugStepIntoBtn.disabled = !((newStatus == DEBUG_UI_STATUS_RESUMED) || (newStatus == DEBUG_UI_STATUS_BREAKPOINT));
+  debugStepIntoBtn.disabled = !((newStatus == DebugCommon.DEBUG_UI_STATUS_RESUMED) || (newStatus == DebugCommon.DEBUG_UI_STATUS_BREAKPOINT));
   
   debugStepOverBtn.disabled
   = debugStepOutBtn.disabled
   = debugSkipBtn.disabled
-  = !(newStatus == DEBUG_UI_STATUS_BREAKPOINT);
+  = !(newStatus == DebugCommon.DEBUG_UI_STATUS_BREAKPOINT);
 }
 
 function debugClearDisplays()
 //
 {
-  selectEditorLine(0);
+  EditorUI.selectEditorLine(0);
   
   debugClearCallFrameList();
   debugClearLocalsList();
@@ -242,26 +292,26 @@ function debugExpandVarListItem(parentItem, itemValueMap, childList)
 
   switch(parentValue.type)
   {
-    case OBJ_TYPE_USER_FUNC:
-      selectEditorLine(parentValue.declSourceLineNum);
+    case Objects.OBJ_TYPE_USER_FUNC:
+      EditorUI.selectEditorLine(parentValue.declSourceLineNum);
       return;
 
-    case OBJ_TYPE_ARRAY:
+    case Objects.OBJ_TYPE_ARRAY:
       for(var linearIndex = 0; linearIndex < parentValue.items.length; linearIndex++)
       {
         value = parentValue.items[linearIndex];
         if(value === null) continue;
-        key = "[" + ObjArray.prototype.getIndexes.call(parentValue, linearIndex).join() + "]";
+        key = "[" + Objects.ObjArray.prototype.getIndexes.call(parentValue, linearIndex).join() + "]";
         debugAddVarListItem(key, value, childList, itemValueMap);
       }
       break;
 
-    case OBJ_TYPE_STRUCT:
+    case Objects.OBJ_TYPE_STRUCT:
       for ([key, value] of parentValue.fieldMap)
         debugAddVarListItem(key, value, childList, itemValueMap);
       break;
 
-    case OBJ_TYPE_STRUCT_DEF:
+    case Objects.OBJ_TYPE_STRUCT_DEF:
       for(const ident of parentValue.fieldIdents)
         debugAddVarListItem(null, ident, childList, itemValueMap);
       break;
@@ -323,55 +373,13 @@ function debugAddVarListItem(key, value, parentList, itemValueMap)
   listItem.appendChild(listItemText);
 }
 
-function debugAddBreakpoint(sourceLineNum, sourceName)
-//
-{
-  var newBreakpoint = new DebugBreakpoint(sourceLineNum, sourceName);
-
-  debugBreakpointBackups.push(newBreakpoint);
-  progWorker.postMessage({msgId: MSGID_DEBUG_ADD_BREAKPOINT, msgData: newBreakpoint});
-}
-
-function debugRemoveBreakpoint(sourceLineNum, sourceName)
-//
-{
-  var breakpointIndex = debugBreakpointBackups.findIndex(breakpoint => breakpoint.matches(sourceLineNum, mainSourceName));
-  
-  debugBreakpointBackups.splice(breakpointIndex, 1);
-  progWorker.postMessage({msgId: MSGID_DEBUG_REMOVE_BREAKPOINT, msgData: {sourceLineNum: sourceLineNum, sourceName: sourceName}});
-}
-
-function debugToggleDiv()
-//
-{
-  if(isDebugging)
-  { 
-    debugToggleBtn.style.border = "";
-	  debugDiv.style.display = "none";
-    mainDiv.style.marginLeft = "0";
-    debugChangeUIStatus(DEBUG_UI_STATUS_DISABLED);
-    
-    progWorker.postMessage({msgId: MSGID_DEBUG_DISABLE, msgData: null});
-  }
-  else
-  {
-    debugToggleBtn.style.border = "inset 2px";
-	  debugDiv.style.display = "block";
-    mainDiv.style.marginLeft = debugDiv.offsetWidth + "px";
-
-    progWorker.postMessage({msgId: MSGID_DEBUG_ENABLE, msgData: null});
-  }
-
-  isDebugging = !isDebugging;
-}
-
 function document_onMouseDown(event)
 {
   if(event.target != debugResizer)
     return false;
 
   debugDiv.style.pointerEvents = "none";
-  mainDiv.style.pointerEvents = "none";
+  MainUI.mainDiv.style.pointerEvents = "none";
   document.body.style.userSelect = "none";
   document.body.style.cursor = "ew-resize";
   debugIsResizing = true;
@@ -387,13 +395,13 @@ function document_onMouseMove(event)
   const scrollbarWidth = debugDiv.offsetWidth - debugDiv.clientWidth + (borderLeft + borderRight);
 
   debugDiv.style.width = event.clientX + scrollbarWidth + "px";
-  mainDiv.style.marginLeft = event.clientX + scrollbarWidth + "px";
+  MainUI.mainDiv.style.marginLeft = event.clientX + scrollbarWidth + "px";
 }
 
 function document_onMouseUp(event)
 {
   debugDiv.style.pointerEvents = "";
-  mainDiv.style.pointerEvents = "";
+  MainUI.mainDiv.style.pointerEvents = "";
   document.body.style.userSelect = "";
   document.body.style.cursor = "";
   debugIsResizing = false;
@@ -402,46 +410,46 @@ function document_onMouseUp(event)
 function debugResumeBtn_onClick(event)
 //
 {
-  if(!(isDebugging && isRunning))
+  if(!(isDebugging && MainUI.isRunning))
     return;
 
-  progWorker.postMessage({msgId: MSGID_DEBUG_RESUME, msgData: null});
+  MainUI.progWorker.postMessage({msgId: DebugCommon.MSGID_DEBUG_RESUME, msgData: null});
 }
 
 function debugStepIntoBtn_onClick(event)
 //
 {
-  if(!(isDebugging && isRunning))
+  if(!(isDebugging && MainUI.isRunning))
     return;
 
-  progWorker.postMessage({msgId: MSGID_DEBUG_STEP_INTO, msgData: null});
+  MainUI.progWorker.postMessage({msgId: DebugCommon.MSGID_DEBUG_STEP_INTO, msgData: null});
 }
 
 function debugStepOverBtn_onClick(event)
 //
 {
-  if(!(isDebugging && isRunning))
+  if(!(isDebugging && MainUI.isRunning))
     return;
 
-  progWorker.postMessage({msgId: MSGID_DEBUG_STEP_OVER, msgData: null});
+  MainUI.progWorker.postMessage({msgId: DebugCommon.MSGID_DEBUG_STEP_OVER, msgData: null});
 }
 
 function debugStepOutBtn_onClick(event)
 //
 {
-  if(!(isDebugging && isRunning))
+  if(!(isDebugging && MainUI.isRunning))
     return;
   
-  progWorker.postMessage({msgId: MSGID_DEBUG_STEP_OUT, msgData: null});
+  MainUI.progWorker.postMessage({msgId: DebugCommon.MSGID_DEBUG_STEP_OUT, msgData: null});
 }
 
 function debugSkipBtn_onClick(event)
 //
 {
-  if(!(isDebugging && isRunning))
+  if(!(isDebugging && MainUI.isRunning))
     return;
 
-  progWorker.postMessage({msgId: MSGID_DEBUG_SKIP, msgData: null});
+  MainUI.progWorker.postMessage({msgId: DebugCommon.MSGID_DEBUG_SKIP, msgData: null});
 }
 
 function debugCallStackList_onChange(event)
@@ -449,12 +457,12 @@ function debugCallStackList_onChange(event)
 {
   var callFrameIndex;
   
-  if(!(isDebugging && isRunning))
+  if(!(isDebugging && MainUI.isRunning))
     return;
 
   callFrameIndex = (event.target.length - 1) - event.target.selectedIndex;
 
-  progWorker.postMessage({msgId: MSGID_DEBUG_CALL_FRAME_INFO_REQUEST, msgData: {callFrameIndex: callFrameIndex}});
+  MainUI.progWorker.postMessage({msgId: DebugCommon.MSGID_DEBUG_CALL_FRAME_INFO_REQUEST, msgData: {callFrameIndex: callFrameIndex}});
 }
 
 function debugVarListItem_onClick(event)
@@ -485,16 +493,16 @@ function debugUI_onProgStart()
 function debugUI_onProgEnd(exitStatus, error)
 //
 {
-  debugChangeUIStatus(DEBUG_UI_STATUS_DISABLED);
+  debugChangeUIStatus(DebugCommon.DEBUG_UI_STATUS_DISABLED);
 
-  if(exitStatus == PROG_EXIT_STATUS_TERMINATED)
+  if(exitStatus == MainUI.PROG_EXIT_STATUS_TERMINATED)
     debugResyncWorker();
 }
 
 function onMsgDebugUpdateUI(msgData)
 //
 {
-  selectEditorLine(msgData.sourceLineNum);
+  EditorUI.selectEditorLine(msgData.sourceLineNum);
 
   debugChangeUIStatus(msgData.uiStatus);
 
