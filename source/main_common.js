@@ -2,7 +2,7 @@ export const MAIN_MODE_EDIT = 1;
 export const MAIN_MODE_DEPLOY = 2;
 
 export const mainSourceName = "<main>";
-export const lbVersion = "2.2.0.2";
+export const lbVersion = "2.2.0.3";
 
 //UI -> Worker messages
 export const MSGID_START_PROG = 1;

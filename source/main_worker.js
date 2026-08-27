@@ -20,6 +20,7 @@ const mainNativeFuncs = [
                 new Objects.ObjNativeFunc("version", 0, 0, funcVersion),
                ];
 
+var DebugWorker, ConsoleWorker, CanvasWorker, SoundWorker, SpriteWorker;
 var pendingMessages = [];
 
 mainVM.addNativeFuncArray(StdFuncs.stdNativeFuncs);
@@ -29,7 +30,7 @@ readURLParams();
 
 setMainWorkerEvents();
 
-loadWorkerComponents();
+await loadWorkerComponents();
 
 
 function readURLParams()
@@ -52,51 +53,16 @@ function setMainWorkerEvents()
   workerMessageMap.set(MainCommon.MSGID_START_PROG, onMsgStartProg);
 }
 
-function loadWorkerComponents()
+async function loadWorkerComponents()
 //
 {
   if(MainCommon.mainMode == MainCommon.MAIN_MODE_EDIT)
-    loadDebugWorker();
+    DebugWorker = await import('./debug/debug_worker.js');
 
-  loadConsoleWorker();
-  loadCanvasWorker();
-  loadSoundWorker();
-  loadSpriteWorker();
-}
-
-function loadDebugWorker()
-//
-{
-  importScripts('./debug/debug_common.js');
-  importScripts('./debug/debug_worker.js');
-}
-
-function loadConsoleWorker()
-//
-{
-  importScripts('./console/console_common.js');
-  importScripts('./console/console_worker.js');
-}
-
-function loadCanvasWorker()
-//
-{
-  importScripts('./canvas/canvas_common.js');
-  importScripts('./canvas/canvas_worker.js');
-}
-
-function loadSoundWorker()
-//
-{
-  importScripts('./sound/sound_common.js');
-  importScripts('./sound/sound_worker.js');
-}
-
-function loadSpriteWorker()
-//
-{
-  importScripts('./sprite/sprite_common.js');
-  importScripts('./sprite/sprite_worker.js');
+  ConsoleWorker = await import('./console/console_worker.js');
+  CanvasWorker = await import('./canvas/canvas_worker.js');
+  SoundWorker = await import('./sound/sound_worker.js');
+  SpriteWorker = await import('./sprite/sprite_worker.js');
 }
 
 function dispatchMessage(message)
