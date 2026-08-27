@@ -1,5 +1,5 @@
 import * as EditorUI from "./editor/editor_ui.js";
-import * as MainCommon from "./main_ui.js";
+import * as MainCommon from "./main_common.js";
 
 
 export const PROG_EXIT_STATUS_SUCCESS = 1;
@@ -280,7 +280,7 @@ function checkIfVersionHasChanged()
 function initWorker()
 //Terminate and restart the worker thread
 {
-  progWorker = new Worker('./source/main_worker.js?mode=' + MainCommon.mainMode);
+  progWorker = new Worker('./source/main_worker.js?mode=' + MainCommon.mainMode, {type: "module"});
   progWorker.onmessage = mainUI_onMessage;
 }
 
