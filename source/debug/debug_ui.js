@@ -5,6 +5,13 @@ import * as MainCommon from "../main_common.js";
 import * as DebugCommon from "./debug_common.js";
 
 
+export function mount(parentElement)
+//
+{
+  document.head.appendChild(document.createElement('style')).textContent = templateCSS;
+  parentElement.insertAdjacentElement("beforeend", debugDiv);
+}
+
 export function debugAddBreakpoint(sourceLineNum, sourceName)
 //
 {
@@ -48,8 +55,7 @@ export function debugToggleDiv()
 }
 
 
-//Debugger CSS
-document.head.appendChild(document.createElement('style')).textContent =
+const templateCSS =
 `
 .debugSubDiv
 {
@@ -131,8 +137,7 @@ document.head.appendChild(document.createElement('style')).textContent =
 `;
 
 
-//Debugger HTML
-MainUI.mainDiv.insertAdjacentHTML("beforebegin",
+const templateHTML =
 `
 <div id="debugDiv" class="bar">
   <div id="debugResizer" class="bar"></div>
@@ -169,19 +174,13 @@ MainUI.mainDiv.insertAdjacentHTML("beforebegin",
     </div>
   </div>
 </div>
-`);
+`;
 
 
-var debugDiv = document.getElementById("debugDiv");
-var debugResizer = document.getElementById("debugResizer");
-var debugResumeBtn = document.getElementById("debugResumeBtn");
-var debugStepIntoBtn = document.getElementById("debugStepIntoBtn");
-var debugStepOverBtn = document.getElementById("debugStepOverBtn");
-var debugStepOutBtn = document.getElementById("debugStepOutBtn");
-var debugSkipBtn = document.getElementById("debugSkipBtn");
-var debugCallStackList = document.getElementById("debugCallStackList");
-var debugLocalsList = document.getElementById("debugLocalsList");
-var debugGlobalsList = document.getElementById("debugGlobalsList");
+var debugDiv;
+var debugResizer;
+var debugResumeBtn, debugStepIntoBtn, debugStepOverBtn, debugStepOutBtn, debugSkipBtn;
+var debugCallStackList, debugLocalsList, debugGlobalsList;
 
 var isDebugging = false;
 var debugIsResizing = false;
@@ -192,10 +191,30 @@ var debugLocalsItemValueMap = new Map;
 var debugGlobalsItemValueMap = new Map;
 var debugBreakpointBackups = [];
 
-setDebugUIEvents();
+
+createElements();
+setEvents();
 
 
-function setDebugUIEvents()
+function createElements()
+//
+{
+  const template = document.createElement("template");
+  template.innerHTML = templateHTML;
+
+  debugDiv = template.content.getElementById("debugDiv");
+  debugResizer = template.content.getElementById("debugResizer");
+  debugResumeBtn = template.content.getElementById("debugResumeBtn");
+  debugStepIntoBtn = template.content.getElementById("debugStepIntoBtn");
+  debugStepOverBtn = template.content.getElementById("debugStepOverBtn");
+  debugStepOutBtn = template.content.getElementById("debugStepOutBtn");
+  debugSkipBtn = template.content.getElementById("debugSkipBtn");
+  debugCallStackList = template.content.getElementById("debugCallStackList");
+  debugLocalsList = template.content.getElementById("debugLocalsList");
+  debugGlobalsList = template.content.getElementById("debugGlobalsList");
+}
+
+function setEvents()
 //
 {
   document.addEventListener("mousedown", document_onMouseDown);

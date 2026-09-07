@@ -129,7 +129,6 @@ IMPORTS
 (X) debug_ui -> Objects.OBJ_TYPE_*
                        .ObjArray
              -> MainUI.PROG_EXIT_STATUS_*
-                      .mainDiv
                       .isRunning
                       .uiOnProgStartHandlers
                       .uiOnProgEndHandlers

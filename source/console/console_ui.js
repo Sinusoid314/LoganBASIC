@@ -10,7 +10,6 @@ export function mount(parentElement)
 }
 
 
-//Console CSS
 const templateCSS =
 `
 #consoleOutput
@@ -34,7 +33,6 @@ const templateCSS =
 `;
 
 
-//Console HTML
 const templateHTML =
 `
 <div id="consoleDiv">
