@@ -30,10 +30,10 @@ class SpriteSheet
 var spriteSheets = new Map();
 
 
-setSpriteUIEvents();
+setEvents();
 
 
-function setSpriteUIEvents()
+function setEvents()
 //
 {
   MainUI.uiOnProgEndHandlers.push(spriteUI_onProgEnd);
