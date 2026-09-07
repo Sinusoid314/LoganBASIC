@@ -4,10 +4,11 @@ import * as SoundCommon from "./sound_common.js";
 
 var sounds = new Map();
 
-setSoundUIEvents();
+
+setEvents();
 
 
-function setSoundUIEvents()
+function setEvents()
 //
 {
   MainUI.uiOnProgEndHandlers.push(soundUI_onProgEnd);

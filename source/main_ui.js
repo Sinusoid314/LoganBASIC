@@ -319,10 +319,8 @@ function mountUIComponents()
     //EditorUI.mount(mainDiv);
   }
 
-  //ConsoleUI.mount(mainDiv);
+  ConsoleUI.mount(mainDiv);
   CanvasUI.mount(mainDiv);
-  //SoundUI.mount(mainDiv);
-  //SpriteUI.mount(mainDiv);
 }
 
 function setToggleEvents()
