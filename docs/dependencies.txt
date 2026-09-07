@@ -110,8 +110,7 @@ IMPORTS
                          .mainMode
                          .setMainMode()
 
-(X) canvas_ui -> MainUI.mainDiv
-                       .isRunning
+(X) canvas_ui -> MainUI.isRunning
                        .uiOnProgStartHandlers
                        .uiOnProgEndHandlers
                        .uiOnMainResetHandlers

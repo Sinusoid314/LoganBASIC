@@ -310,6 +310,21 @@ async function loadUIComponents()
   SpriteUI = await import("./source/sprite/sprite_ui.js");
 }
 
+function mountUIComponents()
+//
+{
+  if(MainCommon.mainMode == MainCommon.MAIN_MODE_EDIT)
+  {
+    //DebugUI.mount(mainDiv);
+    //EditorUI.mount(mainDiv);
+  }
+
+  //ConsoleUI.mount(mainDiv);
+  CanvasUI.mount(mainDiv);
+  //SoundUI.mount(mainDiv);
+  //SpriteUI.mount(mainDiv);
+}
+
 function setToggleEvents()
 //
 {

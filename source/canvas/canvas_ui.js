@@ -4,9 +4,15 @@ import * as CanvasCommon from "./canvas_common.js";
 
 export var activeContext;
 
+export function mount(parentElement)
+//
+{
+  document.head.appendChild(document.createElement('style')).textContent = templateCSS;
+  parentElement.insertAdjacentElement("beforeend", progCanvas);
+}
 
-//Canvas CSS
-document.head.appendChild(document.createElement('style')).textContent =
+
+const templateCSS =
 `
 #progCanvas
 {
@@ -18,8 +24,7 @@ document.head.appendChild(document.createElement('style')).textContent =
 `;
 
 
-//Canvas HTML
-MainUI.mainDiv.insertAdjacentHTML("beforeend",
+const templateHTML =
 `
 <div id="canvasDiv">
   <label id="canvasToggle" class="toggle-open">Canvas</label>
@@ -27,21 +32,39 @@ MainUI.mainDiv.insertAdjacentHTML("beforeend",
     <canvas id="progCanvas" width=500 height=300 tabindex="0"></canvas>
   </div>
 </div>
-`);
+`;
 
 
-var progCanvas = document.getElementById("progCanvas");
-var progCanvasContext = progCanvas.getContext("2d");
-var bufferCanvas = new OffscreenCanvas(progCanvas.width, progCanvas.height);
-var bufferCanvasContext = bufferCanvas.getContext("2d");
+var progCanvas, bufferCanvas;
+var progCanvasContext, bufferCanvasContext;
 var images = new Map();
 
-activeContext = progCanvasContext;
 
-setCanvasUIEvents();
+createElements();
+initCanvasContexts();
+setEvents();
 
 
-function setCanvasUIEvents()
+function createElements()
+//
+{
+  const template = document.createElement("template");
+  template.innerHTML = templateHTML;
+
+  progCanvas = template.content.getElementById("progCanvas");
+  bufferCanvas = new OffscreenCanvas(progCanvas.width, progCanvas.height);
+}
+
+function initCanvasContexts()
+//
+{
+  progCanvasContext = progCanvas.getContext("2d");
+  bufferCanvasContext = bufferCanvas.getContext("2d");
+
+  activeContext = progCanvasContext;
+}
+
+function setEvents()
 //
 {
   MainUI.uiOnMainResetHandlers.push(canvasUI_onMainReset);
