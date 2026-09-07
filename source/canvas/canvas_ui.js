@@ -8,7 +8,7 @@ export function mount(parentElement)
 //
 {
   document.head.appendChild(document.createElement('style')).textContent = templateCSS;
-  parentElement.insertAdjacentElement("beforeend", progCanvas);
+  parentElement.insertAdjacentElement("beforeend", canvasDiv);
 }
 
 
@@ -35,6 +35,7 @@ const templateHTML =
 `;
 
 
+var canvasDiv;
 var progCanvas, bufferCanvas;
 var progCanvasContext, bufferCanvasContext;
 var images = new Map();
@@ -51,6 +52,7 @@ function createElements()
   const template = document.createElement("template");
   template.innerHTML = templateHTML;
 
+  canvasDiv = template.content.getElementById("canvasDiv");
   progCanvas = template.content.getElementById("progCanvas");
   bufferCanvas = new OffscreenCanvas(progCanvas.width, progCanvas.height);
 }

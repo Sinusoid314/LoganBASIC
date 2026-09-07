@@ -2,8 +2,16 @@ import * as MainUI from "../main_ui.js";
 import * as ConsoleCommon from "./console_common.js";
 
 
+export function mount(parentElement)
+//
+{
+  document.head.appendChild(document.createElement('style')).textContent = templateCSS;
+  parentElement.insertAdjacentElement("beforeend", consoleDiv);
+}
+
+
 //Console CSS
-document.head.appendChild(document.createElement('style')).textContent =
+const templateCSS =
 `
 #consoleOutput
 {
@@ -27,7 +35,7 @@ document.head.appendChild(document.createElement('style')).textContent =
 
 
 //Console HTML
-MainUI.mainDiv.insertAdjacentHTML("beforeend",
+const templateHTML =
 `
 <div id="consoleDiv">
   <label id="consoleToggle" class="toggle-open">Console</label>
@@ -39,18 +47,32 @@ MainUI.mainDiv.insertAdjacentHTML("beforeend",
     </div>
   </div>
 </div>
-`);
+`;
 
 
-var consoleOutput = document.getElementById("consoleOutput");
-var consoleInput = document.getElementById("consoleInput");
-var consoleInputBtn = document.getElementById("consoleInputBtn");
-var consoleInputDiv = document.getElementById("consoleInputDiv");
-
-setConsoleUIEvents();
+var consoleDiv;
+var consoleOutput;
+var consoleInputDiv, consoleInput, consoleInputBtn;
 
 
-function setConsoleUIEvents()
+createElements();
+setEvents();
+
+
+function createElements()
+//
+{
+  const template = document.createElement("template");
+  template.innerHTML = templateHTML;
+
+  consoleDiv = template.content.getElementById("consoleDiv");
+  consoleOutput = template.content.getElementById("consoleOutput");
+  consoleInputDiv = template.content.getElementById("consoleInputDiv");
+  consoleInput = template.content.getElementById("consoleInput");
+  consoleInputBtn = template.content.getElementById("consoleInputBtn");
+}
+
+function setEvents()
 //
 {
   consoleInput.addEventListener("keydown", consoleInput_onKeydown);

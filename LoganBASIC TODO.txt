@@ -27,3 +27,4 @@
 [Refactors]
     - Dynamically add the usageRun and usageOpen links to all reference_doc help files in order to centralize the relative URLs they use.
     - Consolidate the request/result thread-message code from each component into the main modules.
+    - Extract the main CSS styles that are shared by the components into an ES6 module.

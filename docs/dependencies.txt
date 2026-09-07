@@ -118,8 +118,7 @@ IMPORTS
                        .uiMessageMap
               -> CanvasCommon.MSGID_*
 
-(X) console_ui -> MainUI.mainDiv
-                        .isRunning
+(X) console_ui -> MainUI.isRunning
                         .uiOnProgStartHandlers
                         .uiOnProgEndHandlers
                         .uiOnMainResetHandlers
