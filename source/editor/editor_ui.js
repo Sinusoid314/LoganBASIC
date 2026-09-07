@@ -3,9 +3,18 @@ import * as DebugUI from "../debug/debug_ui.js";
 import * as MainCommon from "../main_common.js";
 
 
-export const debugToggleBtn = document.getElementById("debugToggleBtn");
-export const aboutDialog = document.getElementById("aboutDialog");
+export const debugToggleBtn;
+export const aboutDialog;
 export var codeHasChanged = false;
+
+export function mount(parentElement)
+//
+{
+  document.head.appendChild(document.createElement('style')).textContent = templateCSS;
+  parentElement.insertAdjacentElement("afterbegin", menuBar);
+  parentElement.insertAdjacentElement("beforeend", editorDiv);
+  parentElement.insertAdjacentElement("beforeend", commandBar);
+}
 
 export function toggleUpdatesBtnHighlighted()
 //
@@ -107,8 +116,7 @@ export function endFileOpAwait(statusMessage)
 }
 
 
-//Editor CSS
-document.head.appendChild(document.createElement('style')).textContent =
+const templateCSS =
 `
 #menuBar
 {
@@ -236,8 +244,7 @@ document.head.appendChild(document.createElement('style')).textContent =
 `;
 
 
-//Editor HTML
-MainUI.mainDiv.insertAdjacentHTML("afterbegin",
+const templateHTML =
 `
 <div id="menuBar" class="bar">
   <button id="newBtn"><img src="./assests/new.png" alt="New"><span>New</span></button>
@@ -293,7 +300,7 @@ MainUI.mainDiv.insertAdjacentHTML("afterbegin",
     <button id="aboutCloseBtn" type="submit">Close</button>
   </form>
 </dialog>
-`);
+`;
 
 
 class CodeFile
@@ -315,33 +322,56 @@ const filePickerOptions =
   }],
   multiple: false
 };
+
 const DEFAULT_FILE_NAME = "untitled.bas";
 
-var newBtn = document.getElementById("newBtn");
-var openBtn = document.getElementById("openBtn");
-var saveBtn = document.getElementById("saveBtn");
-var examplesBtn = document.getElementById("examplesBtn");
-var helpBtn = document.getElementById("helpBtn");
-var aboutBtn = document.getElementById("aboutBtn");
-var updatesBtn = document.getElementById("updatesBtn");
-var codeFileNameDisplay = document.getElementById("codeFileNameDisplay");
-var editorCode = document.getElementById("editorCode");
-var editorGutter = document.getElementById("editorGutter");
-var runBtn = document.getElementById("runBtn");
-var stopBtn = document.getElementById("stopBtn");
+var menuBar, editorDiv, commandBar;
+var newBtn, openBtn, saveBtn;
+var examplesBtn, helpBtn, aboutBtn, updatesBtn;
+var codeFileNameDisplay;
+var editorCode, editorGutter;
+var runBtn, stopBtn;
+
 var prevLineCount = 1;
 var codeFileName = DEFAULT_FILE_NAME;
 var codeFileHandle = null;
 var fileOpInProgress = false;
 
-codeFileNameDisplay.innerText = codeFileName;
 
-setEditorUIEvents();
+createElements();
+setEvents();
 
 addEditorGutterItem();
 
+codeFileNameDisplay.innerText = codeFileName;
 
-function setEditorUIEvents()
+
+function createElements()
+//
+{
+  const template = document.createElement("template");
+  template.innerHTML = templateHTML;
+
+  menuBar = template.content.getElementById("menuBar");
+  editorDiv = template.content.getElementById("editorDiv");
+  commandBar = template.content.getElementById("commandBar");
+  newBtn = template.content.getElementById("newBtn");
+  openBtn = template.content.getElementById("openBtn");
+  saveBtn = template.content.getElementById("saveBtn");
+  examplesBtn = template.content.getElementById("examplesBtn");
+  helpBtn = template.content.getElementById("helpBtn");
+  aboutBtn = template.content.getElementById("aboutBtn");
+  updatesBtn = template.content.getElementById("updatesBtn");
+  codeFileNameDisplay = template.content.getElementById("codeFileNameDisplay");
+  editorCode = template.content.getElementById("editorCode");
+  editorGutter = template.content.getElementById("editorGutter");
+  runBtn = template.content.getElementById("runBtn");
+  stopBtn = template.content.getElementById("stopBtn");
+  debugToggleBtn = template.content.getElementById("debugToggleBtn");
+  aboutDialog = template.content.getElementById("aboutDialog");
+}
+
+function setEvents()
 //
 {
   newBtn.addEventListener("click", newBtn_onClick);

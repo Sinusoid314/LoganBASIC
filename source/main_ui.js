@@ -316,7 +316,7 @@ function mountUIComponents()
   if(MainCommon.mainMode == MainCommon.MAIN_MODE_EDIT)
   {
     DebugUI.mount(mainDiv);
-    //EditorUI.mount(mainDiv);
+    EditorUI.mount(mainDiv);
   }
 
   ConsoleUI.mount(mainDiv);

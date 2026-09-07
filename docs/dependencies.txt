@@ -143,7 +143,6 @@ IMPORTS
                            .DebugBreakpoint
 
 (X) editor_ui -> MainUI.PROG_EXIT_STATUS_*
-                       .mainDiv
                        .statusBar
                        .isRunning
                        .uiOnProgStartHandlers
