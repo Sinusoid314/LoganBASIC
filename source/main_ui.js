@@ -219,13 +219,15 @@ var autoRun = false;
 const WELCOME_HAS_BEEN_SHOWN_KEY = "welcomeHasBeenShown";
 const LAST_VISITED_VERSION_KEY = "lastVisitedVersion";
 
+
 readURLParams();
 
 initWorker();
 
-setMainUIEvents();
+setEvents();
 
 await loadUIComponents();
+mountUIComponents()
 
 
 function readURLParams()
@@ -285,7 +287,7 @@ function initWorker()
   progWorker.onmessage = mainUI_onMessage;
 }
 
-function setMainUIEvents()
+function setEvents()
 //
 {
   uiMessageMap.set(MainCommon.MSGID_PROG_DONE, onMsgProgDone);
