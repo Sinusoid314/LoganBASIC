@@ -208,12 +208,13 @@ document.body.insertAdjacentHTML("afterbegin",
 `
 <div id="mainDiv">
   <div id="statusBar">Ready.</div>
+  <div id="version">Version ${MainCommon.lbVersion} </div>
 </div>
 `);
 
 
 var DebugUI, EditorUI, ConsoleUI, CanvasUI, SoundUI, SpriteUI;
-const versionHTML = `<div id="version">Version ` + MainCommon.lbVersion;
+
 var paramFileURL = "";
 var autoRun = false;
 const WELCOME_HAS_BEEN_SHOWN_KEY = "welcomeHasBeenShown";
@@ -351,7 +352,6 @@ async function window_onLoad(event)
   if(MainCommon.mainMode == MainCommon.MAIN_MODE_EDIT)
   {
     setToggleEvents();
-    mainDiv.insertAdjacentHTML("beforeend", versionHTML);
     
     if(!checkIfWelcomeHasBeenShown() && !autoRun)
     {
