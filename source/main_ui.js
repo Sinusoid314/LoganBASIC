@@ -1,4 +1,3 @@
-import * as EditorUI from "./editor/editor_ui.js";
 import * as MainCommon from "./main_common.js";
 
 
@@ -6,7 +5,7 @@ export const PROG_EXIT_STATUS_SUCCESS = 1;
 export const PROG_EXIT_STATUS_ERROR = 2;
 export const PROG_EXIT_STATUS_TERMINATED = 3;
 
-export const statusBar = document.getElementById("statusBar");
+export const statusBar;
 
 export var isRunning = false;
 export const uiOnProgStartHandlers = [];
@@ -56,8 +55,7 @@ export function endProg(exitMessage, exitStatus, error)
 }
 
 
-//Main CSS
-document.head.appendChild(document.createElement('style')).textContent =
+const templateCSS =
 `
 *
 {
@@ -195,26 +193,26 @@ button
   white-space: pre-wrap;
 }
 
-#version
+#versionDiv
 {
   margin-top: 30px;
 }
 `;
 
 
-//Main HTML
-document.body.insertAdjacentHTML("afterbegin",
+const templateHTML =
 `
-<div id="mainDiv">
-  <div id="statusBar">Ready.</div>
-  <div id="version">Version ${MainCommon.lbVersion} </div>
-</div>
-`);
+<div id="mainDiv"></div>
+
+<div id="statusBar">Ready.</div>
+
+<div id="versionDiv">Version ${MainCommon.lbVersion} </div>
+`;
 
 
 var DebugUI, EditorUI, ConsoleUI, CanvasUI, SoundUI, SpriteUI;
 
-var mainDiv = document.getElementById("mainDiv");
+var mainDiv, versionDiv;
 
 var paramFileURL = "";
 var autoRun = false;
@@ -224,12 +222,13 @@ const LAST_VISITED_VERSION_KEY = "lastVisitedVersion";
 
 readURLParams();
 
-initWorker();
-
+createElements();
 setEvents();
 
 await loadUIComponents();
 mountUIComponents()
+
+initWorker();
 
 
 function readURLParams()
@@ -254,39 +253,15 @@ function readURLParams()
   }
 }
 
-function checkIfWelcomeHasBeenShown()
+function createElements()
 //
 {
-  var welcomeHasBeenShown = window.localStorage.getItem(WELCOME_HAS_BEEN_SHOWN_KEY);
+  const template = document.createElement("template");
+  template.innerHTML = templateHTML;
 
-  if(!welcomeHasBeenShown)
-  {
-    window.localStorage.setItem(WELCOME_HAS_BEEN_SHOWN_KEY, "true");
-    return false;
-  }
-  
-  return true;
-}
-
-function checkIfVersionHasChanged()
-//
-{
-  var lastVisitedVersion = window.localStorage.getItem(LAST_VISITED_VERSION_KEY);
-
-  if(!lastVisitedVersion || lastVisitedVersion != MainCommon.lbVersion)
-  {
-    window.localStorage.setItem(LAST_VISITED_VERSION_KEY, MainCommon.lbVersion);
-    return true;
-  }
-
-  return false;
-}
-
-function initWorker()
-//Terminate and restart the worker thread
-{
-  progWorker = new Worker('./source/main_worker.js?mode=' + MainCommon.mainMode, {type: "module"});
-  progWorker.onmessage = mainUI_onMessage;
+  mainDiv = template.content.getElementById("mainDiv");
+  statusBar = template.content.getElementById("statusBar");
+  versionDiv = template.content.getElementById("versionDiv");
 }
 
 function setEvents()
@@ -317,14 +292,56 @@ async function loadUIComponents()
 function mountUIComponents()
 //
 {
+  document.head.appendChild(document.createElement('style')).textContent = templateCSS;
+  document.body.insertAdjacentElement("beforeend", mainDiv);
+
   if(MainCommon.mainMode == MainCommon.MAIN_MODE_EDIT)
   {
     DebugUI.mount(mainDiv, "beforeend");
     EditorUI.mount(mainDiv, "beforeend");
+    mainDiv.insertAdjacentElement("beforeend", statusBar);
   }
 
   ConsoleUI.mount(mainDiv, "beforeend");
   CanvasUI.mount(mainDiv, "beforeend");
+
+  if(MainCommon.mainMode == MainCommon.MAIN_MODE_EDIT)
+    mainDiv.insertAdjacentElement("beforeend", versionDiv);
+}
+
+function initWorker()
+//Terminate and restart the worker thread
+{
+  progWorker = new Worker('./source/main_worker.js?mode=' + MainCommon.mainMode, {type: "module"});
+  progWorker.onmessage = mainUI_onMessage;
+}
+
+function checkIfWelcomeHasBeenShown()
+//
+{
+  var welcomeHasBeenShown = window.localStorage.getItem(WELCOME_HAS_BEEN_SHOWN_KEY);
+
+  if(!welcomeHasBeenShown)
+  {
+    window.localStorage.setItem(WELCOME_HAS_BEEN_SHOWN_KEY, "true");
+    return false;
+  }
+  
+  return true;
+}
+
+function checkIfVersionHasChanged()
+//
+{
+  var lastVisitedVersion = window.localStorage.getItem(LAST_VISITED_VERSION_KEY);
+
+  if(!lastVisitedVersion || lastVisitedVersion != MainCommon.lbVersion)
+  {
+    window.localStorage.setItem(LAST_VISITED_VERSION_KEY, MainCommon.lbVersion);
+    return true;
+  }
+
+  return false;
 }
 
 function setToggleEvents()
