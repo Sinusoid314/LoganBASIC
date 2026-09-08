@@ -5,11 +5,11 @@ import * as MainCommon from "../main_common.js";
 import * as DebugCommon from "./debug_common.js";
 
 
-export function mount(targetElement)
+export function mount(targetElement, insertPosition)
 //
 {
   document.head.appendChild(document.createElement('style')).textContent = templateCSS;
-  targetElement.insertAdjacentElement("beforeend", debugDiv);
+  targetElement.insertAdjacentElement(insertPosition, debugDiv);
 }
 
 export function debugAddBreakpoint(sourceLineNum, sourceName)

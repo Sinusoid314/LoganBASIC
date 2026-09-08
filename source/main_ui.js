@@ -315,12 +315,12 @@ function mountUIComponents()
 {
   if(MainCommon.mainMode == MainCommon.MAIN_MODE_EDIT)
   {
-    DebugUI.mount(mainDiv);
-    EditorUI.mount(mainDiv);
+    DebugUI.mount(mainDiv, "beforeend");
+    EditorUI.mount(mainDiv, "beforeend");
   }
 
-  ConsoleUI.mount(mainDiv);
-  CanvasUI.mount(mainDiv);
+  ConsoleUI.mount(mainDiv, "beforeend");
+  CanvasUI.mount(mainDiv, "beforeend");
 }
 
 function setToggleEvents()

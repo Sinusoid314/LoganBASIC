@@ -7,13 +7,13 @@ export const debugToggleBtn;
 export const aboutDialog;
 export var codeHasChanged = false;
 
-export function mount(targetElement)
+export function mount(targetElement, insertPosition)
 //
 {
   document.head.appendChild(document.createElement('style')).textContent = templateCSS;
-  targetElement.insertAdjacentElement("afterbegin", menuBar);
-  targetElement.insertAdjacentElement("beforeend", editorDiv);
-  targetElement.insertAdjacentElement("beforeend", commandBar);
+  targetElement.insertAdjacentElement(insertPosition, menuBar);
+  targetElement.insertAdjacentElement(insertPosition, editorDiv);
+  targetElement.insertAdjacentElement(insertPosition, commandBar);
 }
 
 export function toggleUpdatesBtnHighlighted()
