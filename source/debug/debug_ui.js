@@ -37,7 +37,7 @@ export function debugToggleDiv()
   { 
     EditorUI.debugToggleBtn.style.border = "";
 	  debugDiv.style.display = "none";
-    MainUI.mainDiv.style.marginLeft = "0";
+    debugDiv.parentElement.style.marginLeft = "0";
     debugChangeUIStatus(DebugCommon.DEBUG_UI_STATUS_DISABLED);
     
     MainUI.progWorker.postMessage({msgId: DebugCommon.MSGID_DEBUG_DISABLE, msgData: null});
@@ -46,7 +46,7 @@ export function debugToggleDiv()
   {
     EditorUI.debugToggleBtn.style.border = "inset 2px";
 	  debugDiv.style.display = "block";
-    MainUI.mainDiv.style.marginLeft = debugDiv.offsetWidth + "px";
+    debugDiv.parentElement.style.marginLeft = debugDiv.offsetWidth + "px";
 
     MainUI.progWorker.postMessage({msgId: DebugCommon.MSGID_DEBUG_ENABLE, msgData: null});
   }
@@ -398,7 +398,7 @@ function document_onMouseDown(event)
     return false;
 
   debugDiv.style.pointerEvents = "none";
-  MainUI.mainDiv.style.pointerEvents = "none";
+  debugDiv.parentElement.style.pointerEvents = "none";
   document.body.style.userSelect = "none";
   document.body.style.cursor = "ew-resize";
   debugIsResizing = true;
@@ -414,13 +414,13 @@ function document_onMouseMove(event)
   const scrollbarWidth = debugDiv.offsetWidth - debugDiv.clientWidth + (borderLeft + borderRight);
 
   debugDiv.style.width = event.clientX + scrollbarWidth + "px";
-  MainUI.mainDiv.style.marginLeft = event.clientX + scrollbarWidth + "px";
+  debugDiv.parentElement.style.marginLeft = event.clientX + scrollbarWidth + "px";
 }
 
 function document_onMouseUp(event)
 {
   debugDiv.style.pointerEvents = "";
-  MainUI.mainDiv.style.pointerEvents = "";
+  debugDiv.parentElement.style.pointerEvents = "";
   document.body.style.userSelect = "";
   document.body.style.cursor = "";
   debugIsResizing = false;
