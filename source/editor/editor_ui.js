@@ -7,13 +7,15 @@ export const debugToggleBtn;
 export const aboutDialog;
 export var codeHasChanged = false;
 
-export function mount(targetElement, insertPosition)
+export function mount(targetElement, insertPosition, targetStatusElement)
 //
 {
   document.head.appendChild(document.createElement('style')).textContent = templateCSS;
   targetElement.insertAdjacentElement(insertPosition, menuBar);
   targetElement.insertAdjacentElement(insertPosition, editorDiv);
   targetElement.insertAdjacentElement(insertPosition, commandBar);
+
+  statusElement = targetStatusElement;
 }
 
 export function toggleUpdatesBtnHighlighted()
@@ -101,7 +103,7 @@ export function beginFileOpAwait(statusMessage)
   newBtn.disabled = true;
   openBtn.disabled = true;
   saveBtn.disabled = true;
-  MainUI.statusBar.innerText = statusMessage;
+  statusElement.innerText = statusMessage;
   fileOpInProgress = true;
 }
 
@@ -111,7 +113,7 @@ export function endFileOpAwait(statusMessage)
   newBtn.disabled = false;
   openBtn.disabled = false;
   saveBtn.disabled = false;
-  MainUI.statusBar.innerText = statusMessage;
+  statusElement.innerText = statusMessage;
   fileOpInProgress = false;
 }
 
@@ -331,6 +333,8 @@ var examplesBtn, helpBtn, aboutBtn, updatesBtn;
 var codeFileNameDisplay;
 var editorCode, editorGutter;
 var runBtn, stopBtn;
+
+var statusElement;
 
 var prevLineCount = 1;
 var codeFileName = DEFAULT_FILE_NAME;

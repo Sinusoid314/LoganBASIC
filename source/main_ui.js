@@ -5,8 +5,6 @@ export const PROG_EXIT_STATUS_SUCCESS = 1;
 export const PROG_EXIT_STATUS_ERROR = 2;
 export const PROG_EXIT_STATUS_TERMINATED = 3;
 
-export const statusBar;
-
 export var isRunning = false;
 export const uiOnProgStartHandlers = [];
 export const uiOnProgEndHandlers = [];
@@ -212,7 +210,7 @@ const templateHTML =
 
 var DebugUI, EditorUI, ConsoleUI, CanvasUI, SoundUI, SpriteUI;
 
-var mainDiv, versionDiv;
+var mainDiv, statusBar, versionDiv;
 
 var paramFileURL = "";
 var autoRun = false;
@@ -298,7 +296,7 @@ function mountUIComponents()
   if(MainCommon.mainMode == MainCommon.MAIN_MODE_EDIT)
   {
     DebugUI.mount(mainDiv, "beforeend");
-    EditorUI.mount(mainDiv, "beforeend");
+    EditorUI.mount(mainDiv, "beforeend", statusBar);
     mainDiv.insertAdjacentElement("beforeend", statusBar);
   }
 

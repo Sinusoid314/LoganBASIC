@@ -143,7 +143,6 @@ IMPORTS
                            .DebugBreakpoint
 
 (X) editor_ui -> MainUI.PROG_EXIT_STATUS_*
-                       .statusBar
                        .isRunning
                        .uiOnProgStartHandlers
                        .uiOnProgEndHandlers
@@ -238,7 +237,6 @@ EXPORTS
 
 (X) main_ui
       - PROG_EXIT_STATUS_*
-      - statusBar
       - isRunning
       - uiOnProgStartHandlers
       - uiOnProgEndHandlers
