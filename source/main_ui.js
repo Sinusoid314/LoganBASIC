@@ -6,7 +6,6 @@ export const PROG_EXIT_STATUS_SUCCESS = 1;
 export const PROG_EXIT_STATUS_ERROR = 2;
 export const PROG_EXIT_STATUS_TERMINATED = 3;
 
-export const mainDiv = document.getElementById("mainDiv");
 export const statusBar = document.getElementById("statusBar");
 
 export var isRunning = false;
@@ -214,6 +213,8 @@ document.body.insertAdjacentHTML("afterbegin",
 
 
 var DebugUI, EditorUI, ConsoleUI, CanvasUI, SoundUI, SpriteUI;
+
+var mainDiv = document.getElementById("mainDiv");
 
 var paramFileURL = "";
 var autoRun = false;
