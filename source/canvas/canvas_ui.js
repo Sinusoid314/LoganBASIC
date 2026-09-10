@@ -4,11 +4,11 @@ import * as CanvasCommon from "./canvas_common.js";
 
 export var activeContext;
 
-export function mount(targetElement, insertPosition)
+export function mount(targetElement)
 //
 {
   document.head.appendChild(document.createElement('style')).textContent = templateCSS;
-  targetElement.insertAdjacentElement(insertPosition, canvasDiv);
+  targetElement.insertAdjacentElement("beforeend", canvasDiv);
 }
 
 

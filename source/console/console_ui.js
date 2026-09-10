@@ -2,11 +2,11 @@ import * as MainUI from "../main_ui.js";
 import * as ConsoleCommon from "./console_common.js";
 
 
-export function mount(targetElement, insertPosition)
+export function mount(targetElement)
 //
 {
   document.head.appendChild(document.createElement('style')).textContent = templateCSS;
-  targetElement.insertAdjacentElement(insertPosition, consoleDiv);
+  targetElement.insertAdjacentElement("beforeend", consoleDiv);
 }
 
 
