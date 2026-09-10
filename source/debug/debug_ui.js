@@ -1,6 +1,6 @@
 import * as Objects from "../core/objects.js";
 import * as MainUI from "../main_ui.js";
-import * as EditorUI from "../editor/editor_ui.js";
+import * as EditorUI from "../editor/editor.js";
 import * as MainCommon from "../main_common.js";
 import * as DebugCommon from "./debug_common.js";
 
