@@ -5,11 +5,18 @@ import * as MainCommon from "../main_common.js";
 import * as DebugCommon from "./debug_common.js";
 
 
-export function mount(targetElement)
+export function mountDiv(targetElement, insertPosition)
 //
 {
-  document.head.appendChild(document.createElement('style')).textContent = templateCSS;
-  targetElement.insertAdjacentElement("beforeend", debugDiv);
+  document.head.appendChild(debugDivStyle);
+  targetElement.insertAdjacentElement(insertPosition, debugDiv);
+}
+
+export function mountToggle(targetElement, insertPosition)
+//
+{
+  document.head.appendChild(debugToggleBtnStyle);
+  targetElement.insertAdjacentElement(insertPosition, debugToggleBtn);
 }
 
 export function debugAddBreakpoint(sourceLineNum, sourceName)
@@ -30,110 +37,94 @@ export function debugRemoveBreakpoint(sourceLineNum, sourceName)
   MainUI.progWorker.postMessage({msgId: DebugCommon.MSGID_DEBUG_REMOVE_BREAKPOINT, msgData: {sourceLineNum: sourceLineNum, sourceName: sourceName}});
 }
 
-export function debugToggleDiv()
-//
-{
-  if(isDebugging)
-  { 
-    EditorUI.debugToggleBtn.style.border = "";
-	  debugDiv.style.display = "none";
-    debugDiv.parentElement.style.marginLeft = "0";
-    debugChangeUIStatus(DebugCommon.DEBUG_UI_STATUS_DISABLED);
-    
-    MainUI.progWorker.postMessage({msgId: DebugCommon.MSGID_DEBUG_DISABLE, msgData: null});
-  }
-  else
-  {
-    EditorUI.debugToggleBtn.style.border = "inset 2px";
-	  debugDiv.style.display = "block";
-    debugDiv.parentElement.style.marginLeft = debugDiv.offsetWidth + "px";
-
-    MainUI.progWorker.postMessage({msgId: DebugCommon.MSGID_DEBUG_ENABLE, msgData: null});
-  }
-
-  isDebugging = !isDebugging;
-}
-
 
 const templateCSS =
 `
-.debugSubDiv
-{
-  margin-top: 20px;
-  margin-left: 6px;
-  margin-right: 10px;
-}
+<style id="debugDivStyle">
+  .debugSubDiv
+  {
+    margin-top: 20px;
+    margin-left: 6px;
+    margin-right: 10px;
+  }
 
-.debugVarList
-{
-  background: white;
-  color: black;
-  border: solid 1px;
-  padding: 1px;
-  width: 100%;
-  height: 160px;
-  overflow: scroll;
-  margin: 0;
-  resize: vertical;
-}
+  .debugVarList
+  {
+    background: white;
+    color: black;
+    border: solid 1px;
+    padding: 1px;
+    width: 100%;
+    height: 160px;
+    overflow: scroll;
+    margin: 0;
+    resize: vertical;
+  }
 
-.debugVarList li
-{
-  list-style-type: none;
-  font-family: monospace;
-  white-space: nowrap;
-}
+  .debugVarList li
+  {
+    list-style-type: none;
+    font-family: monospace;
+    white-space: nowrap;
+  }
 
-.debugVarListItem-expanded::before
-{
-  content: "\\25BE";
-}
+  .debugVarListItem-expanded::before
+  {
+    content: "\\25BE";
+  }
 
-.debugVarListItem-collapsed::before
-{
-  content: "\\25B8";
-}
+  .debugVarListItem-collapsed::before
+  {
+    content: "\\25B8";
+  }
 
-#debugDiv
-{
-  height: 100%;
-  width: 275px;
-  min-width: 30px;
-  position: fixed;
-  top: 0;
-  left: 0;
-  background-color: lightgray;
-  overflow-x: hidden;
-  display: none;
-}
+  #debugDiv
+  {
+    height: 100%;
+    width: 275px;
+    min-width: 30px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: lightgray;
+    overflow-x: hidden;
+    display: none;
+  }
 
-#debugResizer
-{
-  width: 4px;
-  height: 100%;
-  padding: 0;
-  cursor: ew-resize;
-  display: block;
-  float: right;
-}
+  #debugResizer
+  {
+    width: 4px;
+    height: 100%;
+    padding: 0;
+    cursor: ew-resize;
+    display: block;
+    float: right;
+  }
 
-#debugWrapper
-{
-  display: block;
-  margin-left: 4px;
-  margin-right: 8px;
-}
+  #debugWrapper
+  {
+    display: block;
+    margin-left: 4px;
+    margin-right: 8px;
+  }
 
-#debugCallStackList
-{
-  padding: 1px;
-  width: 100%;
-  border: solid 1px;
-  overflow: scroll;
-  resize: vertical;
-  font-family: monospace;
-  white-space: nowrap;
-}
+  #debugCallStackList
+  {
+    padding: 1px;
+    width: 100%;
+    border: solid 1px;
+    overflow: scroll;
+    resize: vertical;
+    font-family: monospace;
+    white-space: nowrap;
+  }
+</style>
+
+<style id="debugToggleBtnStyle">
+  #debugToggleBtn
+  {
+  }
+</style>
 `;
 
 
@@ -174,10 +165,13 @@ const templateHTML =
     </div>
   </div>
 </div>
+
+<button id="debugToggleBtn"><img src="./assests/debug.png" alt="Debug"><span>Debug</span></button>
 `;
 
 
-var debugDiv;
+var debugDivStyle, debugToggleBtnStyle;
+var debugDiv, debugToggleBtn;
 var debugResizer;
 var debugResumeBtn, debugStepIntoBtn, debugStepOverBtn, debugStepOutBtn, debugSkipBtn;
 var debugCallStackList, debugLocalsList, debugGlobalsList;
@@ -192,9 +186,20 @@ var debugGlobalsItemValueMap = new Map;
 var debugBreakpointBackups = [];
 
 
+createStyles();
 createElements();
 setEvents();
 
+
+function createStyles()
+//
+{
+  const template = document.createElement("template");
+  template.innerHTML = templateCSS;
+
+  debugDivStyle = template.content.getElementById("debugDivStyle");
+  debugToggleBtnStyle = template.content.getElementById("debugToggleBtnStyle");
+}
 
 function createElements()
 //
@@ -203,6 +208,7 @@ function createElements()
   template.innerHTML = templateHTML;
 
   debugDiv = template.content.getElementById("debugDiv");
+  debugToggleBtn = template.content.getElementById("debugToggleBtn");
   debugResizer = template.content.getElementById("debugResizer");
   debugResumeBtn = template.content.getElementById("debugResumeBtn");
   debugStepIntoBtn = template.content.getElementById("debugStepIntoBtn");
@@ -220,6 +226,7 @@ function setEvents()
   document.addEventListener("mousedown", document_onMouseDown);
   document.addEventListener("mousemove", document_onMouseMove);
   document.addEventListener("mouseup", document_onMouseUp);
+  debugToggleBtn.addEventListener("click", debugToggleBtn_onClick);
   debugResumeBtn.addEventListener("click", debugResumeBtn_onClick);
   debugStepIntoBtn.addEventListener("click", debugStepIntoBtn_onClick);
   debugStepOverBtn.addEventListener("click", debugStepOverBtn_onClick);
@@ -232,6 +239,30 @@ function setEvents()
   MainUI.uiOnProgEndHandlers.push(debugUI_onProgEnd);
   
   MainUI.uiMessageMap.set(DebugCommon.MSGID_DEBUG_UPDATE_UI, onMsgDebugUpdateUI);
+}
+
+function debugToggleDiv()
+//
+{
+  if(isDebugging)
+  { 
+    EditorUI.debugToggleBtn.style.border = "";
+	  debugDiv.style.display = "none";
+    debugDiv.parentElement.style.marginLeft = "0";
+    debugChangeUIStatus(DebugCommon.DEBUG_UI_STATUS_DISABLED);
+    
+    MainUI.progWorker.postMessage({msgId: DebugCommon.MSGID_DEBUG_DISABLE, msgData: null});
+  }
+  else
+  {
+    EditorUI.debugToggleBtn.style.border = "inset 2px";
+	  debugDiv.style.display = "block";
+    debugDiv.parentElement.style.marginLeft = debugDiv.offsetWidth + "px";
+
+    MainUI.progWorker.postMessage({msgId: DebugCommon.MSGID_DEBUG_ENABLE, msgData: null});
+  }
+
+  isDebugging = !isDebugging;
 }
 
 function debugResyncWorker()
@@ -424,6 +455,12 @@ function document_onMouseUp(event)
   document.body.style.userSelect = "";
   document.body.style.cursor = "";
   debugIsResizing = false;
+}
+
+function debugToggleBtn_onClick(event)
+//
+{
+  debugToggleDiv();
 }
 
 function debugResumeBtn_onClick(event)

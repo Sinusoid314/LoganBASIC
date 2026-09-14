@@ -3,7 +3,6 @@ import * as DebugUI from "../debug/debug_ui.js";
 import * as MainCommon from "../main_common.js";
 
 
-export const debugToggleBtn;
 export const aboutDialog;
 export var codeHasChanged = false;
 
@@ -276,7 +275,6 @@ const templateHTML =
   <button id="runBtn"><img src="./assests/run.png" alt="Run"><span>Run</span></button>
   <button id="stopBtn" disabled><img src="./assests/stop.png" alt="Stop"><span>Stop</span></button>
   <div class="bar-seperator"></div>
-  <button id="debugToggleBtn"><img src="./assests/debug.png" alt="Debug"><span>Debug</span></button>
   <div class="bar-seperator"></div>
 </div>
 
@@ -371,7 +369,6 @@ function createElements()
   editorGutter = template.content.getElementById("editorGutter");
   runBtn = template.content.getElementById("runBtn");
   stopBtn = template.content.getElementById("stopBtn");
-  debugToggleBtn = template.content.getElementById("debugToggleBtn");
   aboutDialog = template.content.getElementById("aboutDialog");
 }
 
@@ -389,7 +386,6 @@ function setEvents()
   editorCode.addEventListener("scroll", editor_onScroll);
   runBtn.addEventListener("click", runBtn_onClick);
   stopBtn.addEventListener("click", stopBtn_onClick);
-  debugToggleBtn.addEventListener("click", debugToggleBtn_onClick);
   
   MainUI.uiOnMainResetHandlers.push(editorUI_onMainReset);
   MainUI.uiOnProgStartHandlers.push(editorUI_onProgStart);
@@ -676,12 +672,6 @@ function stopBtn_onClick(event)
 //
 {
   MainUI.endProg("Program stopped.", MainUI.PROG_EXIT_STATUS_TERMINATED, null);
-}
-
-function debugToggleBtn_onClick(event)
-//
-{
-  DebugUI.debugToggleDiv();
 }
 
 function editorUI_onMainReset()
