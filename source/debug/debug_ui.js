@@ -12,7 +12,7 @@ export function mountDiv(targetElement, insertPosition)
   targetElement.insertAdjacentElement(insertPosition, debugDiv);
 }
 
-export function mountToggle(targetElement, insertPosition)
+export function mountToggleBtn(targetElement, insertPosition)
 //
 {
   document.head.appendChild(debugToggleBtnStyle);
