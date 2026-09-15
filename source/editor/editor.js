@@ -13,7 +13,11 @@ export function mount(targetElement, targetStatusElement)
   targetElement.insertAdjacentElement("beforeend", menuBar);
   targetElement.insertAdjacentElement("beforeend", editorDiv);
   targetElement.insertAdjacentElement("beforeend", commandBar);
+}
 
+export function setStatusElement(targetStatusElement)
+//
+{
   statusElement = targetStatusElement;
 }
 
