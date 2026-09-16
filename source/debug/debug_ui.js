@@ -1,6 +1,6 @@
 import * as Objects from "../core/objects.js";
 import * as MainUI from "../main_ui.js";
-import * as EditorUI from "../editor/editor.js";
+import * as Editor from "../editor/editor.js";
 import * as MainCommon from "../main_common.js";
 import * as DebugCommon from "./debug_common.js";
 
@@ -246,7 +246,7 @@ function debugToggleDiv()
 {
   if(isDebugging)
   { 
-    EditorUI.debugToggleBtn.style.border = "";
+    Editor.debugToggleBtn.style.border = "";
 	  debugDiv.style.display = "none";
     debugDiv.parentElement.style.marginLeft = "0";
     debugChangeUIStatus(DebugCommon.DEBUG_UI_STATUS_DISABLED);
@@ -255,7 +255,7 @@ function debugToggleDiv()
   }
   else
   {
-    EditorUI.debugToggleBtn.style.border = "inset 2px";
+    Editor.debugToggleBtn.style.border = "inset 2px";
 	  debugDiv.style.display = "block";
     debugDiv.parentElement.style.marginLeft = debugDiv.offsetWidth + "px";
 
@@ -296,7 +296,7 @@ function debugChangeUIStatus(newStatus)
 function debugClearDisplays()
 //
 {
-  EditorUI.selectEditorLine(0);
+  Editor.selectEditorLine(0);
   
   debugClearCallFrameList();
   debugClearLocalsList();
@@ -343,7 +343,7 @@ function debugExpandVarListItem(parentItem, itemValueMap, childList)
   switch(parentValue.type)
   {
     case Objects.OBJ_TYPE_USER_FUNC:
-      EditorUI.selectEditorLine(parentValue.declSourceLineNum);
+      Editor.selectEditorLine(parentValue.declSourceLineNum);
       return;
 
     case Objects.OBJ_TYPE_ARRAY:
@@ -558,7 +558,7 @@ function debugUI_onProgEnd(exitStatus, error)
 function onMsgDebugUpdateUI(msgData)
 //
 {
-  EditorUI.selectEditorLine(msgData.sourceLineNum);
+  Editor.selectEditorLine(msgData.sourceLineNum);
 
   debugChangeUIStatus(msgData.uiStatus);
 
