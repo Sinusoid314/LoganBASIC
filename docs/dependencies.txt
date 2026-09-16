@@ -55,24 +55,24 @@ IMPORTS
 (X) canvas_worker -> Objects.ObjUserFunc
                             .ObjNativeFunc
                   -> VM.CallbackContext
-                  -> MainWorker.workerOnProgEndHandlers
+                  -> MainWorker.mainVM
+                               .workerOnProgEndHandlers
                                .workerMessageMap
                                .setExpectedResultMessageID()
-                               .mainVM
                   -> CanvasCommon.MSGID_*
 
 (X) console_worker -> Objects.ObjNativeFunc
                    -> VM.VM_EVENT_*
                         .CallbackContext
-                   -> MainWorker.workerOnProgEndHandlers
+                   -> MainWorker.mainVM
+                                .workerOnProgEndHandlers
                                 .workerMessageMap
-                                .mainVM
                    -> ConsoleCommon.MSGID_*
 
 (X) debug_worker -> VM.VM_EVENT_*
-                 -> MainWorker.workerOnProgEndHandlers
+                 -> MainWorker.mainVM
+                              .workerOnProgEndHandlers
                               .workerMessageMap
-                              .mainVM
                  -> MainCommon.mainSourceName
                  -> DebugCommon.MSGID_*
                                .DEBUG_UI_STATUS_*
@@ -80,19 +80,19 @@ IMPORTS
 
 (X) sound_worker -> Objects.ObjNativeFunc
                  -> VM.CallbackContext
-                 -> MainWorker.workerOnProgEndHandlers
+                 -> MainWorker.mainVM
+                              .workerOnProgEndHandlers
                               .workerMessageMap
                               .setExpectedResultMessageID()
-                              .mainVM
                  -> SoundCommon.MSGID_*
 
 (X) sprite_worker -> Objects.ObjNativeFunc
                             .ObjStructure
                   -> VM.CallbackContext
-                  -> MainWorker.workerOnProgEndHandlers
+                  -> MainWorker.mainVM
+                               .workerOnProgEndHandlers
                                .workerMessageMap
                                .setExpectedResultMessageID()
-                               .mainVM
                   -> SpriteCommon.MSGID_*
 
 
@@ -110,29 +110,29 @@ IMPORTS
                          .mainMode
                          .setMainMode()
 
-(X) canvas_ui -> MainUI.isRunning
+(X) canvas_ui -> MainUI.uiOnMainResetHandlers
+                       .isRunning
                        .uiOnProgStartHandlers
                        .uiOnProgEndHandlers
-                       .uiOnMainResetHandlers
                        .progWorker
                        .uiMessageMap
               -> CanvasCommon.MSGID_*
 
-(X) console_ui -> MainUI.isRunning
+(X) console_ui -> MainUI.uiOnMainResetHandlers
+                        .isRunning
                         .uiOnProgStartHandlers
                         .uiOnProgEndHandlers
-                        .uiOnMainResetHandlers
                         .progWorker
                         .uiMessageMap
                -> ConsoleCommon.MSGID_*
 
 (X) debug_ui -> Objects.OBJ_TYPE_*
                        .ObjArray
-             -> MainUI.PROG_EXIT_STATUS_*
+             -> MainUI.uiOnMainResetHandlers
+                      .PROG_EXIT_STATUS_*
                       .isRunning
                       .uiOnProgStartHandlers
                       .uiOnProgEndHandlers
-                      .uiOnMainResetHandlers
                       .progWorker
                       .uiMessageMap
              -> EditorUI.selectEditorLine()
@@ -141,12 +141,12 @@ IMPORTS
                            .DEBUG_UI_STATUS_*
                            .DebugBreakpoint
 
-(X) editor -> MainUI.PROG_EXIT_STATUS_*
+(X) editor -> MainUI.uiOnMainResetHandlers
+                    .resetMain()
+                    .PROG_EXIT_STATUS_*
                     .isRunning
                     .uiOnProgStartHandlers
                     .uiOnProgEndHandlers
-                    .uiOnMainResetHandlers
-                    .resetMain()
                     .startProg()
                     .endProg()
            -> DebugUI.debugAddBreakpoint()
