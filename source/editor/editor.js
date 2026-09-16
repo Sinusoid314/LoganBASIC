@@ -6,13 +6,26 @@ import * as MainCommon from "../main_common.js";
 export const aboutDialog;
 export var codeHasChanged = false;
 
-export function mount(targetElement, targetStatusElement)
+export function mountDiv(targetElement, insertPosition)
 //
 {
-  document.head.appendChild(document.createElement('style')).textContent = templateCSS;
-  targetElement.insertAdjacentElement("beforeend", menuBar);
-  targetElement.insertAdjacentElement("beforeend", editorDiv);
-  targetElement.insertAdjacentElement("beforeend", commandBar);
+  document.head.appendChild(editorDivStyle);
+  targetElement.insertAdjacentElement(insertPosition, editorDiv);
+  
+}
+
+export function mountMenuBar(targetElement, insertPosition)
+//
+{
+  document.head.appendChild(menuBarStyle);
+  targetElement.insertAdjacentElement(insertPosition, menuBar);
+}
+
+export function mountCommandBar(targetElement, insertPosition)
+//
+{
+  document.head.appendChild(commandBarStyle);
+  targetElement.insertAdjacentElement(insertPosition, commandBar);
 }
 
 export function setStatusElement(targetStatusElement)

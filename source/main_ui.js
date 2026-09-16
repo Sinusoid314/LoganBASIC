@@ -297,8 +297,10 @@ function mountUIComponents()
   {
     DebugUI.mountDiv(mainDiv, "beforeend");
     DebugUI.mountToggleBtn(commandBar, "beforeend");
-    EditorUI.mount(mainDiv, "beforeend", statusBar);
+
+    EditorUI.mountDiv(mainDiv, "beforeend", statusBar);
     EditorUI.setStatusElement(statusBar);
+    
     mainDiv.insertAdjacentElement("beforeend", statusBar);
   }
 

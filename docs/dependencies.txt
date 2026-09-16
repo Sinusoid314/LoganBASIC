@@ -135,8 +135,7 @@ IMPORTS
                       .uiOnMainResetHandlers
                       .progWorker
                       .uiMessageMap
-             -> EditorUI.debugToggleBtn
-                        .selectEditorLine()
+             -> EditorUI.selectEditorLine()
              -> MainCommon.mainSourceName
              -> DebugCommon.MSGID_*
                            .DEBUG_UI_STATUS_*
@@ -259,7 +258,6 @@ EXPORTS
       - debugToggleDiv()
 
 (X) editor
-      - debugToggleBtn
       - aboutDialog
       - codeHasChanged
       - toggleUpdatesBtnHighlighted()
