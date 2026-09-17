@@ -208,7 +208,7 @@ const templateHTML =
 `;
 
 
-var ThreadMsgUI, About, DebugUI, FileOps, Editor, ProgLoadUI, ConsoleUI, CanvasUI, SoundUI, SpriteUI;
+var ThreadMsgUI, ProgLoadUI, About, DebugUI, Editor, FileOps, ConsoleUI, CanvasUI, SoundUI, SpriteUI;
 
 var mainDiv, statusBar, versionDiv;
 
@@ -275,12 +275,17 @@ function setEvents()
 async function loadUIComponents()
 //
 {
+  ThreadMsgUI = await import("./source/console/thread_msg_ui.js");
+  ProgLoadUI = await import("./source/console/prog_load_ui.js");
+
   if(MainCommon.mainMode == MainCommon.MAIN_MODE_EDIT)
   {
+    About = await import("./source/console/about.js");
     DebugUI = await import("./source/debug/debug_ui.js");
     Editor = await import("./source/editor/editor.js");
   }
 
+  FileOps = await import("./source/console/file_ops.js");
   ConsoleUI = await import("./source/console/console_ui.js");
   CanvasUI = await import("./source/canvas/canvas_ui.js");
   SoundUI = await import("./source/sound/sound_ui.js");
@@ -312,7 +317,7 @@ function mountUIComponents()
 }
 
 function initWorker()
-//Terminate and restart the worker thread
+//Initialize the worker thread
 {
   progWorker = new Worker('./source/main_worker.js?mode=' + MainCommon.mainMode, {type: "module"});
   progWorker.onmessage = mainUI_onMessage;

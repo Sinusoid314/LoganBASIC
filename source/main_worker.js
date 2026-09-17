@@ -20,7 +20,7 @@ const mainNativeFuncs = [
                 new Objects.ObjNativeFunc("version", 0, 0, funcVersion),
                ];
 
-var DebugWorker, ConsoleWorker, CanvasWorker, SoundWorker, SpriteWorker;
+var ThreadMsgWorker, ProgLoadWorker, DebugWorker, ConsoleWorker, CanvasWorker, SoundWorker, SpriteWorker;
 var pendingMessages = [];
 
 mainVM.addNativeFuncArray(StdFuncs.stdNativeFuncs);
@@ -56,6 +56,9 @@ function setMainWorkerEvents()
 async function loadWorkerComponents()
 //
 {
+  ThreadMsgWorker = await import("./source/console/thread_msg_worker.js");
+  ProgLoadWorker = await import("./source/console/prog_load_worker.js");
+
   if(MainCommon.mainMode == MainCommon.MAIN_MODE_EDIT)
     DebugWorker = await import('./debug/debug_worker.js');
 
