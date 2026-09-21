@@ -208,7 +208,7 @@ const templateHTML =
 `;
 
 
-var ThreadMsgUI, ProgLoadUI, About, DebugUI, Editor, FileOps, ConsoleUI, CanvasUI, SoundUI, SpriteUI;
+var ThreadMsgUI, ProgLoadUI, About, DebugUI, EditorUI, FileOps, ConsoleUI, CanvasUI, SoundUI, SpriteUI;
 
 var mainDiv, statusBar, versionDiv;
 
@@ -282,7 +282,7 @@ async function loadUIComponents()
   {
     About = await import("./source/console/about.js");
     DebugUI = await import("./source/debug/debug_ui.js");
-    Editor = await import("./source/editor/editor.js");
+    EditorUI = await import("./source/editor/editor_ui.js");
   }
 
   FileOps = await import("./source/console/file_ops.js");
@@ -303,8 +303,8 @@ function mountUIComponents()
     DebugUI.mountDiv(mainDiv, "beforeend");
     DebugUI.mountToggleBtn(commandBar, "beforeend");
 
-    Editor.mountDiv(mainDiv, "beforeend");
-    Editor.setStatusElement(statusBar);
+    EditorUI.mountDiv(mainDiv, "beforeend");
+    EditorUI.setStatusElement(statusBar);
     
     mainDiv.insertAdjacentElement("beforeend", statusBar);
   }
@@ -380,12 +380,12 @@ async function window_onLoad(event)
     
     if(!checkIfWelcomeHasBeenShown() && !autoRun)
     {
-      Editor.aboutDialog.showModal();
+      EditorUI.aboutDialog.showModal();
     }
     else
     {
       if(checkIfVersionHasChanged() && !autoRun)
-        Editor.toggleUpdatesBtnHighlighted();
+        EditorUI.toggleUpdatesBtnHighlighted();
     }
 
     if(paramFileURL == "")
@@ -393,19 +393,19 @@ async function window_onLoad(event)
 
     try
     {
-      Editor.beginFileOpAwait(`Loading '${paramFileURL}'...`);
+      EditorUI.beginFileOpAwait(`Loading '${paramFileURL}'...`);
 
-      codeFile = await ((paramFileURL == "local") ? Editor.readCodeFileFromLocalStorage() : Editor.readCodeFileFromURL(paramFileURL));
-      Editor.loadCodeFileIntoEditor(codeFile);
+      codeFile = await ((paramFileURL == "local") ? EditorUI.readCodeFileFromLocalStorage() : EditorUI.readCodeFileFromURL(paramFileURL));
+      EditorUI.loadCodeFileIntoEditor(codeFile);
 
-      Editor.endFileOpAwait("File loaded successfully.");
+      EditorUI.endFileOpAwait("File loaded successfully.");
 
       if(autoRun)
         startProg(codeFile.data);
     }
     catch(errorMessage)
     {
-      Editor.endFileOpAwait(errorMessage);
+      EditorUI.endFileOpAwait(errorMessage);
     }
 
     return;
@@ -423,7 +423,7 @@ function window_onBeforeUnload(event)
 {
   if(MainCommon.mainMode == MainCommon.MAIN_MODE_EDIT)
   {
-    if(Editor.codeHasChanged)
+    if(EditorUI.codeHasChanged)
     {
       event.preventDefault();
       event.returnValue = "";
