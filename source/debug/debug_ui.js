@@ -12,11 +12,26 @@ export function mountDiv(targetElement, insertPosition)
   targetElement.insertAdjacentElement(insertPosition, debugDiv);
 }
 
-export function mountToggleBtn(targetElement, insertPosition)
+export function debugToggleDiv()
 //
 {
-  document.head.appendChild(debugToggleBtnStyle);
-  targetElement.insertAdjacentElement(insertPosition, debugToggleBtn);
+  if(isDebugging)
+  {
+	  debugDiv.style.display = "none";
+    debugDiv.parentElement.style.marginLeft = "0";
+    debugChangeUIStatus(DebugCommon.DEBUG_UI_STATUS_DISABLED);
+    
+    MainUI.progWorker.postMessage({msgId: DebugCommon.MSGID_DEBUG_DISABLE, msgData: null});
+  }
+  else
+  {
+	  debugDiv.style.display = "block";
+    debugDiv.parentElement.style.marginLeft = debugDiv.offsetWidth + "px";
+
+    MainUI.progWorker.postMessage({msgId: DebugCommon.MSGID_DEBUG_ENABLE, msgData: null});
+  }
+
+  isDebugging = !isDebugging;
 }
 
 export function debugAddBreakpoint(sourceLineNum, sourceName)
@@ -119,12 +134,6 @@ const templateCSS =
     white-space: nowrap;
   }
 </style>
-
-<style id="debugToggleBtnStyle">
-  #debugToggleBtn
-  {
-  }
-</style>
 `;
 
 
@@ -165,13 +174,11 @@ const templateHTML =
     </div>
   </div>
 </div>
-
-<button id="debugToggleBtn"><img src="./assests/debug.png" alt="Debug"><span>Debug</span></button>
 `;
 
 
-var debugDivStyle, debugToggleBtnStyle;
-var debugDiv, debugToggleBtn;
+var debugDivStyle;
+var debugDiv;
 var debugResizer;
 var debugResumeBtn, debugStepIntoBtn, debugStepOverBtn, debugStepOutBtn, debugSkipBtn;
 var debugCallStackList, debugLocalsList, debugGlobalsList;
@@ -198,7 +205,6 @@ function createStyles()
   template.innerHTML = templateCSS;
 
   debugDivStyle = template.content.getElementById("debugDivStyle");
-  debugToggleBtnStyle = template.content.getElementById("debugToggleBtnStyle");
 }
 
 function createElements()
@@ -208,7 +214,6 @@ function createElements()
   template.innerHTML = templateHTML;
 
   debugDiv = template.content.getElementById("debugDiv");
-  debugToggleBtn = template.content.getElementById("debugToggleBtn");
   debugResizer = template.content.getElementById("debugResizer");
   debugResumeBtn = template.content.getElementById("debugResumeBtn");
   debugStepIntoBtn = template.content.getElementById("debugStepIntoBtn");
@@ -226,7 +231,6 @@ function setEvents()
   document.addEventListener("mousedown", document_onMouseDown);
   document.addEventListener("mousemove", document_onMouseMove);
   document.addEventListener("mouseup", document_onMouseUp);
-  debugToggleBtn.addEventListener("click", debugToggleBtn_onClick);
   debugResumeBtn.addEventListener("click", debugResumeBtn_onClick);
   debugStepIntoBtn.addEventListener("click", debugStepIntoBtn_onClick);
   debugStepOverBtn.addEventListener("click", debugStepOverBtn_onClick);
@@ -239,30 +243,6 @@ function setEvents()
   MainUI.uiOnProgEndHandlers.push(debugUI_onProgEnd);
   
   MainUI.uiMessageMap.set(DebugCommon.MSGID_DEBUG_UPDATE_UI, onMsgDebugUpdateUI);
-}
-
-function debugToggleDiv()
-//
-{
-  if(isDebugging)
-  { 
-    EditorUI.debugToggleBtn.style.border = "";
-	  debugDiv.style.display = "none";
-    debugDiv.parentElement.style.marginLeft = "0";
-    debugChangeUIStatus(DebugCommon.DEBUG_UI_STATUS_DISABLED);
-    
-    MainUI.progWorker.postMessage({msgId: DebugCommon.MSGID_DEBUG_DISABLE, msgData: null});
-  }
-  else
-  {
-    EditorUI.debugToggleBtn.style.border = "inset 2px";
-	  debugDiv.style.display = "block";
-    debugDiv.parentElement.style.marginLeft = debugDiv.offsetWidth + "px";
-
-    MainUI.progWorker.postMessage({msgId: DebugCommon.MSGID_DEBUG_ENABLE, msgData: null});
-  }
-
-  isDebugging = !isDebugging;
 }
 
 function debugResyncWorker()
@@ -455,12 +435,6 @@ function document_onMouseUp(event)
   document.body.style.userSelect = "";
   document.body.style.cursor = "";
   debugIsResizing = false;
-}
-
-function debugToggleBtn_onClick(event)
-//
-{
-  debugToggleDiv();
 }
 
 function debugResumeBtn_onClick(event)

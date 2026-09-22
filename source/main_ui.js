@@ -301,7 +301,6 @@ function mountUIComponents()
   if(MainCommon.mainMode == MainCommon.MAIN_MODE_EDIT)
   {
     DebugUI.mountDiv(mainDiv, "beforeend");
-    DebugUI.mountToggleBtn(commandBar, "beforeend");
 
     EditorUI.mountDiv(mainDiv, "beforeend");
     EditorUI.setStatusElement(statusBar);
