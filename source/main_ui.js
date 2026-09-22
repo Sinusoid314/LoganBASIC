@@ -55,146 +55,154 @@ export function endProg(exitMessage, exitStatus, error)
 
 const templateCSS =
 `
-*
-{
-  box-sizing: border-box;
-}
+<style id="mainUIStyle">
+  *
+  {
+    box-sizing: border-box;
+  }
 
-body
-{
-  background-color: lightgray;
-}
-
-@keyframes buttonBlinkAnimation {
-  0%, 100%
+  body
   {
     background-color: lightgray;
-    color: black;
+  }
+
+  @keyframes buttonBlinkAnimation {
+    0%, 100%
+    {
+      background-color: lightgray;
+      color: black;
+      text-shadow: 1px 1px white;
+    }
+    50%
+    {
+      background-color: royalblue;
+      color: white;
+      text-shadow: none;
+    }
+  }
+
+  .buttonBlink {
+    animation: buttonBlinkAnimation 2s 3;
+  }
+
+  button img
+  {
+    vertical-align: middle;
+    margin-right: 0.3em;
+  }
+
+  button:disabled img
+  {
+    opacity: 0.5;
+    filter: grayscale(100%);
+  }
+
+  button span
+  {
+    vertical-align: middle;
+  }
+
+  .buttonFace,
+  button,
+  .bar,
+  #statusBar
+  {
+    background-color: lightgray;
+    padding: 4px;
+    border: 1px solid lightgray;
+  }
+
+  .buttonFaceReleased,
+  button:not(:disabled):not(:active):hover,
+  .bar
+  {
+    border-bottom: 1px solid gray;
+    border-right: 1px solid gray;
+    border-top: 1px solid white;
+    border-left: 1px solid white;
+  }
+
+  .buttonFacePressed,
+  button:not(:disabled):active,
+  #statusBar
+  {
+    border-bottom: 1px solid white;
+    border-right: 1px solid white;
+    border-top: 1px solid gray;
+    border-left: 1px solid gray;
+  }
+
+  button:focus-visible
+  {
+    outline: 1px solid black;
+  }
+
+  button
+  {
     text-shadow: 1px 1px white;
   }
-  50%
+
+  .bar-seperator
   {
-    background-color: royalblue;
-    color: white;
-    text-shadow: none;
+    display: inline;
+    border-left: 1px solid gray;
+    border-right: 1px solid white;
+    margin-left: 8px;
+    margin-right: 8px;
   }
-}
 
-.buttonBlink {
-  animation: buttonBlinkAnimation 2s 3;
-}
+  .toggle-open
+  {
+    text-shadow: 1px 1px lightgray;
+    cursor: pointer;
+    user-select: none;
+  }
 
-button img
-{
-  vertical-align: middle;
-  margin-right: 0.3em;
-}
+  .toggle-open::after
+  {
+    content: "\\25BC";
+    color: black;
+    display: inline-block;
+    margin-left: 6px;
+  }
 
-button:disabled img
-{
-  opacity: 0.5;
-  filter: grayscale(100%);
-}
+  .toggle-closed::after
+  {
+    transform: rotate(-90deg);
+  }
 
-button span
-{
-  vertical-align: middle;
-}
+  .pane-open
+  {
+    display: block;
+  }
 
-.buttonFace,
-button,
-.bar,
-#statusBar
-{
-  background-color: lightgray;
-  padding: 4px;
-  border: 1px solid lightgray;
-}
+  .pane-closed
+  {
+    display: none;
+  }
+</style>
 
-.buttonFaceReleased,
-button:not(:disabled):not(:active):hover,
-.bar
-{
-  border-bottom: 1px solid gray;
-  border-right: 1px solid gray;
-  border-top: 1px solid white;
-  border-left: 1px solid white;
-}
+<style id="mainDivStyle">
+  #mainDiv
+  {
+    padding: 0px;
+  }
+</style>
 
-.buttonFacePressed,
-button:not(:disabled):active,
-#statusBar
-{
-  border-bottom: 1px solid white;
-  border-right: 1px solid white;
-  border-top: 1px solid gray;
-  border-left: 1px solid gray;
-}
+<style id="statusBarStyle">
+  #statusBar
+  {
+    margin-bottom: 20px;
+    white-space: pre-wrap;
+  }
+</style>
 
-button:focus-visible
-{
-  outline: 1px solid black;
-}
-
-button
-{
-  text-shadow: 1px 1px white;
-}
-
-.bar-seperator
-{
-  display: inline;
-  border-left: 1px solid gray;
-  border-right: 1px solid white;
-  margin-left: 8px;
-  margin-right: 8px;
-}
-
-.toggle-open
-{
-  text-shadow: 1px 1px lightgray;
-  cursor: pointer;
-  user-select: none;
-}
-
-.toggle-open::after
-{
-  content: "\\25BC";
-  color: black;
-  display: inline-block;
-  margin-left: 6px;
-}
-
-.toggle-closed::after
-{
-  transform: rotate(-90deg);
-}
-
-.pane-open
-{
-  display: block;
-}
-
-.pane-closed
-{
-  display: none;
-}
-
-#mainDiv
-{
-  padding: 0px;
-}
-
-#statusBar
-{
-  margin-bottom: 20px;
-  white-space: pre-wrap;
-}
-
-#versionDiv
-{
-  margin-top: 30px;
-}
+<style id="versionDivStyle">
+  #versionDiv
+  {
+    margin-top: 30px;
+  }
+</style>
 `;
 
 
@@ -208,8 +216,9 @@ const templateHTML =
 `;
 
 
-var ThreadMsgUI, ProgLoadUI, About, DebugUI, EditorUI, FileOps, ConsoleUI, CanvasUI, SoundUI, SpriteUI;
+var ThreadMsgUI, ProgLoadUI, About, DebugUI, EditorUI, ConsoleUI, CanvasUI, SoundUI, SpriteUI;
 
+var mainUIStyle, mainDivStyle, statusBarStyle, versionDivStyle;
 var mainDiv, statusBar, versionDiv;
 
 var paramFileURL = "";
@@ -220,6 +229,7 @@ const LAST_VISITED_VERSION_KEY = "lastVisitedVersion";
 
 readURLParams();
 
+createStyles();
 createElements();
 setEvents();
 
@@ -249,6 +259,18 @@ function readURLParams()
     if(urlParams.has("autoRun"))
       autoRun = (urlParams.get("autoRun").toLowerCase() == "true");
   }
+}
+
+function createStyles()
+//
+{
+  const template = document.createElement("template");
+  template.innerHTML = templateCSS;
+
+  mainUIStyle = template.content.getElementById("mainUIStyle");
+  mainDivStyle = template.content.getElementById("mainDivStyle");
+  statusBarStyle = template.content.getElementById("statusBarStyle");
+  versionDivStyle = template.content.getElementById("versionDivStyle");
 }
 
 function createElements()
@@ -294,8 +316,9 @@ async function loadUIComponents()
 function mountUIComponents()
 //
 {
-  document.head.appendChild(document.createElement('style')).textContent = templateCSS;
-  document.body.insertAdjacentElement("beforeend", mainDiv);
+  document.head.appendChild(mainUIStyle);
+
+  mountMainDiv();
 
   if(MainCommon.mainMode == MainCommon.MAIN_MODE_EDIT)
   {
@@ -307,14 +330,35 @@ function mountUIComponents()
     EditorUI.mountAboutDialog(mainDiv);
     EditorUI.setStatusElement(statusBar);
     
-    mainDiv.insertAdjacentElement("beforeend", statusBar);
+    mountStatusBar();
   }
 
   ConsoleUI.mountDiv(mainDiv);
   CanvasUI.mountDiv(mainDiv);
 
   if(MainCommon.mainMode == MainCommon.MAIN_MODE_EDIT)
-    mainDiv.insertAdjacentElement("beforeend", versionDiv);
+    mountVersionDiv();
+}
+
+function mountMainDiv()
+//
+{
+  document.head.appendChild(mainDivStyle);
+  document.body.insertAdjacentElement("beforeend", mainDiv);
+}
+
+function mountStatusBar()
+//
+{
+  document.head.appendChild(statusBarStyle);
+  mainDiv.insertAdjacentElement("beforeend", statusBar);
+}
+
+function mountVersionDiv()
+//
+{
+  document.head.appendChild(versionDivStyle);
+  mainDiv.insertAdjacentElement("beforeend", versionDiv);
 }
 
 function initWorker()
