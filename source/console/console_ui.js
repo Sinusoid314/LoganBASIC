@@ -2,34 +2,36 @@ import * as MainUI from "../main_ui.js";
 import * as ConsoleCommon from "./console_common.js";
 
 
-export function mount(targetElement)
+export function mountDiv(targetElement, insertPosition)
 //
 {
-  document.head.appendChild(document.createElement('style')).textContent = templateCSS;
+  document.head.appendChild(consoleDivStyle);
   targetElement.insertAdjacentElement("beforeend", consoleDiv);
 }
 
 
 const templateCSS =
 `
-#consoleOutput
-{
-  display: block;
-  margin-top: 5px;
-  width: 100%;
-}
+<style id="consoleDivStyle">
+  #consoleOutput
+  {
+    display: block;
+    margin-top: 5px;
+    width: 100%;
+  }
 
-#consoleInputDiv
-{
-  display: none;
-  margin-top: 5px;
-  width: 100%;
-}
+  #consoleInputDiv
+  {
+    display: none;
+    margin-top: 5px;
+    width: 100%;
+  }
 
-#consoleDiv
-{
-  margin-bottom: 20px;
-}
+  #consoleDiv
+  {
+    margin-bottom: 20px;
+  }
+</style>
 `;
 
 
@@ -48,14 +50,25 @@ const templateHTML =
 `;
 
 
+var consoleDivStyle;
 var consoleDiv;
 var consoleOutput;
 var consoleInputDiv, consoleInput, consoleInputBtn;
 
 
+createStyles();
 createElements();
 setEvents();
 
+
+function createStyles()
+//
+{
+  const template = document.createElement("template");
+  template.innerHTML = templateCSS;
+
+  consoleDivStyle = template.content.getElementById("consoleDivStyle");
+}
 
 function createElements()
 //
