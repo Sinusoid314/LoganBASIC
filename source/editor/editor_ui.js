@@ -3,7 +3,6 @@ import * as DebugUI from "../debug/debug_ui.js";
 import * as MainCommon from "../main_common.js";
 
 
-export var debugToggleBtn;
 export var aboutDialog;
 export var codeHasChanged = false;
 
@@ -349,7 +348,7 @@ var newBtn, openBtn, saveBtn;
 var examplesBtn, helpBtn, aboutBtn, updatesBtn;
 var codeFileNameDisplay;
 var editorCode, editorGutter;
-var runBtn, stopBtn;
+var runBtn, stopBtn, debugToggleBtn;
 
 var statusElement;
 
@@ -698,7 +697,7 @@ function stopBtn_onClick(event)
 function debugToggleBtn_onClick(event)
 //
 {
-  debugToggleBtn.style.border = (debugToggleBtn.style.border == "") ? "inset 2px" : "";
+  debugToggleBtn.style.border = (DebugUI.isDebugging) ? "" : "inset 2px";
   DebugUI.debugToggleDiv();
 }
 

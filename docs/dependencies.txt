@@ -157,7 +157,8 @@ IMPORTS
                     .uiOnProgEndHandlers
                     .startProg()
                     .endProg()
-           -> DebugUI.debugAddBreakpoint()
+           -> DebugUI.isDebugging
+                     .debugAddBreakpoint()
                      .debugRemoveBreakpoint()
                      .debugToggleDiv()
            -> MainCommon.mainSourceName

@@ -5,6 +5,8 @@ import * as MainCommon from "../main_common.js";
 import * as DebugCommon from "./debug_common.js";
 
 
+export var isDebugging = false;
+
 export function mountDiv(targetElement, insertPosition)
 //
 {
@@ -183,7 +185,6 @@ var debugResizer;
 var debugResumeBtn, debugStepIntoBtn, debugStepOverBtn, debugStepOutBtn, debugSkipBtn;
 var debugCallStackList, debugLocalsList, debugGlobalsList;
 
-var isDebugging = false;
 var debugIsResizing = false;
 
 var debugCurrLocals = null;
