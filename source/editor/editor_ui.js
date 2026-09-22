@@ -28,6 +28,13 @@ export function mountCommandBar(targetElement, insertPosition)
   targetElement.insertAdjacentElement(insertPosition, commandBar);
 }
 
+export function mountAboutDialog(targetElement, insertPosition)
+//
+{
+  document.head.appendChild(aboutDialogStyle);
+  targetElement.insertAdjacentElement(insertPosition, aboutDialog);
+}
+
 export function setStatusElement(targetStatusElement)
 //
 {
@@ -136,129 +143,137 @@ export function endFileOpAwait(statusMessage)
 
 const templateCSS =
 `
-#menuBar
-{
-  margin-bottom: 15px;
-}
+<style id="menuBarStyle">
+  #menuBar
+  {
+    margin-bottom: 15px;
+  }
+</style>
 
-#codeFileNameDisplay
-{
-  margin-left: 20px;
-  padding: 4px;
-}
+<style id="editorDivStyle">
+  #codeFileNameDisplay
+  {
+    margin-left: 20px;
+    padding: 4px;
+  }
 
-.editorBreakpoint
-{
-  background: darkred;
-  color: white;
-}
+  .editorBreakpoint
+  {
+    background: darkred;
+    color: white;
+  }
 
-.editorGutterItem
-{
-  counter-increment: lineNumber;
-  display: block;
-  padding-right: 5px;
-  border-radius: 30%;
-}
+  .editorGutterItem
+  {
+    counter-increment: lineNumber;
+    display: block;
+    padding-right: 5px;
+    border-radius: 30%;
+  }
 
-.editorGutterItem::before
-{
-  content: counter(lineNumber);
-}
+  .editorGutterItem::before
+  {
+    content: counter(lineNumber);
+  }
 
-#editorWrapper
-{
-  height: 225px;
-  width: 100%;
-  display: flex;
-  overflow-y: hidden;
-  resize: vertical;
-  gap: 1px;
-  font-family: monospace;
-  border: 1px solid;
-  margin-top: 5px;
-  background: #bfd5d0;
-}
+  #editorWrapper
+  {
+    height: 225px;
+    width: 100%;
+    display: flex;
+    overflow-y: hidden;
+    resize: vertical;
+    gap: 1px;
+    font-family: monospace;
+    border: 1px solid;
+    margin-top: 5px;
+    background: #bfd5d0;
+  }
 
-#editorGutter
-{
-  width: 40px;
-  height: 100%;
-  position: relative;
-  line-height: 15px;
-  text-align: right;
-  border: 1px inset;
-  background: #bfd5d0;
-}
+  #editorGutter
+  {
+    width: 40px;
+    height: 100%;
+    position: relative;
+    line-height: 15px;
+    text-align: right;
+    border: 1px inset;
+    background: #bfd5d0;
+  }
 
-#editorCode
-{
-  width: 100%;
-  line-height: 15px;
-  padding: 0;
-  border: 0px solid;
-  outline: none;
-  resize: none;
-  padding-left: 5px;
-}
+  #editorCode
+  {
+    width: 100%;
+    line-height: 15px;
+    padding: 0;
+    border: 0px solid;
+    outline: none;
+    resize: none;
+    padding-left: 5px;
+  }
+</style>
 
-#commandBar
-{
-  margin-top: 10px;
-  margin-bottom: 0px;
-}
+<style id="commandBarStyle">
+  #commandBar
+  {
+    margin-top: 10px;
+    margin-bottom: 0px;
+  }
 
-#runBtn
-{
-  padding-inline: 1.5em;
-  padding-block: 0.15em;
-  background-color: rgb(136, 236, 166);
-}
+  #runBtn
+  {
+    padding-inline: 1.5em;
+    padding-block: 0.15em;
+    background-color: rgb(136, 236, 166);
+  }
 
-#stopBtn
-{
-  padding-inline: 1.5em;
-  padding-block: 0.15em;
-  background-color: rgb(242, 168, 168);
-}
+  #stopBtn
+  {
+    padding-inline: 1.5em;
+    padding-block: 0.15em;
+    background-color: rgb(242, 168, 168);
+  }
+</style>
 
-#aboutDialog
-{
-  margin-block: auto;
-  margin-inline: 20%;
-}
+<style id="aboutDialogStyle">
+  #aboutDialog
+  {
+    margin-block: auto;
+    margin-inline: 20%;
+  }
 
-#aboutIcon
-{
-  float: left;
-}
+  #aboutIcon
+  {
+    float: left;
+  }
 
-#aboutForm
-{
-  margin-inline: 2em;
-  text-align: center;
-}
+  #aboutForm
+  {
+    margin-inline: 2em;
+    text-align: center;
+  }
 
-#aboutForm ul
-{
-  display: block;
-  text-align: left;
-  margin-top: 0;
-  margin-inline: 5em;
-  font-weight: bolder;
-  border: 0px solid black;
-}
+  #aboutForm ul
+  {
+    display: block;
+    text-align: left;
+    margin-top: 0;
+    margin-inline: 5em;
+    font-weight: bolder;
+    border: 0px solid black;
+  }
 
-#aboutForm ul li
-{
-  margin-block: 0.3em;
-}
+  #aboutForm ul li
+  {
+    margin-block: 0.3em;
+  }
 
-#aboutCloseBtn
-{
-  padding-inline: 1.5em;
-  padding-block: 0.5em;
-}
+  #aboutCloseBtn
+  {
+    padding-inline: 1.5em;
+    padding-block: 0.5em;
+  }
+</style>
 `;
 
 
@@ -343,6 +358,7 @@ const filePickerOptions =
 
 const DEFAULT_FILE_NAME = "untitled.bas";
 
+var menuBarStyle, editorDivStyle, commandBarStyle, aboutDialogStyle;
 var menuBar, editorDiv, commandBar;
 var newBtn, openBtn, saveBtn;
 var examplesBtn, helpBtn, aboutBtn, updatesBtn;
@@ -358,6 +374,7 @@ var codeFileHandle = null;
 var fileOpInProgress = false;
 
 
+createStyles();
 createElements();
 setEvents();
 
@@ -365,6 +382,18 @@ addEditorGutterItem();
 
 codeFileNameDisplay.innerText = codeFileName;
 
+
+function createStyles()
+//
+{
+  const template = document.createElement("template");
+  template.innerHTML = templateCSS;
+
+  menuBarStyle = template.content.getElementById("menuBarStyle");
+  editorDivStyle = template.content.getElementById("editorDivStyle");
+  commandBarStyle = template.content.getElementById("commandBarStyle");
+  aboutDialogStyle = template.content.getElementById("aboutDialogStyle");
+}
 
 function createElements()
 //
@@ -375,6 +404,7 @@ function createElements()
   menuBar = template.content.getElementById("menuBar");
   editorDiv = template.content.getElementById("editorDiv");
   commandBar = template.content.getElementById("commandBar");
+  aboutDialog = template.content.getElementById("aboutDialog");
   newBtn = template.content.getElementById("newBtn");
   openBtn = template.content.getElementById("openBtn");
   saveBtn = template.content.getElementById("saveBtn");
@@ -388,7 +418,6 @@ function createElements()
   runBtn = template.content.getElementById("runBtn");
   stopBtn = template.content.getElementById("stopBtn");
   debugToggleBtn = template.content.getElementById("debugToggleBtn");
-  aboutDialog = template.content.getElementById("aboutDialog");
 }
 
 function setEvents()

@@ -285,7 +285,6 @@ async function loadUIComponents()
     EditorUI = await import("./source/editor/editor_ui.js");
   }
 
-  FileOps = await import("./source/console/file_ops.js");
   ConsoleUI = await import("./source/console/console_ui.js");
   CanvasUI = await import("./source/canvas/canvas_ui.js");
   SoundUI = await import("./source/sound/sound_ui.js");
@@ -302,7 +301,10 @@ function mountUIComponents()
   {
     DebugUI.mountDiv(mainDiv, "beforeend");
 
+    EditorUI.mountMenuBar(mainDiv, "beforeend");
     EditorUI.mountDiv(mainDiv, "beforeend");
+    EditorUI.mountCommandBar(mainDiv, "beforeend");
+    EditorUI.mountAboutDialog(mainDiv, "beforeend");
     EditorUI.setStatusElement(statusBar);
     
     mainDiv.insertAdjacentElement("beforeend", statusBar);
