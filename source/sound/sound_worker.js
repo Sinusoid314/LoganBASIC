@@ -20,10 +20,10 @@ var soundResultCallback = null;
 
 MainWorker.mainVM.addNativeFuncArray(soundNativeFuncs);
 
-setSoundWorkerEvents();
+setEvents();
 
 
-function setSoundWorkerEvents()
+function setEvents()
 //
 {
   MainWorker.workerOnProgEndHandlers.push(soundWorker_onProgEnd);

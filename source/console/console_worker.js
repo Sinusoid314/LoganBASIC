@@ -14,10 +14,10 @@ var inputCallback = null;
 
 MainWorker.mainVM.addNativeFuncArray(consoleNativeFuncs);
 
-setConsoleWorkerEvents();
+setEvents();
 
 
-function setConsoleWorkerEvents()
+function setEvents()
 //
 {
   MainWorker.mainVM.addEventHook(VM.VM_EVENT_PRINT, onVMPrint);

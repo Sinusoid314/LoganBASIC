@@ -59,10 +59,10 @@ var debugBreakpoints = [];
 var debugLineChangeAction = DEBUG_ACTION_BREAK;
 var debugStepCallFrame = null;
 
-setDebugWorkerEvents();
+setEvents();
 
 
-function setDebugWorkerEvents()
+function setEvents()
 //
 {
   MainWorker.workerOnProgEndHandlers.push(debugWorker_onProgEnd);

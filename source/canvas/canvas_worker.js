@@ -69,10 +69,10 @@ canvasEvents.push(drawBufferDoneEvent);
 
 MainWorker.mainVM.addNativeFuncArray(canvasNativeFuncs);
 
-setCanvasWorkerEvents();
+setEvents();
 
 
-function setCanvasWorkerEvents()
+function setEvents()
 //
 {
   MainWorker.workerOnProgEndHandlers.push(canvasWorker_onProgEnd);

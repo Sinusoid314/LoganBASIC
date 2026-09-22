@@ -28,7 +28,7 @@ mainVM.addNativeFuncArray(mainNativeFuncs);
               
 readURLParams();
 
-setMainWorkerEvents();
+setEvents();
 
 await loadWorkerComponents();
 
@@ -42,7 +42,7 @@ function readURLParams()
     MainCommon.setMainMode(urlParams.get("mode"));
 }
 
-function setMainWorkerEvents()
+function setEvents()
 //
 {
   mainVM.addEventHook(VM.VM_EVENT_STATUS_CHANGE, onVMStatusChange);

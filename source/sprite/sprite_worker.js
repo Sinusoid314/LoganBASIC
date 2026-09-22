@@ -117,7 +117,7 @@ var prevUpdateDeltaTime = 0;
 
 MainWorker.mainVM.addNativeFuncArray(spriteNativeFuncs);
 
-setSpriteWorkerEvents();
+setEvents();
 
 
 function spritesCollided(testSprite, referenceSprite, deltaTime, contact)
@@ -209,7 +209,7 @@ function rayIntersectsRect(rayOriginX, rayOriginY, rayDirX, rayDirY, rectX, rect
   return true;
 }
 
-function setSpriteWorkerEvents()
+function setEvents()
 //
 {
   MainWorker.workerOnProgEndHandlers.push(spriteWorker_onProgEnd);
