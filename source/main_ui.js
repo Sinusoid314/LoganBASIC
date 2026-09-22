@@ -216,7 +216,7 @@ const templateHTML =
 `;
 
 
-var ThreadMsgUI, ProgLoadUI, About, DebugUI, EditorUI, ConsoleUI, CanvasUI, SoundUI, SpriteUI;
+var ThreadMsgUI, ProgLoadUI, AboutUI, DebugUI, EditorUI, ConsoleUI, CanvasUI, SoundUI, SpriteUI;
 
 var mainUIStyle, mainDivStyle, statusBarStyle, versionDivStyle;
 var mainDiv, statusBar, versionDiv;
@@ -297,12 +297,12 @@ function setEvents()
 async function loadUIComponents()
 //
 {
-  ThreadMsgUI = await import("./source/console/thread_msg_ui.js");
-  ProgLoadUI = await import("./source/console/prog_load_ui.js");
+  ThreadMsgUI = await import("./source/thread_msg/thread_msg_ui.js");
+  ProgLoadUI = await import("./source/prog_load/prog_load_ui.js");
 
   if(MainCommon.mainMode == MainCommon.MAIN_MODE_EDIT)
   {
-    About = await import("./source/console/about_ui.js");
+    AboutUI = await import("./source/about/about_ui.js");
     DebugUI = await import("./source/debug/debug_ui.js");
     EditorUI = await import("./source/editor/editor_ui.js");
   }
@@ -322,12 +322,13 @@ function mountUIComponents()
 
   if(MainCommon.mainMode == MainCommon.MAIN_MODE_EDIT)
   {
+    AboutUI.mountDialog(mainDiv);
+
     DebugUI.mountDiv(mainDiv);
 
     EditorUI.mountMenuBar(mainDiv);
     EditorUI.mountDiv(mainDiv);
     EditorUI.mountCommandBar(mainDiv);
-    EditorUI.mountAboutDialog(mainDiv);
     EditorUI.setStatusElement(statusBar);
     
     mountStatusBar();
@@ -425,7 +426,7 @@ async function window_onLoad(event)
     
     if(!checkIfWelcomeHasBeenShown() && !autoRun)
     {
-      EditorUI.aboutDialog.showModal();
+      AboutUI.showDialog();
     }
     else
     {

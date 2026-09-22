@@ -100,14 +100,15 @@ IMPORTS
                   -> SpriteCommon.MSGID_*
 
 
-(X) main_ui -> EditorUI.aboutDialog
-                       .toggleUpdatesBtnHighlighted()
+(X) main_ui -> EditorUI.toggleUpdatesBtnHighlighted()
                        .codeHasChanged
                        .readCodeFileFromLocalStorage()
                        .readCodeFileFromURL()
                        .loadCodeFileIntoEditor()
                        .beginFileOpAwait()
                        .endFileOpAwait()
+            -> AboutUI.mountDialog()
+                      .showDialog()
             -> MainCommon.MSGID_*
                          .MAIN_MODE_*
                          .lbVersion
@@ -118,7 +119,7 @@ IMPORTS
 
 ( ) prog_load_ui -> 
 
-( ) about_ui -> 
+(X) about_ui -> 
 
 (X) canvas_ui -> MainUI.uiOnMainResetHandlers
                        .isRunning
@@ -163,6 +164,7 @@ IMPORTS
                      .debugAddBreakpoint()
                      .debugRemoveBreakpoint()
                      .debugToggleDiv()
+           -> AboutUI.showDialog()
            -> MainCommon.mainSourceName
 
 (X) sound_ui -> MainUI.isRunning
@@ -269,8 +271,8 @@ EXPORTS
 ( ) prog_load_ui
       - 
 
-( ) about_ui
-      - 
+(X) about_ui
+      - showDialog()
 
 (X) canvas_ui
       - activeContext
@@ -284,7 +286,6 @@ EXPORTS
       - debugToggleDiv()
 
 (X) editor
-      - aboutDialog
       - codeHasChanged
       - toggleUpdatesBtnHighlighted()
       - selectEditorLine()
@@ -308,6 +309,9 @@ EXPORTS
       - lbVersion
       - mainMode
       - setMainMode()
+
+( ) prog_load_common
+      - 
 
 (X) canvas_common
       - MSGID_*

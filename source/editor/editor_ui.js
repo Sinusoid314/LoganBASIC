@@ -1,9 +1,9 @@
 import * as MainUI from "../main_ui.js";
 import * as DebugUI from "../debug/debug_ui.js";
+import * as AboutUI from "../about/about_ui.js";
 import * as MainCommon from "../main_common.js";
 
 
-export var aboutDialog;
 export var codeHasChanged = false;
 
 export function mountDiv(targetElement, insertPosition = "beforeend")
@@ -26,13 +26,6 @@ export function mountCommandBar(targetElement, insertPosition = "beforeend")
 {
   document.head.appendChild(commandBarStyle);
   targetElement.insertAdjacentElement(insertPosition, commandBar);
-}
-
-export function mountAboutDialog(targetElement, insertPosition = "beforeend")
-//
-{
-  document.head.appendChild(aboutDialogStyle);
-  targetElement.insertAdjacentElement(insertPosition, aboutDialog);
 }
 
 export function setStatusElement(targetStatusElement)
@@ -234,46 +227,6 @@ const templateCSS =
     background-color: rgb(242, 168, 168);
   }
 </style>
-
-<style id="aboutDialogStyle">
-  #aboutDialog
-  {
-    margin-block: auto;
-    margin-inline: 20%;
-  }
-
-  #aboutIcon
-  {
-    float: left;
-  }
-
-  #aboutForm
-  {
-    margin-inline: 2em;
-    text-align: center;
-  }
-
-  #aboutForm ul
-  {
-    display: block;
-    text-align: left;
-    margin-top: 0;
-    margin-inline: 5em;
-    font-weight: bolder;
-    border: 0px solid black;
-  }
-
-  #aboutForm ul li
-  {
-    margin-block: 0.3em;
-  }
-
-  #aboutCloseBtn
-  {
-    padding-inline: 1.5em;
-    padding-block: 0.5em;
-  }
-</style>
 `;
 
 
@@ -310,29 +263,6 @@ const templateHTML =
   <button id="debugToggleBtn"><img src="./assests/debug.png" alt="Debug"><span>Debug</span></button>
   <div class="bar-seperator"></div>
 </div>
-
-<dialog id="aboutDialog" class="buttonFace buttonFaceReleased">
-  <form id="aboutForm" method="dialog">
-    <div id="aboutContent">
-      <h1><img id="aboutIcon" src="./favicon.ico"> Welcome to Logan BASIC!</h1>
-      <p>
-        Logan BASIC is an online version of the <a href="https://en.wikipedia.org/wiki/BASIC" target="_blank">BASIC programming language</a>
-        that creates both text-based and graphics-based programs that run directly in the web browser.
-        <br><br>
-        To get started, you can:
-        <ul>
-          <li>Check out the <a href="./examples/examples.html" target="_blank">example programs</a>.</li>
-          <li>Browse the <a href="./docs/help/help.html" target="_blank">help files</a>.</li>
-          <li>Write your code in the Code Editor, hit the Run button, and watch your program come to life!</li>
-        </ul>
-        Send any questions, comments, or bug reports to <a href="mailto:sinusoid314@gmail.com">sinusoid314@gmail.com</a>.
-        <br>
-        See more of my projects at <a href="https://sinusoft.com" target="_blank">sinusoft.com</a>
-      </p>
-    </div>
-    <button id="aboutCloseBtn" type="submit">Close</button>
-  </form>
-</dialog>
 `;
 
 
@@ -358,7 +288,7 @@ const filePickerOptions =
 
 const DEFAULT_FILE_NAME = "untitled.bas";
 
-var menuBarStyle, editorDivStyle, commandBarStyle, aboutDialogStyle;
+var menuBarStyle, editorDivStyle, commandBarStyle;
 var menuBar, editorDiv, commandBar;
 var newBtn, openBtn, saveBtn;
 var examplesBtn, helpBtn, aboutBtn, updatesBtn;
@@ -392,7 +322,6 @@ function createStyles()
   menuBarStyle = template.content.getElementById("menuBarStyle");
   editorDivStyle = template.content.getElementById("editorDivStyle");
   commandBarStyle = template.content.getElementById("commandBarStyle");
-  aboutDialogStyle = template.content.getElementById("aboutDialogStyle");
 }
 
 function createElements()
@@ -404,7 +333,6 @@ function createElements()
   menuBar = template.content.getElementById("menuBar");
   editorDiv = template.content.getElementById("editorDiv");
   commandBar = template.content.getElementById("commandBar");
-  aboutDialog = template.content.getElementById("aboutDialog");
   newBtn = template.content.getElementById("newBtn");
   openBtn = template.content.getElementById("openBtn");
   saveBtn = template.content.getElementById("saveBtn");
@@ -677,7 +605,7 @@ function helpBtn_onClick(event)
 function aboutBtn_onClick(event)
 //Open the About dialog box
 {
-  aboutDialog.showModal();
+  AboutUI.showDialog();
 }
 
 function updatesBtn_onClick(event)
