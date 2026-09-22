@@ -52,6 +52,10 @@ IMPORTS
                              .mainMode
                              .setMainMode()
 
+( ) thread_msg_worker -> 
+
+( ) prog_load_worker -> 
+
 (X) canvas_worker -> Objects.ObjUserFunc
                             .ObjNativeFunc
                   -> VM.CallbackContext
@@ -109,6 +113,10 @@ IMPORTS
                          .lbVersion
                          .mainMode
                          .setMainMode()
+
+( ) thread_msg_ui -> 
+
+( ) prog_load_ui -> 
 
 (X) canvas_ui -> MainUI.uiOnMainResetHandlers
                        .isRunning
