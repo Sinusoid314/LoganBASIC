@@ -302,7 +302,7 @@ async function loadUIComponents()
 
   if(MainCommon.mainMode == MainCommon.MAIN_MODE_EDIT)
   {
-    About = await import("./source/console/about.js");
+    About = await import("./source/console/about_ui.js");
     DebugUI = await import("./source/debug/debug_ui.js");
     EditorUI = await import("./source/editor/editor_ui.js");
   }

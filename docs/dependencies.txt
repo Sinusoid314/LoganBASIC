@@ -118,6 +118,8 @@ IMPORTS
 
 ( ) prog_load_ui -> 
 
+( ) about_ui -> 
+
 (X) canvas_ui -> MainUI.uiOnMainResetHandlers
                        .isRunning
                        .uiOnProgStartHandlers
@@ -227,6 +229,12 @@ EXPORTS
       - mainVM
       - setExpectedResultMessageID()
 
+( ) thread_msg_worker
+      - 
+
+( ) prog_load_worker
+      - 
+
 (X) canvas_worker
       - 
 
@@ -254,6 +262,15 @@ EXPORTS
       - resetMain()
       - startProg()
       - endProg()
+
+( ) thread_msg_ui
+      - 
+
+( ) prog_load_ui
+      - 
+
+( ) about_ui
+      - 
 
 (X) canvas_ui
       - activeContext
