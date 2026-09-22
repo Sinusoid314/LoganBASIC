@@ -7,7 +7,7 @@ import * as DebugCommon from "./debug_common.js";
 
 export var isDebugging = false;
 
-export function mountDiv(targetElement, insertPosition)
+export function mountDiv(targetElement, insertPosition = "beforeend")
 //
 {
   document.head.appendChild(debugDivStyle);

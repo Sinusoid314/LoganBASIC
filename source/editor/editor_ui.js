@@ -6,7 +6,7 @@ import * as MainCommon from "../main_common.js";
 export var aboutDialog;
 export var codeHasChanged = false;
 
-export function mountDiv(targetElement, insertPosition)
+export function mountDiv(targetElement, insertPosition = "beforeend")
 //
 {
   document.head.appendChild(editorDivStyle);
@@ -14,21 +14,21 @@ export function mountDiv(targetElement, insertPosition)
   
 }
 
-export function mountMenuBar(targetElement, insertPosition)
+export function mountMenuBar(targetElement, insertPosition = "beforeend")
 //
 {
   document.head.appendChild(menuBarStyle);
   targetElement.insertAdjacentElement(insertPosition, menuBar);
 }
 
-export function mountCommandBar(targetElement, insertPosition)
+export function mountCommandBar(targetElement, insertPosition = "beforeend")
 //
 {
   document.head.appendChild(commandBarStyle);
   targetElement.insertAdjacentElement(insertPosition, commandBar);
 }
 
-export function mountAboutDialog(targetElement, insertPosition)
+export function mountAboutDialog(targetElement, insertPosition = "beforeend")
 //
 {
   document.head.appendChild(aboutDialogStyle);

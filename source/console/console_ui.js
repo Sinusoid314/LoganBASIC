@@ -2,7 +2,7 @@ import * as MainUI from "../main_ui.js";
 import * as ConsoleCommon from "./console_common.js";
 
 
-export function mountDiv(targetElement, insertPosition)
+export function mountDiv(targetElement, insertPosition = "beforeend")
 //
 {
   document.head.appendChild(consoleDivStyle);

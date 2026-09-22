@@ -4,7 +4,7 @@ import * as CanvasCommon from "./canvas_common.js";
 
 export var activeContext;
 
-export function mountDiv(targetElement, insertPosition)
+export function mountDiv(targetElement, insertPosition = "beforeend")
 //
 {
   document.head.appendChild(canvasDivStyle);

@@ -299,19 +299,19 @@ function mountUIComponents()
 
   if(MainCommon.mainMode == MainCommon.MAIN_MODE_EDIT)
   {
-    DebugUI.mountDiv(mainDiv, "beforeend");
+    DebugUI.mountDiv(mainDiv);
 
-    EditorUI.mountMenuBar(mainDiv, "beforeend");
-    EditorUI.mountDiv(mainDiv, "beforeend");
-    EditorUI.mountCommandBar(mainDiv, "beforeend");
-    EditorUI.mountAboutDialog(mainDiv, "beforeend");
+    EditorUI.mountMenuBar(mainDiv);
+    EditorUI.mountDiv(mainDiv);
+    EditorUI.mountCommandBar(mainDiv);
+    EditorUI.mountAboutDialog(mainDiv);
     EditorUI.setStatusElement(statusBar);
     
     mainDiv.insertAdjacentElement("beforeend", statusBar);
   }
 
-  ConsoleUI.mountDiv(mainDiv, "beforeend");
-  CanvasUI.mountDiv(mainDiv, "beforeend");
+  ConsoleUI.mountDiv(mainDiv);
+  CanvasUI.mountDiv(mainDiv);
 
   if(MainCommon.mainMode == MainCommon.MAIN_MODE_EDIT)
     mainDiv.insertAdjacentElement("beforeend", versionDiv);
