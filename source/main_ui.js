@@ -310,8 +310,8 @@ function mountUIComponents()
     mainDiv.insertAdjacentElement("beforeend", statusBar);
   }
 
-  ConsoleUI.mount(mainDiv, "beforeend");
-  CanvasUI.mount(mainDiv, "beforeend");
+  ConsoleUI.mountDiv(mainDiv, "beforeend");
+  CanvasUI.mountDiv(mainDiv, "beforeend");
 
   if(MainCommon.mainMode == MainCommon.MAIN_MODE_EDIT)
     mainDiv.insertAdjacentElement("beforeend", versionDiv);

@@ -7,20 +7,22 @@ export var activeContext;
 export function mountDiv(targetElement, insertPosition)
 //
 {
-  document.head.appendChild(document.createElement('style')).textContent = templateCSS;
+  document.head.appendChild(canvasDivStyle);
   targetElement.insertAdjacentElement(insertPosition, canvasDiv);
 }
 
 
 const templateCSS =
 `
-#progCanvas
-{
-  border: 1px solid black;
-  margin-top: 5px;
-  touch-action: none;
-  background-color: white;
-}
+<stlye id="canvasDivStyle">
+  #progCanvas
+  {
+    border: 1px solid black;
+    margin-top: 5px;
+    touch-action: none;
+    background-color: white;
+  }
+</style>
 `;
 
 
@@ -35,16 +37,27 @@ const templateHTML =
 `;
 
 
+var canvasDivStyle;
 var canvasDiv;
 var progCanvas, bufferCanvas;
 var progCanvasContext, bufferCanvasContext;
 var images = new Map();
 
 
+createStyles();
 createElements();
 initCanvasContexts();
 setEvents();
 
+
+function createStyles()
+//
+{
+  const template = document.createElement("template");
+  template.innerHTML = templateCSS;
+
+  canvasDivStyle = template.content.getElementById("canvasDivStyle");
+}
 
 function createElements()
 //
