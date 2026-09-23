@@ -56,47 +56,47 @@ IMPORTS
 
 ( ) prog_load_worker -> 
 
-(X) canvas_worker -> Objects.ObjUserFunc
+( ) canvas_worker -> Objects.ObjUserFunc
                             .ObjNativeFunc
                   -> VM.CallbackContext
                   -> MainWorker.mainVM
                                .workerOnProgEndHandlers
-                               .workerMessageMap
-                               .setExpectedResultMessageID()
+                  -> ThreadMsgWorker.workerMessageMap
+                                    .setExpectedResultMessageID()
                   -> CanvasCommon.MSGID_*
 
-(X) console_worker -> Objects.ObjNativeFunc
+( ) console_worker -> Objects.ObjNativeFunc
                    -> VM.VM_EVENT_*
                         .CallbackContext
                    -> MainWorker.mainVM
                                 .workerOnProgEndHandlers
-                                .workerMessageMap
+                   -> ThreadMsgWorker.workerMessageMap
                    -> ConsoleCommon.MSGID_*
 
-(X) debug_worker -> VM.VM_EVENT_*
+( ) debug_worker -> VM.VM_EVENT_*
                  -> MainWorker.mainVM
                               .workerOnProgEndHandlers
-                              .workerMessageMap
+                 -> ThreadMsgWorker.workerMessageMap
                  -> MainCommon.mainSourceName
                  -> DebugCommon.MSGID_*
                                .DEBUG_UI_STATUS_*
                                .DebugBreakpoint
 
-(X) sound_worker -> Objects.ObjNativeFunc
+( ) sound_worker -> Objects.ObjNativeFunc
                  -> VM.CallbackContext
                  -> MainWorker.mainVM
                               .workerOnProgEndHandlers
-                              .workerMessageMap
-                              .setExpectedResultMessageID()
+                 -> ThreadMsgWorker.workerMessageMap
+                                   .setExpectedResultMessageID()
                  -> SoundCommon.MSGID_*
 
-(X) sprite_worker -> Objects.ObjNativeFunc
+( ) sprite_worker -> Objects.ObjNativeFunc
                             .ObjStructure
                   -> VM.CallbackContext
                   -> MainWorker.mainVM
                                .workerOnProgEndHandlers
-                               .workerMessageMap
-                               .setExpectedResultMessageID()
+                  -> ThreadMsgWorker.workerMessageMap
+                                    .setExpectedResultMessageID()
                   -> SpriteCommon.MSGID_*
 
 
@@ -121,38 +121,38 @@ IMPORTS
 
 (X) about_ui -> 
 
-(X) canvas_ui -> MainUI.uiOnMainResetHandlers
+( ) canvas_ui -> MainUI.uiOnMainResetHandlers
                        .isRunning
                        .uiOnProgStartHandlers
                        .uiOnProgEndHandlers
-                       .progWorker
-                       .uiMessageMap
+              -> ThreadMsgUI.progWorker
+                            .uiMessageMap
               -> CanvasCommon.MSGID_*
 
-(X) console_ui -> MainUI.uiOnMainResetHandlers
+( ) console_ui -> MainUI.uiOnMainResetHandlers
                         .isRunning
                         .uiOnProgStartHandlers
                         .uiOnProgEndHandlers
-                        .progWorker
-                        .uiMessageMap
+              -> ThreadMsgUI.progWorker
+                            .uiMessageMap
                -> ConsoleCommon.MSGID_*
 
-(X) debug_ui -> Objects.OBJ_TYPE_*
+( ) debug_ui -> Objects.OBJ_TYPE_*
                        .ObjArray
              -> MainUI.uiOnMainResetHandlers
                       .PROG_EXIT_STATUS_*
                       .isRunning
                       .uiOnProgStartHandlers
                       .uiOnProgEndHandlers
-                      .progWorker
-                      .uiMessageMap
+              -> ThreadMsgUI.progWorker
+                            .uiMessageMap
              -> EditorUI.selectEditorLine()
              -> MainCommon.mainSourceName
              -> DebugCommon.MSGID_*
                            .DEBUG_UI_STATUS_*
                            .DebugBreakpoint
 
-(X) editor -> MainUI.uiOnMainResetHandlers
+( ) editor_ui -> MainUI.uiOnMainResetHandlers
                     .resetMain()
                     .PROG_EXIT_STATUS_*
                     .isRunning
@@ -167,16 +167,16 @@ IMPORTS
            -> AboutUI.showDialog()
            -> MainCommon.mainSourceName
 
-(X) sound_ui -> MainUI.isRunning
+( ) sound_ui -> MainUI.isRunning
                       .uiOnProgEndHandlers
-                      .progWorker
-                      .uiMessageMap
+              -> ThreadMsgUI.progWorker
+                            .uiMessageMap
              -> SoundCommon.MSGID_*
 
-(X) sprite_ui -> MainUI.isRunning
+( ) sprite_ui -> MainUI.isRunning
                        .uiOnProgEndHandlers
-                       .progWorker
-                       .uiMessageMap
+              -> ThreadMsgUI.progWorker
+                            .uiMessageMap
               -> CanvasUI.activeContext
               -> SpriteCommon.MSGID_*
 
@@ -224,15 +224,14 @@ EXPORTS
       - resetStd()
 
 
-(X) main_worker
-      - workerOnProgEndHandlers
-      - expectedResultMessageID
-      - workerMessageMap
+( ) main_worker
       - mainVM
-      - setExpectedResultMessageID()
+      - workerOnProgEndHandlers
 
 ( ) thread_msg_worker
-      - 
+      - expectedResultMessageID
+      - workerMessageMap
+      - setExpectedResultMessageID()
 
 ( ) prog_load_worker
       - 
@@ -253,25 +252,25 @@ EXPORTS
       - 
 
 
-(X) main_ui
+( ) main_ui
       - PROG_EXIT_STATUS_*
       - isRunning
       - uiOnProgStartHandlers
       - uiOnProgEndHandlers
-      - uiOnMainResetHandlers
-      - progWorker
-      - uiMessageMap
-      - resetMain()
       - startProg()
       - endProg()
+      - uiOnMainResetHandlers
+      - resetMain()
 
 ( ) thread_msg_ui
-      - 
+      - progWorker
+      - uiMessageMap
 
 ( ) prog_load_ui
       - 
 
 (X) about_ui
+      - mountDialog()
       - showDialog()
 
 (X) canvas_ui
@@ -285,7 +284,7 @@ EXPORTS
       - debugRemoveBreakpoint()
       - debugToggleDiv()
 
-(X) editor
+(X) editor_ui
       - codeHasChanged
       - toggleUpdatesBtnHighlighted()
       - selectEditorLine()
