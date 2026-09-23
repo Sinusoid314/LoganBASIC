@@ -56,8 +56,8 @@ function setEvents()
 async function loadWorkerComponents()
 //
 {
-  ThreadMsgWorker = await import("./source/console/thread_msg_worker.js");
-  ProgLoadWorker = await import("./source/console/prog_load_worker.js");
+  ThreadMsgWorker = await import("./source/thread_msg/thread_msg_worker.js");
+  ProgLoadWorker = await import("./source/prog_load/prog_load_worker.js");
 
   if(MainCommon.mainMode == MainCommon.MAIN_MODE_EDIT)
     DebugWorker = await import('./debug/debug_worker.js');
