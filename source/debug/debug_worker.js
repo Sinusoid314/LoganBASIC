@@ -52,6 +52,7 @@ var debugEnabled = false;
 import * as VM from "../core/vm.js";
 import * as MainWorker from "../main_worker.js";
 import * as MainCommon from "../main_common.js";
+import * as ThreadMsgWorker from "../thread_msg/thread_msg_worker.js";
 import * as DebugCommon from "./debug_common.js";
 
 
@@ -67,16 +68,16 @@ function setEvents()
 {
   MainWorker.workerOnProgEndHandlers.push(debugWorker_onProgEnd);
 
-  MainWorker.workerMessageMap.set(DebugCommon.MSGID_DEBUG_ENABLE, onMsgDebugEnable);
-  MainWorker.workerMessageMap.set(DebugCommon.MSGID_DEBUG_DISABLE, onMsgDebugDisable);
-  MainWorker.workerMessageMap.set(DebugCommon.MSGID_DEBUG_RESUME, onMsgDebugResume);
-  MainWorker.workerMessageMap.set(DebugCommon.MSGID_DEBUG_STEP_INTO, onMsgDebugStepInto);
-  MainWorker.workerMessageMap.set(DebugCommon.MSGID_DEBUG_STEP_OVER, onMsgDebugStepOver);
-  MainWorker.workerMessageMap.set(DebugCommon.MSGID_DEBUG_STEP_OUT, onMsgDebugStepOut);
-  MainWorker.workerMessageMap.set(DebugCommon.MSGID_DEBUG_SKIP, onMsgDebugSkip);
-  MainWorker.workerMessageMap.set(DebugCommon.MSGID_DEBUG_CALL_FRAME_INFO_REQUEST, onMsgDebugCallFrameInfoRequest);
-  MainWorker.workerMessageMap.set(DebugCommon.MSGID_DEBUG_ADD_BREAKPOINT, onMsgDebugAddBreakpoint);
-  MainWorker.workerMessageMap.set(DebugCommon.MSGID_DEBUG_REMOVE_BREAKPOINT, onMsgDebugRemoveBreakpoint);
+  ThreadMsgWorker.workerMessageMap.set(DebugCommon.MSGID_DEBUG_ENABLE, onMsgDebugEnable);
+  ThreadMsgWorker.workerMessageMap.set(DebugCommon.MSGID_DEBUG_DISABLE, onMsgDebugDisable);
+  ThreadMsgWorker.workerMessageMap.set(DebugCommon.MSGID_DEBUG_RESUME, onMsgDebugResume);
+  ThreadMsgWorker.workerMessageMap.set(DebugCommon.MSGID_DEBUG_STEP_INTO, onMsgDebugStepInto);
+  ThreadMsgWorker.workerMessageMap.set(DebugCommon.MSGID_DEBUG_STEP_OVER, onMsgDebugStepOver);
+  ThreadMsgWorker.workerMessageMap.set(DebugCommon.MSGID_DEBUG_STEP_OUT, onMsgDebugStepOut);
+  ThreadMsgWorker.workerMessageMap.set(DebugCommon.MSGID_DEBUG_SKIP, onMsgDebugSkip);
+  ThreadMsgWorker.workerMessageMap.set(DebugCommon.MSGID_DEBUG_CALL_FRAME_INFO_REQUEST, onMsgDebugCallFrameInfoRequest);
+  ThreadMsgWorker.workerMessageMap.set(DebugCommon.MSGID_DEBUG_ADD_BREAKPOINT, onMsgDebugAddBreakpoint);
+  ThreadMsgWorker.workerMessageMap.set(DebugCommon.MSGID_DEBUG_REMOVE_BREAKPOINT, onMsgDebugRemoveBreakpoint);
 }
 
 function debugEnterBreakpoint(vm, nextSourceLineNum)

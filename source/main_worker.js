@@ -5,15 +5,7 @@ import * as MainCommon from "./main_common.js";
 
 
 export const workerOnProgEndHandlers = [];
-export const workerMessageMap = new Map();
-export var expectedResultMessageID = 0;
 export const mainVM = new VM.VM();
-
-export function setExpectedResultMessageID(newMessageID)
-//
-{
-  expectedResultMessageID = newMessageID;
-}
 
 
 const mainNativeFuncs = [
@@ -21,7 +13,7 @@ const mainNativeFuncs = [
                ];
 
 var ThreadMsgWorker, ProgLoadWorker, DebugWorker, ConsoleWorker, CanvasWorker, SoundWorker, SpriteWorker;
-var pendingMessages = [];
+
 
 mainVM.addNativeFuncArray(StdFuncs.stdNativeFuncs);
 mainVM.addNativeFuncArray(mainNativeFuncs);
@@ -48,16 +40,14 @@ function setEvents()
   mainVM.addEventHook(VM.VM_EVENT_STATUS_CHANGE, onVMStatusChange);
   mainVM.addEventHook(VM.VM_EVENT_ERROR, onVMError);
   
-  onmessage = mainWorker_onMessage;
-  
-  workerMessageMap.set(MainCommon.MSGID_START_PROG, onMsgStartProg);
+  ThreadMsgWorker.workerMessageMap.set(MainCommon.MSGID_START_PROG, onMsgStartProg);
 }
 
 async function loadWorkerComponents()
 //
 {
-  ThreadMsgWorker = await import("./source/thread_msg/thread_msg_worker.js");
-  ProgLoadWorker = await import("./source/prog_load/prog_load_worker.js");
+  ThreadMsgWorker = await import("./thread_msg/thread_msg_worker.js");
+  ProgLoadWorker = await import("./prog_load/prog_load_worker.js");
 
   if(MainCommon.mainMode == MainCommon.MAIN_MODE_EDIT)
     DebugWorker = await import('./debug/debug_worker.js');
@@ -66,12 +56,6 @@ async function loadWorkerComponents()
   CanvasWorker = await import('./canvas/canvas_worker.js');
   SoundWorker = await import('./sound/sound_worker.js');
   SpriteWorker = await import('./sprite/sprite_worker.js');
-}
-
-function dispatchMessage(message)
-//Call the appropriate message-handling function
-{
-  workerMessageMap.get(message.data.msgId)(message.data.msgData);
 }
 
 function mainWorker_onProgEnd(vm)
@@ -86,44 +70,7 @@ function mainWorker_onProgEnd(vm)
   mainVM.resetActiveRunState();
   mainVM.globals.clear();
 
-  expectedResultMessageID = 0;
-  pendingMessages = [];
-}
-
-function mainWorker_onMessage(message)
-//Process messages sent from the UI thread
-{
-  /*
-  console.clear();
-  console.log("Current Message: " + message.data.msgId);
-  console.log("Expected Message: " + expectedResultMessageID);
-  console.log("Pending Messages:");
-  pendingMessages.forEach(msg => console.log(msg.data.msgId));
-  console.log("\nStack:");
-  mainVM.stack.forEach(item => console.log(item));
-  */
-
-  if(!expectedResultMessageID)
-  {
-    dispatchMessage(message);
-    return;
-  }
-
-  if(message.data.msgId == expectedResultMessageID)
-  {
-    expectedResultMessageID = 0;
-
-    dispatchMessage(message);
-    if(expectedResultMessageID) return;
-
-    while(pendingMessages.length)
-    {
-      dispatchMessage(pendingMessages.shift());
-      if(expectedResultMessageID) return;
-    }
-  }
-  else
-    pendingMessages.push(message);
+  ThreadMsgWorker.reset();
 }
 
 function onMsgStartProg(msgData)

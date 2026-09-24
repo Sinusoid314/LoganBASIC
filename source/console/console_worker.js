@@ -1,6 +1,7 @@
 import * as Objects from "../core/objects.js";
 import * as VM from "../core/vm.js";
 import * as MainWorker from "../main_worker.js";
+import * as ThreadMsgWorker from "../thread_msg/thread_msg_worker.js";
 import * as ConsoleCommon from "./console_common.js";
 
 
@@ -24,7 +25,7 @@ function setEvents()
 
   MainWorker.workerOnProgEndHandlers.push(consoleWorker_onProgEnd);
 
-  MainWorker.workerMessageMap.set(ConsoleCommon.MSGID_INPUT_RESULT, onMsgInputResult);
+  ThreadMsgWorker.workerMessageMap.set(ConsoleCommon.MSGID_INPUT_RESULT, onMsgInputResult);
 }
 
 function consoleWorker_onProgEnd()

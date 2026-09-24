@@ -9,8 +9,6 @@ export var isRunning = false;
 export const uiOnProgStartHandlers = [];
 export const uiOnProgEndHandlers = [];
 export const uiOnMainResetHandlers = [];
-export var progWorker = null;
-export const uiMessageMap = new Map();
 
 export function resetMain()
 //
@@ -28,7 +26,7 @@ export function startProg(source)
 
   uiOnProgStartHandlers.forEach(handler => handler());
 
-  progWorker.postMessage({msgId: MainCommon.MSGID_START_PROG, msgData: {source: source}});
+  ThreadMsgUI.progWorker.postMessage({msgId: MainCommon.MSGID_START_PROG, msgData: {source: source}});
 
   isRunning = true;
 }
@@ -43,8 +41,8 @@ export function endProg(exitMessage, exitStatus, error)
 
   if(exitStatus == PROG_EXIT_STATUS_TERMINATED)
   {
-    progWorker.terminate();
-    initWorker();
+    ThreadMsgUI.progWorker.terminate();
+    ThreadMsgUI.initWorker();
   }
 
   uiOnProgEndHandlers.forEach(handler => handler(exitStatus, error));
@@ -236,8 +234,6 @@ setEvents();
 await loadUIComponents();
 mountUIComponents()
 
-initWorker();
-
 
 function readURLParams()
 //
@@ -287,8 +283,8 @@ function createElements()
 function setEvents()
 //
 {
-  uiMessageMap.set(MainCommon.MSGID_PROG_DONE, onMsgProgDone);
-  uiMessageMap.set(MainCommon.MSGID_STATUS_CHANGE, onMsgStatusChange);
+  ThreadMsgUI.uiMessageMap.set(MainCommon.MSGID_PROG_DONE, onMsgProgDone);
+  ThreadMsgUI.uiMessageMap.set(MainCommon.MSGID_STATUS_CHANGE, onMsgStatusChange);
   
   window.addEventListener("load", window_onLoad);
   window.addEventListener("beforeunload", window_onBeforeUnload);
@@ -360,13 +356,6 @@ function mountVersionDiv()
 {
   document.head.appendChild(versionDivStyle);
   mainDiv.insertAdjacentElement("beforeend", versionDiv);
-}
-
-function initWorker()
-//Initialize the worker thread
-{
-  progWorker = new Worker('./source/main_worker.js?mode=' + MainCommon.mainMode, {type: "module"});
-  progWorker.onmessage = mainUI_onMessage;
 }
 
 function checkIfWelcomeHasBeenShown()
@@ -475,15 +464,6 @@ function window_onBeforeUnload(event)
       event.returnValue = "";
     }
   }
-}
-
-function mainUI_onMessage(message)
-//Process messages sent from the worker thread
-{
-  if(!isRunning)
-    return;
-
-  uiMessageMap.get(message.data.msgId)(message.data.msgData);
 }
 
 function onMsgProgDone(msgData)

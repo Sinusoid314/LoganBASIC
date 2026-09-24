@@ -1,6 +1,7 @@
 import * as Objects from "../core/objects.js";
 import * as VM from "../core/vm.js";
 import * as MainWorker from "../main_worker.js";
+import * as ThreadMsgWorker from "../thread_msg/thread_msg_worker.js";
 import * as SpriteCommon from "./sprite_common.js";
 
 
@@ -214,8 +215,8 @@ function setEvents()
 {
   MainWorker.workerOnProgEndHandlers.push(spriteWorker_onProgEnd);
 
-  MainWorker.workerMessageMap.set(SpriteCommon.MSGID_SPRITE_SHEET_REF_REQUEST_RESULT, onMsgSpriteSheetRefRequestResult);
-  MainWorker.workerMessageMap.set(SpriteCommon.MSGID_SPRITE_SHEET_REQUEST_RESULT, onMsgSpriteSheetRequestResult);
+  ThreadMsgWorker.workerMessageMap.set(SpriteCommon.MSGID_SPRITE_SHEET_REF_REQUEST_RESULT, onMsgSpriteSheetRefRequestResult);
+  ThreadMsgWorker.workerMessageMap.set(SpriteCommon.MSGID_SPRITE_SHEET_REQUEST_RESULT, onMsgSpriteSheetRequestResult);
 }
 
 function spriteWorker_onProgEnd()
@@ -279,9 +280,9 @@ function sendSpriteSheetRequest(vm, msgId, msgData)
   postMessage({msgId: msgId, msgData: msgData});
 
   if(msgId == SpriteCommon.MSGID_SPRITE_SHEET_REF_REQUEST)
-    MainWorker.setExpectedResultMessageID(SpriteCommon.MSGID_SPRITE_SHEET_REF_REQUEST_RESULT);
+    ThreadMsgWorker.setexpectedResultMessageID(SpriteCommon.MSGID_SPRITE_SHEET_REF_REQUEST_RESULT);
   else
-    MainWorker.setExpectedResultMessageID(SpriteCommon.MSGID_SPRITE_SHEET_REQUEST_RESULT);
+    ThreadMsgWorker.setexpectedResultMessageID(SpriteCommon.MSGID_SPRITE_SHEET_REQUEST_RESULT);
   
   vm.runLoopExitFlag = true;
 }

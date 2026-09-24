@@ -1,6 +1,7 @@
 import * as Objects from "../core/objects.js";
 import * as VM from "../core/vm.js";
 import * as MainWorker from "../main_worker.js";
+import * as ThreadMsgWorker from "../thread_msg/thread_msg_worker.js";
 import * as CanvasCommon from "./canvas_common.js";
 
 
@@ -77,10 +78,10 @@ function setEvents()
 {
   MainWorker.workerOnProgEndHandlers.push(canvasWorker_onProgEnd);
 
-  MainWorker.workerMessageMap.set(CanvasCommon.MSGID_IMAGE_REQUEST_RESULT, onMsgImageRequestResult);
-  MainWorker.workerMessageMap.set(CanvasCommon.MSGID_CONTEXT_REQUEST_RESULT, onMsgContextRequestResult);
-  MainWorker.workerMessageMap.set(CanvasCommon.MSGID_CANVAS_EVENT, onMsgCanvasEvent);
-  MainWorker.workerMessageMap.set(CanvasCommon.MSGID_DRAW_CANVAS_BUFFER_DONE, onMsgDrawCanvasBufferDone);
+  ThreadMsgWorker.workerMessageMap.set(CanvasCommon.MSGID_IMAGE_REQUEST_RESULT, onMsgImageRequestResult);
+  ThreadMsgWorker.workerMessageMap.set(CanvasCommon.MSGID_CONTEXT_REQUEST_RESULT, onMsgContextRequestResult);
+  ThreadMsgWorker.workerMessageMap.set(CanvasCommon.MSGID_CANVAS_EVENT, onMsgCanvasEvent);
+  ThreadMsgWorker.workerMessageMap.set(CanvasCommon.MSGID_DRAW_CANVAS_BUFFER_DONE, onMsgDrawCanvasBufferDone);
 }
 
 function onMsgImageRequestResult(msgData)
@@ -108,7 +109,7 @@ function sendImageRequest(vm, msgId, msgData)
 
   postMessage({msgId: msgId, msgData: msgData});
 
-  MainWorker.setExpectedResultMessageID(CanvasCommon.MSGID_IMAGE_REQUEST_RESULT);
+  ThreadMsgWorker.setexpectedResultMessageID(CanvasCommon.MSGID_IMAGE_REQUEST_RESULT);
   vm.runLoopExitFlag = true;
 }
 
@@ -137,7 +138,7 @@ function sendContextRequest(vm, msgId, msgData)
 
   postMessage({msgId: msgId, msgData: msgData});
 
-  MainWorker.setExpectedResultMessageID(CanvasCommon.MSGID_CONTEXT_REQUEST_RESULT);
+  ThreadMsgWorker.setexpectedResultMessageID(CanvasCommon.MSGID_CONTEXT_REQUEST_RESULT);
   vm.runLoopExitFlag = true;
 }
 

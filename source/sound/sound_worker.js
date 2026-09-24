@@ -1,6 +1,7 @@
 import * as Objects from "../core/objects.js";
 import * as VM from "../core/vm.js";
 import * as MainWorker from "../main_worker.js";
+import * as ThreadMsgWorker from "../thread_msg/thread_msg_worker.js";
 import * as SoundCommon from "./sound_common.js";
 
 
@@ -28,7 +29,7 @@ function setEvents()
 {
   MainWorker.workerOnProgEndHandlers.push(soundWorker_onProgEnd);
 
-  MainWorker.workerMessageMap.set(SoundCommon.MSGID_SOUND_REQUEST_RESULT, onMsgSoundRequestResult);
+  ThreadMsgWorker.workerMessageMap.set(SoundCommon.MSGID_SOUND_REQUEST_RESULT, onMsgSoundRequestResult);
 }
 
 function soundWorker_onProgEnd()
@@ -62,7 +63,7 @@ function sendSoundRequest(vm, msgId, msgData)
 
   postMessage({msgId: msgId, msgData: msgData});
 
-  MainWorker.setExpectedResultMessageID(SoundCommon.MSGID_SOUND_REQUEST_RESULT);
+  ThreadMsgWorker.setexpectedResultMessageID(SoundCommon.MSGID_SOUND_REQUEST_RESULT);
   vm.runLoopExitFlag = true;
 }
 
