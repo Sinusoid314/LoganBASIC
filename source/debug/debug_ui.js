@@ -1,5 +1,6 @@
 import * as Objects from "../core/objects.js";
 import * as MainUI from "../main_ui.js";
+import * as ThreadMsgUI from "../thread_msg/thread_msg_ui.js";
 import * as EditorUI from "../editor/editor_ui.js";
 import * as MainCommon from "../main_common.js";
 import * as DebugCommon from "./debug_common.js";
@@ -23,14 +24,14 @@ export function debugToggleDiv()
     debugDiv.parentElement.style.marginLeft = "0";
     debugChangeUIStatus(DebugCommon.DEBUG_UI_STATUS_DISABLED);
     
-    MainUI.progWorker.postMessage({msgId: DebugCommon.MSGID_DEBUG_DISABLE, msgData: null});
+    ThreadMsgUI.progWorker.postMessage({msgId: DebugCommon.MSGID_DEBUG_DISABLE, msgData: null});
   }
   else
   {
 	  debugDiv.style.display = "block";
     debugDiv.parentElement.style.marginLeft = debugDiv.offsetWidth + "px";
 
-    MainUI.progWorker.postMessage({msgId: DebugCommon.MSGID_DEBUG_ENABLE, msgData: null});
+    ThreadMsgUI.progWorker.postMessage({msgId: DebugCommon.MSGID_DEBUG_ENABLE, msgData: null});
   }
 
   isDebugging = !isDebugging;
@@ -42,7 +43,7 @@ export function debugAddBreakpoint(sourceLineNum, sourceName)
   var newBreakpoint = new DebugCommon.DebugBreakpoint(sourceLineNum, sourceName);
 
   debugBreakpointBackups.push(newBreakpoint);
-  MainUI.progWorker.postMessage({msgId: DebugCommon.MSGID_DEBUG_ADD_BREAKPOINT, msgData: newBreakpoint});
+  ThreadMsgUI.progWorker.postMessage({msgId: DebugCommon.MSGID_DEBUG_ADD_BREAKPOINT, msgData: newBreakpoint});
 }
 
 export function debugRemoveBreakpoint(sourceLineNum, sourceName)
@@ -51,7 +52,7 @@ export function debugRemoveBreakpoint(sourceLineNum, sourceName)
   var breakpointIndex = debugBreakpointBackups.findIndex(breakpoint => breakpoint.matches(sourceLineNum, MainCommon.mainSourceName));
   
   debugBreakpointBackups.splice(breakpointIndex, 1);
-  MainUI.progWorker.postMessage({msgId: DebugCommon.MSGID_DEBUG_REMOVE_BREAKPOINT, msgData: {sourceLineNum: sourceLineNum, sourceName: sourceName}});
+  ThreadMsgUI.progWorker.postMessage({msgId: DebugCommon.MSGID_DEBUG_REMOVE_BREAKPOINT, msgData: {sourceLineNum: sourceLineNum, sourceName: sourceName}});
 }
 
 
@@ -243,17 +244,17 @@ function setEvents()
   MainUI.uiOnProgStartHandlers.push(debugUI_onProgStart);
   MainUI.uiOnProgEndHandlers.push(debugUI_onProgEnd);
   
-  MainUI.uiMessageMap.set(DebugCommon.MSGID_DEBUG_UPDATE_UI, onMsgDebugUpdateUI);
+  ThreadMsgUI.uiMessageMap.set(DebugCommon.MSGID_DEBUG_UPDATE_UI, onMsgDebugUpdateUI);
 }
 
 function debugResyncWorker()
 //Reload saved breakpoints into, and reinitialize, the worker thread's debugger component
 {
   for(const breakpoint of debugBreakpointBackups)
-    MainUI.progWorker.postMessage({msgId: DebugCommon.MSGID_DEBUG_ADD_BREAKPOINT, msgData: breakpoint});
+    ThreadMsgUI.progWorker.postMessage({msgId: DebugCommon.MSGID_DEBUG_ADD_BREAKPOINT, msgData: breakpoint});
 
   if(isDebugging)
-    MainUI.progWorker.postMessage({msgId: DebugCommon.MSGID_DEBUG_ENABLE, msgData: null});
+    ThreadMsgUI.progWorker.postMessage({msgId: DebugCommon.MSGID_DEBUG_ENABLE, msgData: null});
 }
 
 function debugChangeUIStatus(newStatus)
@@ -444,7 +445,7 @@ function debugResumeBtn_onClick(event)
   if(!(isDebugging && MainUI.isRunning))
     return;
 
-  MainUI.progWorker.postMessage({msgId: DebugCommon.MSGID_DEBUG_RESUME, msgData: null});
+  ThreadMsgUI.progWorker.postMessage({msgId: DebugCommon.MSGID_DEBUG_RESUME, msgData: null});
 }
 
 function debugStepIntoBtn_onClick(event)
@@ -453,7 +454,7 @@ function debugStepIntoBtn_onClick(event)
   if(!(isDebugging && MainUI.isRunning))
     return;
 
-  MainUI.progWorker.postMessage({msgId: DebugCommon.MSGID_DEBUG_STEP_INTO, msgData: null});
+  ThreadMsgUI.progWorker.postMessage({msgId: DebugCommon.MSGID_DEBUG_STEP_INTO, msgData: null});
 }
 
 function debugStepOverBtn_onClick(event)
@@ -462,7 +463,7 @@ function debugStepOverBtn_onClick(event)
   if(!(isDebugging && MainUI.isRunning))
     return;
 
-  MainUI.progWorker.postMessage({msgId: DebugCommon.MSGID_DEBUG_STEP_OVER, msgData: null});
+  ThreadMsgUI.progWorker.postMessage({msgId: DebugCommon.MSGID_DEBUG_STEP_OVER, msgData: null});
 }
 
 function debugStepOutBtn_onClick(event)
@@ -471,7 +472,7 @@ function debugStepOutBtn_onClick(event)
   if(!(isDebugging && MainUI.isRunning))
     return;
   
-  MainUI.progWorker.postMessage({msgId: DebugCommon.MSGID_DEBUG_STEP_OUT, msgData: null});
+  ThreadMsgUI.progWorker.postMessage({msgId: DebugCommon.MSGID_DEBUG_STEP_OUT, msgData: null});
 }
 
 function debugSkipBtn_onClick(event)
@@ -480,7 +481,7 @@ function debugSkipBtn_onClick(event)
   if(!(isDebugging && MainUI.isRunning))
     return;
 
-  MainUI.progWorker.postMessage({msgId: DebugCommon.MSGID_DEBUG_SKIP, msgData: null});
+  ThreadMsgUI.progWorker.postMessage({msgId: DebugCommon.MSGID_DEBUG_SKIP, msgData: null});
 }
 
 function debugCallStackList_onChange(event)
@@ -493,7 +494,7 @@ function debugCallStackList_onChange(event)
 
   callFrameIndex = (event.target.length - 1) - event.target.selectedIndex;
 
-  MainUI.progWorker.postMessage({msgId: DebugCommon.MSGID_DEBUG_CALL_FRAME_INFO_REQUEST, msgData: {callFrameIndex: callFrameIndex}});
+  ThreadMsgUI.progWorker.postMessage({msgId: DebugCommon.MSGID_DEBUG_CALL_FRAME_INFO_REQUEST, msgData: {callFrameIndex: callFrameIndex}});
 }
 
 function debugVarListItem_onClick(event)

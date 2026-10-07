@@ -123,7 +123,7 @@ IMPORTS
 
 (X) about_ui -> 
 
-( ) canvas_ui -> MainUI.uiOnMainResetHandlers
+(X) canvas_ui -> MainUI.uiOnMainResetHandlers
                        .isRunning
                        .uiOnProgStartHandlers
                        .uiOnProgEndHandlers
@@ -131,7 +131,7 @@ IMPORTS
                             .uiMessageMap
               -> CanvasCommon.MSGID_*
 
-( ) console_ui -> MainUI.uiOnMainResetHandlers
+(X) console_ui -> MainUI.uiOnMainResetHandlers
                         .isRunning
                         .uiOnProgStartHandlers
                         .uiOnProgEndHandlers
@@ -139,7 +139,7 @@ IMPORTS
                             .uiMessageMap
                -> ConsoleCommon.MSGID_*
 
-( ) debug_ui -> Objects.OBJ_TYPE_*
+(X) debug_ui -> Objects.OBJ_TYPE_*
                        .ObjArray
              -> MainUI.uiOnMainResetHandlers
                       .PROG_EXIT_STATUS_*
@@ -154,7 +154,7 @@ IMPORTS
                            .DEBUG_UI_STATUS_*
                            .DebugBreakpoint
 
-( ) editor_ui -> MainUI.uiOnMainResetHandlers
+(X) editor_ui -> MainUI.uiOnMainResetHandlers
                     .resetMain()
                     .PROG_EXIT_STATUS_*
                     .isRunning
@@ -169,13 +169,13 @@ IMPORTS
            -> AboutUI.showDialog()
            -> MainCommon.mainSourceName
 
-( ) sound_ui -> MainUI.isRunning
+(X) sound_ui -> MainUI.isRunning
                       .uiOnProgEndHandlers
               -> ThreadMsgUI.progWorker
                             .uiMessageMap
              -> SoundCommon.MSGID_*
 
-( ) sprite_ui -> MainUI.isRunning
+(X) sprite_ui -> MainUI.isRunning
                        .uiOnProgEndHandlers
               -> ThreadMsgUI.progWorker
                             .uiMessageMap

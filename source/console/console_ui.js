@@ -1,4 +1,5 @@
 import * as MainUI from "../main_ui.js";
+import * as ThreadMsgUI from "../thread_msg/thread_msg_ui.js";
 import * as ConsoleCommon from "./console_common.js";
 
 
@@ -93,11 +94,11 @@ function setEvents()
   MainUI.uiOnProgStartHandlers.push(consoleUI_onProgStart);
   MainUI.uiOnProgEndHandlers.push(consoleUI_onProgEnd);
   
-  MainUI.uiMessageMap.set(ConsoleCommon.MSGID_SHOW_CONSOLE, onMsgShowConsole);
-  MainUI.uiMessageMap.set(ConsoleCommon.MSGID_HIDE_CONSOLE, onMsgHideConsole);
-  MainUI.uiMessageMap.set(ConsoleCommon.MSGID_PRINT, onMsgPrint);
-  MainUI.uiMessageMap.set(ConsoleCommon.MSGID_INPUT_REQUEST, onMsgInputRequest);
-  MainUI.uiMessageMap.set(ConsoleCommon.MSGID_CLEAR_CONSOLE, onMsgClearConsole);
+  ThreadMsgUI.uiMessageMap.set(ConsoleCommon.MSGID_SHOW_CONSOLE, onMsgShowConsole);
+  ThreadMsgUI.uiMessageMap.set(ConsoleCommon.MSGID_HIDE_CONSOLE, onMsgHideConsole);
+  ThreadMsgUI.uiMessageMap.set(ConsoleCommon.MSGID_PRINT, onMsgPrint);
+  ThreadMsgUI.uiMessageMap.set(ConsoleCommon.MSGID_INPUT_REQUEST, onMsgInputRequest);
+  ThreadMsgUI.uiMessageMap.set(ConsoleCommon.MSGID_CLEAR_CONSOLE, onMsgClearConsole);
 }
 
 function clearConsoleOutput()
@@ -117,7 +118,7 @@ function enterConsoleInput()
 //
 {
   consoleOutput.value += consoleInput.value + '\n';
-  MainUI.progWorker.postMessage({msgId: ConsoleCommon.MSGID_INPUT_RESULT, msgData: {inputVal: consoleInput.value}});
+  ThreadMsgUI.progWorker.postMessage({msgId: ConsoleCommon.MSGID_INPUT_RESULT, msgData: {inputVal: consoleInput.value}});
   closeConsoleInput();
 }
 

@@ -1,4 +1,5 @@
 import * as MainUI from "../main_ui.js";
+import * as ThreadMsgUI from "../thread_msg/thread_msg_ui.js";
 import * as CanvasCommon from "./canvas_common.js";
 
 
@@ -86,35 +87,35 @@ function setEvents()
   MainUI.uiOnProgStartHandlers.push(canvasUI_onProgStart);
   MainUI.uiOnProgEndHandlers.push(canvasUI_onProgEnd);
   
-  MainUI.uiMessageMap.set(CanvasCommon.MSGID_SHOW_CANVAS, onMsgShowCanvas);
-  MainUI.uiMessageMap.set(CanvasCommon.MSGID_HIDE_CANVAS, onMsgHideCanvas);
-  MainUI.uiMessageMap.set(CanvasCommon.MSGID_SET_CANVAS_WIDTH, onMsgSetCanvasWidth);
-  MainUI.uiMessageMap.set(CanvasCommon.MSGID_SET_CANVAS_HEIGHT, onMsgSetCanvasHeight);
-  MainUI.uiMessageMap.set(CanvasCommon.MSGID_CLEAR_CANVAS, onMsgClearCanvas);
-  MainUI.uiMessageMap.set(CanvasCommon.MSGID_CLEAR_RECT, onMsgClearRect);
-  MainUI.uiMessageMap.set(CanvasCommon.MSGID_LOAD_IMAGE_REQUEST, onMsgLoadImageRequest);
-  MainUI.uiMessageMap.set(CanvasCommon.MSGID_UNLOAD_IMAGE_REQUEST, onMsgUnloadImageRequest);
-  MainUI.uiMessageMap.set(CanvasCommon.MSGID_DRAW_IMAGE_REQUEST, onMsgDrawImageRequest);
-  MainUI.uiMessageMap.set(CanvasCommon.MSGID_DRAW_IMAGE_CLIP_REQUEST, onMsgDrawImageClipRequest);
-  MainUI.uiMessageMap.set(CanvasCommon.MSGID_DRAW_IMAGE_TILED_REQUEST, onMsgDrawImageTiledRequest);
-  MainUI.uiMessageMap.set(CanvasCommon.MSGID_GET_IMAGE_WIDTH_REQUEST, onMsgGetImageWidthRequest);
-  MainUI.uiMessageMap.set(CanvasCommon.MSGID_GET_IMAGE_HEIGHT_REQUEST, onMsgGetImageHeightRequest);
-  MainUI.uiMessageMap.set(CanvasCommon.MSGID_ENABLE_CANVAS_BUFFER, onMsgEnableCanvasBuffer);
-  MainUI.uiMessageMap.set(CanvasCommon.MSGID_DISABLE_CANVAS_BUFFER, onMsgDisableCanvasBuffer);
-  MainUI.uiMessageMap.set(CanvasCommon.MSGID_DRAW_CANVAS_BUFFER, onMsgDrawCanvasBuffer);
-  MainUI.uiMessageMap.set(CanvasCommon.MSGID_DRAW_CANVAS_BUFFER_CLIP, onMsgDrawCanvasBufferClip);
-  MainUI.uiMessageMap.set(CanvasCommon.MSGID_ADD_CANVAS_EVENT, onMsgAddCanvasEvent);
-  MainUI.uiMessageMap.set(CanvasCommon.MSGID_REMOVE_CANVAS_EVENT, onMsgRemoveCanvasEvent);
-  MainUI.uiMessageMap.set(CanvasCommon.MSGID_DRAW_TEXT, onMsgDrawText);
-  MainUI.uiMessageMap.set(CanvasCommon.MSGID_DRAW_RECT, onMsgDrawRect);
-  MainUI.uiMessageMap.set(CanvasCommon.MSGID_DRAW_CIRCLE, onMsgDrawCircle);
-  MainUI.uiMessageMap.set(CanvasCommon.MSGID_DRAW_LINE, onMsgDrawLine);
-  MainUI.uiMessageMap.set(CanvasCommon.MSGID_SET_TEXT_FONT, onMsgSetTextFont);
-  MainUI.uiMessageMap.set(CanvasCommon.MSGID_SET_FILL_COLOR, onMsgSetFillColor);
-  MainUI.uiMessageMap.set(CanvasCommon.MSGID_SET_LINE_COLOR, onMsgSetLineColor);
-  MainUI.uiMessageMap.set(CanvasCommon.MSGID_SET_LINE_SIZE, onMsgSetLineSize);
-  MainUI.uiMessageMap.set(CanvasCommon.MSGID_GET_TEXT_DRAW_WIDTH_REQUEST, onMsgGetTextDrawWidthRequest);
-  MainUI.uiMessageMap.set(CanvasCommon.MSGID_GET_TEXT_DRAW_HEIGHT_REQUEST, onMsgGetTextDrawHeightRequest);
+  ThreadMsgUI.uiMessageMap.set(CanvasCommon.MSGID_SHOW_CANVAS, onMsgShowCanvas);
+  ThreadMsgUI.uiMessageMap.set(CanvasCommon.MSGID_HIDE_CANVAS, onMsgHideCanvas);
+  ThreadMsgUI.uiMessageMap.set(CanvasCommon.MSGID_SET_CANVAS_WIDTH, onMsgSetCanvasWidth);
+  ThreadMsgUI.uiMessageMap.set(CanvasCommon.MSGID_SET_CANVAS_HEIGHT, onMsgSetCanvasHeight);
+  ThreadMsgUI.uiMessageMap.set(CanvasCommon.MSGID_CLEAR_CANVAS, onMsgClearCanvas);
+  ThreadMsgUI.uiMessageMap.set(CanvasCommon.MSGID_CLEAR_RECT, onMsgClearRect);
+  ThreadMsgUI.uiMessageMap.set(CanvasCommon.MSGID_LOAD_IMAGE_REQUEST, onMsgLoadImageRequest);
+  ThreadMsgUI.uiMessageMap.set(CanvasCommon.MSGID_UNLOAD_IMAGE_REQUEST, onMsgUnloadImageRequest);
+  ThreadMsgUI.uiMessageMap.set(CanvasCommon.MSGID_DRAW_IMAGE_REQUEST, onMsgDrawImageRequest);
+  ThreadMsgUI.uiMessageMap.set(CanvasCommon.MSGID_DRAW_IMAGE_CLIP_REQUEST, onMsgDrawImageClipRequest);
+  ThreadMsgUI.uiMessageMap.set(CanvasCommon.MSGID_DRAW_IMAGE_TILED_REQUEST, onMsgDrawImageTiledRequest);
+  ThreadMsgUI.uiMessageMap.set(CanvasCommon.MSGID_GET_IMAGE_WIDTH_REQUEST, onMsgGetImageWidthRequest);
+  ThreadMsgUI.uiMessageMap.set(CanvasCommon.MSGID_GET_IMAGE_HEIGHT_REQUEST, onMsgGetImageHeightRequest);
+  ThreadMsgUI.uiMessageMap.set(CanvasCommon.MSGID_ENABLE_CANVAS_BUFFER, onMsgEnableCanvasBuffer);
+  ThreadMsgUI.uiMessageMap.set(CanvasCommon.MSGID_DISABLE_CANVAS_BUFFER, onMsgDisableCanvasBuffer);
+  ThreadMsgUI.uiMessageMap.set(CanvasCommon.MSGID_DRAW_CANVAS_BUFFER, onMsgDrawCanvasBuffer);
+  ThreadMsgUI.uiMessageMap.set(CanvasCommon.MSGID_DRAW_CANVAS_BUFFER_CLIP, onMsgDrawCanvasBufferClip);
+  ThreadMsgUI.uiMessageMap.set(CanvasCommon.MSGID_ADD_CANVAS_EVENT, onMsgAddCanvasEvent);
+  ThreadMsgUI.uiMessageMap.set(CanvasCommon.MSGID_REMOVE_CANVAS_EVENT, onMsgRemoveCanvasEvent);
+  ThreadMsgUI.uiMessageMap.set(CanvasCommon.MSGID_DRAW_TEXT, onMsgDrawText);
+  ThreadMsgUI.uiMessageMap.set(CanvasCommon.MSGID_DRAW_RECT, onMsgDrawRect);
+  ThreadMsgUI.uiMessageMap.set(CanvasCommon.MSGID_DRAW_CIRCLE, onMsgDrawCircle);
+  ThreadMsgUI.uiMessageMap.set(CanvasCommon.MSGID_DRAW_LINE, onMsgDrawLine);
+  ThreadMsgUI.uiMessageMap.set(CanvasCommon.MSGID_SET_TEXT_FONT, onMsgSetTextFont);
+  ThreadMsgUI.uiMessageMap.set(CanvasCommon.MSGID_SET_FILL_COLOR, onMsgSetFillColor);
+  ThreadMsgUI.uiMessageMap.set(CanvasCommon.MSGID_SET_LINE_COLOR, onMsgSetLineColor);
+  ThreadMsgUI.uiMessageMap.set(CanvasCommon.MSGID_SET_LINE_SIZE, onMsgSetLineSize);
+  ThreadMsgUI.uiMessageMap.set(CanvasCommon.MSGID_GET_TEXT_DRAW_WIDTH_REQUEST, onMsgGetTextDrawWidthRequest);
+  ThreadMsgUI.uiMessageMap.set(CanvasCommon.MSGID_GET_TEXT_DRAW_HEIGHT_REQUEST, onMsgGetTextDrawHeightRequest);
 }
 
 function resetCanvas()
@@ -178,13 +179,13 @@ function clearCanvas()
 function sendImageRequestResult(resultVal, errorMsg = "")
 //
 {
-  MainUI.progWorker.postMessage({msgId: CanvasCommon.MSGID_IMAGE_REQUEST_RESULT, msgData: {resultVal: resultVal, errorMsg: errorMsg}});
+  ThreadMsgUI.progWorker.postMessage({msgId: CanvasCommon.MSGID_IMAGE_REQUEST_RESULT, msgData: {resultVal: resultVal, errorMsg: errorMsg}});
 }
 
 function sendContextRequestResult(resultVal, errorMsg = "")
 //
 {
-  MainUI.progWorker.postMessage({msgId: CanvasCommon.MSGID_CONTEXT_REQUEST_RESULT, msgData: {resultVal: resultVal, errorMsg: errorMsg}});
+  ThreadMsgUI.progWorker.postMessage({msgId: CanvasCommon.MSGID_CONTEXT_REQUEST_RESULT, msgData: {resultVal: resultVal, errorMsg: errorMsg}});
 }
 
 function image_onLoad(event)
@@ -231,7 +232,7 @@ function canvas_onAnimationFrame(drawData)
     progCanvasContext.drawImage(bufferCanvas, 0, 0);
   }
 
-  MainUI.progWorker.postMessage({msgId: CanvasCommon.MSGID_DRAW_CANVAS_BUFFER_DONE, msgData: null});
+  ThreadMsgUI.progWorker.postMessage({msgId: CanvasCommon.MSGID_DRAW_CANVAS_BUFFER_DONE, msgData: null});
 }
 
 function canvas_onEvent(event)
@@ -248,11 +249,11 @@ function canvas_onEvent(event)
     canvasRect = progCanvas.getBoundingClientRect();
     pointerX = event.clientX - canvasRect.left;
     pointerY = event.clientY - canvasRect.top;
-    MainUI.progWorker.postMessage({msgId: CanvasCommon.MSGID_CANVAS_EVENT, msgData: {eventName: event.type, eventArgs: [pointerX, pointerY]}});
+    ThreadMsgUI.progWorker.postMessage({msgId: CanvasCommon.MSGID_CANVAS_EVENT, msgData: {eventName: event.type, eventArgs: [pointerX, pointerY]}});
   }
   else if(event instanceof KeyboardEvent)
   {
-    MainUI.progWorker.postMessage({msgId: CanvasCommon.MSGID_CANVAS_EVENT, msgData: {eventName: event.type, eventArgs: [event.key]}});
+    ThreadMsgUI.progWorker.postMessage({msgId: CanvasCommon.MSGID_CANVAS_EVENT, msgData: {eventName: event.type, eventArgs: [event.key]}});
   }
 
   event.preventDefault();

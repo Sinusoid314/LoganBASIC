@@ -1,4 +1,5 @@
 import * as MainUI from "../main_ui.js";
+import * as ThreadMsgUI from "../thread_msg/thread_msg_ui.js";
 import * as SoundCommon from "./sound_common.js";
 
 
@@ -13,15 +14,15 @@ function setEvents()
 {
   MainUI.uiOnProgEndHandlers.push(soundUI_onProgEnd);
 
-  MainUI.uiMessageMap.set(SoundCommon.MSGID_LOAD_SOUND_REQUEST, onMsgLoadSoundRequest);
-  MainUI.uiMessageMap.set(SoundCommon.MSGID_UNLOAD_SOUND_REQUEST, onMsgUnloadSoundRequest);
-  MainUI.uiMessageMap.set(SoundCommon.MSGID_PLAY_SOUND_REQUEST, onMsgPlaySoundRequest);
-  MainUI.uiMessageMap.set(SoundCommon.MSGID_PAUSE_SOUND_REQUEST, onMsgPauseSoundRequest);
-  MainUI.uiMessageMap.set(SoundCommon.MSGID_STOP_SOUND_REQUEST, onMsgStopSoundRequest);
-  MainUI.uiMessageMap.set(SoundCommon.MSGID_GET_SOUND_LEN_REQUEST, onMsgGetSoundLenRequest);
-  MainUI.uiMessageMap.set(SoundCommon.MSGID_GET_SOUND_POS_REQUEST, onMsgGetSoundPosRequest);
-  MainUI.uiMessageMap.set(SoundCommon.MSGID_SET_SOUND_POS_REQUEST, onMsgSetSoundPosRequest);
-  MainUI.uiMessageMap.set(SoundCommon.MSGID_LOOP_SOUND_REQUEST, onMsgLoopSoundRequest);
+  ThreadMsgUI.uiMessageMap.set(SoundCommon.MSGID_LOAD_SOUND_REQUEST, onMsgLoadSoundRequest);
+  ThreadMsgUI.uiMessageMap.set(SoundCommon.MSGID_UNLOAD_SOUND_REQUEST, onMsgUnloadSoundRequest);
+  ThreadMsgUI.uiMessageMap.set(SoundCommon.MSGID_PLAY_SOUND_REQUEST, onMsgPlaySoundRequest);
+  ThreadMsgUI.uiMessageMap.set(SoundCommon.MSGID_PAUSE_SOUND_REQUEST, onMsgPauseSoundRequest);
+  ThreadMsgUI.uiMessageMap.set(SoundCommon.MSGID_STOP_SOUND_REQUEST, onMsgStopSoundRequest);
+  ThreadMsgUI.uiMessageMap.set(SoundCommon.MSGID_GET_SOUND_LEN_REQUEST, onMsgGetSoundLenRequest);
+  ThreadMsgUI.uiMessageMap.set(SoundCommon.MSGID_GET_SOUND_POS_REQUEST, onMsgGetSoundPosRequest);
+  ThreadMsgUI.uiMessageMap.set(SoundCommon.MSGID_SET_SOUND_POS_REQUEST, onMsgSetSoundPosRequest);
+  ThreadMsgUI.uiMessageMap.set(SoundCommon.MSGID_LOOP_SOUND_REQUEST, onMsgLoopSoundRequest);
 }
 
 function cleanupSounds()
@@ -36,7 +37,7 @@ function cleanupSounds()
 function sendSoundRequestResult(resultVal, errorMsg = "")
 //
 {
-  MainUI.progWorker.postMessage({msgId: SoundCommon.MSGID_SOUND_REQUEST_RESULT, msgData: {resultVal: resultVal, errorMsg: errorMsg}});
+  ThreadMsgUI.progWorker.postMessage({msgId: SoundCommon.MSGID_SOUND_REQUEST_RESULT, msgData: {resultVal: resultVal, errorMsg: errorMsg}});
 }
 
 function sound_onLoad(event)
