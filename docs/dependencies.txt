@@ -39,15 +39,15 @@ IMPORTS
                    .CallbackContext
 
 
-(X) main_worker -> Objects.ObjNativeFunc
+( ) main_worker -> Objects.ObjNativeFunc
                 -> VM.VM_STATUS_*
                      .VM_EVENT_*
                      .VM
                 -> StdFuncs.stdNativeFuncs
                            .resetStd()
                 -> ThreadMsgWorker.workerMessageMap
-                -> MainCommon.MSGID_*
-                             .MAIN_MODE_*
+                -> ProgLoadCommon.MSGID_*
+                -> MainCommon.MAIN_MODE_*
                              .mainSourceName
                              .lbVersion
                              .mainMode
@@ -57,51 +57,51 @@ IMPORTS
 
 ( ) prog_load_worker -> 
 
-(X) canvas_worker -> Objects.ObjUserFunc
+( ) canvas_worker -> Objects.ObjUserFunc
                             .ObjNativeFunc
                   -> VM.CallbackContext
-                  -> MainWorker.mainVM
-                               .workerOnProgEndHandlers
                   -> ThreadMsgWorker.workerMessageMap
                                     .setExpectedResultMessageID()
+                  -> ProgLoadWorker.mainVM
+                                   .workerOnProgEndHandlers
                   -> CanvasCommon.MSGID_*
 
-(X) console_worker -> Objects.ObjNativeFunc
+( ) console_worker -> Objects.ObjNativeFunc
                    -> VM.VM_EVENT_*
                         .CallbackContext
-                   -> MainWorker.mainVM
-                                .workerOnProgEndHandlers
                    -> ThreadMsgWorker.workerMessageMap
+                   -> ProgLoadWorker.mainVM
+                                    .workerOnProgEndHandlers
                    -> ConsoleCommon.MSGID_*
 
-(X) debug_worker -> VM.VM_EVENT_*
-                 -> MainWorker.mainVM
-                              .workerOnProgEndHandlers
+( ) debug_worker -> VM.VM_EVENT_*
                  -> ThreadMsgWorker.workerMessageMap
+                 -> ProgLoadWorker.mainVM
+                                  .workerOnProgEndHandlers
                  -> MainCommon.mainSourceName
                  -> DebugCommon.MSGID_*
                                .DEBUG_UI_STATUS_*
                                .DebugBreakpoint
 
-(X) sound_worker -> Objects.ObjNativeFunc
+( ) sound_worker -> Objects.ObjNativeFunc
                  -> VM.CallbackContext
-                 -> MainWorker.mainVM
-                              .workerOnProgEndHandlers
                  -> ThreadMsgWorker.workerMessageMap
                                    .setExpectedResultMessageID()
+                 -> ProgLoadWorker.mainVM
+                                  .workerOnProgEndHandlers
                  -> SoundCommon.MSGID_*
 
-(X) sprite_worker -> Objects.ObjNativeFunc
+( ) sprite_worker -> Objects.ObjNativeFunc
                             .ObjStructure
                   -> VM.CallbackContext
-                  -> MainWorker.mainVM
-                               .workerOnProgEndHandlers
                   -> ThreadMsgWorker.workerMessageMap
                                     .setExpectedResultMessageID()
+                  -> ProgLoadWorker.mainVM
+                                   .workerOnProgEndHandlers
                   -> SpriteCommon.MSGID_*
 
 
-(X) main_ui -> EditorUI.toggleUpdatesBtnHighlighted()
+( ) main_ui -> EditorUI.toggleUpdatesBtnHighlighted()
                        .codeHasChanged
                        .readCodeFileFromLocalStorage()
                        .readCodeFileFromURL()
@@ -110,8 +110,8 @@ IMPORTS
                        .endFileOpAwait()
             -> AboutUI.mountDialog()
                       .showDialog()
-            -> MainCommon.MSGID_*
-                         .MAIN_MODE_*
+            -> ProgLoadUI.MSGID_*
+            -> MainCommon.MAIN_MODE_*
                          .lbVersion
                          .mainMode
                          .setMainMode()
@@ -123,62 +123,62 @@ IMPORTS
 
 (X) about_ui -> 
 
-(X) canvas_ui -> MainUI.uiOnMainResetHandlers
-                       .isRunning
-                       .uiOnProgStartHandlers
-                       .uiOnProgEndHandlers
+( ) canvas_ui -> MainUI.uiOnMainResetHandlers
               -> ThreadMsgUI.progWorker
                             .uiMessageMap
+              -> ProgLoadUI.isRunning
+                           .uiOnProgStartHandlers
+                           .uiOnProgEndHandlers
               -> CanvasCommon.MSGID_*
 
-(X) console_ui -> MainUI.uiOnMainResetHandlers
-                        .isRunning
-                        .uiOnProgStartHandlers
-                        .uiOnProgEndHandlers
-              -> ThreadMsgUI.progWorker
-                            .uiMessageMap
+( ) console_ui -> MainUI.uiOnMainResetHandlers
+               -> ThreadMsgUI.progWorker
+                             .uiMessageMap
+               -> ProgLoadUI.isRunning
+                            .uiOnProgStartHandlers
+                            .uiOnProgEndHandlers
                -> ConsoleCommon.MSGID_*
 
-(X) debug_ui -> Objects.OBJ_TYPE_*
+( ) debug_ui -> Objects.OBJ_TYPE_*
                        .ObjArray
              -> MainUI.uiOnMainResetHandlers
-                      .PROG_EXIT_STATUS_*
-                      .isRunning
-                      .uiOnProgStartHandlers
-                      .uiOnProgEndHandlers
-              -> ThreadMsgUI.progWorker
-                            .uiMessageMap
+             -> ThreadMsgUI.progWorker
+                           .uiMessageMap
+             -> ProgLoadUI.PROG_EXIT_STATUS_*
+                          .isRunning
+                          .uiOnProgStartHandlers
+                          .uiOnProgEndHandlers
              -> EditorUI.selectEditorLine()
              -> MainCommon.mainSourceName
              -> DebugCommon.MSGID_*
                            .DEBUG_UI_STATUS_*
                            .DebugBreakpoint
 
-(X) editor_ui -> MainUI.uiOnMainResetHandlers
-                    .resetMain()
-                    .PROG_EXIT_STATUS_*
-                    .isRunning
-                    .uiOnProgStartHandlers
-                    .uiOnProgEndHandlers
-                    .startProg()
-                    .endProg()
-           -> DebugUI.isDebugging
-                     .debugAddBreakpoint()
-                     .debugRemoveBreakpoint()
-                     .debugToggleDiv()
-           -> AboutUI.showDialog()
-           -> MainCommon.mainSourceName
+( ) editor_ui -> MainUI.uiOnMainResetHandlers
+                       .resetMain()
+              -> ProgLoadUI.PROG_EXIT_STATUS_*
+                           .isRunning
+                           .uiOnProgStartHandlers
+                           .uiOnProgEndHandlers
+                           .startProg()
+                           .endProg()
+              -> DebugUI.isDebugging
+                        .debugAddBreakpoint()
+                        .debugRemoveBreakpoint()
+                        .debugToggleDiv()
+              -> AboutUI.showDialog()
+              -> MainCommon.mainSourceName
 
-(X) sound_ui -> MainUI.isRunning
-                      .uiOnProgEndHandlers
-              -> ThreadMsgUI.progWorker
-                            .uiMessageMap
+( ) sound_ui -> ThreadMsgUI.progWorker
+                           .uiMessageMap
+             -> ProgLoadUI.isRunning
+                          .uiOnProgEndHandlers
              -> SoundCommon.MSGID_*
 
-(X) sprite_ui -> MainUI.isRunning
-                       .uiOnProgEndHandlers
-              -> ThreadMsgUI.progWorker
+( ) sprite_ui -> ThreadMsgUI.progWorker
                             .uiMessageMap
+              -> ProgLoadUI.isRunning
+                           .uiOnProgEndHandlers
               -> CanvasUI.activeContext
               -> SpriteCommon.MSGID_*
 
@@ -226,9 +226,8 @@ EXPORTS
       - resetStd()
 
 
-(X) main_worker
-      - mainVM
-      - workerOnProgEndHandlers
+( ) main_worker
+      -
 
 (X) thread_msg_worker
       - expectedResultMessageID
@@ -236,7 +235,8 @@ EXPORTS
       - setExpectedResultMessageID()
 
 ( ) prog_load_worker
-      - 
+      - mainVM
+      - workerOnProgEndHandlers
 
 (X) canvas_worker
       - 
@@ -254,13 +254,7 @@ EXPORTS
       - 
 
 
-(X) main_ui
-      - PROG_EXIT_STATUS_*
-      - isRunning
-      - uiOnProgStartHandlers
-      - uiOnProgEndHandlers
-      - startProg()
-      - endProg()
+( ) main_ui
       - uiOnMainResetHandlers
       - resetMain()
 
@@ -270,7 +264,12 @@ EXPORTS
       - initWorker()
 
 ( ) prog_load_ui
-      - 
+      - PROG_EXIT_STATUS_*
+      - isRunning
+      - uiOnProgStartHandlers
+      - uiOnProgEndHandlers
+      - startProg()
+      - endProg()
 
 (X) about_ui
       - mountDialog()
@@ -304,8 +303,7 @@ EXPORTS
       - 
 
 
-(X) main_common
-      - MSGID_*
+( ) main_common
       - MAIN_MODE_*
       - mainSourceName
       - lbVersion
@@ -313,7 +311,7 @@ EXPORTS
       - setMainMode()
 
 ( ) prog_load_common
-      - 
+      - MSGID_*
 
 (X) canvas_common
       - MSGID_*
