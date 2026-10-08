@@ -39,23 +39,24 @@ IMPORTS
                    .CallbackContext
 
 
-( ) main_worker -> Objects.ObjNativeFunc
-                -> VM.VM_STATUS_*
-                     .VM_EVENT_*
-                     .VM
-                -> StdFuncs.stdNativeFuncs
-                           .resetStd()
-                -> ThreadMsgWorker.workerMessageMap
-                -> ProgLoadCommon.MSGID_*
+(X) main_worker -> Objects.ObjNativeFunc
+                -> ProgLoadWorker.mainVM
                 -> MainCommon.MAIN_MODE_*
-                             .mainSourceName
                              .lbVersion
                              .mainMode
                              .setMainMode()
 
 (X) thread_msg_worker -> 
 
-( ) prog_load_worker -> 
+(X) prog_load_worker -> VM.VM_STATUS_*
+                          .VM_EVENT_*
+                          .VM
+                     -> StdFuncs.stdNativeFuncs
+                                .resetStd()
+                     -> ThreadMsgWorker.workerMessageMap
+                                       .reset()
+                     -> MainCommon.mainSourceName
+                     -> ProgLoadCommon.MSGID_*
 
 ( ) canvas_worker -> Objects.ObjUserFunc
                             .ObjNativeFunc
@@ -101,7 +102,7 @@ IMPORTS
                   -> SpriteCommon.MSGID_*
 
 
-( ) main_ui -> EditorUI.toggleUpdatesBtnHighlighted()
+(X) main_ui -> EditorUI.toggleUpdatesBtnHighlighted()
                        .codeHasChanged
                        .readCodeFileFromLocalStorage()
                        .readCodeFileFromURL()
@@ -110,7 +111,6 @@ IMPORTS
                        .endFileOpAwait()
             -> AboutUI.mountDialog()
                       .showDialog()
-            -> ProgLoadUI.MSGID_*
             -> MainCommon.MAIN_MODE_*
                          .lbVersion
                          .mainMode
@@ -119,7 +119,11 @@ IMPORTS
 (X) thread_msg_ui -> ProgLoadUI.isRunning
                   -> MainCommon.mainMode
 
-( ) prog_load_ui -> 
+(X) prog_load_ui -> MainUI.statusBar
+                 -> ThreadMsgUI.progWorker
+                               .uiMessageMap
+                               .initWorker()
+                 -> ProgLoadCommon.MSGID_*
 
 (X) about_ui -> 
 
@@ -226,15 +230,16 @@ EXPORTS
       - resetStd()
 
 
-( ) main_worker
+(X) main_worker
       -
 
 (X) thread_msg_worker
       - expectedResultMessageID
       - workerMessageMap
       - setExpectedResultMessageID()
+      - reset()
 
-( ) prog_load_worker
+(X) prog_load_worker
       - mainVM
       - workerOnProgEndHandlers
 
@@ -254,7 +259,8 @@ EXPORTS
       - 
 
 
-( ) main_ui
+(X) main_ui
+      - statusBar
       - uiOnMainResetHandlers
       - resetMain()
 
@@ -263,7 +269,7 @@ EXPORTS
       - uiMessageMap
       - initWorker()
 
-( ) prog_load_ui
+(X) prog_load_ui
       - PROG_EXIT_STATUS_*
       - isRunning
       - uiOnProgStartHandlers
@@ -303,14 +309,14 @@ EXPORTS
       - 
 
 
-( ) main_common
+(X) main_common
       - MAIN_MODE_*
       - mainSourceName
       - lbVersion
       - mainMode
       - setMainMode()
 
-( ) prog_load_common
+(X) prog_load_common
       - MSGID_*
 
 (X) canvas_common

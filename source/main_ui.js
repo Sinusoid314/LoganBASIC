@@ -1,13 +1,9 @@
+import * as ThreadMsgUI from "./thread_msg/thread_msg_ui.js";
+import * as ProgLoadUI from "./prog_load/prog_load_ui.js";
 import * as MainCommon from "./main_common.js";
 
 
-export const PROG_EXIT_STATUS_SUCCESS = 1;
-export const PROG_EXIT_STATUS_ERROR = 2;
-export const PROG_EXIT_STATUS_TERMINATED = 3;
-
-export var isRunning = false;
-export const uiOnProgStartHandlers = [];
-export const uiOnProgEndHandlers = [];
+export const statusBar;
 export const uiOnMainResetHandlers = [];
 
 export function resetMain()
@@ -16,38 +12,6 @@ export function resetMain()
   statusBar.innerText = "Ready.";
   
   uiOnMainResetHandlers.forEach(handler => handler());
-}
-
-export function startProg(source)
-//Signal the worker thread to start the program
-{
-  if(isRunning)
-    return;
-
-  uiOnProgStartHandlers.forEach(handler => handler());
-
-  ThreadMsgUI.progWorker.postMessage({msgId: MainCommon.MSGID_START_PROG, msgData: {source: source}});
-
-  isRunning = true;
-}
-
-export function endProg(exitMessage, exitStatus, error)
-//Set the UI to reflect that the program has stopped running
-{
-  if(!isRunning)
-    return;
-
-  statusBar.innerText = exitMessage;
-
-  if(exitStatus == PROG_EXIT_STATUS_TERMINATED)
-  {
-    ThreadMsgUI.progWorker.terminate();
-    ThreadMsgUI.initWorker();
-  }
-
-  uiOnProgEndHandlers.forEach(handler => handler(exitStatus, error));
-
-  isRunning = false;
 }
 
 
@@ -214,10 +178,10 @@ const templateHTML =
 `;
 
 
-var ThreadMsgUI, ProgLoadUI, AboutUI, DebugUI, EditorUI, ConsoleUI, CanvasUI, SoundUI, SpriteUI;
+var AboutUI, DebugUI, EditorUI, ConsoleUI, CanvasUI, SoundUI, SpriteUI;
 
 var mainUIStyle, mainDivStyle, statusBarStyle, versionDivStyle;
-var mainDiv, statusBar, versionDiv;
+var mainDiv, versionDiv;
 
 var paramFileURL = "";
 var autoRun = false;
@@ -283,9 +247,6 @@ function createElements()
 function setEvents()
 //
 {
-  ThreadMsgUI.uiMessageMap.set(MainCommon.MSGID_PROG_DONE, onMsgProgDone);
-  ThreadMsgUI.uiMessageMap.set(MainCommon.MSGID_STATUS_CHANGE, onMsgStatusChange);
-  
   window.addEventListener("load", window_onLoad);
   window.addEventListener("beforeunload", window_onBeforeUnload);
 }
@@ -293,20 +254,17 @@ function setEvents()
 async function loadUIComponents()
 //
 {
-  ThreadMsgUI = await import("./source/thread_msg/thread_msg_ui.js");
-  ProgLoadUI = await import("./source/prog_load/prog_load_ui.js");
-
   if(MainCommon.mainMode == MainCommon.MAIN_MODE_EDIT)
   {
-    AboutUI = await import("./source/about/about_ui.js");
-    DebugUI = await import("./source/debug/debug_ui.js");
-    EditorUI = await import("./source/editor/editor_ui.js");
+    AboutUI = await import("./about/about_ui.js");
+    DebugUI = await import("./debug/debug_ui.js");
+    EditorUI = await import("./editor/editor_ui.js");
   }
 
-  ConsoleUI = await import("./source/console/console_ui.js");
-  CanvasUI = await import("./source/canvas/canvas_ui.js");
-  SoundUI = await import("./source/sound/sound_ui.js");
-  SpriteUI = await import("./source/sprite/sprite_ui.js");
+  ConsoleUI = await import("./console/console_ui.js");
+  CanvasUI = await import("./canvas/canvas_ui.js");
+  SoundUI = await import("./sound/sound_ui.js");
+  SpriteUI = await import("./sprite/sprite_ui.js");
 }
 
 function mountUIComponents()
@@ -464,21 +422,6 @@ function window_onBeforeUnload(event)
       event.returnValue = "";
     }
   }
-}
-
-function onMsgProgDone(msgData)
-//The worker thread has signaled that the program has ended
-{
-  if(msgData.error)
-    endProg(msgData.error.message, PROG_EXIT_STATUS_ERROR, msgData.error);
-  else
-    endProg("Program run successfully.", PROG_EXIT_STATUS_SUCCESS, null);
-}
-
-function onMsgStatusChange(msgData)
-//Display a status change
-{
-  statusBar.innerText = msgData.statusText;
 }
 
 function toggle_onClick(event)
