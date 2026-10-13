@@ -1,7 +1,7 @@
 import * as Objects from "../core/objects.js";
 import * as VM from "../core/vm.js";
-import * as MainWorker from "../main_worker.js";
 import * as ThreadMsgWorker from "../thread_msg/thread_msg_worker.js";
+import * as ProgLoadWorker from "../prog_load/prog_load_worker.js";
 import * as SpriteCommon from "./sprite_common.js";
 
 
@@ -116,7 +116,7 @@ var scrollY = 0;
 var spriteSheetResultCallback = null;
 var prevUpdateDeltaTime = 0;
 
-MainWorker.mainVM.addNativeFuncArray(spriteNativeFuncs);
+ProgLoadWorker.mainVM.addNativeFuncArray(spriteNativeFuncs);
 
 setEvents();
 
@@ -213,7 +213,7 @@ function rayIntersectsRect(rayOriginX, rayOriginY, rayDirX, rayDirY, rectX, rect
 function setEvents()
 //
 {
-  MainWorker.workerOnProgEndHandlers.push(spriteWorker_onProgEnd);
+  ProgLoadWorker.workerOnProgEndHandlers.push(spriteWorker_onProgEnd);
 
   ThreadMsgWorker.workerMessageMap.set(SpriteCommon.MSGID_SPRITE_SHEET_REF_REQUEST_RESULT, onMsgSpriteSheetRefRequestResult);
   ThreadMsgWorker.workerMessageMap.set(SpriteCommon.MSGID_SPRITE_SHEET_REQUEST_RESULT, onMsgSpriteSheetRequestResult);

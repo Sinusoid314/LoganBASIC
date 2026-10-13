@@ -58,7 +58,7 @@ IMPORTS
                      -> MainCommon.mainSourceName
                      -> ProgLoadCommon.MSGID_*
 
-( ) canvas_worker -> Objects.ObjUserFunc
+(X) canvas_worker -> Objects.ObjUserFunc
                             .ObjNativeFunc
                   -> VM.CallbackContext
                   -> ThreadMsgWorker.workerMessageMap
@@ -67,7 +67,7 @@ IMPORTS
                                    .workerOnProgEndHandlers
                   -> CanvasCommon.MSGID_*
 
-( ) console_worker -> Objects.ObjNativeFunc
+(X) console_worker -> Objects.ObjNativeFunc
                    -> VM.VM_EVENT_*
                         .CallbackContext
                    -> ThreadMsgWorker.workerMessageMap
@@ -75,7 +75,7 @@ IMPORTS
                                     .workerOnProgEndHandlers
                    -> ConsoleCommon.MSGID_*
 
-( ) debug_worker -> VM.VM_EVENT_*
+(X) debug_worker -> VM.VM_EVENT_*
                  -> ThreadMsgWorker.workerMessageMap
                  -> ProgLoadWorker.mainVM
                                   .workerOnProgEndHandlers
@@ -84,7 +84,7 @@ IMPORTS
                                .DEBUG_UI_STATUS_*
                                .DebugBreakpoint
 
-( ) sound_worker -> Objects.ObjNativeFunc
+(X) sound_worker -> Objects.ObjNativeFunc
                  -> VM.CallbackContext
                  -> ThreadMsgWorker.workerMessageMap
                                    .setExpectedResultMessageID()
@@ -92,7 +92,7 @@ IMPORTS
                                   .workerOnProgEndHandlers
                  -> SoundCommon.MSGID_*
 
-( ) sprite_worker -> Objects.ObjNativeFunc
+(X) sprite_worker -> Objects.ObjNativeFunc
                             .ObjStructure
                   -> VM.CallbackContext
                   -> ThreadMsgWorker.workerMessageMap

@@ -1,7 +1,7 @@
 import * as Objects from "../core/objects.js";
 import * as VM from "../core/vm.js";
-import * as MainWorker from "../main_worker.js";
 import * as ThreadMsgWorker from "../thread_msg/thread_msg_worker.js";
+import * as ProgLoadWorker from "../prog_load/prog_load_worker.js";
 import * as ConsoleCommon from "./console_common.js";
 
 
@@ -13,7 +13,7 @@ const consoleNativeFuncs = [
 
 var inputCallback = null;
 
-MainWorker.mainVM.addNativeFuncArray(consoleNativeFuncs);
+ProgLoadWorker.mainVM.addNativeFuncArray(consoleNativeFuncs);
 
 setEvents();
 
@@ -21,9 +21,9 @@ setEvents();
 function setEvents()
 //
 {
-  MainWorker.mainVM.addEventHook(VM.VM_EVENT_PRINT, onVMPrint);
+  ProgLoadWorker.mainVM.addEventHook(VM.VM_EVENT_PRINT, onVMPrint);
 
-  MainWorker.workerOnProgEndHandlers.push(consoleWorker_onProgEnd);
+  ProgLoadWorker.workerOnProgEndHandlers.push(consoleWorker_onProgEnd);
 
   ThreadMsgWorker.workerMessageMap.set(ConsoleCommon.MSGID_INPUT_RESULT, onMsgInputResult);
 }

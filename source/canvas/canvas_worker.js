@@ -1,7 +1,7 @@
 import * as Objects from "../core/objects.js";
 import * as VM from "../core/vm.js";
-import * as MainWorker from "../main_worker.js";
 import * as ThreadMsgWorker from "../thread_msg/thread_msg_worker.js";
+import * as ProgLoadWorker from "../prog_load/prog_load_worker.js";
 import * as CanvasCommon from "./canvas_common.js";
 
 
@@ -68,7 +68,7 @@ var prevTime =  0;
 
 canvasEvents.push(drawBufferDoneEvent);
 
-MainWorker.mainVM.addNativeFuncArray(canvasNativeFuncs);
+ProgLoadWorker.mainVM.addNativeFuncArray(canvasNativeFuncs);
 
 setEvents();
 
@@ -76,7 +76,7 @@ setEvents();
 function setEvents()
 //
 {
-  MainWorker.workerOnProgEndHandlers.push(canvasWorker_onProgEnd);
+  ProgLoadWorker.workerOnProgEndHandlers.push(canvasWorker_onProgEnd);
 
   ThreadMsgWorker.workerMessageMap.set(CanvasCommon.MSGID_IMAGE_REQUEST_RESULT, onMsgImageRequestResult);
   ThreadMsgWorker.workerMessageMap.set(CanvasCommon.MSGID_CONTEXT_REQUEST_RESULT, onMsgContextRequestResult);

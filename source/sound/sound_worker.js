@@ -1,7 +1,7 @@
 import * as Objects from "../core/objects.js";
 import * as VM from "../core/vm.js";
-import * as MainWorker from "../main_worker.js";
 import * as ThreadMsgWorker from "../thread_msg/thread_msg_worker.js";
+import * as ProgLoadWorker from "../prog_load/prog_load_worker.js";
 import * as SoundCommon from "./sound_common.js";
 
 
@@ -19,7 +19,7 @@ const soundNativeFuncs = [
 
 var soundResultCallback = null;
 
-MainWorker.mainVM.addNativeFuncArray(soundNativeFuncs);
+ProgLoadWorker.mainVM.addNativeFuncArray(soundNativeFuncs);
 
 setEvents();
 
@@ -27,7 +27,7 @@ setEvents();
 function setEvents()
 //
 {
-  MainWorker.workerOnProgEndHandlers.push(soundWorker_onProgEnd);
+  ProgLoadWorker.workerOnProgEndHandlers.push(soundWorker_onProgEnd);
 
   ThreadMsgWorker.workerMessageMap.set(SoundCommon.MSGID_SOUND_REQUEST_RESULT, onMsgSoundRequestResult);
 }
