@@ -1,6 +1,7 @@
 import * as Objects from "../core/objects.js";
 import * as MainUI from "../main_ui.js";
 import * as ThreadMsgUI from "../thread_msg/thread_msg_ui.js";
+import * as ProgLoadUI from "../prog_load/prog_load_ui.js";
 import * as EditorUI from "../editor/editor_ui.js";
 import * as MainCommon from "../main_common.js";
 import * as DebugCommon from "./debug_common.js";
@@ -241,8 +242,8 @@ function setEvents()
   debugCallStackList.addEventListener("change", debugCallStackList_onChange);
   
   MainUI.uiOnMainResetHandlers.push(debugUI_onMainReset);
-  MainUI.uiOnProgStartHandlers.push(debugUI_onProgStart);
-  MainUI.uiOnProgEndHandlers.push(debugUI_onProgEnd);
+  ProgLoadUI.uiOnProgStartHandlers.push(debugUI_onProgStart);
+  ProgLoadUI.uiOnProgEndHandlers.push(debugUI_onProgEnd);
   
   ThreadMsgUI.uiMessageMap.set(DebugCommon.MSGID_DEBUG_UPDATE_UI, onMsgDebugUpdateUI);
 }
@@ -442,7 +443,7 @@ function document_onMouseUp(event)
 function debugResumeBtn_onClick(event)
 //
 {
-  if(!(isDebugging && MainUI.isRunning))
+  if(!(isDebugging && ProgLoadUI.isRunning))
     return;
 
   ThreadMsgUI.progWorker.postMessage({msgId: DebugCommon.MSGID_DEBUG_RESUME, msgData: null});
@@ -451,7 +452,7 @@ function debugResumeBtn_onClick(event)
 function debugStepIntoBtn_onClick(event)
 //
 {
-  if(!(isDebugging && MainUI.isRunning))
+  if(!(isDebugging && ProgLoadUI.isRunning))
     return;
 
   ThreadMsgUI.progWorker.postMessage({msgId: DebugCommon.MSGID_DEBUG_STEP_INTO, msgData: null});
@@ -460,7 +461,7 @@ function debugStepIntoBtn_onClick(event)
 function debugStepOverBtn_onClick(event)
 //
 {
-  if(!(isDebugging && MainUI.isRunning))
+  if(!(isDebugging && ProgLoadUI.isRunning))
     return;
 
   ThreadMsgUI.progWorker.postMessage({msgId: DebugCommon.MSGID_DEBUG_STEP_OVER, msgData: null});
@@ -469,7 +470,7 @@ function debugStepOverBtn_onClick(event)
 function debugStepOutBtn_onClick(event)
 //
 {
-  if(!(isDebugging && MainUI.isRunning))
+  if(!(isDebugging && ProgLoadUI.isRunning))
     return;
   
   ThreadMsgUI.progWorker.postMessage({msgId: DebugCommon.MSGID_DEBUG_STEP_OUT, msgData: null});
@@ -478,7 +479,7 @@ function debugStepOutBtn_onClick(event)
 function debugSkipBtn_onClick(event)
 //
 {
-  if(!(isDebugging && MainUI.isRunning))
+  if(!(isDebugging && ProgLoadUI.isRunning))
     return;
 
   ThreadMsgUI.progWorker.postMessage({msgId: DebugCommon.MSGID_DEBUG_SKIP, msgData: null});
@@ -489,7 +490,7 @@ function debugCallStackList_onChange(event)
 {
   var callFrameIndex;
   
-  if(!(isDebugging && MainUI.isRunning))
+  if(!(isDebugging && ProgLoadUI.isRunning))
     return;
 
   callFrameIndex = (event.target.length - 1) - event.target.selectedIndex;
@@ -527,7 +528,7 @@ function debugUI_onProgEnd(exitStatus, error)
 {
   debugChangeUIStatus(DebugCommon.DEBUG_UI_STATUS_DISABLED);
 
-  if(exitStatus == MainUI.PROG_EXIT_STATUS_TERMINATED)
+  if(exitStatus == ProgLoadUI.PROG_EXIT_STATUS_TERMINATED)
     debugResyncWorker();
 }
 

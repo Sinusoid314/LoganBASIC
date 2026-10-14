@@ -1,5 +1,6 @@
 import * as MainUI from "../main_ui.js";
 import * as ThreadMsgUI from "../thread_msg/thread_msg_ui.js";
+import * as ProgLoadUI from "../prog_load/prog_load_ui.js";
 import * as ConsoleCommon from "./console_common.js";
 
 
@@ -91,8 +92,8 @@ function setEvents()
   consoleInputBtn.addEventListener("click", consoleInputBtn_onClick);
   
   MainUI.uiOnMainResetHandlers.push(consoleUI_onMainReset);
-  MainUI.uiOnProgStartHandlers.push(consoleUI_onProgStart);
-  MainUI.uiOnProgEndHandlers.push(consoleUI_onProgEnd);
+  ProgLoadUI.uiOnProgStartHandlers.push(consoleUI_onProgStart);
+  ProgLoadUI.uiOnProgEndHandlers.push(consoleUI_onProgEnd);
   
   ThreadMsgUI.uiMessageMap.set(ConsoleCommon.MSGID_SHOW_CONSOLE, onMsgShowConsole);
   ThreadMsgUI.uiMessageMap.set(ConsoleCommon.MSGID_HIDE_CONSOLE, onMsgHideConsole);
@@ -125,7 +126,7 @@ function enterConsoleInput()
 function consoleInput_onKeydown(event)
 //Process enter key for the console input
 {
-  if(!MainUI.isRunning)
+  if(!ProgLoadUI.isRunning)
     return;
 
   if(event.key === "Enter")
@@ -138,7 +139,7 @@ function consoleInput_onKeydown(event)
 function consoleInputBtn_onClick(event)
 //Process the console input button click
 {
-  if(!MainUI.isRunning)
+  if(!ProgLoadUI.isRunning)
     return;
 
   enterConsoleInput();

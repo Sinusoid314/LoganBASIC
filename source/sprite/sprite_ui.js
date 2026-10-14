@@ -1,5 +1,5 @@
-import * as MainUI from "../main_ui.js";
 import * as ThreadMsgUI from "../thread_msg/thread_msg_ui.js";
+import * as ProgLoadUI from "../prog_load/prog_load_ui.js";
 import * as CanvasUI from "../canvas/canvas_ui.js";
 import * as SpriteCommon from "./sprite_common.js";
 
@@ -37,7 +37,7 @@ setEvents();
 function setEvents()
 //
 {
-  MainUI.uiOnProgEndHandlers.push(spriteUI_onProgEnd);
+  ProgLoadUI.uiOnProgEndHandlers.push(spriteUI_onProgEnd);
 
   ThreadMsgUI.uiMessageMap.set(SpriteCommon.MSGID_SPRITE_SHEET_REF_REQUEST, onMsgSpriteSheetRefRequest);
   ThreadMsgUI.uiMessageMap.set(SpriteCommon.MSGID_LOAD_SPRITE_SHEET_REQUEST, onMsgLoadSpriteSheetRequest);
@@ -62,7 +62,7 @@ function sendSpriteSheetRequestResult(resultVal, errorMsg = "")
 function spriteSheet_onLoad(event)
 //
 {
-  if(!MainUI.isRunning)
+  if(!ProgLoadUI.isRunning)
     return;
 
   this.removeEventListener("load", spriteSheet_onLoad);
@@ -76,7 +76,7 @@ function spriteSheet_onLoad(event)
 function spriteSheet_onError(event)
 //
 {
-  if(!MainUI.isRunning)
+  if(!ProgLoadUI.isRunning)
     return;
 
   this.removeEventListener("load", spriteSheet_onLoad);

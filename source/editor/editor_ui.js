@@ -1,4 +1,5 @@
 import * as MainUI from "../main_ui.js";
+import * as ProgLoadUI from "../prog_load/prog_load_ui.js";
 import * as DebugUI from "../debug/debug_ui.js";
 import * as AboutUI from "../about/about_ui.js";
 import * as MainCommon from "../main_common.js";
@@ -365,8 +366,8 @@ function setEvents()
   debugToggleBtn.addEventListener("click", debugToggleBtn_onClick);
   
   MainUI.uiOnMainResetHandlers.push(editorUI_onMainReset);
-  MainUI.uiOnProgStartHandlers.push(editorUI_onProgStart);
-  MainUI.uiOnProgEndHandlers.push(editorUI_onProgEnd);
+  ProgLoadUI.uiOnProgStartHandlers.push(editorUI_onProgStart);
+  ProgLoadUI.uiOnProgEndHandlers.push(editorUI_onProgEnd);
 }
 
 function switchEditorMode()
@@ -524,7 +525,7 @@ async function saveCodeFileFromHandle()
 async function newBtn_onClick(event)
 //Open a blank editor in a new tab
 {
-  if(MainUI.isRunning || fileOpInProgress)
+  if(ProgLoadUI.isRunning || fileOpInProgress)
     return;
 
   if(codeHasChanged)
@@ -539,7 +540,7 @@ async function newBtn_onClick(event)
 async function openBtn_onClick(event)
 //Open a code file from disk
 {
-  if(MainUI.isRunning || fileOpInProgress)
+  if(ProgLoadUI.isRunning || fileOpInProgress)
     return;
 
   if(codeHasChanged)
@@ -567,7 +568,7 @@ async function openBtn_onClick(event)
 async function saveBtn_onClick(event)
 //Save the current code to disk
 {
-  if(MainUI.isRunning || fileOpInProgress)
+  if(ProgLoadUI.isRunning || fileOpInProgress)
     return;
 
   try
@@ -642,13 +643,13 @@ function editorGutterItem_onClick(event)
 function runBtn_onClick(event)
 //
 { 
-  MainUI.startProg(editorCode.value);
+  ProgLoadUI.startProg(editorCode.value);
 }
 
 function stopBtn_onClick(event)
 //
 {
-  MainUI.endProg("Program stopped.", MainUI.PROG_EXIT_STATUS_TERMINATED, null);
+  ProgLoadUI.endProg("Program stopped.", ProgLoadUI.PROG_EXIT_STATUS_TERMINATED, null);
 }
 
 function debugToggleBtn_onClick(event)
@@ -680,7 +681,7 @@ function editorUI_onProgEnd(exitStatus, error)
 {
   switchEditorMode();
 
-  if(exitStatus == MainUI.PROG_EXIT_STATUS_ERROR)
+  if(exitStatus == ProgLoadUI.PROG_EXIT_STATUS_ERROR)
   {
     if(error.sourceName == MainCommon.mainSourceName)
       selectEditorLine(error.sourceLineNum);

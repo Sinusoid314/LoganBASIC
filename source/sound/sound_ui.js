@@ -1,5 +1,5 @@
-import * as MainUI from "../main_ui.js";
 import * as ThreadMsgUI from "../thread_msg/thread_msg_ui.js";
+import * as ProgLoadUI from "../prog_load/prog_load_ui.js";
 import * as SoundCommon from "./sound_common.js";
 
 
@@ -12,7 +12,7 @@ setEvents();
 function setEvents()
 //
 {
-  MainUI.uiOnProgEndHandlers.push(soundUI_onProgEnd);
+  ProgLoadUI.uiOnProgEndHandlers.push(soundUI_onProgEnd);
 
   ThreadMsgUI.uiMessageMap.set(SoundCommon.MSGID_LOAD_SOUND_REQUEST, onMsgLoadSoundRequest);
   ThreadMsgUI.uiMessageMap.set(SoundCommon.MSGID_UNLOAD_SOUND_REQUEST, onMsgUnloadSoundRequest);
@@ -43,7 +43,7 @@ function sendSoundRequestResult(resultVal, errorMsg = "")
 function sound_onLoad(event)
 //
 {
-  if(!MainUI.isRunning)
+  if(!ProgLoadUI.isRunning)
     return;
 
   event.target.removeEventListener("canplaythrough", sound_onLoad);
@@ -57,7 +57,7 @@ function sound_onLoad(event)
 function sound_onError(event)
 //
 {
-  if(!MainUI.isRunning)
+  if(!ProgLoadUI.isRunning)
     return;
 
   event.target.removeEventListener("canplaythrough", sound_onLoad);

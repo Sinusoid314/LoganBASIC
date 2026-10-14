@@ -1,5 +1,6 @@
 import * as MainUI from "../main_ui.js";
 import * as ThreadMsgUI from "../thread_msg/thread_msg_ui.js";
+import * as ProgLoadUI from "../prog_load/prog_load_ui.js";
 import * as CanvasCommon from "./canvas_common.js";
 
 
@@ -84,8 +85,8 @@ function setEvents()
 //
 {
   MainUI.uiOnMainResetHandlers.push(canvasUI_onMainReset);
-  MainUI.uiOnProgStartHandlers.push(canvasUI_onProgStart);
-  MainUI.uiOnProgEndHandlers.push(canvasUI_onProgEnd);
+  ProgLoadUI.uiOnProgStartHandlers.push(canvasUI_onProgStart);
+  ProgLoadUI.uiOnProgEndHandlers.push(canvasUI_onProgEnd);
   
   ThreadMsgUI.uiMessageMap.set(CanvasCommon.MSGID_SHOW_CANVAS, onMsgShowCanvas);
   ThreadMsgUI.uiMessageMap.set(CanvasCommon.MSGID_HIDE_CANVAS, onMsgHideCanvas);
@@ -191,7 +192,7 @@ function sendContextRequestResult(resultVal, errorMsg = "")
 function image_onLoad(event)
 //
 {
-  if(!MainUI.isRunning)
+  if(!ProgLoadUI.isRunning)
     return;
 
   this.removeEventListener("load", image_onLoad);
@@ -205,7 +206,7 @@ function image_onLoad(event)
 function image_onError(event)
 //
 {
-  if(!MainUI.isRunning)
+  if(!ProgLoadUI.isRunning)
     return;
 
   this.removeEventListener("load", image_onLoad);
@@ -217,7 +218,7 @@ function image_onError(event)
 function canvas_onAnimationFrame(drawData)
 //
 {
-  if(!MainUI.isRunning)
+  if(!ProgLoadUI.isRunning)
     return;
 
   if(drawData)
@@ -241,7 +242,7 @@ function canvas_onEvent(event)
   var canvasRect;
   var pointerX, pointerY;
 
-  if(!MainUI.isRunning)
+  if(!ProgLoadUI.isRunning)
     return;
 
   if(event instanceof PointerEvent)
