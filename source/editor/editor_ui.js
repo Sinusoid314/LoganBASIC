@@ -370,6 +370,17 @@ function setEvents()
   ProgLoadUI.uiOnProgEndHandlers.push(editorUI_onProgEnd);
 }
 
+function resetEditor()
+//
+{
+  codeHasChanged = false;
+  codeFileName = DEFAULT_FILE_NAME;
+  codeFileHandle = null;
+  codeFileNameDisplay.innerText = codeFileName;
+  editorCode.value = "";
+  updateEditorGutter();
+}
+
 function switchEditorMode()
 //Switch between run and edit modes
 {
@@ -662,12 +673,7 @@ function debugToggleBtn_onClick(event)
 function editorUI_onMainReset()
 //
 {
-  codeHasChanged = false;
-  codeFileName = DEFAULT_FILE_NAME;
-  codeFileHandle = null;
-  codeFileNameDisplay.innerText = codeFileName;
-  editorCode.value = "";
-  updateEditorGutter();
+  resetEditor();
 }
 
 function editorUI_onProgStart()
