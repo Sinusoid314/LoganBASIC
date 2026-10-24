@@ -380,17 +380,6 @@ function setEvents()
   ProgLoadUI.uiOnProgEndHandlers.push(editorUI_onProgEnd);
 }
 
-function switchEditorMode()
-//Switch between run and edit modes
-{
-  newBtn.disabled = !newBtn.disabled;
-  openBtn.disabled = !openBtn.disabled;
-  saveBtn.disabled = !saveBtn.disabled;
-  editorCode.readOnly = !editorCode.readOnly;
-  runBtn.disabled = !runBtn.disabled;
-  stopBtn.disabled = !stopBtn.disabled;
-}
-
 function updateEditorGutter()
 {
   var currLineCount = editorCode.value.split("\n").length;
@@ -672,13 +661,25 @@ function debugToggleBtn_onClick(event)
 function editorUI_onProgStart()
 //
 {
-  switchEditorMode();
+  newBtn.disabled = true;
+  openBtn.disabled = true;
+  saveBtn.disabled = true;
+  runBtn.disabled = true;
+  stopBtn.disabled = true;
+
+  editorCode.readOnly = true;
 }
 
 function editorUI_onProgEnd(exitStatus, error)
 //
 {
-  switchEditorMode();
+  newBtn.disabled = false;
+  openBtn.disabled = false;
+  saveBtn.disabled = false;
+  runBtn.disabled = false;
+  stopBtn.disabled = false;
+
+  editorCode.readOnly = false;
 
   if(exitStatus == ProgLoadUI.PROG_EXIT_STATUS_ERROR)
   {
