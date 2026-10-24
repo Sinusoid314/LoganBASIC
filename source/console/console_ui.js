@@ -1,4 +1,3 @@
-import * as MainUI from "../main_ui.js";
 import * as ThreadMsgUI from "../thread_msg/thread_msg_ui.js";
 import * as ProgLoadUI from "../prog_load/prog_load_ui.js";
 import * as ConsoleCommon from "./console_common.js";
