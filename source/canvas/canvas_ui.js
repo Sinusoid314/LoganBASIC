@@ -13,6 +13,18 @@ export function mountDiv(targetElement, insertPosition = "beforeend")
   targetElement.insertAdjacentElement(insertPosition, canvasDiv);
 }
 
+export function resetCanvas()
+//Set the canvas back to its initial state
+{
+  activeContext = bufferCanvasContext;
+  clearCanvas();
+  activeContext = progCanvasContext;
+  clearCanvas();
+
+  setCanvasWidth(500);
+  setCanvasHeight(300);
+}
+
 
 const templateCSS =
 `
@@ -84,7 +96,6 @@ function initCanvasContexts()
 function setEvents()
 //
 {
-  MainUI.uiOnMainResetHandlers.push(canvasUI_onMainReset);
   ProgLoadUI.uiOnProgStartHandlers.push(canvasUI_onProgStart);
   ProgLoadUI.uiOnProgEndHandlers.push(canvasUI_onProgEnd);
   
@@ -117,18 +128,6 @@ function setEvents()
   ThreadMsgUI.uiMessageMap.set(CanvasCommon.MSGID_SET_LINE_SIZE, onMsgSetLineSize);
   ThreadMsgUI.uiMessageMap.set(CanvasCommon.MSGID_GET_TEXT_DRAW_WIDTH_REQUEST, onMsgGetTextDrawWidthRequest);
   ThreadMsgUI.uiMessageMap.set(CanvasCommon.MSGID_GET_TEXT_DRAW_HEIGHT_REQUEST, onMsgGetTextDrawHeightRequest);
-}
-
-function resetCanvas()
-//Set the canvas back to its initial state
-{
-  activeContext = bufferCanvasContext;
-  clearCanvas();
-  activeContext = progCanvasContext;
-  clearCanvas();
-
-  setCanvasWidth(500);
-  setCanvasHeight(300);
 }
 
 function cleanupCanvas()
@@ -258,12 +257,6 @@ function canvas_onEvent(event)
   }
 
   event.preventDefault();
-}
-
-function canvasUI_onMainReset()
-//
-{
-  resetCanvas();
 }
 
 function canvasUI_onProgStart()

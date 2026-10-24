@@ -102,13 +102,17 @@ IMPORTS
                   -> SpriteCommon.MSGID_*
 
 
-(X) main_ui -> EditorUI.toggleUpdatesBtnHighlighted()
+(X) main_ui -> DebugUI.debugClearDisplays()
+            -> EditorUI.resetEditor()
+                       .toggleUpdatesBtnHighlighted()
                        .codeHasChanged
                        .readCodeFileFromLocalStorage()
                        .readCodeFileFromURL()
                        .loadCodeFileIntoEditor()
                        .beginFileOpAwait()
                        .endFileOpAwait()
+            -> ConsoleUI.clearConsoleOutput()
+            -> CanvasUI.resetCanvas()
             -> AboutUI.mountDialog()
                       .showDialog()
             -> MainCommon.MAIN_MODE_*
@@ -127,16 +131,14 @@ IMPORTS
 
 (X) about_ui -> 
 
-(X) canvas_ui -> MainUI.uiOnMainResetHandlers
-              -> ThreadMsgUI.progWorker
+(X) canvas_ui -> ThreadMsgUI.progWorker
                             .uiMessageMap
               -> ProgLoadUI.isRunning
                            .uiOnProgStartHandlers
                            .uiOnProgEndHandlers
               -> CanvasCommon.MSGID_*
 
-(X) console_ui -> MainUI.uiOnMainResetHandlers
-               -> ThreadMsgUI.progWorker
+(X) console_ui -> ThreadMsgUI.progWorker
                              .uiMessageMap
                -> ProgLoadUI.isRunning
                             .uiOnProgStartHandlers
@@ -145,7 +147,6 @@ IMPORTS
 
 (X) debug_ui -> Objects.OBJ_TYPE_*
                        .ObjArray
-             -> MainUI.uiOnMainResetHandlers
              -> ThreadMsgUI.progWorker
                            .uiMessageMap
              -> ProgLoadUI.PROG_EXIT_STATUS_*
@@ -158,8 +159,7 @@ IMPORTS
                            .DEBUG_UI_STATUS_*
                            .DebugBreakpoint
 
-(X) editor_ui -> MainUI.uiOnMainResetHandlers
-                       .resetMain()
+(X) editor_ui -> MainUI.resetMain()
               -> ProgLoadUI.PROG_EXIT_STATUS_*
                            .isRunning
                            .uiOnProgStartHandlers
@@ -261,7 +261,6 @@ EXPORTS
 
 (X) main_ui
       - statusBar
-      - uiOnMainResetHandlers
       - resetMain()
 
 (X) thread_msg_ui
@@ -283,17 +282,20 @@ EXPORTS
 
 (X) canvas_ui
       - activeContext
+      - resetCanvas()
 
 (X) console_ui
-      - 
+      - clearConsoleOutput()
 
 (X) debug_ui
+      - debugClearDisplays()
       - debugAddBreakpoint()
       - debugRemoveBreakpoint()
       - debugToggleDiv()
 
 (X) editor_ui
       - codeHasChanged
+      - resetEditor()
       - toggleUpdatesBtnHighlighted()
       - selectEditorLine()
       - readCodeFileFromLocalStorage()

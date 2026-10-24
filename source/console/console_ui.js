@@ -11,6 +11,12 @@ export function mountDiv(targetElement, insertPosition = "beforeend")
   targetElement.insertAdjacentElement("beforeend", consoleDiv);
 }
 
+export function clearConsoleOutput()
+//Clear the console
+{
+  consoleOutput.value = "";
+}
+
 
 const templateCSS =
 `
@@ -91,7 +97,6 @@ function setEvents()
   consoleInput.addEventListener("keydown", consoleInput_onKeydown);
   consoleInputBtn.addEventListener("click", consoleInputBtn_onClick);
   
-  MainUI.uiOnMainResetHandlers.push(consoleUI_onMainReset);
   ProgLoadUI.uiOnProgStartHandlers.push(consoleUI_onProgStart);
   ProgLoadUI.uiOnProgEndHandlers.push(consoleUI_onProgEnd);
   
@@ -100,12 +105,6 @@ function setEvents()
   ThreadMsgUI.uiMessageMap.set(ConsoleCommon.MSGID_PRINT, onMsgPrint);
   ThreadMsgUI.uiMessageMap.set(ConsoleCommon.MSGID_INPUT_REQUEST, onMsgInputRequest);
   ThreadMsgUI.uiMessageMap.set(ConsoleCommon.MSGID_CLEAR_CONSOLE, onMsgClearConsole);
-}
-
-function clearConsoleOutput()
-//Clear the console
-{
-  consoleOutput.value = "";
 }
 
 function closeConsoleInput()
@@ -143,12 +142,6 @@ function consoleInputBtn_onClick(event)
     return;
 
   enterConsoleInput();
-}
-
-function consoleUI_onMainReset()
-//
-{
-  clearConsoleOutput();
 }
 
 function consoleUI_onProgStart()

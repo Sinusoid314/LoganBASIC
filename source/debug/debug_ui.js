@@ -16,6 +16,16 @@ export function mountDiv(targetElement, insertPosition = "beforeend")
   targetElement.insertAdjacentElement(insertPosition, debugDiv);
 }
 
+export function debugClearDisplays()
+//
+{
+  EditorUI.selectEditorLine(0);
+  
+  debugClearCallFrameList();
+  debugClearLocalsList();
+  debugClearGlobalsList();
+}
+
 export function debugToggleDiv()
 //
 {
@@ -241,7 +251,6 @@ function setEvents()
   debugSkipBtn.addEventListener("click", debugSkipBtn_onClick);
   debugCallStackList.addEventListener("change", debugCallStackList_onChange);
   
-  MainUI.uiOnMainResetHandlers.push(debugUI_onMainReset);
   ProgLoadUI.uiOnProgStartHandlers.push(debugUI_onProgStart);
   ProgLoadUI.uiOnProgEndHandlers.push(debugUI_onProgEnd);
   
@@ -274,16 +283,6 @@ function debugChangeUIStatus(newStatus)
   = debugStepOutBtn.disabled
   = debugSkipBtn.disabled
   = !(newStatus == DebugCommon.DEBUG_UI_STATUS_BREAKPOINT);
-}
-
-function debugClearDisplays()
-//
-{
-  EditorUI.selectEditorLine(0);
-  
-  debugClearCallFrameList();
-  debugClearLocalsList();
-  debugClearGlobalsList();
 }
 
 function debugClearCallFrameList()
@@ -509,12 +508,6 @@ function debugVarListItem_onClick(event)
     debugCollapseVarListItem(parentItem, itemValueMap, childList);
   else
     debugExpandVarListItem(parentItem, itemValueMap, childList);
-}
-
-function debugUI_onMainReset()
-//
-{
-  debugClearDisplays();
 }
 
 function debugUI_onProgStart()

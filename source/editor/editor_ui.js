@@ -35,6 +35,17 @@ export function setStatusElement(targetStatusElement)
   statusElement = targetStatusElement;
 }
 
+export function resetEditor()
+//
+{
+  codeHasChanged = false;
+  codeFileName = DEFAULT_FILE_NAME;
+  codeFileHandle = null;
+  codeFileNameDisplay.innerText = codeFileName;
+  editorCode.value = "";
+  updateEditorGutter();
+}
+
 export function toggleUpdatesBtnHighlighted()
 //
 {
@@ -365,20 +376,8 @@ function setEvents()
   stopBtn.addEventListener("click", stopBtn_onClick);
   debugToggleBtn.addEventListener("click", debugToggleBtn_onClick);
   
-  MainUI.uiOnMainResetHandlers.push(editorUI_onMainReset);
   ProgLoadUI.uiOnProgStartHandlers.push(editorUI_onProgStart);
   ProgLoadUI.uiOnProgEndHandlers.push(editorUI_onProgEnd);
-}
-
-function resetEditor()
-//
-{
-  codeHasChanged = false;
-  codeFileName = DEFAULT_FILE_NAME;
-  codeFileHandle = null;
-  codeFileNameDisplay.innerText = codeFileName;
-  editorCode.value = "";
-  updateEditorGutter();
 }
 
 function switchEditorMode()
@@ -668,12 +667,6 @@ function debugToggleBtn_onClick(event)
 {
   debugToggleBtn.style.border = (DebugUI.isDebugging) ? "" : "inset 2px";
   DebugUI.debugToggleDiv();
-}
-
-function editorUI_onMainReset()
-//
-{
-  resetEditor();
 }
 
 function editorUI_onProgStart()

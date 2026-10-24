@@ -4,14 +4,16 @@ import * as MainCommon from "./main_common.js";
 
 
 export const statusBar;
-export const uiOnMainResetHandlers = [];
 
 export function resetMain()
 //
 {
   statusBar.innerText = "Ready.";
   
-  uiOnMainResetHandlers.forEach(handler => handler());
+  DebugUI.debugClearDisplays();
+  EditorUI.resetEditor();
+  ConsoleUI.clearConsoleOutput();
+  CanvasUI.resetCanvas();
 }
 
 
