@@ -251,6 +251,8 @@ function setEvents()
 {
   window.addEventListener("load", window_onLoad);
   window.addEventListener("beforeunload", window_onBeforeUnload);
+
+  ProgLoadUI.uiOnStatusChange.push(mainUI_onStatusChange);
 }
 
 async function loadUIComponents()
@@ -424,6 +426,12 @@ function window_onBeforeUnload(event)
       event.returnValue = "";
     }
   }
+}
+
+function mainUI_onStatusChange(statusText)
+//
+{
+  statusBar.innerText = statusText;
 }
 
 function toggle_onClick(event)

@@ -9,6 +9,7 @@ export const PROG_EXIT_STATUS_TERMINATED = 3;
 export var isRunning = false;
 export const uiOnProgStartHandlers = [];
 export const uiOnProgEndHandlers = [];
+export const uiOnStatusChange = [];
 
 export function startProg(source)
 //Signal the worker thread to start the program
@@ -65,5 +66,5 @@ function onMsgProgDone(msgData)
 function onMsgStatusChange(msgData)
 //Display a status change
 {
-  MainUI.statusBar.innerText = msgData.statusText;
+  uiOnStatusChange.forEach(handler => handler(msgData.statusText));
 }
