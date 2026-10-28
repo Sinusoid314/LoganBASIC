@@ -113,6 +113,99 @@ export async function readCodeFileFromURL(fileURL)
   }
 }
 
+export async function readCodeFileFromInput()
+//Read code file from an Input element
+{
+  return new Promise((resolve, reject) => 
+  {
+    const fileInput = document.createElement("input");
+
+    fileInput.type = "file";
+    fileInput.accept = "*.bas";
+    fileInput.style.display = "none";
+
+    fileInput.addEventListener("change", async (event) =>
+    {
+      const file = event.target.files[0];
+
+      try
+      {
+        const fileData = await file.text();
+        resolve(new CodeFile(file.name, fileData));
+      }
+      catch(error)
+      {
+        reject(`Failed to load '${file.name}': ${error}`);
+      }
+    });
+
+    document.body.appendChild(fileInput);
+    fileInput.click();
+    document.body.removeChild(fileInput);
+  });
+}
+
+export async function readCodeFileFromHandle()
+//
+{
+  try
+  {
+    const [fileHandle] = await window.showOpenFilePicker(filePickerOptions);
+    const file = await fileHandle.getFile();
+    const fileData = await file.text();
+
+    return new CodeFile(file.name, fileData, fileHandle);
+  }
+  catch(error)
+  {
+    if(error.name == "AbortError")
+      throw "File open cancelled.";
+    else
+      throw `Failed to load file: ${error}`;
+  }
+}
+
+export async function saveCodeFileFromAnchor()
+//Save code file from an Anchor element
+{
+  const blob = new Blob([editorCode.value], {type: 'text/plain'});
+  const url = URL.createObjectURL(blob);
+  const fileLink = document.createElement("a");
+
+  fileLink.href = url;
+  fileLink.download = codeFileName;
+  fileLink.style.display = "none";
+
+  document.body.appendChild(fileLink);
+  fileLink.click();
+  document.body.removeChild(fileLink);
+  URL.revokeObjectURL(url);
+}
+
+export async function saveCodeFileFromHandle()
+//
+{
+  try
+  {
+    if(!codeFileHandle)
+    {
+      codeFileHandle = await window.showSaveFilePicker(filePickerOptions);
+      codeFileName = codeFileHandle.name;
+    }
+
+    const stream = await codeFileHandle.createWritable();
+    await stream.write(editorCode.value);
+    await stream.close();
+  }
+  catch(error)
+  {
+    if(error.name == "AbortError")
+      throw "File save cancelled.";
+    else
+      throw `Failed to save file: ${error}`;
+  }
+}
+
 export function loadCodeFileIntoEditor(codeFile)
 //Load the code file's name and contents into the editor
 {
@@ -426,99 +519,6 @@ function removeEditorGutterItem()
   }
 
   editorGutter.removeChild(editorGutterItem);
-}
-
-async function readCodeFileFromInput()
-//Read code file from an Input element
-{
-  return new Promise((resolve, reject) => 
-  {
-    const fileInput = document.createElement("input");
-
-    fileInput.type = "file";
-    fileInput.accept = "*.bas";
-    fileInput.style.display = "none";
-
-    fileInput.addEventListener("change", async (event) =>
-    {
-      const file = event.target.files[0];
-
-      try
-      {
-        const fileData = await file.text();
-        resolve(new CodeFile(file.name, fileData));
-      }
-      catch(error)
-      {
-        reject(`Failed to load '${file.name}': ${error}`);
-      }
-    });
-
-    document.body.appendChild(fileInput);
-    fileInput.click();
-    document.body.removeChild(fileInput);
-  });
-}
-
-async function readCodeFileFromHandle()
-//
-{
-  try
-  {
-    const [fileHandle] = await window.showOpenFilePicker(filePickerOptions);
-    const file = await fileHandle.getFile();
-    const fileData = await file.text();
-
-    return new CodeFile(file.name, fileData, fileHandle);
-  }
-  catch(error)
-  {
-    if(error.name == "AbortError")
-      throw "File open cancelled.";
-    else
-      throw `Failed to load file: ${error}`;
-  }
-}
-
-async function saveCodeFileFromAnchor()
-//Save code file from an Anchor element
-{
-  const blob = new Blob([editorCode.value], {type: 'text/plain'});
-  const url = URL.createObjectURL(blob);
-  const fileLink = document.createElement("a");
-
-  fileLink.href = url;
-  fileLink.download = codeFileName;
-  fileLink.style.display = "none";
-
-  document.body.appendChild(fileLink);
-  fileLink.click();
-  document.body.removeChild(fileLink);
-  URL.revokeObjectURL(url);
-}
-
-async function saveCodeFileFromHandle()
-//
-{
-  try
-  {
-    if(!codeFileHandle)
-    {
-      codeFileHandle = await window.showSaveFilePicker(filePickerOptions);
-      codeFileName = codeFileHandle.name;
-    }
-
-    const stream = await codeFileHandle.createWritable();
-    await stream.write(editorCode.value);
-    await stream.close();
-  }
-  catch(error)
-  {
-    if(error.name == "AbortError")
-      throw "File save cancelled.";
-    else
-      throw `Failed to save file: ${error}`;
-  }
 }
 
 async function newBtn_onClick(event)
