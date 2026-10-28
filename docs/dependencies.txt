@@ -123,8 +123,7 @@ IMPORTS
 (X) thread_msg_ui -> ProgLoadUI.isRunning
                   -> MainCommon.mainMode
 
-(X) prog_load_ui -> MainUI.statusBar
-                 -> ThreadMsgUI.progWorker
+(X) prog_load_ui -> ThreadMsgUI.progWorker
                                .uiMessageMap
                                .initWorker()
                  -> ProgLoadCommon.MSGID_*
@@ -260,7 +259,6 @@ EXPORTS
 
 
 (X) main_ui
-      - statusBar
       - resetMain()
 
 (X) thread_msg_ui

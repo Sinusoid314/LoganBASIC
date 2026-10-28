@@ -3,8 +3,6 @@ import * as ProgLoadUI from "./prog_load/prog_load_ui.js";
 import * as MainCommon from "./main_common.js";
 
 
-export const statusBar;
-
 export function resetMain()
 //
 {
@@ -183,7 +181,7 @@ const templateHTML =
 var AboutUI, DebugUI, EditorUI, ConsoleUI, CanvasUI, SoundUI, SpriteUI;
 
 var mainUIStyle, mainDivStyle, statusBarStyle, versionDivStyle;
-var mainDiv, versionDiv;
+var mainDiv, statusBar, versionDiv;
 
 var paramFileURL = "";
 var autoRun = false;
@@ -252,6 +250,7 @@ function setEvents()
   window.addEventListener("load", window_onLoad);
   window.addEventListener("beforeunload", window_onBeforeUnload);
 
+  ProgLoadUI.uiOnProgEndHandlers.push(mainUI_onProgEnd);
   ProgLoadUI.uiOnStatusChange.push(mainUI_onStatusChange);
 }
 
@@ -426,6 +425,12 @@ function window_onBeforeUnload(event)
       event.returnValue = "";
     }
   }
+}
+
+function mainUI_onProgEnd(exitStatus, error)
+//
+{
+  statusBar.innerText = exitMessage;
 }
 
 function mainUI_onStatusChange(statusText)

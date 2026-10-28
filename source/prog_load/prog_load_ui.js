@@ -1,6 +1,6 @@
-import * as MainUI from "../main_ui.js";
 import * as ThreadMsgUI from "../thread_msg/thread_msg_ui.js";
 import * as ProgLoadCommon from "./prog_load_common.js";
+
 
 export const PROG_EXIT_STATUS_SUCCESS = 1;
 export const PROG_EXIT_STATUS_ERROR = 2;
@@ -29,8 +29,6 @@ export function endProg(exitMessage, exitStatus, error)
 {
   if(!isRunning)
     return;
-
-  MainUI.statusBar.innerText = exitMessage;
 
   if(exitStatus == PROG_EXIT_STATUS_TERMINATED)
   {
