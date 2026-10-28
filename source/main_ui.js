@@ -250,6 +250,7 @@ function setEvents()
   window.addEventListener("load", window_onLoad);
   window.addEventListener("beforeunload", window_onBeforeUnload);
 
+  ProgLoadUI.uiOnProgStartHandlers.push(mainUI_onProgStart);
   ProgLoadUI.uiOnProgEndHandlers.push(mainUI_onProgEnd);
   ProgLoadUI.uiOnStatusChange.push(mainUI_onStatusChange);
 }
@@ -425,6 +426,12 @@ function window_onBeforeUnload(event)
       event.returnValue = "";
     }
   }
+}
+
+function mainUI_onProgStart()
+//
+{
+
 }
 
 function mainUI_onProgEnd(exitStatus, error)
