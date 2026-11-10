@@ -102,8 +102,10 @@ IMPORTS
                   -> SpriteCommon.MSGID_*
 
 
-( ) main_ui -> DebugUI.debugClearDisplays()
+(X) main_ui -> DebugUI.debugClearDisplays()
             -> EditorUI.resetEditor()
+                       .codeFileNameDisplay
+                       .codeFileName
                        .codeHasChanged
                        .readCodeFileFromLocalStorage()
                        .readCodeFileFromURL()
@@ -159,17 +161,11 @@ IMPORTS
                            .DEBUG_UI_STATUS_*
                            .DebugBreakpoint
 
-( ) editor_ui -> ProgLoadUI.PROG_EXIT_STATUS_*
-                           .isRunning
+(X) editor_ui -> ProgLoadUI.PROG_EXIT_STATUS_*
                            .uiOnProgStartHandlers
                            .uiOnProgEndHandlers
-                           .startProg()
-                           .endProg()
-              -> DebugUI.isDebugging
-                        .debugAddBreakpoint()
+              -> DebugUI.debugAddBreakpoint()
                         .debugRemoveBreakpoint()
-                        .debugToggleDiv()
-              -> AboutUI.showDialog()
               -> MainCommon.mainSourceName
 
 (X) sound_ui -> ThreadMsgUI.progWorker
@@ -258,7 +254,7 @@ EXPORTS
       - 
 
 
-( ) main_ui
+(X) main_ui
       - 
 
 (X) thread_msg_ui
@@ -291,7 +287,9 @@ EXPORTS
       - debugRemoveBreakpoint()
       - debugToggleDiv()
 
-( ) editor_ui
+(X) editor_ui
+      - codeFileNameDisplay
+      - codeFileName
       - codeHasChanged
       - resetEditor()
       - toggleUpdatesBtnHighlighted()

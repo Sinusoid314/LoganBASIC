@@ -1,5 +1,4 @@
 import * as Objects from "./core/objects.js";
-import * as ThreadMsgWorker from "./thread_msg/thread_msg_worker.js";
 import * as ProgLoadWorker from "./prog_load/prog_load_worker.js";
 import * as MainCommon from "./main_common.js";
 

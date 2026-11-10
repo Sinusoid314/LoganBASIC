@@ -3,18 +3,6 @@ import * as ProgLoadUI from "./prog_load/prog_load_ui.js";
 import * as MainCommon from "./main_common.js";
 
 
-export function resetMain()
-//
-{
-  statusBar.innerText = "Ready.";
-  
-  DebugUI.debugClearDisplays();
-  EditorUI.resetEditor();
-  ConsoleUI.clearConsoleOutput();
-  CanvasUI.resetCanvas();
-}
-
-
 const templateCSS =
 `
 <style id="mainUIStyle">
@@ -280,7 +268,9 @@ function createStyles()
   template.innerHTML = templateCSS;
 
   mainUIStyle = template.content.getElementById("mainUIStyle");
+  menuBarStyle = template.content.getElementById("menuBarStyle");
   mainDivStyle = template.content.getElementById("mainDivStyle");
+  commandBarStyle = template.content.getElementById("commandBarStyle");
   statusBarStyle = template.content.getElementById("statusBarStyle");
   versionDivStyle = template.content.getElementById("versionDivStyle");
 }
@@ -291,7 +281,22 @@ function createElements()
   const template = document.createElement("template");
   template.innerHTML = templateHTML;
 
+  menuBar = template.content.getElementById("menuBar");
+  newBtn = template.content.getElementById("newBtn");
+  openBtn = template.content.getElementById("openBtn");
+  saveBtn = template.content.getElementById("saveBtn");
+  examplesBtn = template.content.getElementById("examplesBtn");
+  helpBtn = template.content.getElementById("helpBtn");
+  aboutBtn = template.content.getElementById("aboutBtn");
+  updatesBtn = template.content.getElementById("updatesBtn");
+
   mainDiv = template.content.getElementById("mainDiv");
+
+  commandBar = template.content.getElementById("commandBar");
+  runBtn = template.content.getElementById("runBtn");
+  stopBtn = template.content.getElementById("stopBtn");
+  debugToggleBtn = template.content.getElementById("debugToggleBtn");
+
   statusBar = template.content.getElementById("statusBar");
   versionDiv = template.content.getElementById("versionDiv");
 }
@@ -301,6 +306,18 @@ function setEvents()
 {
   window.addEventListener("load", window_onLoad);
   window.addEventListener("beforeunload", window_onBeforeUnload);
+
+  newBtn.addEventListener("click", newBtn_onClick);
+  openBtn.addEventListener("click", openBtn_onClick);
+  saveBtn.addEventListener("click", saveBtn_onClick);
+  examplesBtn.addEventListener("click", examplesBtn_onClick);
+  helpBtn.addEventListener("click", helpBtn_onClick);
+  aboutBtn.addEventListener("click", aboutBtn_onClick);
+  updatesBtn.addEventListener("click", updatesBtn_onClick);
+
+  runBtn.addEventListener("click", runBtn_onClick);
+  stopBtn.addEventListener("click", stopBtn_onClick);
+  debugToggleBtn.addEventListener("click", debugToggleBtn_onClick);
 
   ProgLoadUI.uiOnProgStartHandlers.push(mainUI_onProgStart);
   ProgLoadUI.uiOnProgEndHandlers.push(mainUI_onProgEnd);
@@ -383,6 +400,17 @@ function mountVersionDiv()
 {
   document.head.appendChild(versionDivStyle);
   mainDiv.insertAdjacentElement("beforeend", versionDiv);
+}
+
+function resetMain()
+//
+{
+  statusBar.innerText = "Ready.";
+  
+  DebugUI.debugClearDisplays();
+  EditorUI.resetEditor();
+  ConsoleUI.clearConsoleOutput();
+  CanvasUI.resetCanvas();
 }
 
 function setToggleEvents()
@@ -522,15 +550,138 @@ function window_onBeforeUnload(event)
   }
 }
 
+async function newBtn_onClick(event)
+//Open a blank editor in a new tab
+{
+  if(ProgLoadUI.isRunning || fileOpInProgress)
+    return;
+
+  if(EditorUI.codeHasChanged)
+  {
+    if(!confirm("You have unsaved changes to '" + EditorUI.codeFileName + "'. Are you sure you want to start a new file?"))
+      return;
+  }
+  
+  resetMain();
+}
+
+async function openBtn_onClick(event)
+//Open a code file from disk
+{
+  if(ProgLoadUI.isRunning || fileOpInProgress)
+    return;
+
+  if(EditorUI.codeHasChanged)
+  {
+    if(!confirm("You have unsaved changes to '" + EditorUI.codeFileName + "'. Are you sure you want to open another file?"))
+      return;
+  }
+
+  try
+  {
+    beginFileOpAwait("Opening file...");
+
+    const codeFile = await (("showOpenFilePicker" in window) ? EditorUI.readCodeFileFromHandle() : EditorUI.readCodeFileFromInput());
+    resetMain();
+    EditorUI.loadCodeFileIntoEditor(codeFile);
+
+    endFileOpAwait("File opened successfully.");
+  }
+  catch(errorMessage)
+  {
+    endFileOpAwait(errorMessage);
+  }
+}
+
+async function saveBtn_onClick(event)
+//Save the current code to disk
+{
+  if(ProgLoadUI.isRunning || fileOpInProgress)
+    return;
+
+  try
+  {
+    beginFileOpAwait("Saving file...");
+
+    if("showOpenFilePicker" in window)
+      await EditorUI.saveCodeFileFromHandle();
+    else
+      await EditorUI.saveCodeFileFromAnchor();
+
+    EditorUI.codeHasChanged = false;
+    EditorUI.codeFileNameDisplay.innerText = EditorUI.codeFileName;
+
+    endFileOpAwait("File saved successfully.");
+  }
+  catch(errorMessage)
+  {
+    endFileOpAwait(errorMessage);
+  }
+}
+
+function examplesBtn_onClick(event)
+//Open the examples page
+{
+  window.open("./examples/examples.html", "_blank");
+}
+
+function helpBtn_onClick(event)
+//Open the help files page
+{
+  window.open("./docs/help/help.html", "_blank");
+}
+
+function aboutBtn_onClick(event)
+//Open the About dialog box
+{
+  AboutUI.showDialog();
+}
+
+function updatesBtn_onClick(event)
+//Open the Updates page
+{
+  window.open("./updates.html", "_blank");
+  toggleUpdatesBtnHighlighted();
+}
+
+function runBtn_onClick(event)
+//
+{ 
+  ProgLoadUI.startProg(EditorUI.editorCode.value);
+}
+
+function stopBtn_onClick(event)
+//
+{
+  ProgLoadUI.endProg("Program stopped.", ProgLoadUI.PROG_EXIT_STATUS_TERMINATED, null);
+}
+
+function debugToggleBtn_onClick(event)
+//
+{
+  debugToggleBtn.style.border = (DebugUI.isDebugging) ? "" : "inset 2px";
+  DebugUI.debugToggleDiv();
+}
+
 function mainUI_onProgStart()
 //
 {
-
+  newBtn.disabled = true;
+  openBtn.disabled = true;
+  saveBtn.disabled = true;
+  runBtn.disabled = true;
+  stopBtn.disabled = true;
 }
 
 function mainUI_onProgEnd(exitStatus, error)
 //
 {
+  newBtn.disabled = false;
+  openBtn.disabled = false;
+  saveBtn.disabled = false;
+  runBtn.disabled = false;
+  stopBtn.disabled = false;
+
   statusBar.innerText = exitMessage;
 }
 

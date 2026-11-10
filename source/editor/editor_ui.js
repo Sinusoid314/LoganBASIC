@@ -1,9 +1,11 @@
 import * as ProgLoadUI from "../prog_load/prog_load_ui.js";
 import * as DebugUI from "../debug/debug_ui.js";
-import * as AboutUI from "../about/about_ui.js";
 import * as MainCommon from "../main_common.js";
 
 
+export var codeFileNameDisplay;
+
+export var codeFileName;
 export var codeHasChanged = false;
 
 export function mountDiv(targetElement, insertPosition = "beforeend")
@@ -297,11 +299,9 @@ const DEFAULT_FILE_NAME = "untitled.bas";
 
 var editorDivStyle;
 var editorDiv;
-var codeFileNameDisplay;
 var editorCode, editorGutter;
 
 var prevLineCount = 1;
-var codeFileName = DEFAULT_FILE_NAME;
 var codeFileHandle = null;
 
 
@@ -311,7 +311,8 @@ setEvents();
 
 addEditorGutterItem();
 
-codeFileNameDisplay.innerText = codeFileName;
+codeFileName = DEFAULT_FILE_NAME;
+codeFileNameDisplay.innerText = DEFAULT_FILE_NAME;
 
 
 function createStyles()
@@ -320,9 +321,7 @@ function createStyles()
   const template = document.createElement("template");
   template.innerHTML = templateCSS;
 
-  menuBarStyle = template.content.getElementById("menuBarStyle");
   editorDivStyle = template.content.getElementById("editorDivStyle");
-  commandBarStyle = template.content.getElementById("commandBarStyle");
 }
 
 function createElements()
@@ -331,40 +330,18 @@ function createElements()
   const template = document.createElement("template");
   template.innerHTML = templateHTML;
 
-  menuBar = template.content.getElementById("menuBar");
   editorDiv = template.content.getElementById("editorDiv");
-  commandBar = template.content.getElementById("commandBar");
-  newBtn = template.content.getElementById("newBtn");
-  openBtn = template.content.getElementById("openBtn");
-  saveBtn = template.content.getElementById("saveBtn");
-  examplesBtn = template.content.getElementById("examplesBtn");
-  helpBtn = template.content.getElementById("helpBtn");
-  aboutBtn = template.content.getElementById("aboutBtn");
-  updatesBtn = template.content.getElementById("updatesBtn");
   codeFileNameDisplay = template.content.getElementById("codeFileNameDisplay");
   editorCode = template.content.getElementById("editorCode");
   editorGutter = template.content.getElementById("editorGutter");
-  runBtn = template.content.getElementById("runBtn");
-  stopBtn = template.content.getElementById("stopBtn");
-  debugToggleBtn = template.content.getElementById("debugToggleBtn");
 }
 
 function setEvents()
 //
 {
-  newBtn.addEventListener("click", newBtn_onClick);
-  openBtn.addEventListener("click", openBtn_onClick);
-  saveBtn.addEventListener("click", saveBtn_onClick);
-  examplesBtn.addEventListener("click", examplesBtn_onClick);
-  helpBtn.addEventListener("click", helpBtn_onClick);
-  aboutBtn.addEventListener("click", aboutBtn_onClick);
-  updatesBtn.addEventListener("click", updatesBtn_onClick);
   editorCode.addEventListener("input", editor_onInput);
   editorCode.addEventListener("scroll", editor_onScroll);
-  runBtn.addEventListener("click", runBtn_onClick);
-  stopBtn.addEventListener("click", stopBtn_onClick);
-  debugToggleBtn.addEventListener("click", debugToggleBtn_onClick);
-  
+
   ProgLoadUI.uiOnProgStartHandlers.push(editorUI_onProgStart);
   ProgLoadUI.uiOnProgEndHandlers.push(editorUI_onProgEnd);
 }
@@ -417,100 +394,6 @@ function removeEditorGutterItem()
   editorGutter.removeChild(editorGutterItem);
 }
 
-async function newBtn_onClick(event)
-//Open a blank editor in a new tab
-{
-  if(ProgLoadUI.isRunning || fileOpInProgress)
-    return;
-
-  if(codeHasChanged)
-  {
-    if(!confirm("You have unsaved changes to '" + codeFileName + "'. Are you sure you want to start a new file?"))
-      return;
-  }
-  
-  MainUI.resetMain();
-}
-
-async function openBtn_onClick(event)
-//Open a code file from disk
-{
-  if(ProgLoadUI.isRunning || fileOpInProgress)
-    return;
-
-  if(codeHasChanged)
-  {
-    if(!confirm("You have unsaved changes to '" + codeFileName + "'. Are you sure you want to open another file?"))
-      return;
-  }
-
-  try
-  {
-    beginFileOpAwait("Opening file...");
-
-    const codeFile = await (("showOpenFilePicker" in window) ? readCodeFileFromHandle() : readCodeFileFromInput());
-    MainUI.resetMain();
-    loadCodeFileIntoEditor(codeFile);
-
-    endFileOpAwait("File opened successfully.");
-  }
-  catch(errorMessage)
-  {
-    endFileOpAwait(errorMessage);
-  }
-}
-
-async function saveBtn_onClick(event)
-//Save the current code to disk
-{
-  if(ProgLoadUI.isRunning || fileOpInProgress)
-    return;
-
-  try
-  {
-    beginFileOpAwait("Saving file...");
-
-    if("showOpenFilePicker" in window)
-      await saveCodeFileFromHandle();
-    else
-      await saveCodeFileFromAnchor();
-
-    codeHasChanged = false;
-    codeFileNameDisplay.innerText = codeFileName;
-
-    endFileOpAwait("File saved successfully.");
-  }
-  catch(errorMessage)
-  {
-    endFileOpAwait(errorMessage);
-  }
-}
-
-function examplesBtn_onClick(event)
-//Open the examples page
-{
-  window.open("./examples/examples.html", "_blank");
-}
-
-function helpBtn_onClick(event)
-//Open the help files page
-{
-  window.open("./docs/help/help.html", "_blank");
-}
-
-function aboutBtn_onClick(event)
-//Open the About dialog box
-{
-  AboutUI.showDialog();
-}
-
-function updatesBtn_onClick(event)
-//Open the Updates page
-{
-  window.open("./updates.html", "_blank");
-  toggleUpdatesBtnHighlighted();
-}
-
 function editor_onInput(event)
 {
   updateEditorGutter();
@@ -535,46 +418,15 @@ function editorGutterItem_onClick(event)
   event.target.classList.toggle("editorBreakpoint");
 }
 
-function runBtn_onClick(event)
-//
-{ 
-  ProgLoadUI.startProg(editorCode.value);
-}
-
-function stopBtn_onClick(event)
-//
-{
-  ProgLoadUI.endProg("Program stopped.", ProgLoadUI.PROG_EXIT_STATUS_TERMINATED, null);
-}
-
-function debugToggleBtn_onClick(event)
-//
-{
-  debugToggleBtn.style.border = (DebugUI.isDebugging) ? "" : "inset 2px";
-  DebugUI.debugToggleDiv();
-}
-
 function editorUI_onProgStart()
 //
 {
-  newBtn.disabled = true;
-  openBtn.disabled = true;
-  saveBtn.disabled = true;
-  runBtn.disabled = true;
-  stopBtn.disabled = true;
-
   editorCode.readOnly = true;
 }
 
 function editorUI_onProgEnd(exitStatus, error)
 //
 {
-  newBtn.disabled = false;
-  openBtn.disabled = false;
-  saveBtn.disabled = false;
-  runBtn.disabled = false;
-  stopBtn.disabled = false;
-
   editorCode.readOnly = false;
 
   if(exitStatus == ProgLoadUI.PROG_EXIT_STATUS_ERROR)
