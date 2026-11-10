@@ -102,15 +102,16 @@ IMPORTS
                   -> SpriteCommon.MSGID_*
 
 
-(X) main_ui -> DebugUI.debugClearDisplays()
+( ) main_ui -> DebugUI.debugClearDisplays()
             -> EditorUI.resetEditor()
-                       .toggleUpdatesBtnHighlighted()
                        .codeHasChanged
                        .readCodeFileFromLocalStorage()
                        .readCodeFileFromURL()
+                       .readCodeFileFromInput()
+                       .readCodeFileFromHandle()
+                       .saveCodeFileFromAnchor()
+                       .saveCodeFileFromHandle()
                        .loadCodeFileIntoEditor()
-                       .beginFileOpAwait()
-                       .endFileOpAwait()
             -> ConsoleUI.clearConsoleOutput()
             -> CanvasUI.resetCanvas()
             -> AboutUI.mountDialog()
@@ -158,8 +159,7 @@ IMPORTS
                            .DEBUG_UI_STATUS_*
                            .DebugBreakpoint
 
-(X) editor_ui -> MainUI.resetMain()
-              -> ProgLoadUI.PROG_EXIT_STATUS_*
+( ) editor_ui -> ProgLoadUI.PROG_EXIT_STATUS_*
                            .isRunning
                            .uiOnProgStartHandlers
                            .uiOnProgEndHandlers
@@ -258,8 +258,8 @@ EXPORTS
       - 
 
 
-(X) main_ui
-      - resetMain()
+( ) main_ui
+      - 
 
 (X) thread_msg_ui
       - progWorker
@@ -291,7 +291,7 @@ EXPORTS
       - debugRemoveBreakpoint()
       - debugToggleDiv()
 
-(X) editor_ui
+( ) editor_ui
       - codeHasChanged
       - resetEditor()
       - toggleUpdatesBtnHighlighted()
@@ -303,8 +303,6 @@ EXPORTS
       - saveCodeFileFromAnchor()
       - saveCodeFileFromHandle()
       - loadCodeFileIntoEditor()
-      - beginFileOpAwait()
-      - endFileOpAwait()
 
 (X) sound_ui
       - 

@@ -1,4 +1,3 @@
-import * as MainUI from "../main_ui.js";
 import * as ProgLoadUI from "../prog_load/prog_load_ui.js";
 import * as DebugUI from "../debug/debug_ui.js";
 import * as AboutUI from "../about/about_ui.js";
@@ -15,26 +14,6 @@ export function mountDiv(targetElement, insertPosition = "beforeend")
   
 }
 
-export function mountMenuBar(targetElement, insertPosition = "beforeend")
-//
-{
-  document.head.appendChild(menuBarStyle);
-  targetElement.insertAdjacentElement(insertPosition, menuBar);
-}
-
-export function mountCommandBar(targetElement, insertPosition = "beforeend")
-//
-{
-  document.head.appendChild(commandBarStyle);
-  targetElement.insertAdjacentElement(insertPosition, commandBar);
-}
-
-export function setStatusElement(targetStatusElement)
-//
-{
-  statusElement = targetStatusElement;
-}
-
 export function resetEditor()
 //
 {
@@ -44,15 +23,6 @@ export function resetEditor()
   codeFileNameDisplay.innerText = codeFileName;
   editorCode.value = "";
   updateEditorGutter();
-}
-
-export function toggleUpdatesBtnHighlighted()
-//
-{
-  if(updatesBtn.classList.toggle("buttonBlink"))
-    updatesBtn.querySelector("span").textContent = "See what's new!";
-  else
-    updatesBtn.querySelector("span").textContent = "Updates";
 }
 
 export function selectEditorLine(selLine)
@@ -218,36 +188,9 @@ export function loadCodeFileIntoEditor(codeFile)
   codeFileNameDisplay.innerText = codeFileName;
 }
 
-export function beginFileOpAwait(statusMessage)
-//
-{
-  newBtn.disabled = true;
-  openBtn.disabled = true;
-  saveBtn.disabled = true;
-  statusElement.innerText = statusMessage;
-  fileOpInProgress = true;
-}
-
-export function endFileOpAwait(statusMessage)
-//
-{
-  newBtn.disabled = false;
-  openBtn.disabled = false;
-  saveBtn.disabled = false;
-  statusElement.innerText = statusMessage;
-  fileOpInProgress = false;
-}
-
 
 const templateCSS =
 `
-<style id="menuBarStyle">
-  #menuBar
-  {
-    margin-bottom: 15px;
-  }
-</style>
-
 <style id="editorDivStyle">
   #codeFileNameDisplay
   {
@@ -310,44 +253,11 @@ const templateCSS =
     padding-left: 5px;
   }
 </style>
-
-<style id="commandBarStyle">
-  #commandBar
-  {
-    margin-top: 10px;
-    margin-bottom: 0px;
-  }
-
-  #runBtn
-  {
-    padding-inline: 1.5em;
-    padding-block: 0.15em;
-    background-color: rgb(136, 236, 166);
-  }
-
-  #stopBtn
-  {
-    padding-inline: 1.5em;
-    padding-block: 0.15em;
-    background-color: rgb(242, 168, 168);
-  }
-</style>
 `;
 
 
 const templateHTML =
 `
-<div id="menuBar" class="bar">
-  <button id="newBtn"><img src="./assests/new.png" alt="New"><span>New</span></button>
-  <button id="openBtn"><img src="./assests/open.png" alt="Open"><span>Open</span></button>
-  <button id="saveBtn"><img src="./assests/save.png" alt="Save"><span>Save</span></button>
-  <div class="bar-seperator"></div>
-  <button id="examplesBtn"><img src="./assests/examples.png" alt="Examples"><span>Examples</span></button>
-  <button id="helpBtn"><img src="./assests/help.png" alt="Help"><span>Help</span></button>
-  <button id="aboutBtn"><img src="./assests/about.png" alt="About"><span>About</span></button>
-  <button id="updatesBtn"><img src="./assests/updates.png" alt="Updates"><span>Updates</span></button>
-</div>
-
 <div id="editorDiv">
   <label id="editorToggle" class="toggle-open">Code Editor</label>
   <span>
@@ -359,14 +269,6 @@ const templateHTML =
       <textarea id="editorCode" wrap="off" spellcheck="false"></textarea>
     </div>
   </div>
-</div>
-
-<div id="commandBar" class="bar">
-  <button id="runBtn"><img src="./assests/run.png" alt="Run"><span>Run</span></button>
-  <button id="stopBtn" disabled><img src="./assests/stop.png" alt="Stop"><span>Stop</span></button>
-  <div class="bar-seperator"></div>
-  <button id="debugToggleBtn"><img src="./assests/debug.png" alt="Debug"><span>Debug</span></button>
-  <div class="bar-seperator"></div>
 </div>
 `;
 
@@ -393,20 +295,14 @@ const filePickerOptions =
 
 const DEFAULT_FILE_NAME = "untitled.bas";
 
-var menuBarStyle, editorDivStyle, commandBarStyle;
-var menuBar, editorDiv, commandBar;
-var newBtn, openBtn, saveBtn;
-var examplesBtn, helpBtn, aboutBtn, updatesBtn;
+var editorDivStyle;
+var editorDiv;
 var codeFileNameDisplay;
 var editorCode, editorGutter;
-var runBtn, stopBtn, debugToggleBtn;
-
-var statusElement;
 
 var prevLineCount = 1;
 var codeFileName = DEFAULT_FILE_NAME;
 var codeFileHandle = null;
-var fileOpInProgress = false;
 
 
 createStyles();

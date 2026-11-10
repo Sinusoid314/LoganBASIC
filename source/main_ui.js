@@ -144,10 +144,39 @@ const templateCSS =
   }
 </style>
 
+<style id="menuBarStyle">
+  #menuBar
+  {
+    margin-bottom: 15px;
+  }
+</style>
+
 <style id="mainDivStyle">
   #mainDiv
   {
     padding: 0px;
+  }
+</style>
+
+<style id="commandBarStyle">
+  #commandBar
+  {
+    margin-top: 10px;
+    margin-bottom: 0px;
+  }
+
+  #runBtn
+  {
+    padding-inline: 1.5em;
+    padding-block: 0.15em;
+    background-color: rgb(136, 236, 166);
+  }
+
+  #stopBtn
+  {
+    padding-inline: 1.5em;
+    padding-block: 0.15em;
+    background-color: rgb(242, 168, 168);
   }
 </style>
 
@@ -170,7 +199,26 @@ const templateCSS =
 
 const templateHTML =
 `
+<div id="menuBar" class="bar">
+  <button id="newBtn"><img src="./assests/new.png" alt="New"><span>New</span></button>
+  <button id="openBtn"><img src="./assests/open.png" alt="Open"><span>Open</span></button>
+  <button id="saveBtn"><img src="./assests/save.png" alt="Save"><span>Save</span></button>
+  <div class="bar-seperator"></div>
+  <button id="examplesBtn"><img src="./assests/examples.png" alt="Examples"><span>Examples</span></button>
+  <button id="helpBtn"><img src="./assests/help.png" alt="Help"><span>Help</span></button>
+  <button id="aboutBtn"><img src="./assests/about.png" alt="About"><span>About</span></button>
+  <button id="updatesBtn"><img src="./assests/updates.png" alt="Updates"><span>Updates</span></button>
+</div>
+
 <div id="mainDiv"></div>
+
+<div id="commandBar" class="bar">
+  <button id="runBtn"><img src="./assests/run.png" alt="Run"><span>Run</span></button>
+  <button id="stopBtn" disabled><img src="./assests/stop.png" alt="Stop"><span>Stop</span></button>
+  <div class="bar-seperator"></div>
+  <button id="debugToggleBtn"><img src="./assests/debug.png" alt="Debug"><span>Debug</span></button>
+  <div class="bar-seperator"></div>
+</div>
 
 <div id="statusBar">Ready.</div>
 
@@ -180,11 +228,15 @@ const templateHTML =
 
 var AboutUI, DebugUI, EditorUI, ConsoleUI, CanvasUI, SoundUI, SpriteUI;
 
-var mainUIStyle, mainDivStyle, statusBarStyle, versionDivStyle;
-var mainDiv, statusBar, versionDiv;
+var mainUIStyle, menuBarStyle, mainDivStyle, commandBarStyle, statusBarStyle, versionDivStyle;
+var menuBar, mainDiv, commandBar, statusBar, versionDiv;
+var newBtn, openBtn, saveBtn;
+var examplesBtn, helpBtn, aboutBtn, updatesBtn;
+var runBtn, stopBtn, debugToggleBtn;
 
 var paramFileURL = "";
 var autoRun = false;
+var fileOpInProgress = false;
 const WELCOME_HAS_BEEN_SHOWN_KEY = "welcomeHasBeenShown";
 const LAST_VISITED_VERSION_KEY = "lastVisitedVersion";
 
@@ -284,10 +336,9 @@ function mountUIComponents()
 
     DebugUI.mountDiv(mainDiv);
 
-    EditorUI.mountMenuBar(mainDiv);
+    mountMenuBar();
     EditorUI.mountDiv(mainDiv);
-    EditorUI.mountCommandBar(mainDiv);
-    EditorUI.setStatusElement(statusBar);
+    mountCommandBar();
     
     mountStatusBar();
   }
@@ -306,6 +357,20 @@ function mountMainDiv()
   document.body.insertAdjacentElement("beforeend", mainDiv);
 }
 
+function mountMenuBar()
+//
+{
+  document.head.appendChild(menuBarStyle);
+  mainDiv.insertAdjacentElement("beforeend", menuBar);
+}
+
+function mountCommandBar()
+//
+{
+  document.head.appendChild(commandBarStyle);
+  mainDiv.insertAdjacentElement("beforeend", commandBar);
+}
+
 function mountStatusBar()
 //
 {
@@ -318,6 +383,33 @@ function mountVersionDiv()
 {
   document.head.appendChild(versionDivStyle);
   mainDiv.insertAdjacentElement("beforeend", versionDiv);
+}
+
+function setToggleEvents()
+//
+{
+  var toggles = document.getElementsByClassName("toggle-open");
+
+  for(var i = 0; i < toggles.length; i++)
+    toggles[i].addEventListener("click", toggle_onClick);
+}
+
+function hideToggles()
+//
+{
+  var toggles = document.getElementsByClassName("toggle-open");
+
+  for(var i = 0; i < toggles.length; i++)
+    toggles[i].style.display = "none";
+}
+
+function toggleUpdatesBtnHighlighted()
+//
+{
+  if(updatesBtn.classList.toggle("buttonBlink"))
+    updatesBtn.querySelector("span").textContent = "See what's new!";
+  else
+    updatesBtn.querySelector("span").textContent = "Updates";
 }
 
 function checkIfWelcomeHasBeenShown()
@@ -348,22 +440,24 @@ function checkIfVersionHasChanged()
   return false;
 }
 
-function setToggleEvents()
+function beginFileOpAwait(statusMessage)
 //
 {
-  var toggles = document.getElementsByClassName("toggle-open");
-
-  for(var i = 0; i < toggles.length; i++)
-    toggles[i].addEventListener("click", toggle_onClick);
+  newBtn.disabled = true;
+  openBtn.disabled = true;
+  saveBtn.disabled = true;
+  statusBar.innerText = statusMessage;
+  fileOpInProgress = true;
 }
 
-function hideToggles()
+function endFileOpAwait(statusMessage)
 //
 {
-  var toggles = document.getElementsByClassName("toggle-open");
-
-  for(var i = 0; i < toggles.length; i++)
-    toggles[i].style.display = "none";
+  newBtn.disabled = false;
+  openBtn.disabled = false;
+  saveBtn.disabled = false;
+  statusBar.innerText = statusMessage;
+  fileOpInProgress = false;
 }
 
 async function window_onLoad(event)
