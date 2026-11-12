@@ -132,17 +132,17 @@ const templateCSS =
   }
 </style>
 
-<style id="menuBarStyle">
-  #menuBar
-  {
-    margin-bottom: 15px;
-  }
-</style>
-
 <style id="mainDivStyle">
   #mainDiv
   {
     padding: 0px;
+  }
+</style>
+
+<style id="menuBarStyle">
+  #menuBar
+  {
+    margin-bottom: 15px;
   }
 </style>
 
@@ -187,6 +187,8 @@ const templateCSS =
 
 const templateHTML =
 `
+<div id="mainDiv"></div>
+
 <div id="menuBar" class="bar">
   <button id="newBtn"><img src="./assests/new.png" alt="New"><span>New</span></button>
   <button id="openBtn"><img src="./assests/open.png" alt="Open"><span>Open</span></button>
@@ -197,8 +199,6 @@ const templateHTML =
   <button id="aboutBtn"><img src="./assests/about.png" alt="About"><span>About</span></button>
   <button id="updatesBtn"><img src="./assests/updates.png" alt="Updates"><span>Updates</span></button>
 </div>
-
-<div id="mainDiv"></div>
 
 <div id="commandBar" class="bar">
   <button id="runBtn"><img src="./assests/run.png" alt="Run"><span>Run</span></button>
@@ -216,7 +216,7 @@ const templateHTML =
 
 var AboutUI, DebugUI, EditorUI, ConsoleUI, CanvasUI, SoundUI, SpriteUI;
 
-var mainUIStyle, menuBarStyle, mainDivStyle, commandBarStyle, statusBarStyle, versionDivStyle;
+var mainUIStyle, mainDivStyle, menuBarStyle, commandBarStyle, statusBarStyle, versionDivStyle;
 var menuBar, mainDiv, commandBar, statusBar, versionDiv;
 var newBtn, openBtn, saveBtn;
 var examplesBtn, helpBtn, aboutBtn, updatesBtn;
@@ -268,8 +268,8 @@ function createStyles()
   template.innerHTML = templateCSS;
 
   mainUIStyle = template.content.getElementById("mainUIStyle");
-  menuBarStyle = template.content.getElementById("menuBarStyle");
   mainDivStyle = template.content.getElementById("mainDivStyle");
+  menuBarStyle = template.content.getElementById("menuBarStyle");
   commandBarStyle = template.content.getElementById("commandBarStyle");
   statusBarStyle = template.content.getElementById("statusBarStyle");
   versionDivStyle = template.content.getElementById("versionDivStyle");
@@ -281,6 +281,8 @@ function createElements()
   const template = document.createElement("template");
   template.innerHTML = templateHTML;
 
+  mainDiv = template.content.getElementById("mainDiv");
+  
   menuBar = template.content.getElementById("menuBar");
   newBtn = template.content.getElementById("newBtn");
   openBtn = template.content.getElementById("openBtn");
@@ -289,8 +291,6 @@ function createElements()
   helpBtn = template.content.getElementById("helpBtn");
   aboutBtn = template.content.getElementById("aboutBtn");
   updatesBtn = template.content.getElementById("updatesBtn");
-
-  mainDiv = template.content.getElementById("mainDiv");
 
   commandBar = template.content.getElementById("commandBar");
   runBtn = template.content.getElementById("runBtn");
